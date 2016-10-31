@@ -1,21 +1,26 @@
 package keyboardTester;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 public class test {
 	static ArrayList<Node> KeyboardList = new ArrayList<Node>();
-	static ArrayList<String> wList = new ArrayList<String>();
+	static List<String> wList = new ArrayList<String>();
 	static final double threshhold = 1.5;
 	
 	public static void main(String[] args){
 		//import frequent phrases
 		try {
-			for (String line : Files.readAllLines(Paths.get("E:\\My Documents\\GitHub\\Senior-Design-ALS-Social-Media\\KSim\\KeyBoardTester\\src\\resource\\words.txt"))) {
-				wList.add(line);
-			}
+			Path p = Paths.get("./KeyBoardTester/src/resource/", "words.txt");
+			Charset charset = Charset.forName("ISO-8859-1");
+	    	wList = Files.readAllLines(p, charset);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
