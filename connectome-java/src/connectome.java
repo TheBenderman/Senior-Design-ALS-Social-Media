@@ -1,19 +1,11 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
@@ -27,7 +19,7 @@ public class connectome extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		/*primaryStage.setTitle("Connectome");
+		primaryStage.setTitle("Connectome");
 		
 		Button button1 = new Button("Facebook");
         Button button2 = new Button("Twitter");
@@ -35,15 +27,18 @@ public class connectome extends Application{
         Button button4 = new Button("Settings");
         
         HBox hbox = new HBox(button1, button2, button3, button4);
-
+       
         Scene scene = new Scene(hbox, 800, 600);
         
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> KeyListeners.homeMenuKeyPressed(event.getCode()));
         
         primaryStage.setScene(scene);
 
-        primaryStage.show();*/
+        primaryStage.show();
+       
+        cycleButtonMenu(hbox, primaryStage);
 		
+		/*
 		// Create the WebView
 		WebView webView = new WebView();
 		
@@ -94,7 +89,22 @@ public class connectome extends Application{
 		// Add  the Scene to the Stage
 		primaryStage.setScene(scene);
 		// Display the Stage
-		primaryStage.show();
+		primaryStage.show();*/
+	}
+	
+	public void cycleButtonMenu(HBox buttonMenu, Stage stage) {
+		List<Node> childrenNodes = buttonMenu.getChildren();
+        
+		int i = 0;
+		
+        for (i = 0; i < childrenNodes.size(); i++) {
+        	((Button)childrenNodes.get(i)).requestFocus();
+        	
+        	stage.show();
+        	
+        	if ((i + 1) >= childrenNodes.size())
+        		i = -1;
+        }
 	}
 	
 	public static void main(String[] args) {

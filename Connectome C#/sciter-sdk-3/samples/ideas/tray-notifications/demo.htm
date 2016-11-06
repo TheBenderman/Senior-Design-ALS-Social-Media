@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title></title>
+    <style>
+    
+    @import url(notification.css);
+    
+    </style>
+    <script type="text/tiscript">
+    
+    $(button#test).onClick = function() {
+      Notification.show("Are you still with me, my friend?");     
+    }
+    $(button#cancel).onClick = function() {
+      Notification.cancel();     
+    }
+    
+    </script>
+  </head>
+<body>
+
+<select>
+  <option value="1">1</option>
+  <option value="2">2</option>
+</select>
+
+<button#test>Show notification</button>
+<button#cancel>Cancel notification</button>
+
+<popup#notification>
+  <header>Question:</header>
+  <content></content>
+</popup>
+
+</body>
+</html>
