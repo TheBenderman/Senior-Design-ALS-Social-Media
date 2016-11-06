@@ -1,0 +1,9 @@
+.DS_Store
+
+#IDE Garbage
+**/bin/Debug
+**/bin/Release
+obj/
+packages/
+.vs/
+*.sdf

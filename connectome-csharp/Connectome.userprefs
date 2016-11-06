@@ -1,0 +1,29 @@
+<Properties StartupItem="Connectome/ConnectomeOSX.csproj">
+  <MonoDevelop.Ide.ItemProperties.Connectome PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Connectome/Src/Host.cs">
+    <Files>
+      <File FileName="Connectome/Src/Host.cs" Line="24" Column="3" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Connectome" expanded="True">
+            <Node name="ConnectomeOSX" expanded="True">
+              <Node name="Src" expanded="True" />
+              <Node name="packages.config" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x64" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <DisabledProjects>
+    <String>Connectome/ConnectomeGTK.csproj</String>
+    <String>Connectome/ConnectomeWindows.csproj</String>
+  </DisabledProjects>
+</Properties>
