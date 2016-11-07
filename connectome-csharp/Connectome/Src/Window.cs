@@ -6,28 +6,28 @@ namespace Connectome
 {
 	public class Window : SciterWindow
 	{
-		public Window()
-		{
+        public Window()
+        {
             EmotivSphero p = new EmotivSphero();
 
             EmotivSphero.Change = (action, power) =>
             {
-                //Title = action + " " + power;
-                LoadHtml("<html><body><a>Brain Status: "+ (action.Split('_')[1]+"") + " " + ((power > 0.00)? "YES" : "NO")  +"</a><br></body></hmtl>");
-                UpdateWindow();
+                // calls UI layer TIScript function with the font data
+                Program.HostInstance.InvokePost(() =>
+                {
+                    Program.HostInstance.CallFunction("UpdateText", new SciterValue(action.Split('_')[1] + " " + ((power > 0.00) ? "YES" : "NO")));
+                });
             };
 
-            
             CreateMainWindow(800, 600);
-			CenterTopLevelWindow();
-			Title = "Sciter Bootstrap Hello";
+            CenterTopLevelWindow();
+            Title = "Sciter Bootstrap Hello";
 
             #if WINDOWS
             Icon = Properties.Resources.IconMain;
             #endif
 
-            new Thread(p.Run).Start() ;
-            
-		}
+            new Thread(p.Run).Start();
+        }
 	}
 }

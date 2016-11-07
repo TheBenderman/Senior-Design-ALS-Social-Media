@@ -13,15 +13,19 @@ namespace Connectome
 	{
 		public static Window AppWindow { get; private set; }// must keep a reference to survive GC
 		public static Host AppHost { get; private set; }
-		
-		[STAThread]
+
+        public static Host HostInstance { get; private set; }
+
+        [STAThread]
 		static void Main(string[] args)
 		{
+
 		#if WINDOWS
 			// Sciter needs this for drag'n'drop support; STAThread is required for OleInitialize succeess
 			int oleres = PInvokeWindows.OleInitialize(IntPtr.Zero);
 			Debug.Assert(oleres == 0);
 		#endif
+
 		#if GTKMONO
 			PInvokeGTK.gtk_init(IntPtr.Zero, IntPtr.Zero);
 			Mono.Setup();
@@ -37,9 +41,10 @@ namespace Connectome
 
 			// Prepares SciterHost and then load the page
 			AppHost = new Host(AppWindow);
-			
-			// Run message loop
-			PInvokeUtils.RunMsgLoop();
+            HostInstance = AppHost;
+           
+            // Run message loop
+            PInvokeUtils.RunMsgLoop();
 		}
 	}
 }

@@ -1,26 +1,17 @@
 <html>
 <head>
-	<style>
-		h1 { color: blue; font-size: 30px; }
-	</style>
 
 	<script type="text/tiscript">
-		$(h1).text = view.Host_HelloWorld();
 
-		var version_major = Sciter.VERSION >> 16;
-		var version_minor = Sciter.VERSION & 0xFFFF;
-		var revision_major = Sciter.REVISION >> 16;
-		var revision_minor = Sciter.REVISION & 0xFFFF;
-		$(h2).text = "Sciter version: " + String.printf("%d.%d.%d.%d", version_major, version_minor, revision_major, revision_minor);
+        function UpdateText(data)
+        {
+            $(#status).text = data;
+        }
 
-		$(a).on("click", function(evt) {
-			Sciter.launch(this.@#href);
-            return true;
-		});
 	</script>
 </head>
 
 <body>
-        <div>Brain Status:</div>
+        <div>Brain Status: <div #status></div></div>
     </body>
 </html>
