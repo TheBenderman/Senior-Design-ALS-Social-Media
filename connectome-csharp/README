@@ -1,0 +1,8 @@
+> Running the program from Visual Studio: 
+	1- Set Solution Platform to 'x86' (32 bit) Located on top next to Dropbox 'Debug'.
+	2- Next to Solution Platform, change Startup Project to 'ConnectomeWindows'. 
+
+> Creating a new project: 
+	Edk.dll is needed. Add the dll as existing file from 'lib' directory. Next, select the file and on the 'Properties' Windows, set 'Copy to Output Directory' to 'Copy id newer'
+
+	
