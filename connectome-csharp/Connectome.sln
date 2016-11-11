@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectomeWindows", "Connectome\ConnectomeWindows.csproj", "{FABEBB54-7E6E-4DCD-A4A3-D713EA38731B}"
 EndProject
@@ -23,6 +23,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FABEBB54-7E6E-4DCD-A4A3-D713EA38731B}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{FABEBB54-7E6E-4DCD-A4A3-D713EA38731B}.Debug|Any CPU.Build.0 = Debug|x86
 		{FABEBB54-7E6E-4DCD-A4A3-D713EA38731B}.Debug|x64.ActiveCfg = Debug|x64
 		{FABEBB54-7E6E-4DCD-A4A3-D713EA38731B}.Debug|x64.Build.0 = Debug|x64
 		{FABEBB54-7E6E-4DCD-A4A3-D713EA38731B}.Debug|x86.ActiveCfg = Debug|x86
@@ -63,6 +64,7 @@ Global
 		{D3337309-9682-425E-8EDC-2ECFACF79565}.Release|x86.ActiveCfg = Release|x86
 		{D3337309-9682-425E-8EDC-2ECFACF79565}.Release|x86.Build.0 = Release|x86
 		{374D51CD-5F57-4145-8A61-9CBAB5E0F6D7}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{374D51CD-5F57-4145-8A61-9CBAB5E0F6D7}.Debug|Any CPU.Build.0 = Debug|x86
 		{374D51CD-5F57-4145-8A61-9CBAB5E0F6D7}.Debug|x64.ActiveCfg = Debug|x64
 		{374D51CD-5F57-4145-8A61-9CBAB5E0F6D7}.Debug|x64.Build.0 = Debug|x64
 		{374D51CD-5F57-4145-8A61-9CBAB5E0F6D7}.Debug|x86.ActiveCfg = Debug|x86

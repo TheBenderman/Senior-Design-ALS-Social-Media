@@ -1,17 +1,24 @@
 <html>
-<head>
+    <head>
 
-	<script type="text/tiscript">
+	    <script type="text/tiscript">
 
-        function UpdateText(data)
-        {
-            $(#status).text = data;
-        }
+            function UpdateText(data)
+            {
+                $(#status).text = data;
+            }
 
-	</script>
-</head>
+            var btn = $(#twitterButton).on("click", function (){
+                view.load("twitter.html");
+            });
+	    </script>
+    </head>
 
-<body>
+    <body>
         <div>Brain Status: <div #status></div></div>
+
+        <br/>
+
+        <button #twitterButton>Twitter Test Page</button>
     </body>
 </html>

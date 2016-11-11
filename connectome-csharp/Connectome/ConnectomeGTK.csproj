@@ -30,13 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SciterSharpGTK, Version=1.0.9.0, Culture=neutral, PublicKeyToken=b3d3700a4c1f099f, processorArchitecture=MSIL">
-      <HintPath>..\packages\SciterSharpGTK.1.0.9.0\lib\net45\SciterSharpGTK.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SciterSharpWindows, Version=1.0.8.0, Culture=neutral, PublicKeyToken=b3d3700a4c1f099f, processorArchitecture=MSIL">
-      <HintPath>..\packages\SciterSharpWindows.1.0.8.0\lib\net45\SciterSharpWindows.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="SciterSharpGTK">
+      <HintPath>..\packages\SciterSharpGTK.1.0.35\lib\net45\SciterSharpGTK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
