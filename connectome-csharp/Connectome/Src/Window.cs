@@ -1,6 +1,7 @@
 using System;
 using SciterSharp;
 using System.Threading;
+using Connectome.Src;
 
 namespace Connectome
 {
@@ -19,7 +20,7 @@ namespace Connectome
                 });
             };
 
-            CreateMainWindow(800, 600);
+            CreateMainWindow(1200, 800);
             CenterTopLevelWindow();
             Title = "Sciter Bootstrap Hello";
 
@@ -28,6 +29,8 @@ namespace Connectome
             #endif
 
             new Thread(p.Run).Start();
+
+            new Thread(ButtonTimer.startTimer).Start();
         }
 	}
 }

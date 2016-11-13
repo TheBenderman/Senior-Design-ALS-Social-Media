@@ -33,8 +33,6 @@ public class EmotivSphero{
 		engineUserID = 0;
         userCloudID = -1; 
 
-       
-
 		if (EdkDll.IEE_EngineConnect("Emotiv Systems-5") != EdkDll.EDK_OK) {
 			Debug.WriteLine("Emotiv Engine start up failed.");
 			return;

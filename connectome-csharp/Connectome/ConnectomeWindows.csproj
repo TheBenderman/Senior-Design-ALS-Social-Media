@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArchiveResource.cs" />
+    <Compile Include="Src\ButtonTimer.cs" />
     <Compile Include="Src\Host.cs" />
     <Compile Include="Src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -125,8 +126,14 @@
     <Content Include="edk.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="res\connectome.css" />
+    <Content Include="res\connectome.js" />
+    <Content Include="res\emotiv-test.html" />
     <Content Include="res\twitter-home.html" />
     <Content Include="res\twitter.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="res\images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

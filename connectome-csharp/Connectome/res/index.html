@@ -1,24 +1,31 @@
 <html>
     <head>
 
+        <style>
+            @import url(connectome.css);
+        </style>
+
 	    <script type="text/tiscript">
+            include "connectome.js";
 
-            function UpdateText(data)
-            {
-                $(#status).text = data;
-            }
-
-            var btn = $(#twitterButton).on("click", function (){
+            $(#twitterButton).on("click", function (){
                 view.load("twitter.html");
+            });
+
+            $(#emotivTestButton).on("click", function (){
+                view.load("emotiv-test.html");
             });
 	    </script>
     </head>
 
     <body>
-        <div>Brain Status: <div #status></div></div>
-
-        <br/>
-
-        <button #twitterButton>Twitter Test Page</button>
+        <div class="container">
+            <header><h1>Connectome</h1></header>
+            <div .buttonbar>
+                <button selected="true" .active #emotivTestButton>Emotiv Test Page</button>
+                <button #instagramButton>Instagram Test Page</button>
+                <button #twitterButton>Twitter Test Page</button>
+            </div>
+        </div>
     </body>
 </html>

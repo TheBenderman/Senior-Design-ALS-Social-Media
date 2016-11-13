@@ -3,3 +3,4 @@ C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome
 C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\build\Debug\DotNetEmotivSDK.pdb
 C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.dll
 C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.pdb
+C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.csprojResolveAssemblyReference.cache
