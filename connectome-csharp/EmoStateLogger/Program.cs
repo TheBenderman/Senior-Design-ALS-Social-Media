@@ -123,7 +123,8 @@ public class EmotivSphero{
         EdkDll.IEE_MentalCommandAction_t? previousState = null; 
 
 
-        while (true) {
+        while (true)
+        {
 
 			state = EdkDll.IEE_EngineGetNextEvent(eEvent);
 
@@ -137,16 +138,16 @@ public class EmotivSphero{
 					EdkDll.IEE_MentalCommandAction_t currentAction = EdkDll.IS_MentalCommandGetCurrentAction(eState);
 					float currentPower = EdkDll.IS_MentalCommandGetCurrentActionPower(eState);
 
-                    //Update(currentAction+"", currentPower);
+                    Update?.Invoke(currentAction + "", currentPower);
 
-                    if(previousState != currentAction)
-                    {
-                        Change(currentAction+"", currentPower);
-                        previousState = currentAction;
-                    }
 
-                    Debug.WriteLine(act+" "+newState + ", " + currentAction + ", " + currentPower);
-				}
+
+                    //    Change(currentAction+"", currentPower);
+                    //    previousState = currentAction;
+
+
+                    //Debug.WriteLine(act+" "+newState + ", " + currentAction + ", " + currentPower);
+                }
 			} 
 		}
 	}
