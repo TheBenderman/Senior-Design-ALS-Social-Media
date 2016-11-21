@@ -9,6 +9,9 @@ using EmotivWrapper;
 
 namespace EmotivImpl
 {
+    /// <summary>
+    /// A Reader that termanites itself after reading for a time limit 
+    /// </summary>
     public class TimedEmotivReader : EmotivReader
     {
         private Stopwatch timer; 

@@ -1,5 +1,6 @@
 ﻿using EmotivImpl;
 using EmotivImpl.Device;
+using EmotivImpl.Reader;
 using EmotivWrapper;
 using EmotivWrapper.Core;
 using System;
@@ -42,7 +43,73 @@ namespace EmotivAnalyticApplication
 
                 if (int.TryParse(textBox1.Text, out seconds))
                 {
-                    StartCollecting(seconds);
+                    float threshHold = -1f; 
+                    long ms = -1;
+                    string targetCommand = TargetCmdTextBox.Text;
+
+                    if(!string.IsNullOrEmpty(ThreashHoldTextBox.Text))
+                    {
+                        if(!float.TryParse(ThreashHoldTextBox.Text, out threshHold))
+                        {
+                            MessageBox.Show("Unable to parse thresh hold", "Input Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return; 
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(IntervalTextBox.Text))
+                    {
+                        if (!long.TryParse(IntervalTextBox.Text, out ms))
+                        {
+                            MessageBox.Show("Unable to parse interval hold", "Input Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+
+
+                    EmotivReader reader;
+
+                    if (threshHold != -1f || ms != -1 || !string.IsNullOrEmpty(targetCommand))
+                    {
+                        EmotivStateType targetCmd;
+                        switch (targetCommand.ToUpper())
+                        {
+                            case "NEUTRAL":
+                                targetCmd = EmotivStateType.NEUTRAL;
+                                break;
+                            case "PUSH":
+                                targetCmd = EmotivStateType.PUSH;
+                                break;
+                            default: 
+                                targetCmd = EmotivStateType.PUSH;
+                                MessageBox.Show("Unable to find Command", "Input Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                        }
+                      
+                        if(threshHold == -1f)
+                        {
+                            MessageBox.Show("Missing thresh hold", "Missing Input",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        if(ms == -1)
+                        {
+                            MessageBox.Show("Missing time interval", "Missing Input",
+                           MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                       reader = new EmotivAnalyticReader(device, targetCmd, ms, threshHold);
+
+                    }
+                    else
+                    {
+                       reader  = new TimedEmotivReader(device, seconds);
+                    }
+
+                    StartCollecting(reader, seconds);
                 }
                 else
                 {
@@ -60,14 +127,29 @@ namespace EmotivAnalyticApplication
             button1.Enabled = enable; 
         }
 
-        private void StartCollecting(int sec)
+        private void StartCollecting(EmotivReader reader, int seconds)
         {
             //collect date for time 
-            EmotivReader reader = new TimedEmotivReader(device, sec);
+            
             list  = new List<EmotivState>(); 
 
             reader.OnRead = (state) => list.Add(state);
+
+            long duration = seconds * 1000;
            
+            reader.OnStart = () =>
+            {
+                new Thread(() =>
+                {
+                    Stopwatch timer = Stopwatch.StartNew();
+
+                    while (timer.ElapsedMilliseconds < seconds*1000) ;
+
+                    reader.isRunning = false; 
+                     
+                }).Start();
+            };
+
             reader.Start();
             ToggleButton("Reading...",false);
 
@@ -133,7 +215,7 @@ namespace EmotivAnalyticApplication
             string profile = profileTextBox.Text.Trim();
 
             connectButton.Text = "Connecting..."; 
-            device = new EPOCEmotivDevice(user, pass, profile);
+            device =  new EPOCEmotivDevice(user, pass, profile);
             string error; 
             if (device.Connect(out error))
             {

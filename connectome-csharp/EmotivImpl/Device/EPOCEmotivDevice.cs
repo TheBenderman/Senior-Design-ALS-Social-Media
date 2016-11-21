@@ -23,6 +23,13 @@ namespace EmotivImpl.Device
         private string profileName;
         #endregion
 
+        public EPOCEmotivDevice()
+        {
+            this.username = string.Empty;
+            this.password = string.Empty;
+            this.profileName = string.Empty;
+        }
+
         public EPOCEmotivDevice(string username, string password, string profileName)
         {
            this.username =  username;
@@ -128,18 +135,8 @@ namespace EmotivImpl.Device
             EdkDll.IEE_MentalCommandGetOverallSkillRating(engineUserID, out skill);
             //Debug.WriteLine("Current overall skill rating: " + skill);
 
-            //EdkDll.IEE_MentalCommandSetActionSensitivity(engineUserID, 1, 1,1,1);
-            //EdkDll.IEE_MentalCommandSetSignatureCaching(engineUserID, 1);
-            //EdkDll.IEE_MentalCommandSetActivationLevel(engineUserID, 1);
-
-            
-            //Debug.WriteLine("Quitting...");
-
-
             errorMessage = string.Empty;
 
-            timer = Stopwatch.StartNew();
-            timer.Start();
             return true; 
         }
 
@@ -153,11 +150,16 @@ namespace EmotivImpl.Device
         }
 
 
-        long previousTimeElapsed = 0; 
+        long previousTimeElapsed = 0;
 
         public override EmotivState Read()
         {
-           long time = timer.ElapsedMilliseconds; 
+            if (timer == null)
+            { 
+                timer = Stopwatch.StartNew();
+            }
+
+            long time = timer.ElapsedMilliseconds; 
             while (time == previousTimeElapsed)
             {
                 time = timer.ElapsedMilliseconds; 

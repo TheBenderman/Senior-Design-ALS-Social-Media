@@ -19,7 +19,7 @@ namespace EmotivAnalytic
         {
             EmotivDevice device = new RandomEmotivDevice();
 
-            EmotivReader reader = new EmotivAnalyticReader(device, EmotivStateType.NEUTRAL, 2, 0.5f);
+            EmotivReader reader = new EmotivImpl.Reader.EmotivAnalyticReader(device, EmotivStateType.NEUTRAL, 2, 0.5f);
 
             reader.OnRead = (state) => Debug.WriteLine(state);
 

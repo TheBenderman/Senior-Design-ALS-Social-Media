@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EmotivWrapper.Core;
+using EmotivImpl.Device;
+using EmotivImpl;
+using EmotivWrapper;
+using EmotivImpl.Reader;
 
 namespace Connectome
 {
@@ -42,9 +47,27 @@ namespace Connectome
 			// Prepares SciterHost and then load the page
 			AppHost = new Host(AppWindow);
             HostInstance = AppHost;
-           
+
+            EmotivDevice device = new RandomEmotivDevice();
+
+            long timeInterval = 3000;
+            float threshHold = 0f;
+
+            EmotivReader reader = new EmotivAnalyticReader(device, EmotivStateType.NEUTRAL, timeInterval, threshHold); 
+
+            reader.OnRead = (state) =>
+            {
+                // calls UI layer TIScript function with the font data
+                    HostInstance.InvokePost(() =>
+                    {
+                        HostInstance.CallFunction("update");
+                    });
+            };
+
             // Run message loop
+            reader.Start();
             PInvokeUtils.RunMsgLoop();
-		}
+
+        }
 	}
 }

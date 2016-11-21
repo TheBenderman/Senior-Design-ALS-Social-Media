@@ -117,9 +117,13 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmoStateLogger\EmoStateLogger.csproj">
-      <Project>{374d51cd-5f57-4145-8a61-9cbab5e0f6d7}</Project>
-      <Name>EmoStateLogger</Name>
+    <ProjectReference Include="..\EmotivImpl\EmotivImpl.csproj">
+      <Project>{86F68AF7-F66C-47BA-931B-6FD5D5C89DE2}</Project>
+      <Name>EmotivImpl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EmotivWrapper\EmotivWrapper.csproj">
+      <Project>{5B12BF1C-BD1F-4431-B2AD-617346EA198E}</Project>
+      <Name>EmotivWrapper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

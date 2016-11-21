@@ -24,7 +24,7 @@ namespace EmotivImpl.Reader
         /// <summary>
         /// Time of which reading started 
         /// </summary>
-        private Stopwatch timer;
+        private Stopwatch intervalTimer;
 
         private float threshHold; 
 
@@ -34,22 +34,21 @@ namespace EmotivImpl.Reader
         private LinkedList<EmotivState> intervalStatesList; 
 
 
-        public EmotivAnalyticReader(EmotivDevice device, EmotivStateType target, long seconds, float threshHold) : base(device)
+        public EmotivAnalyticReader(EmotivDevice device, EmotivStateType target, long ms, float threshHold) : base(device)
         {
             this.targetCommand = target;
 
-            this.interval = seconds * 1000;
-            this.threshHold = threshHold; 
+            this.interval = ms; 
+            this.threshHold = threshHold;
+
         }
-
-
 
         protected override EmotivState ReadingState(EmotivDevice device)
         {
-            timer = Stopwatch.StartNew();
-            intervalStatesList = new LinkedList<EmotivState>(); 
+            intervalStatesList = new LinkedList<EmotivState>();
+            intervalTimer = Stopwatch.StartNew();
 
-            while (timer.ElapsedMilliseconds < interval)
+            while (intervalTimer.ElapsedMilliseconds < interval)
             {
                 intervalStatesList.AddLast(device.Read());
             }
@@ -58,10 +57,9 @@ namespace EmotivImpl.Reader
 
             float validStateCount = validStatesList.Count(); 
             float stateCount  = intervalStatesList.Count();
-
             float powerPercent = (validStateCount / stateCount); 
 
-            return new EmotivState() { command = targetCommand, power = powerPercent, time = validStatesList.Last().time }; 
+            return new EmotivState() { command = targetCommand, power = powerPercent, time = intervalStatesList .Last().time}; 
         }
     }
 }

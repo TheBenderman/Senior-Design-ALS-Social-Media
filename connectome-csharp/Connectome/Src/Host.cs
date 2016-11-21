@@ -18,7 +18,7 @@ namespace Connectome
 			var host = this;
 			host.SetupWindow(wnd);
 			host.AttachEvh(new HostEvh());
-			host.SetupPage("index.html");
+			host.SetupPage("emotiv-test.html");
 			wnd.Show();
 		}
 
