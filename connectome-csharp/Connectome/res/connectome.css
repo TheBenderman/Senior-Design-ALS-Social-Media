@@ -1,5 +1,5 @@
 ﻿html {
-    background-color: black;
+
 }
 
 div.container {
@@ -56,4 +56,24 @@ button:hover {
     color: black;
     background: mediumpurple;
     border: 2px solid black;
+}
+
+progress:nth-child(even){background: #7FFF00;}
+
+#progress {
+ width: 200px;   
+ border: 1px solid black;
+ position: relative;
+ padding: 3px;
+}
+
+#percent {
+ position: absolute;   
+ left: 50%;
+}
+
+#bar {
+ height: 20px;
+ background-color: cadetblue;
+ width: 30%;
 }

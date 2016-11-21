@@ -1,20 +1,39 @@
-﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+﻿<html>
 <head>
-    <meta charset="utf-8" />
+
+    <style>
+        @import url(connectome.css);
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header><h1>Connectome</h1></header>
+        <div #bars>
+        </div>
+        <div class='well'>
+            <div class="input-group">
+                <label>Interval Time</label>
+                <input #test id="interval" type="text" #interval class="form-control" aria-describedby="sizing-addon2" value="3">
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon" id="thresh-add">Threshold</span>
+                <input id="threshold" type="text" class="form-control" value=".5" aria-describedby="thresh-add">
+            </div>
+            <br>
+            <div id="progress">
+                <span id="percent">30%</span>
+                <div id="bar"></div>
+            </div>
+            <br>
+            <button #myBtn>Begin Test</button>
+        </div>
+    </div>
+
 
     <script type="text/tiscript">
-
-        function UpdateText(data)
-        {
-            $(#status).text = data;
-        }
+        include "EmoTest.js";
     </script>
-
-    <title></title>
-</head>
-<body>
-    <div>Brain Status: <div #status></div></div>
 </body>
 </html>
