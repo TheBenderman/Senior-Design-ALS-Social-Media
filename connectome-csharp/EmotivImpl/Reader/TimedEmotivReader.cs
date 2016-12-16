@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EmotivWrapper;
+using EmotivWrapperInterface;
 
 namespace EmotivImpl
 {
@@ -17,16 +18,16 @@ namespace EmotivImpl
         private Stopwatch timer; 
         private long duration; 
 
-        public TimedEmotivReader(EmotivDevice device, int second) : base(device)
+        public TimedEmotivReader(IEmotivDevice device, int second) : base(device)
         {
             this.duration = 1000*second;
 
             OnStart += () => timer = Stopwatch.StartNew(); 
         }
 
-        protected override EmotivState ReadingState(EmotivDevice device)
+        protected override IEmotivState ReadingState(IEmotivDevice device)
         {
-            EmotivState read = base.ReadingState(device);
+            IEmotivState read = base.ReadingState(device);
 
             if (timer.ElapsedMilliseconds > this.duration)
             {

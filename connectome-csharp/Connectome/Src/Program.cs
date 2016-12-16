@@ -1,20 +1,13 @@
-using SciterSharp;
 using SciterSharp.Interop;
 using System;
 using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EmotivWrapper.Core;
 using EmotivImpl.Device;
-using EmotivImpl;
-using EmotivWrapper;
 using EmotivImpl.Reader;
+using EmotivWrapperInterface;
 
 namespace Connectome
 {
-	class Program
+    class Program
 	{
 		public static Window AppWindow { get; private set; }// must keep a reference to survive GC
 		public static Host AppHost { get; private set; }
@@ -48,12 +41,12 @@ namespace Connectome
 			AppHost = new Host(AppWindow);
             HostInstance = AppHost;
 
-            EmotivDevice device = new RandomEmotivDevice();
+            IEmotivDevice device = new RandomEmotivDevice();
 
             long timeInterval = 3000;
             float threshHold = 0f;
 
-            EmotivReader reader = new EmotivAnalyticReader(device, EmotivStateType.NEUTRAL, timeInterval, threshHold); 
+            IEmotivReader reader = new EmotivAnalyticReader(device, EmotivStateType.NEUTRAL, timeInterval, threshHold); 
 
             reader.OnRead = (state) =>
             {

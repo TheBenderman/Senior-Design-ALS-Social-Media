@@ -3,6 +3,7 @@ using EmotivImpl.Device;
 using EmotivImpl.Reader;
 using EmotivWrapper;
 using EmotivWrapper.Core;
+using EmotivWrapperInterface;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,15 +16,42 @@ namespace EmotivAnalytic
 {
     class Program
     {
+
+        /// <summary>
+        /// Reader from random device and report states read from EmotivAnalyticReader
+        /// </summary>
         static void Main(string[] args)
         {
-            EmotivDevice device = new RandomEmotivDevice();
+            IEmotivDevice device = new RandomEmotivDevice();
 
-            EmotivReader reader = new EmotivImpl.Reader.EmotivAnalyticReader(device, EmotivStateType.NEUTRAL, 2, 0.5f);
+            int interval = 500; //ms 
+            float thresh = .5f;
+            EmotivStateType targetCmd = EmotivStateType.NEUTRAL; 
 
-            reader.OnRead = (state) => Debug.WriteLine(state);
+            EmotivReader reader = new EmotivAnalyticReader(device,targetCmd, interval, thresh);
 
-            reader.Start(); 
+            //prep
+            Stopwatch timer = Stopwatch.StartNew();
+            long secondsWait = 5000; //ms 
+
+            reader.OnRead = (state) =>
+            {
+                Debug.WriteLine(state);
+
+                //kill after certain time 
+                if(timer.ElapsedMilliseconds >= secondsWait)
+                {
+                    reader.isRunning = false;  
+                }
+            }; 
+           
+            reader.Start();
+            timer = Stopwatch.StartNew();
+
+            while (reader.isRunning) ;
+
+            Debug.WriteLine("[END]");
+
         }
 
 
@@ -46,7 +74,7 @@ namespace EmotivAnalytic
 
            Random r = new Random();
 
-           int i = 0;
+          
            int smapleSize = (int)((list.Count() * interval) / duration);
 
            bool isTargergatted = true;
@@ -77,7 +105,7 @@ namespace EmotivAnalytic
                    //print 
                    isTargergatted = !isTargergatted;
                    succ = new List<bool>();
-                   i = 0;
+                   
 
                    watch.Restart();
                    watch.Start(); 
@@ -128,12 +156,11 @@ namespace EmotivAnalytic
 
         }
     }//end class 
-
-    public class MentalRecord
+    
+    //TODO remove 
+    class MentalRecord
     {
-       public float strength;
-       public  string cmd;
-        public double time; 
+      
 
         //public string GetValidComd(float thresh)
        // {

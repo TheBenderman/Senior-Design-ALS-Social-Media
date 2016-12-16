@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectomeWindows", "Connectome\ConnectomeWindows.csproj", "{FABEBB54-7E6E-4DCD-A4A3-D713EA38731B}"
 EndProject
@@ -19,6 +19,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotivAnalytic", "EmotivAnalytic\EmotivAnalytic.csproj", "{B84FA3A0-D58E-4F07-A718-98B897303AFA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotivAnalyticApplication", "EmotivAnalyticApplication\EmotivAnalyticApplication.csproj", "{8FDFB7E0-0C9B-424B-B2BD-3A32232F2BB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotivWrapperInterface", "EmotivWrapperInterface\EmotivWrapperInterface.csproj", "{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -130,6 +132,18 @@ Global
 		{8FDFB7E0-0C9B-424B-B2BD-3A32232F2BB4}.Release|x64.Build.0 = Release|Any CPU
 		{8FDFB7E0-0C9B-424B-B2BD-3A32232F2BB4}.Release|x86.ActiveCfg = Release|Any CPU
 		{8FDFB7E0-0C9B-424B-B2BD-3A32232F2BB4}.Release|x86.Build.0 = Release|Any CPU
+		{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}.Debug|x64.Build.0 = Debug|Any CPU
+		{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}.Debug|x86.Build.0 = Debug|Any CPU
+		{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}.Release|x64.ActiveCfg = Release|Any CPU
+		{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}.Release|x64.Build.0 = Release|Any CPU
+		{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}.Release|x86.ActiveCfg = Release|Any CPU
+		{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

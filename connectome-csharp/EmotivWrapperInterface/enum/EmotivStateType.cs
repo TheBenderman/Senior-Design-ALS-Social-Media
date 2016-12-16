@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmotivWrapper
+namespace EmotivWrapperInterface
 {
     public enum EmotivStateType
     {

@@ -121,6 +121,10 @@
       <Project>{86F68AF7-F66C-47BA-931B-6FD5D5C89DE2}</Project>
       <Name>EmotivImpl</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EmotivWrapperInterface\EmotivWrapperInterface.csproj">
+      <Project>{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}</Project>
+      <Name>EmotivWrapperInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EmotivWrapper\EmotivWrapper.csproj">
       <Project>{5B12BF1C-BD1F-4431-B2AD-617346EA198E}</Project>
       <Name>EmotivWrapper</Name>

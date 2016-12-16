@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,6 +52,10 @@
     <ProjectReference Include="..\DotNetEmotivSDK\DotNetEmotivSDK.csproj">
       <Project>{d3337309-9682-425e-8edc-2ecfacf79565}</Project>
       <Name>DotNetEmotivSDK</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EmotivWrapperInterface\EmotivWrapperInterface.csproj">
+      <Project>{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}</Project>
+      <Name>EmotivWrapperInterface</Name>
     </ProjectReference>
     <ProjectReference Include="..\EmotivWrapper\EmotivWrapper.csproj">
       <Project>{5b12bf1c-bd1f-4431-b2ad-617346ea198e}</Project>

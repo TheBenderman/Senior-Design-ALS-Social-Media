@@ -1,23 +1,22 @@
 ﻿using Emotiv;
-
+using EmotivWrapperInterface;
 
 namespace EmotivWrapper
 {
-    public class EmotivState
+    public class EmotivState : IEmotivState
     {
         /// <summary>
         /// Command type 
         /// </summary>
-        public EmotivStateType command;
+        public EmotivStateType command { set; get; }
         /// <summary>
         /// State power 0.0 to 1.0 
         /// </summary>     
-        public float power;
+        public float power { set; get; }
         /// <summary>
         /// Time of catpured state 
         /// </summary>
-        public long time;
-
+        public long time { set; get; }
 
         /// <summary>
         /// Time, Command, Power

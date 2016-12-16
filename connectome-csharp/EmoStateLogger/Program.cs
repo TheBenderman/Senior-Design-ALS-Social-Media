@@ -3,6 +3,7 @@ using Emotiv;
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Configuration;
 
 public class EmotivSphero{
 
@@ -24,13 +25,12 @@ public class EmotivSphero{
 
 
     public void Run()
-    {
+    { 
+        string userName = ConfigurationManager.AppSettings["username"];
+        string password = ConfigurationManager.AppSettings["password"];
+        string profileName = ConfigurationManager.AppSettings["profile"];
 
-		string userName = "kennanmeyer";
-		string password = "vd4kbPSAbYTt";
-		string profileName = "NewProfile1";
-
-		engineUserID = 0;
+        engineUserID = 0;
         userCloudID = -1; 
 
 		if (EdkDll.IEE_EngineConnect("Emotiv Systems-5") != EdkDll.EDK_OK) {
@@ -120,8 +120,7 @@ public class EmotivSphero{
 
 		Debug.WriteLine("New State, Current Action, Current Power");
 
-        EdkDll.IEE_MentalCommandAction_t? previousState = null; 
-
+        //EdkDll.IEE_MentalCommandAction_t? previousState = null; 
 
         while (true)
         {

@@ -3,6 +3,7 @@ using EmotivImpl.Device;
 using EmotivImpl.Reader;
 using EmotivWrapper;
 using EmotivWrapper.Core;
+using EmotivWrapperInterface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,8 +22,8 @@ namespace EmotivAnalyticApplication
     public partial class BasicReaderApplication : Form
     {
 
-        private EmotivDevice device;
-        private List<EmotivState> list; 
+        private IEmotivDevice device;
+        private List<IEmotivState> list; 
 
         public BasicReaderApplication()
         {
@@ -105,8 +106,11 @@ namespace EmotivAnalyticApplication
 
                     }
                     else
-                    {
-                       reader  = new TimedEmotivReader(device, seconds);
+                    { 
+                        reader = null;  //new TimedEmotivReader(device, seconds); to be emproved 
+
+                        //TODO remove 
+                        reader = new EmotivAnalyticReader(device, EmotivStateType.PUSH, ms, threshHold);
                     }
 
                     StartCollecting(reader, seconds);
@@ -127,11 +131,11 @@ namespace EmotivAnalyticApplication
             button1.Enabled = enable; 
         }
 
-        private void StartCollecting(EmotivReader reader, int seconds)
+        private void StartCollecting(IEmotivReader reader, int seconds)
         {
             //collect date for time 
             
-            list  = new List<EmotivState>(); 
+            list  = new List<IEmotivState>(); 
 
             reader.OnRead = (state) => list.Add(state);
 
@@ -165,7 +169,7 @@ namespace EmotivAnalyticApplication
 
         }
 
-        private void exportToExcl(IEnumerable<EmotivState> data)
+        private void exportToExcl(IEnumerable<IEmotivState> data)
         {
             //pop up window to get new file path 
             var popup = new SaveFileDialog();

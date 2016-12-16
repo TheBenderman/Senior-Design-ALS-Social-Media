@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EmotivWrapperInterface;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace EmotivWrapper.Core
     /// <summary>
     /// Emotiv device that connects and reads states. 
     /// </summary>
-    public abstract class EmotivDevice
+    public abstract class EmotivDevice : IEmotivDevice
     {
         #region delegates
         /// <summary>
@@ -85,7 +86,19 @@ namespace EmotivWrapper.Core
         /// Read current state from device 
         /// </summary>
         /// <returns></returns>
-        public abstract EmotivState Read(); 
+        public abstract IEmotivState Read();
+
+        #endregion
+        #region interface satisfaction 
+        bool IEmotivDevice.ConnectionSetUp(out string errorMsg)
+        {
+            return ConnectionSetUp(out errorMsg); 
+        }
+
+        bool IEmotivDevice.DisconnectionSetUp()
+        {
+          return DisconnectionSetUp(); 
+        }
         #endregion
     }
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EmotivWrapper;
 using System.Diagnostics;
+using EmotivWrapperInterface;
 
 namespace EmotivImpl.Device
 {
@@ -19,7 +20,7 @@ namespace EmotivImpl.Device
             random = new Random();
         }
 
-        public override EmotivState Read()
+        public override IEmotivState Read()
         {
             return new EmotivState() { command = (random.Next(2) == 1? EmotivStateType.NEUTRAL : EmotivStateType.NEUTRAL), power = (float)random.NextDouble(), time =timer.ElapsedMilliseconds  };
 

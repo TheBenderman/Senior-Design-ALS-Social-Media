@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EmotivWrapper;
 using System.Diagnostics;
+using EmotivWrapperInterface;
 
 namespace EmotivImpl.Device
 {
@@ -152,7 +153,7 @@ namespace EmotivImpl.Device
 
         long previousTimeElapsed = 0;
 
-        public override EmotivState Read()
+        public override IEmotivState Read()
         {
             if (timer == null)
             { 

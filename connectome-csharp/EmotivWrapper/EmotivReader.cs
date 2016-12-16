@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EmotivWrapperInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,13 +11,13 @@ namespace EmotivWrapper.Core
     /// <summary>
     /// Reads from 
     /// </summary>
-   public class EmotivReader
+   public class EmotivReader : IEmotivReader
     {
         #region private attributes 
         /// <summary>
         /// Emotiv device to read states from. 
         /// </summary>
-        private EmotivDevice device;
+        private IEmotivDevice device;
         
         /// <summary>
         /// State reading thread. 
@@ -27,26 +28,26 @@ namespace EmotivWrapper.Core
         /// <summary>
         /// 
         /// </summary>
-        public bool isRunning;
+        public bool isRunning { set; get; }
 
         #region events
 
-        public Action<EmotivState> OnRead;
+        public Action<IEmotivState> OnRead { set; get; }
 
         /// <summary>
         /// State from, to
         /// </summary>
-        public Action<EmotivStateType?, EmotivStateType> OnStateChange;
+        public Action<EmotivStateType?, EmotivStateType> OnStateChange { set; get; }
 
         /// <summary>
         /// Getes invoked when Start is called 
         /// </summary>
-        public Action OnStart;
+        public Action OnStart { set; get; }
 
         /// <summary>
         /// Gets invoked when Stop is called 
         /// </summary>
-        public Action OnStop;
+        public Action OnStop { set; get; }
         #endregion
 
         #region constructor 
@@ -54,7 +55,7 @@ namespace EmotivWrapper.Core
         /// Creates an EmotivReader for device 
         /// </summary>
         /// <param name="device"></param>
-        public EmotivReader(EmotivDevice device)
+        public EmotivReader(IEmotivDevice device)
         {
             this.device = device;
             isRunning = false; 
@@ -88,8 +89,6 @@ namespace EmotivWrapper.Core
             device.Disconnect();
 
             OnStop?.Invoke();
-
-            readingThread.Abort();
         }
         #endregion
 
@@ -103,7 +102,7 @@ namespace EmotivWrapper.Core
             EmotivStateType? previousState = null;
             while (isRunning)
             {
-                    EmotivState stateRead = ReadingState(device);
+                    IEmotivState stateRead = ReadingState(device);
 
                     OnRead?.Invoke(stateRead);
 
@@ -124,7 +123,7 @@ namespace EmotivWrapper.Core
         /// <param name="device"></param>
         /// <param name="prevSate"></param>
         /// <returns></returns>
-        protected virtual EmotivState ReadingState(EmotivDevice device)
+        protected virtual IEmotivState ReadingState(IEmotivDevice device)
         {
             return device.Read(); 
         }
