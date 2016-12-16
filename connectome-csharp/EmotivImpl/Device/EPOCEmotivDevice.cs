@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using EmotivWrapper;
 using System.Diagnostics;
 using EmotivWrapperInterface;
+using System.Configuration;
 
 namespace EmotivImpl.Device
 {
@@ -43,9 +44,9 @@ namespace EmotivImpl.Device
             previousTimeElapsed = 0;
 
             //TODO get from constructor 
-            string userName = string.IsNullOrEmpty(username) ? "kennanmeyer" : this.username; 
-            string password = string.IsNullOrEmpty(this.password) ? "vd4kbPSAbYTt" : this.password;
-            string profileName = string.IsNullOrEmpty(this.profileName) ? "NewProfile1" : this.profileName ;
+            string userName = string.IsNullOrEmpty(username) ? ConfigurationManager.AppSettings["username"]  : this.username; 
+            string password = string.IsNullOrEmpty(this.password) ? ConfigurationManager.AppSettings["password"] : this.password;
+            string profileName = string.IsNullOrEmpty(this.profileName) ? ConfigurationManager.AppSettings["profile"] : this.profileName ;
 
             int state = 0;
 

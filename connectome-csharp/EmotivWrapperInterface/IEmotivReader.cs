@@ -14,7 +14,7 @@ namespace EmotivWrapperInterface
         Action<EmotivStateType?, EmotivStateType> OnStateChange { set;  }
         Action OnStart { set; }
         Action OnStop { set; }
-
+        
         void Start();
         void Stop(); 
     }

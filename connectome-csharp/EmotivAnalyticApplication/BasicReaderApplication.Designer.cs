@@ -28,192 +28,164 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.ReadButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.usernameTextBox = new System.Windows.Forms.TextBox();
+            this.TimeTextBox = new System.Windows.Forms.TextBox();
+            this.UsernameTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.passwordTextBox = new System.Windows.Forms.TextBox();
+            this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.connectButton = new System.Windows.Forms.Button();
-            this.profileTextBox = new System.Windows.Forms.TextBox();
+            this.ConnectButton = new System.Windows.Forms.Button();
+            this.ProfileTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.IntervalTextBox = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.TargetCmdTextBox = new System.Windows.Forms.TextBox();
+            this.ConnectionLabel = new System.Windows.Forms.Label();
+            this.ReadStatus = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.ThreashHoldTextBox = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // button1
+            // ReadButton
             // 
-            this.button1.Location = new System.Drawing.Point(97, 292);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Read";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.ReadButton.Location = new System.Drawing.Point(107, 265);
+            this.ReadButton.Name = "ReadButton";
+            this.ReadButton.Size = new System.Drawing.Size(75, 23);
+            this.ReadButton.TabIndex = 0;
+            this.ReadButton.Text = "Read";
+            this.ReadButton.UseVisualStyleBackColor = true;
+            this.ReadButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(39, 164);
+            this.label1.Location = new System.Drawing.Point(11, 225);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(80, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "Time (Second)*";
             // 
-            // textBox1
+            // TimeTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(139, 161);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 2;
+            this.TimeTextBox.Location = new System.Drawing.Point(97, 222);
+            this.TimeTextBox.Name = "TimeTextBox";
+            this.TimeTextBox.Size = new System.Drawing.Size(174, 20);
+            this.TimeTextBox.TabIndex = 2;
             // 
-            // usernameTextBox
+            // UsernameTextBox
             // 
-            this.usernameTextBox.Location = new System.Drawing.Point(139, 30);
-            this.usernameTextBox.Name = "usernameTextBox";
-            this.usernameTextBox.Size = new System.Drawing.Size(100, 20);
-            this.usernameTextBox.TabIndex = 4;
+            this.UsernameTextBox.Location = new System.Drawing.Point(85, 12);
+            this.UsernameTextBox.Name = "UsernameTextBox";
+            this.UsernameTextBox.Size = new System.Drawing.Size(185, 20);
+            this.UsernameTextBox.TabIndex = 4;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(39, 33);
+            this.label2.Location = new System.Drawing.Point(10, 15);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(55, 13);
             this.label2.TabIndex = 3;
             this.label2.Text = "Username";
             // 
-            // passwordTextBox
+            // PasswordTextBox
             // 
-            this.passwordTextBox.Location = new System.Drawing.Point(139, 56);
-            this.passwordTextBox.Name = "passwordTextBox";
-            this.passwordTextBox.PasswordChar = '*';
-            this.passwordTextBox.Size = new System.Drawing.Size(100, 20);
-            this.passwordTextBox.TabIndex = 6;
+            this.PasswordTextBox.Location = new System.Drawing.Point(85, 48);
+            this.PasswordTextBox.Name = "PasswordTextBox";
+            this.PasswordTextBox.PasswordChar = '*';
+            this.PasswordTextBox.Size = new System.Drawing.Size(185, 20);
+            this.PasswordTextBox.TabIndex = 6;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(39, 56);
+            this.label3.Location = new System.Drawing.Point(12, 55);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 5;
             this.label3.Text = "Password";
             // 
-            // connectButton
+            // ConnectButton
             // 
-            this.connectButton.Location = new System.Drawing.Point(97, 121);
-            this.connectButton.Name = "connectButton";
-            this.connectButton.Size = new System.Drawing.Size(75, 23);
-            this.connectButton.TabIndex = 7;
-            this.connectButton.Text = "Connect";
-            this.connectButton.UseVisualStyleBackColor = true;
-            this.connectButton.Click += new System.EventHandler(this.connectButton_Click);
+            this.ConnectButton.Location = new System.Drawing.Point(107, 120);
+            this.ConnectButton.Name = "ConnectButton";
+            this.ConnectButton.Size = new System.Drawing.Size(75, 23);
+            this.ConnectButton.TabIndex = 7;
+            this.ConnectButton.Text = "Connect";
+            this.ConnectButton.UseVisualStyleBackColor = true;
+            this.ConnectButton.Click += new System.EventHandler(this.connectButton_Click);
             // 
-            // profileTextBox
+            // ProfileTextBox
             // 
-            this.profileTextBox.Location = new System.Drawing.Point(139, 86);
-            this.profileTextBox.Name = "profileTextBox";
-            this.profileTextBox.Size = new System.Drawing.Size(100, 20);
-            this.profileTextBox.TabIndex = 9;
-            this.profileTextBox.Text = "NewProfile1";
+            this.ProfileTextBox.Location = new System.Drawing.Point(85, 84);
+            this.ProfileTextBox.Name = "ProfileTextBox";
+            this.ProfileTextBox.Size = new System.Drawing.Size(185, 20);
+            this.ProfileTextBox.TabIndex = 9;
+            this.ProfileTextBox.Text = "NewProfile1";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(39, 89);
+            this.label4.Location = new System.Drawing.Point(10, 87);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(64, 13);
             this.label4.TabIndex = 8;
             this.label4.Text = "ProfileName";
             // 
-            // IntervalTextBox
+            // ConnectionLabel
             // 
-            this.IntervalTextBox.Location = new System.Drawing.Point(139, 214);
-            this.IntervalTextBox.Name = "IntervalTextBox";
-            this.IntervalTextBox.Size = new System.Drawing.Size(100, 20);
-            this.IntervalTextBox.TabIndex = 11;
+            this.ConnectionLabel.Location = new System.Drawing.Point(107, 156);
+            this.ConnectionLabel.Name = "ConnectionLabel";
+            this.ConnectionLabel.Size = new System.Drawing.Size(165, 13);
+            this.ConnectionLabel.TabIndex = 12;
+            this.ConnectionLabel.Text = "No device connected";
+            this.ConnectionLabel.Click += new System.EventHandler(this.ConnectionLabel_Click);
             // 
-            // label5
+            // ReadStatus
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(39, 217);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(64, 13);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Interval (ms)";
-            // 
-            // TargetCmdTextBox
-            // 
-            this.TargetCmdTextBox.Location = new System.Drawing.Point(139, 240);
-            this.TargetCmdTextBox.Name = "TargetCmdTextBox";
-            this.TargetCmdTextBox.Size = new System.Drawing.Size(100, 20);
-            this.TargetCmdTextBox.TabIndex = 13;
-            this.TargetCmdTextBox.Text = "neutral";
+            this.ReadStatus.Location = new System.Drawing.Point(82, 305);
+            this.ReadStatus.Name = "ReadStatus";
+            this.ReadStatus.Size = new System.Drawing.Size(188, 13);
+            this.ReadStatus.TabIndex = 13;
+            this.ReadStatus.Text = "Not reading";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(39, 243);
+            this.label6.Location = new System.Drawing.Point(7, 305);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(88, 13);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "Target Command";
+            this.label6.Size = new System.Drawing.Size(69, 13);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Read Status:";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(39, 193);
+            this.label7.Location = new System.Drawing.Point(11, 156);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(49, 13);
-            this.label7.TabIndex = 14;
-            this.label7.Text = "Optional ";
-            // 
-            // ThreashHoldTextBox
-            // 
-            this.ThreashHoldTextBox.Location = new System.Drawing.Point(139, 266);
-            this.ThreashHoldTextBox.Name = "ThreashHoldTextBox";
-            this.ThreashHoldTextBox.Size = new System.Drawing.Size(100, 20);
-            this.ThreashHoldTextBox.TabIndex = 16;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(39, 269);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(62, 13);
-            this.label8.TabIndex = 15;
-            this.label8.Text = "ThreshHold";
+            this.label7.Size = new System.Drawing.Size(100, 13);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "Connection Status: ";
             // 
             // BasicReaderApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 327);
-            this.Controls.Add(this.ThreashHoldTextBox);
-            this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.TargetCmdTextBox);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.IntervalTextBox);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.profileTextBox);
+            this.Controls.Add(this.ReadStatus);
+            this.Controls.Add(this.ConnectionLabel);
+            this.Controls.Add(this.ProfileTextBox);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.connectButton);
-            this.Controls.Add(this.passwordTextBox);
+            this.Controls.Add(this.ConnectButton);
+            this.Controls.Add(this.PasswordTextBox);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.usernameTextBox);
+            this.Controls.Add(this.UsernameTextBox);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.TimeTextBox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.ReadButton);
             this.Name = "BasicReaderApplication";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Emotiv Reader";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -222,23 +194,20 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button ReadButton;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox usernameTextBox;
+        private System.Windows.Forms.TextBox TimeTextBox;
+        private System.Windows.Forms.TextBox UsernameTextBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox passwordTextBox;
+        private System.Windows.Forms.TextBox PasswordTextBox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button connectButton;
-        private System.Windows.Forms.TextBox profileTextBox;
+        private System.Windows.Forms.Button ConnectButton;
+        private System.Windows.Forms.TextBox ProfileTextBox;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox IntervalTextBox;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox TargetCmdTextBox;
+        private System.Windows.Forms.Label ConnectionLabel;
+        private System.Windows.Forms.Label ReadStatus;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox ThreashHoldTextBox;
-        private System.Windows.Forms.Label label8;
     }
 }
 

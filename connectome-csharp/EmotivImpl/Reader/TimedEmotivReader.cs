@@ -7,37 +7,86 @@ using System.Text;
 using System.Threading.Tasks;
 using EmotivWrapper;
 using EmotivWrapperInterface;
+using System.Timers;
 
 namespace EmotivImpl
 {
     /// <summary>
-    /// A Reader that termanites itself after reading for a time limit 
+    /// A Reader that termanites itself after duration
     /// </summary>
-    public class TimedEmotivReader : EmotivReader
+    public class TimedEmotivReader : IEmotivReader
     {
-        private Stopwatch timer; 
-        private long duration; 
+        private Timer timer;
+        private IEmotivReader reader; 
 
-        public TimedEmotivReader(IEmotivDevice device, int second) : base(device)
+        /// <summary>
+        /// Keeps reading from device for duration. 
+        /// </summary>
+        /// <param name="reader">reader to read from</param>
+        /// <param name="second">duration to read</param>
+        public TimedEmotivReader(IEmotivReader reader, int second)
         {
-            this.duration = 1000*second;
+            this.reader = reader; 
+            timer = new Timer(1000 * second);
 
-            OnStart += () => timer = Stopwatch.StartNew(); 
+            timer.Elapsed += (o, e) => reader.isRunning = false;
         }
 
-        protected override IEmotivState ReadingState(IEmotivDevice device)
+        public bool isRunning
         {
-            IEmotivState read = base.ReadingState(device);
-
-            if (timer.ElapsedMilliseconds > this.duration)
+            get
             {
-                timer.Stop();
-                isRunning = false;
+                return reader.isRunning; 
             }
 
-            return read;
+            set
+            {
+                reader.isRunning = value; 
+            }
         }
 
-      
+        public Action<IEmotivState> OnRead
+        {
+            set
+            {
+                reader.OnRead = value;
+            }
+        }
+
+        public Action OnStart
+        {
+            set
+            {
+                reader.OnStart = value; 
+            }
+        }
+
+        public Action<EmotivStateType?, EmotivStateType> OnStateChange
+        {
+            set
+            {
+                reader.OnStateChange = value;
+            }
+        }
+
+        public Action OnStop
+        {
+            set
+            {
+                reader.OnStop = value;
+            }
+        }
+
+        public void Start()
+        {
+            timer.Enabled = true;
+            reader.Start();
+        }
+
+        public void Stop()
+        {
+            reader.Start();
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using EmotivWrapperInterface;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -23,6 +24,10 @@ namespace EmotivWrapper.Core
         /// State reading thread. 
         /// </summary>
         private Thread readingThread;
+
+        private Stopwatch timer; 
+
+        private long lastTime; 
         #endregion
 
         /// <summary>
@@ -58,7 +63,8 @@ namespace EmotivWrapper.Core
         public EmotivReader(IEmotivDevice device)
         {
             this.device = device;
-            isRunning = false; 
+            isRunning = false;
+            lastTime = -1; 
         }
         #endregion
 
@@ -100,18 +106,21 @@ namespace EmotivWrapper.Core
         private void ReadThreadLoop()
         {
             EmotivStateType? previousState = null;
+            InsureNewTime();
             while (isRunning)
             {
-                    IEmotivState stateRead = ReadingState(device);
+                IEmotivState stateRead = ReadingState(device);
+                stateRead.time = lastTime; 
+                    
+                OnRead?.Invoke(stateRead);
 
-                    OnRead?.Invoke(stateRead);
+                if (previousState != stateRead.command)
+                {
+                    OnStateChange?.Invoke(previousState, stateRead.command);
+                }
 
-                    if (previousState != stateRead.command)
-                    {
-                        OnStateChange?.Invoke(previousState, stateRead.command);
-                    }
-
-                    previousState = stateRead.command;
+                previousState = stateRead.command;
+                InsureNewTime();
             }
 
             Stop(); 
@@ -128,5 +137,20 @@ namespace EmotivWrapper.Core
             return device.Read(); 
         }
         #endregion 
+
+        /// <summary>
+        /// Insures at least 1 ms have passed 
+        /// </summary>
+        private void InsureNewTime()
+        {
+            if(timer == null)
+            {
+                timer = Stopwatch.StartNew(); 
+            }
+
+            while (lastTime == timer.ElapsedMilliseconds ) ;
+            lastTime = timer.ElapsedMilliseconds; 
+        }
+
     }
 }

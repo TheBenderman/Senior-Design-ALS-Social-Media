@@ -13,7 +13,6 @@ namespace EmotivImpl.Device
     public class RandomEmotivDevice : EmotivDevice
     {
         private Random random;
-        private Stopwatch timer; 
 
         public RandomEmotivDevice()
         {
@@ -22,13 +21,12 @@ namespace EmotivImpl.Device
 
         public override IEmotivState Read()
         {
-            return new EmotivState() { command = (random.Next(2) == 1? EmotivStateType.NEUTRAL : EmotivStateType.NEUTRAL), power = (float)random.NextDouble(), time =timer.ElapsedMilliseconds  };
+            return new EmotivState() { command = (random.Next(2) == 1? EmotivStateType.NEUTRAL : EmotivStateType.PUSH), power = (float)random.NextDouble(), time =0  };
 
         }
 
         protected override bool ConnectionSetUp(out string errorMessage)
         {
-            timer = Stopwatch.StartNew(); 
             errorMessage = string.Empty; 
             return true; 
         }

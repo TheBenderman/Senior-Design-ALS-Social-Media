@@ -16,7 +16,6 @@ namespace EmotivAnalytic
 {
     class Program
     {
-
         /// <summary>
         /// Reader from random device and report states read from EmotivAnalyticReader
         /// </summary>
@@ -28,32 +27,22 @@ namespace EmotivAnalytic
             float thresh = .5f;
             EmotivStateType targetCmd = EmotivStateType.NEUTRAL; 
 
-            EmotivReader reader = new EmotivAnalyticReader(device,targetCmd, interval, thresh);
+            IEmotivReader readerPlug = new EmotivAnalyticReader(device,targetCmd, interval, thresh);
 
-            //prep
-            Stopwatch timer = Stopwatch.StartNew();
-            long secondsWait = 5000; //ms 
+            int waitTimeSecond = 5;
+            IEmotivReader reader = new TimedEmotivReader(readerPlug, waitTimeSecond);
 
             reader.OnRead = (state) =>
             {
                 Debug.WriteLine(state);
-
-                //kill after certain time 
-                if(timer.ElapsedMilliseconds >= secondsWait)
-                {
-                    reader.isRunning = false;  
-                }
             }; 
            
             reader.Start();
-            timer = Stopwatch.StartNew();
-
+   
             while (reader.isRunning) ;
 
             Debug.WriteLine("[END]");
-
         }
-
 
         static void oldPrimitive()
         {
@@ -62,20 +51,13 @@ namespace EmotivAnalytic
 
            double duration = 30;
 
-           double interval = 1;  ///seconds 
-
+           
            string targetCmd = "NEUTRAL";
 
 
            //Timer timer =  Timer
            var time = DateTime.Now;
-
-           List<MentalRecord> list = new List<MentalRecord>();
-
            Random r = new Random();
-
-          
-           int smapleSize = (int)((list.Count() * interval) / duration);
 
            bool isTargergatted = true;
 
@@ -156,16 +138,4 @@ namespace EmotivAnalytic
 
         }
     }//end class 
-    
-    //TODO remove 
-    class MentalRecord
-    {
-      
-
-        //public string GetValidComd(float thresh)
-       // {
-
-        //}
-    }
-
 }
