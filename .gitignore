@@ -71,6 +71,8 @@ connectome-unity/*.pidb
 connectome-unity/*.booproj
 connectome-unity/*.svd
 
+#VS in Unity 
+connectome-unity/.vs
 
 # Unity3D generated meta files
 connectome-unity/*.pidb.meta
