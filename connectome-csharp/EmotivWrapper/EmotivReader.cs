@@ -1,18 +1,14 @@
 ﻿using EmotivWrapperInterface;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace EmotivWrapper.Core
 {
     /// <summary>
     /// Reads from 
     /// </summary>
-   public class EmotivReader : IEmotivReader
+    public class EmotivReader : IEmotivReader
     {
         #region private attributes 
         /// <summary>

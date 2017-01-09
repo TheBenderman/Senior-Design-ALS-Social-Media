@@ -1,11 +1,6 @@
 ﻿using EmotivWrapper.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EmotivWrapper;
-using System.Diagnostics;
 using EmotivWrapperInterface;
 
 namespace EmotivImpl.Device

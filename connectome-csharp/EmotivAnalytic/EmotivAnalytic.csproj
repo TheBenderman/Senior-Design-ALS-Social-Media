@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EmotivAnalytic</RootNamespace>
     <AssemblyName>EmotivAnalytic</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -38,9 +38,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -54,10 +52,6 @@
     <ProjectReference Include="..\DotNetEmotivSDK\DotNetEmotivSDK.csproj">
       <Project>{d3337309-9682-425e-8edc-2ecfacf79565}</Project>
       <Name>DotNetEmotivSDK</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EmoStateLogger\EmoStateLogger.csproj">
-      <Project>{374d51cd-5f57-4145-8a61-9cbab5e0f6d7}</Project>
-      <Name>EmoStateLogger</Name>
     </ProjectReference>
     <ProjectReference Include="..\EmotivImpl\EmotivImpl.csproj">
       <Project>{86f68af7-f66c-47ba-931b-6fd5d5c89de2}</Project>
