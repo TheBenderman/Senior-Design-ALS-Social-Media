@@ -1,0 +1,19 @@
+C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\build\Debug\edk.dll
+C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\build\Debug\DotNetEmotivSDK.dll
+C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\build\Debug\DotNetEmotivSDK.pdb
+C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.dll
+C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.pdb
+C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.csprojResolveAssemblyReference.cache
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\build\Debug\edk.dll
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\build\Debug\DotNetEmotivSDK.dll
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\build\Debug\DotNetEmotivSDK.pdb
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.dll
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.pdb
+C:\Users\kld00\Unity Projects\ConnectomeDemo\bin\x86\Debug\Assets\lib\edk.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\bin\x86\Debug\Assets\lib\DotNetEmotivSDK.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\bin\x86\Debug\Assets\lib\DotNetEmotivSDK.pdb
+C:\Users\kld00\Unity Projects\ConnectomeDemo\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.pdb
+C:\Users\kld00\Unity Projects\ConnectomeDemo\ConnectomeDemo\bin\x86\Debug\Assets\lib\edk.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\ConnectomeDemo\bin\x86\Debug\Assets\lib\DotNetEmotivSDK.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\ConnectomeDemo\bin\x86\Debug\Assets\lib\DotNetEmotivSDK.pdb

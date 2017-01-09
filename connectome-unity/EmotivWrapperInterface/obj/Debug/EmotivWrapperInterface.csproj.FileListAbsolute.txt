@@ -1,0 +1,15 @@
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapperInterface\bin\Debug\EmotivWrapperInterface.dll
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapperInterface\bin\Debug\EmotivWrapperInterface.pdb
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapperInterface\obj\Debug\EmotivWrapperInterface.dll
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapperInterface\obj\Debug\EmotivWrapperInterface.pdb
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapperInterface\obj\Debug\EmotivWrapperInterface.csprojResolveAssemblyReference.cache
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapperInterface\bin\Debug\EmotivWrapperInterface.dll
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapperInterface\bin\Debug\EmotivWrapperInterface.pdb
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapperInterface\obj\Debug\EmotivWrapperInterface.dll
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapperInterface\obj\Debug\EmotivWrapperInterface.pdb
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapperInterface\obj\Debug\EmotivWrapperInterface.csprojResolveAssemblyReference.cache
+C:\Users\kld00\Unity Projects\ConnectomeDemo\ConnectomeDemo\bin\x86\Debug\Assets\lib\EmotivWrapperInterface.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\ConnectomeDemo\bin\x86\Debug\Assets\lib\EmotivWrapperInterface.pdb
+C:\Users\kld00\Unity Projects\ConnectomeDemo\EmotivWrapperInterface\obj\Debug\EmotivWrapperInterface.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\EmotivWrapperInterface\obj\Debug\EmotivWrapperInterface.pdb
+C:\Users\kld00\Unity Projects\ConnectomeDemo\EmotivWrapperInterface\obj\Debug\EmotivWrapperInterface.csprojResolveAssemblyReference.cache

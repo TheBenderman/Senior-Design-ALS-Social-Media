@@ -1,0 +1,33 @@
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapper\bin\Debug\edk.dll
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapper\bin\Debug\EmotivWrapper.dll
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapper\bin\Debug\EmotivWrapper.pdb
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapper\bin\Debug\DotNetEmotivSDK.dll
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapper\bin\Debug\DotNetEmotivSDK.pdb
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapper\obj\Debug\EmotivWrapper.csprojResolveAssemblyReference.cache
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapper\obj\Debug\EmotivWrapper.dll
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapper\obj\Debug\EmotivWrapper.pdb
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapper\bin\Debug\EmotivWrapperInterface.dll
+C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\EmotivWrapper\bin\Debug\EmotivWrapperInterface.pdb
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapper\bin\Debug\edk.dll
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapper\bin\Debug\EmotivWrapper.dll
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapper\bin\Debug\EmotivWrapper.pdb
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapper\bin\Debug\DotNetEmotivSDK.dll
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapper\bin\Debug\EmotivWrapperInterface.dll
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapper\bin\Debug\DotNetEmotivSDK.pdb
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapper\bin\Debug\EmotivWrapperInterface.pdb
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapper\obj\Debug\EmotivWrapper.csprojResolveAssemblyReference.cache
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapper\obj\Debug\EmotivWrapper.dll
+C:\Users\kld00\Desktop\temp\connectome-csharp\EmotivWrapper\obj\Debug\EmotivWrapper.pdb
+C:\Users\kld00\Unity Projects\ConnectomeDemo\EmotivWrapper\bin\Debug\edk.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\EmotivWrapper\bin\Debug\EmotivWrapper.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\EmotivWrapper\bin\Debug\EmotivWrapper.pdb
+C:\Users\kld00\Unity Projects\ConnectomeDemo\EmotivWrapper\bin\Debug\DotNetEmotivSDK.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\EmotivWrapper\bin\Debug\EmotivWrapperInterface.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\EmotivWrapper\bin\Debug\DotNetEmotivSDK.pdb
+C:\Users\kld00\Unity Projects\ConnectomeDemo\EmotivWrapper\bin\Debug\EmotivWrapperInterface.pdb
+C:\Users\kld00\Unity Projects\ConnectomeDemo\EmotivWrapper\obj\Debug\EmotivWrapper.csprojResolveAssemblyReference.cache
+C:\Users\kld00\Unity Projects\ConnectomeDemo\EmotivWrapper\obj\Debug\EmotivWrapper.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\EmotivWrapper\obj\Debug\EmotivWrapper.pdb
+C:\Users\kld00\Unity Projects\ConnectomeDemo\ConnectomeDemo\bin\x86\Debug\Assets\lib\edk.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\ConnectomeDemo\bin\x86\Debug\Assets\lib\EmotivWrapper.dll
+C:\Users\kld00\Unity Projects\ConnectomeDemo\ConnectomeDemo\bin\x86\Debug\Assets\lib\EmotivWrapper.pdb

@@ -14,3 +14,9 @@ C:\GitHub\Connectome\connectome-csharp\build\Debug\DotNetEmotivSDK.dll
 C:\GitHub\Connectome\connectome-csharp\build\Debug\DotNetEmotivSDK.pdb
 C:\GitHub\Connectome\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.dll
 C:\GitHub\Connectome\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.pdb
+C:\GitHub\Connectome\connectome-csharp\connectome-unity\Assets\Library\edk.dll
+C:\GitHub\Connectome\connectome-csharp\connectome-unity\Assets\Library\DotNetEmotivSDK.dll
+C:\GitHub\Connectome\connectome-csharp\connectome-unity\Assets\Library\DotNetEmotivSDK.pdb
+C:\GitHub\Connectome\connectome-unity\Assets\Library\edk.dll
+C:\GitHub\Connectome\connectome-unity\Assets\Library\DotNetEmotivSDK.dll
+C:\GitHub\Connectome\connectome-unity\Assets\Library\DotNetEmotivSDK.pdb
