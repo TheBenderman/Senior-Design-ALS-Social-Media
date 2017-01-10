@@ -116,7 +116,7 @@ namespace EmotivImpl.Device
                 }
                 else
                 {
-                    errorMessage = ("Loading failed");
+                    errorMessage = ("Loading failed: either USB not connected or profile  \'" + profileName + "\' doesn't exist");
                     EmotivCloudClient.EC_Logout(userCloudID);
                     return false;
                 }
@@ -131,7 +131,7 @@ namespace EmotivImpl.Device
             EdkDll.IEE_MentalCommandGetOverallSkillRating(engineUserID, out skill);
             //Debug.WriteLine("Current overall skill rating: " + skill);
 
-            errorMessage = string.Empty;
+            errorMessage = "Profile " + profileName + " was loaded and device connected!";
 
             return true; 
         }

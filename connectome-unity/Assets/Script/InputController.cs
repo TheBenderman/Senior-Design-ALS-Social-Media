@@ -105,7 +105,11 @@ public class InputController : MonoBehaviour
     public void OnApplicationQuit()
     {
         //TODO KLD PLEASE! 
-        reader.isRunning = false; 
+        if(reader != null)
+        {
+            reader.isRunning = false;
+        }
+       
     }
 
     public void ThreshHoldChange(Slider s)
