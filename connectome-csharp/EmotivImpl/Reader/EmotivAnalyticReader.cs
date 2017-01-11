@@ -5,7 +5,7 @@ using EmotivWrapper;
 using System.Timers;
 using EmotivWrapperInterface;
 
-namespace EmotivImpl.Reader
+namespace EmotivImpl
 {
     /// <summary>
     /// Calls OnRead every given interval and returns a state with power of the percentage 

@@ -3,7 +3,7 @@ using System;
 using EmotivWrapper;
 using EmotivWrapperInterface;
 
-namespace EmotivImpl.Device
+namespace EmotivImpl
 {
     public class RandomEmotivDevice : EmotivDevice
     {

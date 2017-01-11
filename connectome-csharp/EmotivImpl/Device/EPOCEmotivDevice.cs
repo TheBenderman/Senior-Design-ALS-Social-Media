@@ -5,7 +5,7 @@ using EmotivWrapper;
 using System.Diagnostics;
 using EmotivWrapperInterface;
 
-namespace EmotivImpl.Device
+namespace EmotivImpl
 {
     public class EPOCEmotivDevice : EmotivDevice
     {
