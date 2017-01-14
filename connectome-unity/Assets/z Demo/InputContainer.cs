@@ -3,33 +3,45 @@ using System.Collections;
 
 namespace Connectome.Unity.Demo
 {
+    /// <summary>
+    /// Forces yes and no's 
+    /// leave this alone. 
+    /// </summary>
     public class InputContainer : MonoBehaviour
     {
-        private InputGenerator _inputGenerator;
-
-        public InputGenerator inputGenerator
+        #region Public attributes 
+        /// <summary>
+        /// Instence
+        /// </summary>
+        public InputGenerator Instence
         {
             get
             {
-                return _inputGenerator ?? (_inputGenerator = new InputGenerator());
+                return privateInstence ?? (privateInstence = new InputGenerator());
             }
         }
-
-
+        #endregion
+        #region Private attributes 
+        private InputGenerator privateInstence;
+        #endregion
+        #region Public methods 
+        /// <summary>
+        /// Generate Yes 
+        /// </summary>
         public void Yes()
         {
-            if (inputGenerator.OnYes != null)
-                inputGenerator.OnYes();
+            if (Instence.OnYes != null)
+                Instence.OnYes();
         }
 
+        /// <summary>
+        /// Generate No (Not used anywhere)
+        /// </summary>
         public void No()
         {
-            if (inputGenerator.OnNo != null)
-                inputGenerator.OnNo();
+            if (Instence.OnNo != null)
+                Instence.OnNo();
         }
-
-
-
-
+        #endregion 
     }
 }

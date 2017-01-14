@@ -7,14 +7,28 @@ using UnityEngine.Events;
 
 namespace Connectome.Unity.Demo
 {
+    /// <summary>
+    /// Calls respective action: yes or no. 
+    /// </summary>
     public class InputGathererButton : MonoBehaviour, IPointerDownHandler, IPointerExitHandler, IPointerUpHandler
     {
+        #region Public attributes 
+        /// <summary>
+        /// Hold events to be called when acting upon 'yes'
+        /// </summary>
         public UnityEvent yesAct;
-
+        /// <summary>
+        /// Hold events to be called when acting upon 'no'
+        /// </summary>
         public UnityEvent noAct;
-
+        #endregion
+        #region Private attributes 
+        /// <summary>
+        /// Decides whether to trigger a 'yes' or no'. 
+        /// </summary>
         private bool shouldTrigger = false;
-
+        #endregion
+        #region Interfaces 
         public void OnPointerDown(PointerEventData eventData)
         {
             shouldTrigger = true;
@@ -29,28 +43,22 @@ namespace Connectome.Unity.Demo
         {
             shouldTrigger = false;
         }
-
-        void Start()
+        #endregion
+        #region GameObject override  
+        /// <summary>
+        /// triggers 'Yes' or 'No' based on flag 
+        /// </summary>
+        void Update()
         {
-            StartCoroutine(EventTriggerer());
-        }
-
-        IEnumerator EventTriggerer()
-        {
-            while (true)
+            if (shouldTrigger)
             {
-                yield return new WaitForSeconds(.0f);
-                if (shouldTrigger)
-                {
-                    yesAct.Invoke();
-                }
-                else
-                {
-                    noAct.Invoke();
-                }
+                yesAct.Invoke();
+            }
+            else
+            {
+                noAct.Invoke();
             }
         }
-
+        #endregion
     }
-
 }

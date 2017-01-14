@@ -5,34 +5,53 @@ using UnityEngine.UI;
 
 namespace Connectome.Unity.Common
 {
+    /// <summary>
+    /// Flickers an Image element using colours. 
+    /// </summary>
     public class ImageFlicker : MonoBehaviour
     {
-        public Color[] flicks;
+        #region Public attributes
+        /// <summary>
+        /// Set of colors to flicker.
+        /// </summary>
+        public Color[] Flicks;
 
+        /// <summary>
+        /// Time in ms to be waited betweeen a flick.
+        /// </summary>
         [Tooltip("Flicking interval in millisecond")]
         [Range(0, 1000)]
-        public int interval = 0;
+        public int Interval = 0;
 
-        private int flickIndex;
-        private Image image;
+        #endregion
+        #region Private attributes
+        /// <summary>
+        /// Holds current color index. 
+        /// </summary>
+        private int FlickIndex;
 
+        /// <summary>
+        /// Holds refrence to image element. 
+        /// </summary>
+        private Image Image;
+        #endregion
+        #region GameObject overrides
         void Start()
         {
-            flickIndex = 0;
-            image = GetComponent<Image>();
+            FlickIndex = 0;
+            Image = GetComponent<Image>();
 
             StartCoroutine(flick());
         }
 
-
         void OnValidate()
         {
             //colours check 
-            if (flicks == null )
+            if (Flicks == null )
             {
                 Debug.LogError("Flicker colors are null", this);
             }
-            else  if(flicks.Length == 0)
+            else  if(Flicks.Length == 0)
             {
                 Debug.LogError("Flicker colors are empty", this);
             }
@@ -44,22 +63,23 @@ namespace Connectome.Unity.Common
             }
 
         }
-
+        #endregion
+        #region Coroutines
         private IEnumerator flick()
         {
             while (true)
             {
-                yield return new WaitForSeconds((float)interval / 1000);
+                yield return new WaitForSeconds((float)Interval / 1000);
 
 
                 //flick 
-                flickIndex = ++flickIndex % flicks.Length;
-                image.color = flicks[flickIndex];
+                FlickIndex = ++FlickIndex % Flicks.Length;
+                Image.color = Flicks[FlickIndex];
 
             }
 
 
         }
-
+        #endregion
     }
 }
