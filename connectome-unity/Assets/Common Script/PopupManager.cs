@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Connectome.Emotiv.Interface;
+using Connectome.Emotiv.Implementation;
+using Connectome.Emotiv.Enum;
 
 namespace Connectome.Unity.Common
 {
@@ -11,6 +14,7 @@ namespace Connectome.Unity.Common
     {
         #region Singleton 
         private static PopupManager instence;
+		public IEmotivDevice Device;
 
         public static PopupManager Instence
         {
@@ -20,6 +24,8 @@ namespace Connectome.Unity.Common
             }
         }
         #endregion
+
+
         #region Unity Built-in
         void Start()
         {
@@ -35,11 +41,27 @@ namespace Connectome.Unity.Common
         public static BasicVirtualUnityDevice PopUpVirtualUnityDevice(GameObject config = null)
         {
             BasicVirtualUnityDevice pop = Instantiate(Instence.VirtualUnityDevicePrefab);
-
+			// Closing out of the device triggers an event to reconnect back to it.
+			pop.OnDisconnectSucceed += (msg) => ReconnectDevice();
+			Instence.Device = pop; 
             pop.transform.SetParent(Instence.transform.parent);
             pop.transform.localPosition = new Vector2(0,0); 
             return pop; 
         }
         #endregion
+		#region Popup BasicVirtualUnityDevice
+		/// <summary>
+		/// Holds Virtual Device prefab
+		/// </summary>
+		public ReconnectDeviceWindow ReconnectDeviceWindowPrefab;
+
+		public static ReconnectDeviceWindow ReconnectDevice(GameObject config = null)
+		{
+			ReconnectDeviceWindow recon = Instantiate(Instence.ReconnectDeviceWindowPrefab);
+			recon.transform.SetParent(Instence.transform.parent);
+			recon.transform.localPosition = new Vector2(0,0); 
+			return recon; 
+		}
+		#endregion
     }
 }

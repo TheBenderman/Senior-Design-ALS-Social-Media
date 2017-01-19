@@ -27,5 +27,10 @@ namespace Connectome.Unity.KLD
            var window =  PopupManager.PopUpVirtualUnityDevice(); 
             
         }
+
+		public void reconnectPopUp() 
+		{
+			var window = PopupManager.ReconnectDevice (); 
+		}
     }
 }

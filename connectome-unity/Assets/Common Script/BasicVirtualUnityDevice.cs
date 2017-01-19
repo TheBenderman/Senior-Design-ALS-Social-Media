@@ -99,6 +99,12 @@ namespace Connectome.Unity.Common
             return suc; 
         }
 
+		public void Disconnect()
+		{
+			string msg = null;
+			this.Disconnect (out msg);
+		}
+
         /// <summary>
         /// Reads when either target is forced or force counter is greater than 1. 
         /// </summary>
