@@ -49,7 +49,7 @@ namespace Connectome.Unity.Common
 		public bool Connect() 
 		{ 
 			string err;
-			bool success = PopupManager.Instence.Device.Connect (out err);
+			bool success = UserSettings.Device.Connect (out err);
 			if (!success) 
 			{
 				ErrorText.text = "Failed connect because: " + err;

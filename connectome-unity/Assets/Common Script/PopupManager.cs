@@ -14,8 +14,7 @@ namespace Connectome.Unity.Common
     {
         #region Singleton 
         private static PopupManager instence;
-		public IEmotivDevice Device;
-
+		
         public static PopupManager Instence
         {
             get
@@ -24,7 +23,6 @@ namespace Connectome.Unity.Common
             }
         }
         #endregion
-
 
         #region Unity Built-in
         void Start()
@@ -38,12 +36,22 @@ namespace Connectome.Unity.Common
         /// </summary>
         public BasicVirtualUnityDevice VirtualUnityDevicePrefab;
 
+        /// <summary>
+        /// Current popped device. 
+        /// </summary>
+        private BasicVirtualUnityDevice AvailableDevice; 
+
         public static BasicVirtualUnityDevice PopUpVirtualUnityDevice(GameObject config = null)
         {
+            if(Instence.AvailableDevice != null)
+            {
+                return Instence.AvailableDevice; 
+            }
             BasicVirtualUnityDevice pop = Instantiate(Instence.VirtualUnityDevicePrefab);
-			// Closing out of the device triggers an event to reconnect back to it.
-			pop.OnDisconnectSucceed += (msg) => ReconnectDevice();
-			Instence.Device = pop; 
+            Instence.AvailableDevice = pop;
+            // Closing out of the device triggers an event to reconnect back to it.
+            pop.OnDisconnectSucceed += (msg) => { ReconnectDevice(); Instence.AvailableDevice = null; }; 
+			UserSettings.Device = pop; 
             pop.transform.SetParent(Instence.transform.parent);
             pop.transform.localPosition = new Vector2(0,0); 
             return pop; 
