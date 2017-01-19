@@ -1,23 +1,29 @@
-﻿using EmotivWrapper.Core;
+﻿using Connectome.Emotiv.Enum;
+using Connectome.Emotiv.Interface;
+using Connectome.Emotiv.Template;
 using System;
-using EmotivWrapper;
-using EmotivWrapperInterface;
 
-namespace EmotivImpl
+
+namespace Connectome.Emotiv.Implementation
 {
+    /// <summary>
+    /// Generates random power and random command types between neutral and push.  
+    /// </summary>
     public class RandomEmotivDevice : EmotivDevice
     {
+        #region Private Attributes
         private Random random;
-
+        #endregion
+        #region Constructors
         public RandomEmotivDevice()
         {
             random = new Random();
         }
-
-        public override IEmotivState Read()
+        #endregion
+        #region Overrides
+        public override IEmotivState AttemptRead(long time)
         {
-            return new EmotivState() { command = (random.Next(2) == 1? EmotivStateType.NEUTRAL : EmotivStateType.PUSH), power = (float)random.NextDouble(), time =0  };
-
+           return new EmotivState((random.Next(2) == 1? EmotivCommandType.NEUTRAL : EmotivCommandType.PUSH), (float)random.NextDouble(), time);
         }
 
         protected override bool ConnectionSetUp(out string errorMessage)
@@ -26,9 +32,11 @@ namespace EmotivImpl
             return true; 
         }
 
-        protected override bool DisconnectionSetUp()
+        protected override bool DisconnectionSetUp(out string msg)
         {
+            msg = string.Empty;
             return true; 
         }
+        #endregion
     }
 }

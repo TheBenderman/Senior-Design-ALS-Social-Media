@@ -81,17 +81,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmotivImpl\EmotivImpl.csproj">
+    <ProjectReference Include="..\EmotivImpl\EmotivImplementation.csproj">
       <Project>{86f68af7-f66c-47ba-931b-6fd5d5c89de2}</Project>
-      <Name>EmotivImpl</Name>
+      <Name>EmotivImplementation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EmotivWrapperInterface\EmotivWrapperInterface.csproj">
+    <ProjectReference Include="..\EmotivWrapperInterface\EmotivInterface.csproj">
       <Project>{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}</Project>
-      <Name>EmotivWrapperInterface</Name>
+      <Name>EmotivInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EmotivWrapper\EmotivWrapper.csproj">
+    <ProjectReference Include="..\EmotivWrapper\EmotivTemplate.csproj">
       <Project>{5b12bf1c-bd1f-4431-b2ad-617346ea198e}</Project>
-      <Name>EmotivWrapper</Name>
+      <Name>EmotivTemplate</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

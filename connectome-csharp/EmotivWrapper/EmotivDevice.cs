@@ -1,99 +1,124 @@
-﻿using EmotivWrapperInterface;
+﻿using Connectome.Emotiv.Interface;
 using System;
 
-namespace EmotivWrapper.Core
+namespace Connectome.Emotiv.Template
 {
     /// <summary>
-    /// Emotiv device that connects and reads states. 
+    /// Abstract Emotiv device that connects and reads states. 
     /// </summary>
     public abstract class EmotivDevice : IEmotivDevice
     {
-        #region delegates
+        #region Private Attributes 
         /// <summary>
-        /// Gets invoked after device is succussfully connected. 
+        /// Hold connection value. 
         /// </summary>
-        public Action OnConnect;
-       
-        /// <summary>
-        /// Gets invoked after device failed to connect. 
-        /// </summary>
-        public Action OnFailedConnect;
-
-        /// <summary>
-        /// Gets invoked after device is succussfully disconnected. 
-        /// </summary>
-        public Action OnDisconnect;
-
-        /// <summary>
-        /// Gets invoked after device failed to disconnect. 
-        /// </summary>
-        public Action OnFailedDisconnect;
-        //TODO logger 
+        private bool Connected;
         #endregion
-
-        #region methods connect/disconnect 
+        #region IEmotivDevice Public Attributes
+        public bool IsConnected
+        {
+            get
+            {
+                return Connected; 
+            }
+        }
+        #endregion
+        #region IEmotivDevice Public Methods
         /// <summary>
-        /// Connects device by calling it's setup 
+        /// Connects device.
         /// </summary>
         /// <returns></returns>
-        public bool Connect(out string errorMsg)
+        public bool Connect(out string msg)
         {
-            bool suc = ConnectionSetUp(out errorMsg);
+            bool suc = ConnectionSetUp(out msg);
 
-            //TODO log msg 
             if (suc)
-                OnConnect?.Invoke();
+                OnConnectSucceed?.Invoke(msg);
             else
-                OnFailedConnect?.Invoke(); 
-            
-            return suc; 
+                OnConnectFailed?.Invoke(msg);
+
+            Connected = suc;
+
+            return suc;
         }
-        
+
         /// <summary>
-        /// Calls Disconnection and invokes OnDisconnect
+        /// Disconnects device.
         /// </summary>
-        public void Disconnect()
+        public bool Disconnect(out string msg)
         {
-           bool suc =  DisconnectionSetUp();
+            bool suc = DisconnectionSetUp(out msg);
 
             if (suc)
-                OnDisconnect?.Invoke();
+                OnDisconnectSucceed?.Invoke(msg);
             else
-                OnFailedDisconnect?.Invoke(); 
+                OnDisconnectFailed?.Invoke(msg);
+
+            Connected = !suc;
+
+            return suc;
+        }
+
+        #endregion
+        #region IEmotivDevice Events 
+        /// <summary>
+        /// Invoked after device succussfully connects. 
+        /// </summary>
+        public event Action<string> OnConnectSucceed;
+
+        /// <summary>
+        /// Invoked after device fails to connect. 
+        /// </summary>
+        public event Action<string> OnConnectFailed;
+
+        /// <summary>
+        /// Invoked after device succussfully disconnects. 
+        /// </summary>
+        public event Action<string> OnDisconnectSucceed;
+
+        /// <summary>
+        /// Invoked after device fails to disconnect. 
+        /// </summary>
+        public event Action<string> OnDisconnectFailed;
+
+        /// <summary>
+        /// Returns current read state or Null state if unable to read a state. 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public IEmotivState Read(long time)
+        {
+            try
+            {
+                IEmotivState state = AttemptRead(time);
+            
+                return state; 
+            }
+            catch(Exception e)
+            {
+                throw new Exception("Unable to read from device", e); 
+            }
         }
         #endregion
-
-        #region abstract
+        #region Abstract
         /// <summary>
-        /// Connect device 
+        /// Device connection setup  
         /// </summary>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        protected abstract bool ConnectionSetUp(out string errorMessage);
+        protected abstract bool ConnectionSetUp(out string msg);
 
         /// <summary>
-        /// Disconnect device 
+        /// Device disconnect setup  
         /// </summary>
         /// <returns></returns>
-        protected abstract bool DisconnectionSetUp();
+        protected abstract bool DisconnectionSetUp(out string msg);
        
         /// <summary>
-        /// Read current state from device 
+        /// Defines how reader reads a single state from device. 
         /// </summary>
         /// <returns></returns>
-        public abstract IEmotivState Read();
-
-        #endregion
-        #region interface satisfaction 
-        bool IEmotivDevice.ConnectionSetUp(out string errorMsg)
-        {
-            return ConnectionSetUp(out errorMsg); 
-        }
-
-        bool IEmotivDevice.DisconnectionSetUp()
-        {
-          return DisconnectionSetUp(); 
-        }
+        public abstract IEmotivState AttemptRead(long time);
         #endregion
     }
 }

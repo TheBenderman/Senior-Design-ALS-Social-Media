@@ -1,13 +1,14 @@
-﻿using EmotivWrapper.Core;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using EmotivWrapper;
 using System.Timers;
-using EmotivWrapperInterface;
+using Connectome.Emotiv.Interface;
+using Connectome.Emotiv.Enum;
+using Connectome.Emotiv.Template;
 
-namespace EmotivImpl
+namespace Connectome.Emotiv.Implementation
 {
     /// <summary>
+    /// NOT USED ANYWHERE!!!
     /// Calls OnRead every given interval and returns a state with power of the percentage 
     /// </summary>
     public class EmotivAnalyticReader : EmotivReader
@@ -15,33 +16,33 @@ namespace EmotivImpl
         /// <summary>
         /// target command 
         /// </summary>
-        private EmotivStateType targetCommand;
+        private EmotivCommandType TargetCommand;
 
         /// <summary>
         /// Time in ms 
         /// </summary>
-        private long interval;
+        private long Interval;
 
         /// <summary>
         /// Time of which reading started 
         /// </summary>
-        private Timer intervalTimer; 
+        private Timer IntervalTimer; 
        // private Stopwatch intervalTimer;
 
         /// <summary>
         ///  thresh hold of target powe 
         /// </summary>
-        private float threshHold;
+        private float ThreshHold;
 
         /// <summary>
-        /// locks and unlock 'ReadingState' loop to return and compute a value 
+        /// locks and unlock 'ReadingState' loop to return and compute a value. TPDO There are better way to 'lock' for threading
         /// </summary>
-        private bool shouldReturn;
+        private bool ShouldReturn;
 
         /// <summary>
         /// Holds list of states read in a interval 
         /// </summary>
-        private LinkedList<IEmotivState> intervalStatesList;
+        private LinkedList<IEmotivState> IntervalStatesList;
 
         /// <summary>
         /// Default  
@@ -49,7 +50,7 @@ namespace EmotivImpl
         /// <param name="device"></param>
         private EmotivAnalyticReader(IEmotivDevice device) : base (device)
         {
-            shouldReturn = false;
+            ShouldReturn = false;
         }
 
         /// <summary>
@@ -59,25 +60,25 @@ namespace EmotivImpl
         /// <param name="target"></param>
         /// <param name="intervalMs"></param>
         /// <param name="threshHold"></param>
-        public EmotivAnalyticReader(IEmotivDevice device, EmotivStateType target, long intervalMs, float threshHold) : this(device)
+        public EmotivAnalyticReader(IEmotivDevice device, EmotivCommandType target, long intervalMs, float threshHold) : this(device)
         {
-            this.targetCommand = target;
+            this.TargetCommand = target;
 
-            this.interval = intervalMs; 
-            this.threshHold = threshHold;
+            this.Interval = intervalMs; 
+            this.ThreshHold = threshHold;
            
-            intervalTimer = new Timer(intervalMs);
-            intervalTimer.AutoReset = true;
+            IntervalTimer = new Timer(intervalMs);
+            IntervalTimer.AutoReset = true;
 
             //reset list and enables  'ReadingState' to return a value 
-            intervalTimer.Elapsed += (o,e) =>
+            IntervalTimer.Elapsed += (o,e) =>
             {
                 //unlock loop in 'ReadingState'
-                shouldReturn = true; 
+                ShouldReturn = true; 
             };
 
             //trigger the timer 
-            OnStart += () => { intervalTimer.Enabled = true;  }; 
+            OnStart += () => { IntervalTimer.Enabled = true;  }; 
         }
 
         /// <summary>
@@ -85,17 +86,17 @@ namespace EmotivImpl
         /// </summary>
         /// <param name="device"></param>
         /// <returns>State with target command average power</returns>
-        protected override IEmotivState ReadingState(IEmotivDevice device)
+        protected override IEmotivState ReadingState(IEmotivDevice device, long time)
         {
-            intervalStatesList = new LinkedList<IEmotivState>();
-            while (!shouldReturn)
+            IntervalStatesList = new LinkedList<IEmotivState>();
+            while (!ShouldReturn)
             {
-                intervalStatesList.AddFirst(device.Read()); 
+                IntervalStatesList.AddFirst(device.Read(time)); 
             }
 
-            shouldReturn = false;
+            ShouldReturn = false;
 
-            return ComputeState(intervalStatesList); 
+            return ComputeState(IntervalStatesList); 
         }
 
         /// <summary>
@@ -105,13 +106,13 @@ namespace EmotivImpl
         /// <returns>tate with target command average power</returns>
         protected virtual IEmotivState ComputeState(IEnumerable<IEmotivState> list)
         {
-            IEnumerable<IEmotivState> validStatesList = list.Where(l => l.command == targetCommand &&  l.power >= threshHold ).ToArray();
+            IEnumerable<IEmotivState> validStatesList = list.Where(l => l.Command == TargetCommand &&  l.Power >= ThreshHold ).ToArray();
 
             float validStateCount = validStatesList.Count(); 
-            float stateCount  = intervalStatesList.Count();
+            float stateCount  = IntervalStatesList.Count();
             float powerPercent = (validStateCount / stateCount);
            
-            return new EmotivState() { command = targetCommand, power = powerPercent, time = intervalStatesList.Max(t => t.time)}; 
+            return new EmotivState(TargetCommand,powerPercent,IntervalStatesList.Max(t => t.Time)); 
         }
     }
 }

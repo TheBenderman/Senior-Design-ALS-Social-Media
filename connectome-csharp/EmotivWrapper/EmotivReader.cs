@@ -1,152 +1,228 @@
-﻿using EmotivWrapperInterface;
+﻿using Connectome.Emotiv.Enum;
+using Connectome.Emotiv.Event;
+using Connectome.Emotiv.Interface;
 using System;
 using System.Diagnostics;
 using System.Threading;
 
-namespace EmotivWrapper.Core
+namespace Connectome.Emotiv.Template
 {
     /// <summary>
-    /// Reads from 
+    /// Basic device reader that read a state every millisecond. 
     /// </summary>
-    public class EmotivReader : IEmotivReader
+    public abstract class EmotivReader : IEmotivReader, IDisposable
     {
-        #region private attributes 
+        #region Private Attributes 
         /// <summary>
         /// Emotiv device to read states from. 
         /// </summary>
-        private IEmotivDevice device;
+        public IEmotivDevice Device { set; get; }
         
         /// <summary>
-        /// State reading thread. 
+        /// A thread that keeps reading states. 
         /// </summary>
-        private Thread readingThread;
+        private Thread ReadingThread;
 
-        private Stopwatch timer; 
+        /// <summary>
+        /// Holds timer to tell when each state is read after starting. 
+        /// </summary>
+        private Stopwatch ReadingTimer; 
 
-        private long lastTime; 
+        /// <summary>
+        /// Holds last time a state was read after starting. 
+        /// </summary>
+        private long LastTime;
+
+        /// <summary>
+        /// Keeps reading loop alive. 
+        /// </summary>
+        private bool KeepReading;
         #endregion
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool isRunning { set; get; }
-
-        #region events
-
-        public Action<IEmotivState> OnRead { set; get; }
-
-        /// <summary>
-        /// State from, to
-        /// </summary>
-        public Action<EmotivStateType?, EmotivStateType> OnStateChange { set; get; }
-
-        /// <summary>
-        /// Getes invoked when Start is called 
-        /// </summary>
-        public Action OnStart { set; get; }
-
-        /// <summary>
-        /// Gets invoked when Stop is called 
-        /// </summary>
-        public Action OnStop { set; get; }
-        #endregion
-
-        #region constructor 
+        #region Constructors
         /// <summary>
         /// Creates an EmotivReader for device 
         /// </summary>
         /// <param name="device"></param>
         public EmotivReader(IEmotivDevice device)
         {
-            this.device = device;
-            isRunning = false;
-            lastTime = -1; 
+            this.Device = device;
+            KeepReading = false;
+            LastTime = -1;
+            ReadingThread = new Thread(ReadThreadLoop);
         }
         #endregion
-
-        #region public methods  
-        /// <summary>
-        /// Starts a thread calling Read from device. 
-        /// </summary>
-        public void Start()
-        {
-            string error; 
-           if(!device.Connect(out error))
-            {
-                throw new Exception("Connection Failed"); //create custom exception 
-            }
-            //start reading 
-            isRunning = true; 
-            readingThread = new Thread(ReadThreadLoop);
-            readingThread.Start();
-
-            OnStart?.Invoke(); 
-        }
-
-        /// <summary>
-        /// Disconnect device and aborts reading thread. 
-        /// </summary>
-        public void Stop()
-        {
-            device.Disconnect();
-
-            OnStop?.Invoke();
-        }
-        #endregion
-
-        #region privates 
-
-        /// <summary>
-        /// Looks when Reader isRunning. 
-        /// </summary>
-        private void ReadThreadLoop()
-        {
-            EmotivStateType? previousState = null;
-            InsureNewTime();
-            while (isRunning)
-            {
-                IEmotivState stateRead = ReadingState(device);
-                stateRead.time = lastTime; 
-                    
-                OnRead?.Invoke(stateRead);
-
-                if (previousState != stateRead.command)
-                {
-                    OnStateChange?.Invoke(previousState, stateRead.command);
-                }
-
-                previousState = stateRead.command;
-                InsureNewTime();
-            }
-
-            Stop(); 
-        }
-
+        #region Abstract Methods
         /// <summary>
         /// Reads next state in device 
         /// </summary>
         /// <param name="device"></param>
         /// <param name="prevSate"></param>
         /// <returns></returns>
-        protected virtual IEmotivState ReadingState(IEmotivDevice device)
+        protected abstract IEmotivState ReadingState(IEmotivDevice device, long time);
+        #endregion
+        #region Private Methods
+        /// <summary>
+        /// Keeps readings states from device 
+        /// </summary>
+        private void ReadThreadLoop()
         {
-            return device.Read(); 
-        }
-        #endregion 
+            EmotivCommandType? previousState = null;
+            InsureMillisecondPassed();
 
+            try
+            {
+                while (IsReading)
+                {
+                    IEmotivState stateRead = ReadingState(Device, LastTime);
+
+                    OnRead?.Invoke(new EmotivReadArgs(stateRead));
+
+                    if (previousState != stateRead.Command)
+                    {
+                        OnCommandChange?.Invoke(previousState, stateRead.Command);
+                    }
+
+                    previousState = stateRead.Command;
+                    InsureMillisecondPassed();
+                }
+            }
+            catch (Exception e)
+            {
+                OnStop?.Invoke();
+                throw new Exception("Something went wrong while reading. ", e); 
+            }
+
+            OnStop?.Invoke();
+        }
+
+        /// <summary>
+        /// Attempt to disconnects device, throws exception when failing. 
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="expMsg"></param>
+        private void TryDisconnecting(IEmotivDevice device, string expMsg = "Unable to disconnect device: ")
+        {
+            string disconnectMsg;
+            if (device.Disconnect(out disconnectMsg) == false)
+            {
+                throw new Exception(expMsg + disconnectMsg);
+            }
+        }
+
+        /// <summary>
+        /// Attempt to connects device, throws exception when failing. 
+        /// </summary>
+        private void TryConnecting(IEmotivDevice device, string expMsg = "Unable to connect device: ")
+        {
+            string connectMsg;
+            if (device.Disconnect(out connectMsg) == false)
+            {
+                throw new Exception(expMsg + connectMsg);
+            }
+        }
+        #endregion
+        #region Protected Methods
         /// <summary>
         /// Insures at least 1 ms have passed 
         /// </summary>
-        private void InsureNewTime()
+        protected void InsureMillisecondPassed()
         {
-            if(timer == null)
+            if (ReadingTimer == null)
             {
-                timer = Stopwatch.StartNew(); 
+                ReadingTimer = Stopwatch.StartNew();
             }
 
-            while (lastTime == timer.ElapsedMilliseconds ) ;
-            lastTime = timer.ElapsedMilliseconds; 
+            while (LastTime == ReadingTimer.ElapsedMilliseconds) ;
+            LastTime = ReadingTimer.ElapsedMilliseconds;
+        }
+        #endregion
+        #region IEmotivReader Public Get Property
+        /// <summary>
+        /// Determans if 
+        /// </summary>
+        public bool IsReading { get { return KeepReading && ReadingThread.IsAlive;  } }
+        #endregion
+        #region IEmotivReader Events
+
+        /// <summary>
+        /// Invoked when a state is read. 
+        /// </summary>
+        public event Action<EmotivReadArgs> OnRead;
+
+        /// <summary>
+        /// Invoked when command type changes 
+        /// </summary>
+        public event Action<EmotivCommandType?, EmotivCommandType> OnCommandChange;
+
+        /// <summary>
+        /// Invoked when Start is called 
+        /// </summary>
+        public event Action OnStart;
+
+        /// <summary>
+        /// Invoked when Stop is called 
+        /// </summary>
+        public event Action OnStop;
+        #endregion
+        #region IEmotivReader Public Methods  
+        /// <summary>
+        /// Starts a thread calling Read from device. 
+        /// </summary>
+        public void Start()
+        {
+            TryConnecting(Device);
+            KeepReading = true; 
+            
+            ReadingThread.Start();
+            OnStart?.Invoke(); 
         }
 
+        /// <summary>
+        /// Stops reading 
+        /// </summary>
+        public void Stop()
+        {
+            KeepReading = false; 
+        }
+
+        /// <summary>
+        /// Replaces old device with a new one and starts it. Old device is stopped and disconnected.
+        /// </summary>
+        /// <param name="Device"></param>
+        public void PlugDevice(IEmotivDevice Device)
+        {
+            if(IsReading)
+            {
+                Stop();
+                //wait until thread is dead. 
+                ReadingThread.Join();
+            }
+
+            if (Device != null)
+            {
+                OnStop += () =>  { TryDisconnecting(this.Device, "Unable to disconnect previous device: "); }; 
+                Stop();
+            }
+
+            //old device is disconnected and reading is off 
+
+            this.Device = Device;
+
+            Start();
+        }
+        #endregion
+       
+        #region IDispose Public Method
+        /// <summary>
+        /// Dispose thread
+        /// </summary>
+        public void Dispose()
+        {
+           if(ReadingThread.IsAlive)
+            {
+                ReadingThread.Abort(); 
+            }
+        }
+        #endregion 
     }
 }

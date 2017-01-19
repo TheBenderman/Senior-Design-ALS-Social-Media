@@ -4,9 +4,9 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 using System.Collections;
-using EmotivWrapperInterface;
-using EmotivWrapper.Core;
-using EmotivWrapper;
+using Connectome.Emotiv.Enum;
+using Connectome.Emotiv.Implementation;
+using Connectome.Emotiv.Interface;
 
 namespace Connectome.Unity.Demo
 {
@@ -47,7 +47,7 @@ namespace Connectome.Unity.Demo
         /// <summary>
         /// holds target command 
         /// </summary>
-        public EmotivStateType TargetCommand;
+        public EmotivCommandType TargetCommand;
 
         /// <summary>
         /// Holds pass threshold
@@ -94,7 +94,7 @@ namespace Connectome.Unity.Demo
         /// </summary>
         public void Activate()
         {
-            ValuesRead = Enumerable.Repeat(new EmotivState() { power = 0f, time = 0, command = EmotivStateType.NULL }, Interval).ToArray();
+            ValuesRead = Enumerable.Repeat(new EmotivState(EmotivCommandType.NULL, 0), Interval).ToArray();
 
             inputGenerator = InputContainer.Instence;
 
@@ -103,13 +103,13 @@ namespace Connectome.Unity.Demo
             inputGenerator.OnYes = () => forcedYes = true;
             inputGenerator.OnNo = () => forcedYes = false;
 
-            reader = new EmotivReader(deviceHolder.Device);
+            reader = new BasicEmotivReader(deviceHolder.Device);
 
             //reader.OnStop = () => Debug.Log("Stopped");
 
-            reader.OnRead = (e) =>
+            reader.OnRead += (e) =>
             {
-                if (e.command == EmotivStateType.NULL)
+                if (e.State.Command == EmotivCommandType.NULL)
                 {
                     return;
                 }
@@ -117,7 +117,7 @@ namespace Connectome.Unity.Demo
 
             if (forcedYes)
                 {
-                    ValuesRead[IntervalOffset = (IntervalOffset + 1 % Interval) % Interval] = new EmotivState() { power = 1f, time = 0, command = TargetCommand };
+                    ValuesRead[IntervalOffset = (IntervalOffset + 1 % Interval) % Interval] = new EmotivState(TargetCommand, 1f);
                 }
                 else
                 {
@@ -142,7 +142,7 @@ namespace Connectome.Unity.Demo
 
                 int totalState = ValuesRead.Count();
 
-                var targetStates = ValuesRead.Where((e) => e.command == TargetCommand && e.power >= PassThreshhold);
+                var targetStates = ValuesRead.Where((e) => e.Command == TargetCommand && e.Power >= PassThreshhold);
 
                 //var maxTime = valuesRead.Max(e => e.time);
                 //var minTime = valuesRead.Min(e => e.time);
@@ -155,7 +155,7 @@ namespace Connectome.Unity.Demo
                 PassRateText.text = PassRateSlider.value.ToString("0.00");
 
                 //average power
-                AvgPowerSlider.value = (float)targetStates.Select(e => e.power).Sum() / totalState;
+                AvgPowerSlider.value = (float)targetStates.Select(e => e.Power).Sum() / totalState;
                 AvgPowerText.text = AvgPowerSlider.value.ToString("0.00");
 
             }
@@ -170,9 +170,8 @@ namespace Connectome.Unity.Demo
             //TODO KLD PLEASE! 
             if (reader != null)
             {
-                reader.isRunning = false;
+                reader.Stop(); 
             }
-
         }
         #endregion
         #region UI events 
@@ -191,7 +190,7 @@ namespace Connectome.Unity.Demo
         /// <param name="dd"></param>
         public void TargetCommandChange(Dropdown dd)
         {
-            TargetCommand = (EmotivStateType)dd.value;
+            TargetCommand = (EmotivCommandType)dd.value;
         }
 
         /// <summary>
@@ -211,7 +210,7 @@ namespace Connectome.Unity.Demo
         {
             Interval = (int)s.value;
 
-            ValuesRead = Enumerable.Repeat(new EmotivState() { power = 0f, time = 0, command = EmotivStateType.NULL }, Interval).ToArray();
+            ValuesRead = Enumerable.Repeat(new EmotivState(EmotivCommandType.NULL, 0f), Interval).ToArray();
         }
 
         /// <summary>

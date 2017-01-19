@@ -41,7 +41,7 @@ namespace Connectome.Unity.Common
         /// <param name="eventData"></param>
         public void OnPointerDown(PointerEventData eventData)
         {
-            Offset = Offset = new Vector3(eventData.pressPosition.x - DragTarget.transform.position.x, eventData.pressPosition.y - DragTarget.transform.position.y);
+           Offset = new Vector3(eventData.pressPosition.x - DragTarget.transform.position.x, eventData.pressPosition.y - DragTarget.transform.position.y);
         }
 
         /// <summary>

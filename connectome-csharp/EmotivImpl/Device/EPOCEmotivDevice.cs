@@ -1,25 +1,26 @@
-﻿using Emotiv;
-using EmotivWrapper.Core;
+﻿using Connectome.Emotiv.Enum;
+using Connectome.Emotiv.Interface;
+using Connectome.Emotiv.Template;
+using Emotiv;
 using System;
-using EmotivWrapper;
 using System.Diagnostics;
-using EmotivWrapperInterface;
 
-namespace EmotivImpl
+namespace Connectome.Emotiv.Implementation
 {
+    /// <summary>
+    /// Connects and Reads states from a physical EPOC Emotiv device 
+    /// </summary>
     public class EPOCEmotivDevice : EmotivDevice
     {
-        #region private 
-       private IntPtr eEvent;
-       private IntPtr eState;
-
-       private Stopwatch timer;
+        #region Private Attributes 
+        private IntPtr eEvent;
+        private IntPtr eState;
 
         private string username;
         private string password;
         private string profileName;
         #endregion
-
+        #region Constructors
         public EPOCEmotivDevice()
         {
             this.username = string.Empty;
@@ -33,11 +34,10 @@ namespace EmotivImpl
            this.password =  password;
            this.profileName = profileName;
         }
-
+        #endregion
+        #region Overrides
         protected override bool ConnectionSetUp(out string errorMessage)
         {
-            previousTimeElapsed = 0;
-
             string userName = this.username;
             string password = this.password;
             string profileName = this.profileName;
@@ -136,39 +136,27 @@ namespace EmotivImpl
             return true; 
         }
 
-        protected override bool DisconnectionSetUp()
+        protected override bool DisconnectionSetUp(out string msg)
         {
-            EdkDll.IEE_EngineDisconnect();
-            EdkDll.IEE_EmoStateFree(eState);
-            EdkDll.IEE_EmoEngineEventFree(eEvent);
-
+            try
+            {
+                EdkDll.IEE_EngineDisconnect();
+                EdkDll.IEE_EmoStateFree(eState);
+                EdkDll.IEE_EmoEngineEventFree(eEvent);
+            }
+            catch(Exception e)
+            {
+                msg = e.ToString();
+                return false; 
+            }
+            msg = string.Empty; 
             return true; 
         }
 
-
-        long previousTimeElapsed = 0;
-
-        public override IEmotivState Read()
+        public override IEmotivState AttemptRead(long time)
         {
-            if (timer == null)
-            { 
-                timer = Stopwatch.StartNew();
-            }
-
-            long time = timer.ElapsedMilliseconds; 
-            while (time == previousTimeElapsed)
-            {
-                time = timer.ElapsedMilliseconds; 
-            }
-
-            previousTimeElapsed = time; 
-
             int state = EdkDll.IEE_EngineGetNextEvent(eEvent);
-            if (state != 0x600 && state != 0)
-            {
-                Debug.WriteLine(time +" "+ state);
-            }
-
+           
             if (state == EdkDll.EDK_OK)
             {
                 var eventType = EdkDll.IEE_EmoEngineEventGetType(eEvent);
@@ -180,14 +168,13 @@ namespace EmotivImpl
                     var act = EdkDll.IS_GetWirelessSignalStatus(eState);
                     EdkDll.IEE_MentalCommandAction_t currentAction = EdkDll.IS_MentalCommandGetCurrentAction(eState);
                     float currentPower = EdkDll.IS_MentalCommandGetCurrentActionPower(eState);
-                   
-                    return new EmotivState() { power = currentPower, command = (EmotivStateType)currentAction, time = previousTimeElapsed };
+
+                    return new EmotivState((EmotivCommandType)currentAction, currentPower, time );
                 }
             }
 
-            return new EmotivState() { power = 0, command = EmotivStateType.NULL, time = previousTimeElapsed };
-            
+            return new EmotivState(EmotivCommandType.NULL, 0f, time);
         }
+        #endregion
     }
-
 }

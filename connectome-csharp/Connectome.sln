@@ -4,15 +4,15 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetEmotivSDK", "DotNetEmotivSDK\DotNetEmotivSDK.csproj", "{D3337309-9682-425E-8EDC-2ECFACF79565}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotivWrapper", "EmotivWrapper\EmotivWrapper.csproj", "{5B12BF1C-BD1F-4431-B2AD-617346EA198E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotivTemplate", "EmotivWrapper\EmotivTemplate.csproj", "{5B12BF1C-BD1F-4431-B2AD-617346EA198E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotivImpl", "EmotivImpl\EmotivImpl.csproj", "{86F68AF7-F66C-47BA-931B-6FD5D5C89DE2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotivImplementation", "EmotivImpl\EmotivImplementation.csproj", "{86F68AF7-F66C-47BA-931B-6FD5D5C89DE2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotivAnalytic", "EmotivAnalytic\EmotivAnalytic.csproj", "{B84FA3A0-D58E-4F07-A718-98B897303AFA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotivAnalyticApplication", "EmotivAnalyticApplication\EmotivAnalyticApplication.csproj", "{8FDFB7E0-0C9B-424B-B2BD-3A32232F2BB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotivWrapperInterface", "EmotivWrapperInterface\EmotivWrapperInterface.csproj", "{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotivInterface", "EmotivWrapperInterface\EmotivInterface.csproj", "{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

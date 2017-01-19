@@ -1,7 +1,6 @@
-﻿using EmotivImpl;
-using EmotivImpl.Device;
-using EmotivImpl.Reader;
-using EmotivWrapperInterface;
+﻿using Connectome.Emotiv.Enum;
+using Connectome.Emotiv.Implementation;
+using Connectome.Emotiv.Interface;
 using System.Diagnostics;
 
 namespace EmotivAnalytic
@@ -17,21 +16,21 @@ namespace EmotivAnalytic
 
             int interval = 500; //ms 
             float thresh = .5f;
-            EmotivStateType targetCmd = EmotivStateType.NEUTRAL; 
+            EmotivCommandType targetCmd = EmotivCommandType.NEUTRAL; 
 
             IEmotivReader readerPlug = new EmotivAnalyticReader(device,targetCmd, interval, thresh);
 
             int waitTimeSecond = 5;
             IEmotivReader reader = new TimedEmotivReader(readerPlug, waitTimeSecond);
 
-            reader.OnRead = (state) =>
+            reader.OnRead += (e) =>
             {
-                Debug.WriteLine(state);
+                Debug.WriteLine(e.State);
             }; 
            
             reader.Start();
    
-            while (reader.isRunning) ;
+            while (reader.IsReading) ;
 
             Debug.WriteLine("[END]");
         }

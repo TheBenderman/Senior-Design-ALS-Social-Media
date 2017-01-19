@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using EmotivWrapperInterface;
 using System;
 using System.IO;
 using UnityEngine.Events;
-using EmotivImpl.Device;
+using Connectome.Emotiv.Interface;
+using Connectome.Emotiv.Implementation;
 
 namespace Connectome.Unity.Demo
 {
@@ -63,15 +63,15 @@ namespace Connectome.Unity.Demo
             {
                 if (IsRandom)
                 {
-                    Device = new RandomEmotivDevice();
+                    Device = new Emotiv.Implementation.RandomEmotivDevice();
                 }
                 else
                 {
-                    Device = new EPOCEmotivDevice(Username.text, Password.text, Profile.text);
+                    Device = new Emotiv.Implementation.EPOCEmotivDevice(Username.text, Password.text, Profile.text);
                 }
 
                 string error;
-                bool suc = Device.ConnectionSetUp(out error);
+                bool suc = Device.Connect(out error);
 
                 if (suc)
                 {

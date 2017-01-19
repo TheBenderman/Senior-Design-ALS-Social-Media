@@ -7,8 +7,8 @@
     <ProjectGuid>{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EmotivWrapperInterface</RootNamespace>
-    <AssemblyName>EmotivWrapperInterface</AssemblyName>
+    <RootNamespace>Connectome.Emotiv.Interface</RootNamespace>
+    <AssemblyName>EmotivInterface</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -39,7 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="enum\EmotivStateType.cs" />
+    <Compile Include="Enum\EmotivStateType.cs" />
+    <Compile Include="Event\EmotivReadArgs.cs" />
     <Compile Include="IEmotivState.cs" />
     <Compile Include="IEmotivReader.cs" />
     <Compile Include="IEmotivDevice.cs" />

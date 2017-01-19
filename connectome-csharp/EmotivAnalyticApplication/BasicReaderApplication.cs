@@ -1,7 +1,6 @@
-﻿using EmotivImpl;
-using EmotivImpl.Device;
-using EmotivWrapper.Core;
-using EmotivWrapperInterface;
+﻿using Connectome.Emotiv.Enum;
+using Connectome.Emotiv.Implementation;
+using Connectome.Emotiv.Interface;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -36,7 +35,7 @@ namespace EmotivAnalyticApplication
 
                 if (int.TryParse(TimeTextBox.Text, out seconds))
                 {
-                    IEmotivReader reader = new EmotivReader(device); 
+                    IEmotivReader reader = new BasicEmotivReader(device); 
                     StartCollecting(reader, seconds);
                 }
                 else
@@ -62,13 +61,13 @@ namespace EmotivAnalyticApplication
 
             IEmotivReader reader = new TimedEmotivReader(readerPlug, seconds); 
 
-            reader.OnRead = (state) => list.Add(state);
+            reader.OnRead += (e) => list.Add(e.State);
 
             ToggleButton("Reading...",false);
             reader.Start();
 
             //TODO learn threading with UI
-            while (reader.isRunning) ;
+            while (reader.IsReading) ;
 
             ToggleButton("Exporting...", false);
 
@@ -85,7 +84,7 @@ namespace EmotivAnalyticApplication
             popup.FileName = "data"; 
             popup.ShowDialog();
 
-            data = data.Where(e => e.command != EmotivStateType.NULL); 
+            data = data.Where(e => e.Command != EmotivCommandType.NULL); 
 
             //pop up for path 
             string path = popup.FileName;
@@ -106,7 +105,7 @@ namespace EmotivAnalyticApplication
 
                         foreach (var state in subSet)
                         {
-                            string line = state.time + "," + state.command + "," + state.power;
+                            string line = state.Time + "," + state.Command + "," + state.Power;
 
                             writer.WriteLine(line);
                         };

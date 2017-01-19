@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EmotivWrapperInterface;
-using System;
-using EmotivWrapper;
 using UnityEngine.UI;
+using Connectome.Emotiv.Interface;
+using Connectome.Emotiv.Implementation;
+using Connectome.Emotiv.Enum;
+using System;
 
 namespace Connectome.Unity.Common
 {
@@ -20,7 +21,7 @@ namespace Connectome.Unity.Common
         /// <summary>
         /// Target Command to be read with targging 
         /// </summary>
-        public EmotivStateType TargetCommand = EmotivStateType.PUSH;
+        public EmotivCommandType TargetCommand = EmotivCommandType.PUSH;
 
         /// <summary>
         /// Target Power to be read with targging 
@@ -41,32 +42,68 @@ namespace Connectome.Unity.Common
         /// Holds number of target statse read. 
         /// </summary>
         public int ForceCount = 0;
+
+        public bool IsConnected
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
         #endregion
-        #region IEmotivDevice Interface
-        public bool Connect(out string errorMsg)
+
+        #region IEmotivDevice Events
+        public event Action<string> OnConnectSucceed;
+        public event Action<string> OnConnectFailed;
+        public event Action<string> OnDisconnectSucceed;
+        public event Action<string> OnDisconnectFailed;
+        #endregion
+        #region IEmotivDevice Public Methods
+        public bool Connect(out string msg)
         {
-            errorMsg = "success";
-            return true;
+            bool suc = true; 
+            msg = "success";
+
+
+            if (suc && OnConnectSucceed != null)
+            {
+                OnConnectSucceed(msg);
+            }
+
+            if(!suc && OnConnectFailed != null)
+            {
+                OnConnectFailed(msg);
+            }
+           
+            return suc;
         }
 
-        public bool ConnectionSetUp(out string errorMsg)
+        public bool Disconnect(out string msg)
         {
-            errorMsg = "success";
-            return true;
-        }
+            bool suc = false; 
+            Destroy(this.gameObject);
 
-        public void Disconnect()
-        {
-            Destroy(this.gameObject); 
-        }
+            suc = true; 
 
-        public bool DisconnectionSetUp(){ return true; }
+            //TODO will this get called??
+            msg = "success";
+            if (suc && OnDisconnectSucceed != null)
+            {
+                OnDisconnectSucceed(msg);
+            }
+
+            if(!suc && OnDisconnectFailed != null)
+            {
+                OnDisconnectFailed(msg);
+            }
+            return suc; 
+        }
 
         /// <summary>
         /// Reads when either target is forced or force counter is greater than 1. 
         /// </summary>
         /// <returns></returns>
-        public IEmotivState Read()
+        public IEmotivState Read(long time)
         {
             if (IsTargetForced)
             {
@@ -75,11 +112,11 @@ namespace Connectome.Unity.Common
             if(ForceCount > 0)
             {
                 ForceCount--;
-                return new EmotivState() { power = TargetPower, command = TargetCommand };
+                return new EmotivState(TargetCommand, TargetPower, time);
             }
             else
             {
-                return new EmotivState() { power = 0, command = EmotivStateType.NEUTRAL };
+                return new EmotivState(EmotivCommandType.NEUTRAL, time);
             }
         }
         #endregion
@@ -108,7 +145,7 @@ namespace Connectome.Unity.Common
         /// <param name="dd"></param>
         public void SetTargetCommand(Dropdown dd)
         {
-            TargetCommand = (EmotivStateType)dd.value;
+            TargetCommand = (EmotivCommandType)dd.value;
         }
 
         /// <summary>
