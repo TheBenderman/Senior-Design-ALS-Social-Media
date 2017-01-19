@@ -18,7 +18,7 @@ namespace EmotivAnalytic
             float thresh = .5f;
             EmotivCommandType targetCmd = EmotivCommandType.NEUTRAL; 
 
-            IEmotivReader readerPlug = new EmotivAnalyticReader(device,targetCmd, interval, thresh);
+            IEmotivReader readerPlug = new BasicEmotivReader(device);
 
             int waitTimeSecond = 5;
             IEmotivReader reader = new TimedEmotivReader(readerPlug, waitTimeSecond);
@@ -30,7 +30,7 @@ namespace EmotivAnalytic
            
             reader.Start();
    
-            while (reader.IsReading) ;
+            while (reader.IsReading);
 
             Debug.WriteLine("[END]");
         }

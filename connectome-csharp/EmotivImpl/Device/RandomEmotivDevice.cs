@@ -23,7 +23,7 @@ namespace Connectome.Emotiv.Implementation
         #region Overrides
         public override IEmotivState AttemptRead(long time)
         {
-           return new EmotivState((random.Next(2) == 1? EmotivCommandType.NEUTRAL : EmotivCommandType.PUSH), (float)random.NextDouble(), time);
+           return new EmotivState((random.Next(2) == 1? EmotivCommandType.NULL : EmotivCommandType.PUSH), (float)random.NextDouble(), time);
         }
 
         protected override bool ConnectionSetUp(out string errorMessage)

@@ -17,16 +17,16 @@ namespace Connectome.Emotiv.Implementation
 
         protected override IEmotivState ReadingState(IEmotivDevice device, long time)
         {
-            if(ShouldReadNull == false )
+            IEmotivState currentState = device.Read(time);
+            if (ShouldReadNull == false )
             {
-                IEmotivState currentState = device.Read(time);
                 while (currentState.Command == Enum.EmotivCommandType.NULL)
                 { 
                     InsureMillisecondPassed();
                     currentState = device.Read(time);
                 }
             }
-            return device.Read(time); 
+            return currentState;
         }
     }
 }
