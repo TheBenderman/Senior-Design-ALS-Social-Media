@@ -14,7 +14,10 @@ namespace Connectome.Unity.Common
         /// Hold selectable game objects 
         /// </summary>
         public GameObject[] SelectionList;
-      
+        /// <summary>
+        /// The time, in seconds, to wait before the selection changes.
+        /// </summary>
+        public int WaitInterval = 2;
         /// <summary>
         /// Hilights currect selection. 
         /// </summary>
@@ -25,6 +28,10 @@ namespace Connectome.Unity.Common
         /// Hold currently selected element. 
         /// </summary>
         private int SelectedIndex = 0;
+        /// <summary>
+        /// The current interval
+        /// </summary>
+        private float CurrentWait = 0;
         #endregion
         #region Public methods
         /// <summary>
@@ -59,6 +66,32 @@ namespace Connectome.Unity.Common
             Highlighter.SetActive(true);
             Debug.Log("The selected element = " + SelectionList[index].name);
         }
+
+        /// <summary>
+        /// Unity's built-in Update method.
+        /// Keep track of the application's time, and
+        /// change the selection after the interval time passes.
+        /// </summary>
+        private void Update()
+        {
+            CurrentWait += Time.deltaTime;
+            if(CurrentWait >= WaitInterval)
+            {
+                Next();
+                ResetInterval();
+            }
+        }
+
+        /// <summary>
+        /// Sets the current wait time back to 0.
+        /// Can be used to refresh the waiting time when the user
+        /// tries to select an option.
+        /// </summary>
+        private void ResetInterval()
+        {
+            CurrentWait = 0;
+        }
         #endregion
     }
 }
+
