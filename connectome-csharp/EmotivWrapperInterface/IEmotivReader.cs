@@ -1,21 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Connectome.Emotiv.Enum;
+using Connectome.Emotiv.Event;
+using System;
 
-namespace EmotivWrapperInterface
+namespace Connectome.Emotiv.Interface
 {
-    public interface IEmotivReader
+    /// <summary>
+    /// A Reader is able to read states on it's own invoking events when appropriate. 
+    /// </summary>
+    public interface IEmotivReader : IDisposable
     {
-        bool isRunning { set; get; }
+        #region Set Get Properties
+        /// <summary>
+        /// Current plugged device. 
+        /// </summary>
+        IEmotivDevice Device { set; get; }
+        #endregion
+        #region Get Properties
+        /// <summary>
+        /// True when device is reading or ready to read, otherwise, false. 
+        /// </summary>
+        bool IsReading { get; }
+        #endregion
+        #region Events
+        /// <summary>
+        /// Invoked on every state read from plugged device.
+        /// </summary>
+        event Action<EmotivReadArgs> OnRead;
 
-        Action<IEmotivState> OnRead { set;}
-        Action<EmotivStateType?, EmotivStateType> OnStateChange { set;  }
-        Action OnStart { set; }
-        Action OnStop { set; }
-        
+        /// <summary>
+        /// Invoked everytime new state command is different than previous 
+        /// </summary>
+        event Action<EmotivCommandType?, EmotivCommandType> OnCommandChange;
+
+        /// <summary>
+        /// Gets invoked before reading states
+        /// </summary>
+        event Action OnStart;
+
+        /// <summary>
+        /// Gets invoked after reader stops reading. 
+        /// </summary>
+        event Action OnStop;
+        #endregion
+        #region Methods
+        /// <summary>
+        /// Starts Reading from plugged device.
+        /// </summary>
         void Start();
-        void Stop(); 
+        
+        /// <summary>
+        /// Stops Reading from plugged device.
+        /// </summary>
+        void Stop();
+
+        /// <summary>
+        /// Sets and starts reading from device. 
+        /// </summary>
+        /// <param name="Device"></param>
+        void PlugDevice(IEmotivDevice Device);
+        #endregion 
     }
 }

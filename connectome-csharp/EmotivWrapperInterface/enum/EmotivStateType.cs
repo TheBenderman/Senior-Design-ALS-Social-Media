@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EmotivWrapperInterface
+﻿namespace Connectome.Emotiv.Enum
 {
-    public enum EmotivStateType
+    public enum EmotivCommandType
     {
         NULL = 0x0000,
         NEUTRAL = 0x0001,

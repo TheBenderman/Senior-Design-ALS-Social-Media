@@ -1,24 +1,21 @@
-﻿using EmotivWrapper.Core;
+﻿using Connectome.Emotiv.Enum;
+using Connectome.Emotiv.Event;
+using Connectome.Emotiv.Interface;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EmotivWrapper;
-using EmotivWrapperInterface;
 using System.Timers;
 
-namespace EmotivImpl
+namespace Connectome.Emotiv.Implementation
 {
     /// <summary>
     /// A Reader that termanites itself after duration
     /// </summary>
     public class TimedEmotivReader : IEmotivReader
     {
+        #region Private Attributes
         private Timer timer;
-        private IEmotivReader reader; 
-
+        private IEmotivReader reader;
+        #endregion
+        #region Constructor
         /// <summary>
         /// Keeps reading from device for duration. 
         /// </summary>
@@ -29,54 +26,82 @@ namespace EmotivImpl
             this.reader = reader; 
             timer = new Timer(1000 * second);
 
-            timer.Elapsed += (o, e) => reader.isRunning = false;
+            timer.Elapsed += (o, e) => reader.Stop(); 
         }
-
-        public bool isRunning
+        #endregion
+        #region IEmotivReader Public Properies 
+        public bool IsReading
         {
             get
             {
-                return reader.isRunning; 
-            }
-
-            set
-            {
-                reader.isRunning = value; 
+                return reader.IsReading; 
             }
         }
-
-        public Action<IEmotivState> OnRead
+        public IEmotivDevice Device
         {
+            get
+            {
+                return reader.Device; 
+            }
+
             set
             {
-                reader.OnRead = value;
+                reader.Device = value; 
             }
         }
+        #endregion
+        #region IEmotivReader Public Events
 
-        public Action OnStart
+        public event Action<EmotivReadArgs> OnRead
         {
-            set
+            add
             {
-                reader.OnStart = value; 
+                reader.OnRead += value; 
+            }
+            remove
+            {
+                reader.OnRead -= value;
             }
         }
 
-        public Action<EmotivStateType?, EmotivStateType> OnStateChange
+        public event Action OnStart
         {
-            set
+            add
             {
-                reader.OnStateChange = value;
+                reader.OnStart += value;
+            }
+            remove
+            {
+                reader.OnStart -= value;
             }
         }
 
-        public Action OnStop
+        public event Action OnStop
         {
-            set
+            add
             {
-                reader.OnStop = value;
+                reader.OnStop += value;
+            }
+            remove
+            {
+                reader.OnStop -= value;
             }
         }
 
+        public event Action<EmotivCommandType?, EmotivCommandType> OnCommandChange
+        {
+            add
+            {
+                reader.OnCommandChange += value;
+            }
+            remove
+            {
+                reader.OnCommandChange -= value;
+            }
+        }
+
+        #endregion
+        #region IEmotivReader Public Methods
         public void Start()
         {
             timer.Enabled = true;
@@ -85,8 +110,24 @@ namespace EmotivImpl
 
         public void Stop()
         {
-            reader.Start();
+            reader.Stop();
+            timer.Stop(); 
         }
 
+        public void PlugDevice(IEmotivDevice Device)
+        {
+            reader.PlugDevice(Device); 
+        }
+        #endregion
+        #region IDispose Public Method
+        /// <summary>
+        /// Dispose thread
+        /// </summary>
+        public void Dispose()
+        {
+            reader.Dispose();
+            timer.Dispose();
+        }
+        #endregion 
     }
 }

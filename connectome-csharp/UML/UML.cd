@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Connectome.Emotiv.Template.EmotivDevice">
+    <Position X="0.5" Y="4.25" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Connectome.Emotiv.Template.EmotivReader">
+    <Position X="4.75" Y="4.25" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Connectome.Emotiv.Implementation.BasicEmotivReader">
+    <Position X="5.75" Y="9.25" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Connectome.Emotiv.Implementation.EPOCEmotivDevice">
+    <Position X="0.5" Y="9.25" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Connectome.Emotiv.Implementation.RandomEmotivDevice">
+    <Position X="3.25" Y="9.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Connectome.Emotiv.Implementation.EmotivState" BaseTypeListCollapsed="true">
+    <Position X="8.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Connectome.Emotiv.Implementation.EmotivAnalyticReader">
+    <Position X="7.75" Y="9.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Connectome.Emotiv.Implementation.TimedEmotivReader" BaseTypeListCollapsed="true">
+    <Position X="10" Y="9.25" Width="1.75" />
+    <TypeIdentifier />
+    <Lollipop Position="0.153" />
+  </Class>
+  <Class Name="Connectome.Emotiv.Event.EmotivReadArgs" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="Connectome.Emotiv.Interface.IEmotivDevice">
+    <Position X="0.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Connectome.Emotiv.Interface.IEmotivReader">
+    <Position X="4.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Connectome.Emotiv.Interface.IEmotivState">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Enum Name="Connectome.Emotiv.Enum.EmotivCommandType">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
