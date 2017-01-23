@@ -88,11 +88,11 @@ namespace Connectome.Emotiv.Template
             }
             catch (Exception e)
             {
-                OnStop?.Invoke();
+                OnStop?.Invoke(e.ToString());
                 throw new Exception("Something went wrong while reading. ", e); 
             }
 
-            OnStop?.Invoke();
+            OnStop?.Invoke("Normal");
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace Connectome.Emotiv.Template
         /// <summary>
         /// Invoked when Stop is called 
         /// </summary>
-        public event Action OnStop;
+        public event Action<string> OnStop;
         #endregion
         #region IEmotivReader Public Methods  
         /// <summary>
@@ -200,7 +200,7 @@ namespace Connectome.Emotiv.Template
 
             if (Device != null)
             {
-                OnStop += () =>  { TryDisconnecting(this.Device, "Unable to disconnect previous device: "); }; 
+                OnStop += (e) =>  { TryDisconnecting(this.Device, "Unable to disconnect previous device: "); }; 
                 Stop();
             }
 

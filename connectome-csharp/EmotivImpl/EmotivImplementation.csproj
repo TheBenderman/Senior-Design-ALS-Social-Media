@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Device\BasicEmotivReader.cs" />
+    <Compile Include="Reader\BasicEmotivReader.cs" />
     <Compile Include="Device\RandomEmotivDevice.cs" />
     <Compile Include="Device\EPOCEmotivDevice.cs" />
     <Compile Include="EmotivState.cs" />

@@ -76,7 +76,7 @@ namespace Connectome.Emotiv.Implementation
             }
         }
 
-        public event Action OnStop
+        public event Action<string> OnStop
         {
             add
             {

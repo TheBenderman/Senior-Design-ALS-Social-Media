@@ -12,21 +12,35 @@ namespace Connectome.Emotiv.Interface
         #endregion
         #region Events 
         /// <summary>
+        /// Invoked before connecting.
+        /// </summary>
+        event Action OnConnectAttempt;
+
+        /// <summary>
         /// Invoked after successfully connecting.
         /// </summary>
         event Action<string> OnConnectSucceed;
+
         /// <summary>
         /// Invoked after faling to  connect.
         /// </summary>
         event Action<string> OnConnectFailed;
+
+        /// <summary>
+        /// Invoked before connecting.
+        /// </summary>
+        event Action OnDisconnectAttempt;
+
         /// <summary>
         /// Invoked after successfully disconnecting.
         /// </summary>
         event Action<string> OnDisconnectSucceed;
+
         /// <summary>
         /// Invoked after faling to  disconnect.
         /// </summary>
         event Action<string> OnDisconnectFailed;
+
         #endregion
         #region Methods
         /// <summary>

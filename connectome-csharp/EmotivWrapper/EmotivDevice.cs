@@ -30,6 +30,8 @@ namespace Connectome.Emotiv.Template
         /// <returns></returns>
         public bool Connect(out string msg)
         {
+            OnConnectAttempt?.Invoke();
+
             bool suc = ConnectionSetUp(out msg);
 
             if (suc)
@@ -47,6 +49,8 @@ namespace Connectome.Emotiv.Template
         /// </summary>
         public bool Disconnect(out string msg)
         {
+            OnDisconnectAttempt?.Invoke();
+
             bool suc = DisconnectionSetUp(out msg);
 
             if (suc)
@@ -61,6 +65,12 @@ namespace Connectome.Emotiv.Template
 
         #endregion
         #region IEmotivDevice Events 
+
+        /// <summary>
+        /// Invoked before device attempts to connect. 
+        /// </summary>
+        public event Action OnConnectAttempt;
+
         /// <summary>
         /// Invoked after device succussfully connects. 
         /// </summary>
@@ -72,6 +82,11 @@ namespace Connectome.Emotiv.Template
         public event Action<string> OnConnectFailed;
 
         /// <summary>
+        /// Invoked before device attempts to disconnect.
+        /// </summary>
+        public event Action OnDisconnectAttempt;
+
+        /// <summary>
         /// Invoked after device succussfully disconnects. 
         /// </summary>
         public event Action<string> OnDisconnectSucceed;
@@ -80,6 +95,7 @@ namespace Connectome.Emotiv.Template
         /// Invoked after device fails to disconnect. 
         /// </summary>
         public event Action<string> OnDisconnectFailed;
+
 
         /// <summary>
         /// Returns current read state or Null state if unable to read a state. 

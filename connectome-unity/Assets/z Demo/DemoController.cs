@@ -121,9 +121,16 @@ namespace Connectome.Unity.Demo
                 }
                 else
                 {
-                    ValuesRead[IntervalOffset = (IntervalOffset + 1 % Interval) % Interval] = e;
+                    ValuesRead[IntervalOffset = (IntervalOffset + 1 % Interval) % Interval] = e.State;
                 }
             };
+
+            reader.OnStop += (s) => { Debug.Log("I stoped: " + s); };
+
+            deviceHolder.Device.OnDisconnectSucceed += (s) => Debug.Log(s);
+            deviceHolder.Device.OnDisconnectFailed += (s) => Debug.Log(s);
+
+
 
             reader.Start();
             StartCoroutine(SliderUpdate());

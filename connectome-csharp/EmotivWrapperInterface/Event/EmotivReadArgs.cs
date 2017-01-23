@@ -7,7 +7,7 @@ namespace Connectome.Emotiv.Event
     /// <summary>
     /// Contains arguments for reader OnRead event. 
     /// </summary>
-    public class EmotivReadArgs : IEmotivState
+    public class EmotivReadArgs
     {
         #region Properties
         /// <summary>
@@ -19,31 +19,6 @@ namespace Connectome.Emotiv.Event
         public EmotivReadArgs(IEmotivState state)
         {
             this.State = state;
-        }
-        #endregion
-        #region Interface
-        EmotivCommandType IEmotivState.Command
-        {
-            get
-            {
-                return State.Command; 
-            }
-        }
-
-        float IEmotivState.Power
-        {
-            get
-            {
-                return State.Power;
-            }
-        }
-
-        long IEmotivState.Time
-        {
-            get
-            {
-                return State.Time;
-            }
         }
         #endregion  
     }

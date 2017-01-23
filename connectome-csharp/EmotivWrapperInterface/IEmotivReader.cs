@@ -40,7 +40,7 @@ namespace Connectome.Emotiv.Interface
         /// <summary>
         /// Gets invoked after reader stops reading. 
         /// </summary>
-        event Action OnStop;
+        event Action<string> OnStop;
         #endregion
         #region Methods
         /// <summary>

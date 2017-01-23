@@ -51,16 +51,20 @@ namespace Connectome.Unity.Common
             }
         }
         #endregion
-
         #region IEmotivDevice Events
         public event Action<string> OnConnectSucceed;
         public event Action<string> OnConnectFailed;
         public event Action<string> OnDisconnectSucceed;
         public event Action<string> OnDisconnectFailed;
+        public event Action OnConnectAttempt;
+        public event Action OnDisconnectAttempt;
         #endregion
         #region IEmotivDevice Public Methods
         public bool Connect(out string msg)
         {
+            if(OnConnectAttempt != null)
+                OnConnectAttempt(); 
+
             bool suc = true; 
             msg = "success";
 
@@ -80,6 +84,9 @@ namespace Connectome.Unity.Common
 
         public bool Disconnect(out string msg)
         {
+            if (OnDisconnectAttempt != null)
+                OnDisconnectAttempt();
+
             bool suc = false; 
             Destroy(this.gameObject);
 
