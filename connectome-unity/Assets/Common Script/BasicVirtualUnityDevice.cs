@@ -52,10 +52,10 @@ namespace Connectome.Unity.Common
         }
         #endregion
         #region IEmotivDevice Events
-        public event Action<string> OnConnectSucceed;
-        public event Action<string> OnConnectFailed;
-        public event Action<string> OnDisconnectSucceed;
-        public event Action<string> OnDisconnectFailed;
+
+        public event Action<bool,string> OnConnectAttempted;
+        public event Action<bool, string> OnDisconnectAttempted;
+
         public event Action OnConnectAttempt;
         public event Action OnDisconnectAttempt;
         #endregion
@@ -68,17 +68,11 @@ namespace Connectome.Unity.Common
             bool suc = true; 
             msg = "success";
 
-
-            if (suc && OnConnectSucceed != null)
+            if (OnConnectAttempted != null)
             {
-                OnConnectSucceed(msg);
+                OnConnectAttempted(suc, msg); 
             }
 
-            if(!suc && OnConnectFailed != null)
-            {
-                OnConnectFailed(msg);
-            }
-           
             return suc;
         }
 
@@ -92,17 +86,12 @@ namespace Connectome.Unity.Common
 
             suc = true; 
 
-            //TODO will this get called??
             msg = "success";
-            if (suc && OnDisconnectSucceed != null)
+            if (OnDisconnectAttempted != null)
             {
-                OnDisconnectSucceed(msg);
+                OnDisconnectAttempted(suc, msg);
             }
 
-            if(!suc && OnDisconnectFailed != null)
-            {
-                OnDisconnectFailed(msg);
-            }
             return suc; 
         }
 

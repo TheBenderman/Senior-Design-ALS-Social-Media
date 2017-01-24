@@ -117,7 +117,7 @@ namespace Connectome.Unity.Demo
 
             if (forcedYes)
                 {
-                    ValuesRead[IntervalOffset = (IntervalOffset + 1 % Interval) % Interval] = new EmotivState(TargetCommand, 1f);
+                    ValuesRead[IntervalOffset = (IntervalOffset + 1 % Interval) % Interval] = new EmotivState(TargetCommand, PassThreshhold);
                 }
                 else
                 {
@@ -127,10 +127,9 @@ namespace Connectome.Unity.Demo
 
             reader.OnStop += (s) => { Debug.Log("I stoped: " + s); };
 
-            deviceHolder.Device.OnDisconnectSucceed += (s) => Debug.Log(s);
-            deviceHolder.Device.OnDisconnectFailed += (s) => Debug.Log(s);
-
-
+           // deviceHolder.Device.OnDisconnectAttempted += (suc,s) => Debug.Log("OnDisconnectAttempted: "+ s);
+            deviceHolder.Device.OnDisconnectAttempted += (suc, s) => Debug.Log("OnDisconnectAttempted: " + s);
+            reader.ExceptionHandler += (e) => {Debug.Log("Exp"); throw e; };
 
             reader.Start();
             StartCoroutine(SliderUpdate());

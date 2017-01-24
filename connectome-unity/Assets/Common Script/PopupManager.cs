@@ -50,7 +50,7 @@ namespace Connectome.Unity.Common
             BasicVirtualUnityDevice pop = Instantiate(Instence.VirtualUnityDevicePrefab);
             Instence.AvailableDevice = pop;
             // Closing out of the device triggers an event to reconnect back to it.
-            pop.OnDisconnectSucceed += (msg) => { ReconnectDevice(); Instence.AvailableDevice = null; }; 
+            pop.OnDisconnectAttempted += (suc, msg) => { ReconnectDevice(); Instence.AvailableDevice = null; }; 
 			UserSettings.Device = pop; 
             pop.transform.SetParent(Instence.transform.parent);
             pop.transform.localPosition = new Vector2(0,0); 

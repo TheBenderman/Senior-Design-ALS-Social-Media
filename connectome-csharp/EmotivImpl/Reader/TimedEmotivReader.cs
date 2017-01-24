@@ -100,6 +100,18 @@ namespace Connectome.Emotiv.Implementation
             }
         }
 
+        public event Action<Exception> ExceptionHandler
+        {
+            add
+            {
+                reader.ExceptionHandler += value;
+            }
+            remove
+            {
+                reader.ExceptionHandler -= value;
+            }
+        }
+
         #endregion
         #region IEmotivReader Public Methods
         public void Start()

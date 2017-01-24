@@ -34,14 +34,9 @@ namespace Connectome.Emotiv.Template
 
             bool suc = ConnectionSetUp(out msg);
 
-            if (suc)
-                OnConnectSucceed?.Invoke(msg);
-            else
-                OnConnectFailed?.Invoke(msg);
-
-            Connected = suc;
-
-            return suc;
+            OnConnectAttempted?.Invoke(suc,msg);
+          
+            return (Connected = suc);
         }
 
         /// <summary>
@@ -53,14 +48,9 @@ namespace Connectome.Emotiv.Template
 
             bool suc = DisconnectionSetUp(out msg);
 
-            if (suc)
-                OnDisconnectSucceed?.Invoke(msg);
-            else
-                OnDisconnectFailed?.Invoke(msg);
+            OnDisconnectAttempted?.Invoke(suc, msg);
 
-            Connected = !suc;
-
-            return suc;
+            return (Connected = !suc); 
         }
 
         #endregion
@@ -72,14 +62,9 @@ namespace Connectome.Emotiv.Template
         public event Action OnConnectAttempt;
 
         /// <summary>
-        /// Invoked after device succussfully connects. 
+        /// Invoked after connect attempt ends.
         /// </summary>
-        public event Action<string> OnConnectSucceed;
-
-        /// <summary>
-        /// Invoked after device fails to connect. 
-        /// </summary>
-        public event Action<string> OnConnectFailed;
+        public event Action<bool, string> OnConnectAttempted;
 
         /// <summary>
         /// Invoked before device attempts to disconnect.
@@ -90,12 +75,11 @@ namespace Connectome.Emotiv.Template
         /// Invoked after device succussfully disconnects. 
         /// </summary>
         public event Action<string> OnDisconnectSucceed;
-
+        
         /// <summary>
-        /// Invoked after device fails to disconnect. 
+        /// Invoked after disconnect attempt ends.
         /// </summary>
-        public event Action<string> OnDisconnectFailed;
-
+        public event Action<bool, string> OnDisconnectAttempted;
 
         /// <summary>
         /// Returns current read state or Null state if unable to read a state. 

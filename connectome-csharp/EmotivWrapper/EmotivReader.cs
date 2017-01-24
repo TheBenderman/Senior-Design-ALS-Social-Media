@@ -48,6 +48,7 @@ namespace Connectome.Emotiv.Template
             this.Device = device;
             KeepReading = false;
             LastTime = -1;
+
             ReadingThread = new Thread(ReadThreadLoop);
         }
         #endregion
@@ -89,7 +90,8 @@ namespace Connectome.Emotiv.Template
             catch (Exception e)
             {
                 OnStop?.Invoke(e.ToString());
-                throw new Exception("Something went wrong while reading. ", e); 
+                ExceptionHandler?.Invoke( new Exception("Something went wrong while reading. ", e));
+                return; 
             }
 
             OnStop?.Invoke("Normal");
@@ -105,7 +107,7 @@ namespace Connectome.Emotiv.Template
             string disconnectMsg;
             if (device.Disconnect(out disconnectMsg) == false)
             {
-                throw new Exception(expMsg + disconnectMsg);
+                ExceptionHandler?.Invoke(new Exception(expMsg + disconnectMsg));
             }
         }
 
@@ -115,9 +117,9 @@ namespace Connectome.Emotiv.Template
         private void TryConnecting(IEmotivDevice device, string expMsg = "Unable to connect device: ")
         {
             string connectMsg;
-            if (device.Disconnect(out connectMsg) == false)
+            if (device.Connect(out connectMsg) == false)
             {
-                throw new Exception(expMsg + connectMsg);
+                ExceptionHandler?.Invoke(new Exception(expMsg + connectMsg));
             }
         }
         #endregion
@@ -163,6 +165,11 @@ namespace Connectome.Emotiv.Template
         /// Invoked when Stop is called 
         /// </summary>
         public event Action<string> OnStop;
+     
+        /// <summary>
+        /// Handles expections 
+        /// </summary>
+        public event Action<Exception> ExceptionHandler;
         #endregion
         #region IEmotivReader Public Methods  
         /// <summary>

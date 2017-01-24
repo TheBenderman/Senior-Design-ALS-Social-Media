@@ -63,11 +63,11 @@ namespace Connectome.Unity.Demo
             {
                 if (IsRandom)
                 {
-                    Device = new Emotiv.Implementation.RandomEmotivDevice();
+                    Device = new RandomEmotivDevice();
                 }
                 else
                 {
-                    Device = new Emotiv.Implementation.EPOCEmotivDevice(Username.text, Password.text, Profile.text);
+                    Device = new EPOCEmotivDevice(Username.text, Password.text, Profile.text);
                 }
 
                 string error;

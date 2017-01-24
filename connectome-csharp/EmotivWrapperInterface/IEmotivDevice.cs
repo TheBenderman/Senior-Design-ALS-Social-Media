@@ -17,29 +17,19 @@ namespace Connectome.Emotiv.Interface
         event Action OnConnectAttempt;
 
         /// <summary>
-        /// Invoked after successfully connecting.
+        /// Invoked after connection attempt ends.
         /// </summary>
-        event Action<string> OnConnectSucceed;
+        event Action<bool, string> OnConnectAttempted;
 
         /// <summary>
-        /// Invoked after faling to  connect.
-        /// </summary>
-        event Action<string> OnConnectFailed;
-
-        /// <summary>
-        /// Invoked before connecting.
+        /// Invoked before disconnecting.
         /// </summary>
         event Action OnDisconnectAttempt;
 
         /// <summary>
-        /// Invoked after successfully disconnecting.
+        /// Invoked after disconnect attempt ends.
         /// </summary>
-        event Action<string> OnDisconnectSucceed;
-
-        /// <summary>
-        /// Invoked after faling to  disconnect.
-        /// </summary>
-        event Action<string> OnDisconnectFailed;
+        event Action<bool, string> OnDisconnectAttempted;
 
         #endregion
         #region Methods
