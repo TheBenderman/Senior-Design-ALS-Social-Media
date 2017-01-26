@@ -1,19 +1,16 @@
-﻿using System;
+﻿using CoreTweet;
+using System;
 using System.Collections.Generic;
-using Tweetinvi;
-using Tweetinvi.Models;
-using Tweetinvi.Parameters;
+using System.IO;
 
 namespace Connectome.Twitter.API
 {
     public class TwitterAPI
     {
-        private TwitterCredentials applicationCredentials;
-        private IAuthenticationContext authenticationContext;
-        private ITwitterCredentials userCredentials;
-        private IAuthenticatedUser user;
 
         private static TwitterAPI instance;
+        private OAuth.OAuthSession session;
+        private Tokens tokens;
 
         public static TwitterAPI Instance
         {
@@ -28,82 +25,52 @@ namespace Connectome.Twitter.API
 
         public TwitterAPI()
         {
-          
-        }
-
-        public void initializeAuthentication()
-        {
-            applicationCredentials = new Tweetinvi.Models.TwitterCredentials("AeMBFSekBw8CiP19URpCeMsMy", "GhfHgUVq6i69VM1PaAQtZdnFH7eVLhlXcL9oAc6hnbnM2nOntf");
-            authenticationContext = AuthFlow.InitAuthentication(applicationCredentials);
+            session = OAuth.Authorize("AeMBFSekBw8CiP19URpCeMsMy", "GhfHgUVq6i69VM1PaAQtZdnFH7eVLhlXcL9oAc6hnbnM2nOntf");  
         }
 
         public String getAuthorizationURL()
         {
-            return authenticationContext.AuthorizationURL;
-        }
-
-        public void enterPINCode(String pinCode)
-        {
-            userCredentials = AuthFlow.CreateCredentialsFromVerifierCode(pinCode, authenticationContext);
-            Auth.SetCredentials(userCredentials);
-
-            user = User.GetAuthenticatedUser(userCredentials);
-        }
-
-        public IEnumerable<ITweet> getUserHomeTimeLine()
-        {
-            var homeTimeLineParameter = new HomeTimelineParameters
+            if (session != null)
             {
-                MaximumNumberOfTweetsToRetrieve = 100
-            };
+                return session.AuthorizeUri.ToString();
+            }
 
-            return user.GetHomeTimeline(homeTimeLineParameter);
+            return null;
         }
 
-        public void publishTweet(String tweetText)
+        public Boolean enterPinCode(String pinCode)
         {
-            var tweet = Tweet.PublishTweet(tweetText);
+            tokens = session.GetTokens(pinCode);
+
+            if (tokens != null)
+                return true;
+            else
+                return false;
         }
 
-        public IUser getUserById(int id)
+        public void publishTweet(String tweet)
         {
-            return User.GetUserFromId(id);
+            tokens.Statuses.Update(new { status = tweet });
         }
 
-        public IUser getUserByScreenname(String username)
+        public CoreTweet.Rest.Statuses getHomeTimeLine()
         {
-            return User.GetUserFromScreenName(username);
+            return tokens.Statuses;
         }
 
-        public IEnumerable<IUser> getFriends()
+        public void publishTweetWithPicture(String tweet, String picPath)
         {
-            return user.GetFriends();
+#pragma warning disable CS0618 // Type or member is obsolete
+            tokens.Statuses.UpdateWithMedia(new { status = tweet, media = new FileInfo(picPath) });
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
-        public IEnumerable<IMessage> getReceivedMessages()
+        public void printHomeTimeline()
         {
-            return user.GetLatestMessagesReceived();
-        }
-
-        public IEnumerable<IMessage> getSentMessages()
-        {
-            return user.GetLatestMessagesSent();
-        }
-
-        public Boolean sendMessage(string userIdentifier, string message)
-        {
-            var messageObj = Message.PublishMessage(message, userIdentifier);
-            return messageObj.IsMessagePublished;
-        }
-
-        public IEnumerable<ITweet> searchForTweets(string text)
-        {
-            return Search.SearchTweets(text);
-        }
-
-        public IEnumerable<IUser> searchForUsers(string text)
-        {
-            return Search.SearchUsers(text);
+            foreach(var status in tokens.Statuses.HomeTimeline(count => 50))
+            {
+                Console.WriteLine("long tweet by {0}: {1}", status.User.ScreenName, status.Text);
+            }
         }
     }
 }
