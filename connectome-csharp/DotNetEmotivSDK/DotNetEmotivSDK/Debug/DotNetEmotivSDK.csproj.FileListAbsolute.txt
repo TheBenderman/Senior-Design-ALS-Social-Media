@@ -3,7 +3,6 @@ C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome
 C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\build\Debug\DotNetEmotivSDK.pdb
 C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.dll
 C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.pdb
-C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.csprojResolveAssemblyReference.cache
 C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\build\Debug\edk.dll
 C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\build\Debug\DotNetEmotivSDK.dll
 C:\Users\kld00\Source\Repos\Senior-Design-ALS-Social-Media\connectome-csharp\build\Debug\DotNetEmotivSDK.pdb
@@ -20,3 +19,6 @@ C:\GitHub\Connectome\connectome-csharp\connectome-unity\Assets\Library\DotNetEmo
 C:\GitHub\Connectome\connectome-unity\Assets\Library\edk.dll
 C:\GitHub\Connectome\connectome-unity\Assets\Library\DotNetEmotivSDK.dll
 C:\GitHub\Connectome\connectome-unity\Assets\Library\DotNetEmotivSDK.pdb
+C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\edk.dll
+C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\DotNetEmotivSDK.dll
+C:\Users\nathanbender\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\DotNetEmotivSDK.pdb
