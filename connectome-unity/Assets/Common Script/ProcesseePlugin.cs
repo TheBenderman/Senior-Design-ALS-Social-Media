@@ -5,20 +5,28 @@ using Connectome.Unity.Common;
 using UnityEngine;
 using UnityEngine.Events;
 using Connectome.Core.Template;
-
-public class ProcesseePlugin : ProcessorPlugin {
+/// <summary>
+/// A wrapper for the Processee
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public class ProcesseePlugin<T> : ProcessorPlugin<T> {
+    #region Public Attributes
     public UnityEvent OnExecute;
+    #endregion
+    #region Private Attributes
     private bool EventLoaded = false;
-    
-    public override IProcessable<SelectionManager> GetPlugin()
+    #endregion
+    #region Overridden Methods
+    public override IProcessable<T> GetPlugin()
     {
-        if (p is Processee<SelectionManager> && !EventLoaded)
+        if (p is Processee<T> && !EventLoaded)
         {
-            ((Processee<SelectionManager>)p).OnExecute += (m) => { OnExecute.Invoke(); };
+            ((Processee<T>)p).OnExecute += (m) => { OnExecute.Invoke(); };
             EventLoaded = true;
         }
         return base.p; 
     }
+    #endregion
 
 
 }

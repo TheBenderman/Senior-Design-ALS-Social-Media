@@ -9,16 +9,34 @@ using System.Text;
 
 namespace Connectome.Core.Implementation
 {
-    public class TimelineProcessor<T> : Processor<T, Timeline<IEmotivState>>
+    /// <summary>
+    /// The processor that handles anything related to the timeline. All children processors/processees set as children
+    /// to this processor must be of the Timeline type.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class TimelineProcessor<T> : Processor<T, ITimeline<IEmotivState>>
     {
+        #region public Attributes
+        /// <summary>
+        /// The stored timeline
+        /// </summary>
         private ITimeline<IEmotivState> Timeline;
-        public override IProcessable<Timeline<IEmotivState>>[] Children { get; set; }
-        
-
-        public TimelineProcessor(Timeline<IEmotivState> timeline, 
-            params IProcessable<Timeline<IEmotivState>>[] children) : base(timeline)
+        /// <summary>
+        /// The children processor/processees
+        /// </summary>
+        public override IProcessable<ITimeline<IEmotivState>>[] Children { get; set; }
+        #endregion
+        #region Constructor
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="timeline"></param>
+        /// <param name="children"></param>
+        public TimelineProcessor(ITimeline<IEmotivState> timeline, 
+            params IProcessable<ITimeline<IEmotivState>>[] children) : base(timeline)
         {
             Children = children;
         }
+        #endregion
     }
 }

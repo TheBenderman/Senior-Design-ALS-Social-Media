@@ -7,16 +7,28 @@ using System.Text;
 namespace Connectome.Core.Template
 {
     /// <summary>
-    /// Defines a processor
+    /// A processor is a process that has children. The children can be processors or processees.
+    /// Processors use type T to determine if they are successful, and push Type C to their children.
     /// </summary>
     public abstract class Processor<T,C> : IProcessable<T> {
+        #region Constructor
         public Processor(C parameter)
         {
             c = parameter;
         }
+        #endregion
+        #region Public Attributes
+        /// <summary>
+        /// The stored obj for the children to process.
+        /// </summary>
         public C c;
+        #endregion
+        #region Abstract Methods
+        /// <summary>
+        /// Defines the children of this processor
+        /// </summary>
         public abstract IProcessable<C>[] Children { get; set; }
-
+        #endregion
         #region IEmotivProcessor Public Methods
         /// <summary>
         /// Logic to determine when to execute the actions tied to this processor.
@@ -35,7 +47,9 @@ namespace Connectome.Core.Template
 
             return suc; 
         }
-
+        /// <summary>
+        /// Any events that fire when the appropriate child is successful
+        /// </summary>
         public event Action<T, int> OnChildExecute;
         #endregion
     }

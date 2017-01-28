@@ -128,7 +128,7 @@ namespace Connectome.Unity.Common
         /// Can be used to refresh the waiting time when the user
         /// tries to select an option.
         /// </summary>
-        private void ResetInterval()
+        public void ResetInterval()
         {
             CurrentWait = 0;
         }
@@ -149,7 +149,7 @@ namespace Connectome.Unity.Common
         {
             while (true)//For now
             {
-                foreach (ProcessorPlugin processor in ProcessorList.GetComponentsInChildren<ProcessorPlugin>())//Potential performance issue
+                foreach (ProcessorPlugin<SelectionManager> processor in ProcessorList.GetComponentsInChildren<ProcessorPlugin<SelectionManager>>())//Potential performance issue
                 {
                     Debug.Log(processor.GetPlugin());
                     if (processor.GetPlugin() != null)

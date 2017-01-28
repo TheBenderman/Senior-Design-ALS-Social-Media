@@ -1,4 +1,5 @@
 ﻿using Connectome.Core.Int;
+using Connectome.Core.Interface;
 using Connectome.Core.Template;
 using Connectome.Emotiv.Interface;
 using System;
@@ -8,11 +9,21 @@ using System.Text;
 
 namespace Connectome.Core.Implementation
 {
-    class RefreshProcessee : Processee<Timeline<IEmotivState>>
+    /// <summary>
+    /// The processee that checks when to refresh the timer
+    /// </summary>
+    public class RefreshProcessee : Processee<ITimeline<IEmotivState>>
     {
-        protected override bool IsFulfilled(Timeline<IEmotivState> timeline)
+        #region Override Methods
+        /// <summary>
+        /// Use the timeline to determine if the user has "pushed" enough to indicate they want to try and click
+        /// </summary>
+        /// <param name="timeline"></param>
+        /// <returns></returns>
+        protected override bool IsFulfilled(ITimeline<IEmotivState> timeline)
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
 }

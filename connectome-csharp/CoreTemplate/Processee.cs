@@ -7,7 +7,7 @@ using System.Text;
 namespace Connectome.Core.Template
 {
     /// <summary>
-    /// Defines a processor
+    /// Defines a processee, which is simply a process that does not have children.
     /// </summary>
     public abstract class Processee<T> : IProcessable<T>, IExecutable<T>
     {
@@ -31,9 +31,12 @@ namespace Connectome.Core.Template
         /// </summary>
         public event Action<T> OnExecute;
         #endregion
-        #region Private Methods
-        #endregion
         #region Abstract
+        /// <summary>
+        /// The criteria for determining if this process has been successful.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
         protected abstract bool IsFulfilled(T t);
         #endregion
     }

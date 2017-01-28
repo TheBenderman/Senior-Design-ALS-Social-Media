@@ -6,7 +6,7 @@ using System.Text;
 namespace Connectome.Core.Interface
 {
     /// <summary>
-    /// Defines an object that processes.
+    /// The interface for any object that goes through a process
     /// </summary>
     public interface IProcessable<T>
     {
