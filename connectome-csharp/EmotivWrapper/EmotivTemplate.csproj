@@ -41,11 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EmotivDevice.cs" />
-    <Compile Include="EmotivProcessor.cs" />
     <Compile Include="EmotivReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CoreInterface\CoreInterface.csproj">
+      <Project>{0892C23C-2CBE-4590-BBF2-F0979B360F1A}</Project>
+      <Name>CoreInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetEmotivSDK\DotNetEmotivSDK.csproj">
       <Project>{D3337309-9682-425E-8EDC-2ECFACF79565}</Project>
       <Name>DotNetEmotivSDK</Name>

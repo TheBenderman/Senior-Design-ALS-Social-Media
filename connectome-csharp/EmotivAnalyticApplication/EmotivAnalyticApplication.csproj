@@ -81,6 +81,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CoreInterface\CoreInterface.csproj">
+      <Project>{0892C23C-2CBE-4590-BBF2-F0979B360F1A}</Project>
+      <Name>CoreInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EmotivImpl\EmotivImplementation.csproj">
       <Project>{86f68af7-f66c-47ba-931b-6fd5d5c89de2}</Project>
       <Name>EmotivImplementation</Name>

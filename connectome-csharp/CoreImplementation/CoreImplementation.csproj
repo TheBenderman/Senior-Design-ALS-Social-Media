@@ -42,7 +42,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClickProcessee.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RefreshProcessee.cs" />
+    <Compile Include="TimelineProcessor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoreCommon\CoreCommon.csproj">
+      <Project>{222C9344-8CFB-4157-AF2F-6A340A0B373C}</Project>
+      <Name>CoreCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CoreInterface\CoreInterface.csproj">
+      <Project>{0892C23C-2CBE-4590-BBF2-F0979B360F1A}</Project>
+      <Name>CoreInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CoreTemplate\CoreTemplate.csproj">
+      <Project>{219FD18E-DBD6-4BED-B337-F77753A86770}</Project>
+      <Name>CoreTemplate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EmotivWrapperInterface\EmotivInterface.csproj">
+      <Project>{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}</Project>
+      <Name>EmotivInterface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

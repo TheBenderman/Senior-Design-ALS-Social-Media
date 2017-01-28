@@ -1,4 +1,5 @@
-﻿using Connectome.Emotiv.Template;
+﻿using Connectome.Emotiv.Interface;
+using Connectome.Emotiv.Template;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +25,7 @@ namespace Connectome.Unity.Common
         /// <summary>
         /// The list of processors attached to the selection manager.
         /// </summary>
-        public ProcessorPlugin[] ProcessorList;
+        public GameObject ProcessorList;
         /// <summary>
         /// Gets the button of the currently selected object.
         /// </summary>
@@ -34,6 +35,16 @@ namespace Connectome.Unity.Common
         /// </summary>
         [Range(0.0f, 10.0f)]
         public float ProcessorWaitTime;
+        /// <summary>
+        /// The bar that will fill in to indicate when 
+        /// the current selection will be clicked.
+        /// </summary>
+        public Slider ProgressBar;
+        /// <summary>
+        /// Used to get or set the fill value of the ProgressBar.
+        /// </summary>
+        public float ProgressBarValue { get { return ProgressBar.value; } set { ProgressBar.value = value; } }
+        public Button DisplayText;//JUST FOR TESTING PURPOSES
         #endregion
         #region Private attributes
         /// <summary>
@@ -70,6 +81,11 @@ namespace Connectome.Unity.Common
         {
             CurrentSelection.onClick.Invoke();
         }
+
+        public void ResetBar()
+        {
+            ProgressBarValue = 0;
+        }
         #endregion
         #region Private methods
         /// <summary>
@@ -80,19 +96,9 @@ namespace Connectome.Unity.Common
         private void ChangeSelection(int index)
         {
             SelectionList[index].GetComponent<Button>().Select();
+            ResetProgressBar();
             Debug.Log("The selected element = " + SelectionList[index].name);
         }
-
-        /// <summary>
-        /// Unity's built-in Start method.
-        /// Start the coroutine to check the attached processors
-        /// </summary>
-        private void Start()
-        {
-            ChangeSelection(SelectedIndex);//When the scene loads the first button will be selected
-            StartCoroutine(CheckProcessors());
-        }
-
         /// <summary>
         /// Unity's built-in Update method.
         /// Keep track of the application's time, and
@@ -109,6 +115,15 @@ namespace Connectome.Unity.Common
         }
 
         /// <summary>
+        /// Unity's built-in OnEnable method.
+        /// Start the coroutine to check the attached processors
+        /// </summary>
+        private void OnEnable()
+        {
+            ChangeSelection(SelectedIndex);
+            StartCoroutine(CheckProcessors());
+        }
+        /// <summary>
         /// Sets the current wait time back to 0.
         /// Can be used to refresh the waiting time when the user
         /// tries to select an option.
@@ -117,14 +132,30 @@ namespace Connectome.Unity.Common
         {
             CurrentWait = 0;
         }
-
+        /// <summary>
+        /// Set the ProgressBar back to 0
+        /// </summary>
+        private void ResetProgressBar()
+        {
+            ProgressBarValue = 0;
+            ProgressBar.gameObject.SetActive(false);
+            DisplayText.gameObject.SetActive(false);
+        }
+        /// <summary>
+        /// Go through each processor and check progress
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator CheckProcessors()
         {
             while (true)//For now
             {
-                foreach(ProcessorPlugin processor in ProcessorList)
+                foreach (ProcessorPlugin processor in ProcessorList.GetComponentsInChildren<ProcessorPlugin>())//Potential performance issue
                 {
-                    processor.CheckProgress();
+                    Debug.Log(processor.GetPlugin());
+                    if (processor.GetPlugin() != null)
+                    {
+                        processor.GetPlugin().Process(this);
+                    }
                 }
                 yield return new WaitForSeconds(ProcessorWaitTime);
             }

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EmotivCommon</RootNamespace>
     <AssemblyName>EmotivCommon</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +45,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CoreInterface\CoreInterface.csproj">
+      <Project>{0892C23C-2CBE-4590-BBF2-F0979B360F1A}</Project>
+      <Name>CoreInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EmotivWrapperInterface\EmotivInterface.csproj">
       <Project>{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}</Project>
       <Name>EmotivInterface</Name>

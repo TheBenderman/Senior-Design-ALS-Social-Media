@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Connectome.Core.Interface
 {
-    public interface IExecutable
+    public interface IExecutable<T>
     {
-        event Action OnExecute; 
+        event Action<T> OnExecute; 
     }
 }

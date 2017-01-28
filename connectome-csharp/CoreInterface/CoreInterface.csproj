@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IEmotivProcessor.cs" />
     <Compile Include="IExecutable.cs" />
     <Compile Include="ITime.cs" />
     <Compile Include="ITimeline.cs" />

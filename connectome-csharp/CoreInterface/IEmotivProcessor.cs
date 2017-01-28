@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Connectome.Emotiv.Interface
+namespace Connectome.Core.Interface
 {
     /// <summary>
-    /// Defines an Emotiv Processor
+    /// Defines an object that processes.
     /// </summary>
-    public interface IEmotivProcessor
+    public interface IProcessable<T>
     {
         #region Methods
         /// <summary>
         /// Check if the connected process has been completed.
         /// </summary>
-        void CheckProgress();
+        bool Process(T t);
         #endregion
     }
 }

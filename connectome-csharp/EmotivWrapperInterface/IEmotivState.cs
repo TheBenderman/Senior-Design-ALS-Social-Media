@@ -1,4 +1,5 @@
-﻿using Connectome.Emotiv.Enum;
+﻿using Connectome.Core.Interface;
+using Connectome.Emotiv.Enum;
 
 namespace Connectome.Emotiv.Interface
 {
@@ -6,7 +7,7 @@ namespace Connectome.Emotiv.Interface
     /// <summary>
     /// State to be read from device. 
     /// </summary>
-    public interface IEmotivState
+    public interface IEmotivState : ITime
     {
         /// <summary>
         /// Command.
@@ -16,9 +17,5 @@ namespace Connectome.Emotiv.Interface
         /// Power 0.0 to 1.0.
         /// </summary>
         float Power { get; }
-        /// <summary>
-        /// Time in ms in which the state was read. 
-        /// </summary>
-        long Time { get; }
     }
 }
