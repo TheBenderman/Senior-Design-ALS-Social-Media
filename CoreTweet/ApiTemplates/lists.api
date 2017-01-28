@@ -1,0 +1,181 @@
+#namespace Lists
+#description Provides a set of methods for the wrapper of GET/POST lists.
+
+endpoint Listed<List> List : Get lists/list
+{
+    description
+    {
+        Returns all lists the authenticating or specified user subscribes to, including their own.
+    }
+    returns
+    {
+        The lists.
+    }
+    params
+    {
+        either
+        either long user_id
+        either string screen_name
+        optional bool reverse
+    }
+}
+
+endpoint Cursored<List> Memberships : Get lists/memberships
+{
+    description
+    {
+        Returns the lists the specified user has been added to.
+    }
+    returns
+    {
+        The lists.
+    }
+    params
+    {
+        either
+        either long user_id
+        either string screen_name
+        optional int count
+        optional long cursor
+        optional bool filter_to_owned_lists
+    }
+}
+
+endpoint Cursored<List> Ownerships : Get lists/ownerships
+{
+    description
+    {
+        Returns the lists owned by the specified Twitter user.
+    }
+    returns
+    {
+        The lists.
+    }
+    params
+    {
+        either
+        either long user_id
+        either string screen_name
+        optional int count
+        optional long cursor
+    }
+}
+
+endpoint ListResponse Show : Get lists/show
+{
+    description
+    {
+        Returns the specified list.
+    }
+    returns
+    {
+        The list.
+    }
+    params
+    {
+        either long list_id
+        either string slug, string owner_screen_name
+        either string slug, long owner_id
+    }
+}
+
+endpoint Cursored<List> Subscriptions : Get lists/subscriptions
+{
+    description
+    {
+        Obtain a collection of the lists the specified user is subscribed to.
+    }
+    returns
+    {
+        The lists.
+    }
+    params
+    {
+        either long user_id
+        either string screen_name
+        optional int count
+        optional long cursor
+    }
+}
+
+endpoint Listed<Status> Statuses : Get lists/statuses
+{
+    description
+    {
+        Returns a timeline of tweets authored by members of the specified list.
+    }
+    returns
+    {
+        The statuses.
+    }
+    params
+    {
+        either long list_id
+        either string slug, string owner_screen_name
+        either string slug, long owner_id
+        optional long since_id
+        optional long max_id
+        optional int count
+        optional bool include_entities
+        optional bool include_rts
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint ListResponse Create : Post lists/create
+{
+    description
+    {
+        Creates a new list for the authenticated user.
+    }
+    returns
+    {
+        The list.
+    }
+    params
+    {
+        required string name
+        optional string mode
+        optional string description
+    }
+}
+
+endpoint ListResponse Destroy : Post lists/destroy
+{
+    description
+    {
+        Deletes the specified list.
+    }
+    returns
+    {
+        The destroyed list.
+    }
+    params
+    {
+        either long list_id
+        either string slug, string owner_screen_name
+        either string slug, long owner_id
+    }
+}
+
+endpoint ListResponse Update : Post lists/update
+{
+    description
+    {
+        Updates the specified list.
+    }
+    returns
+    {
+        The list.
+    }
+    params
+    {
+        either long list_id
+        either string slug, string owner_screen_name
+        either string slug, long owner_id
+        optional string name
+        optional string mode
+        optional string description
+    }
+}

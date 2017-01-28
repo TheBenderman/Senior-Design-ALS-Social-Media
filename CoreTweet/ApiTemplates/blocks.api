@@ -1,0 +1,79 @@
+#namespace Blocks
+#description Provides a set of methods for the wrapper of GET/POST blocks.
+
+endpoint Cursored<long> Ids : Get blocks/ids
+{
+    description
+    {
+        Returns an array of numeric user ids the authenticating user is blocking.
+    }
+    params
+    {
+        semi-optional long cursor
+    }
+    returns
+    {
+        IDs.
+    }
+}
+endpoint Cursored<User> List : Get blocks/list
+{
+    description
+    {
+        Returns a collection of user objects that the authenticating user is blocking.
+    }
+    params
+    {
+        semi-optional long cursor
+        optional bool include_entities
+        optional bool skip_status
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+    returns
+    {
+        The users.
+    }
+}
+
+endpoint UserResponse Create : Post blocks/create
+{
+    description
+    {
+        Blocks the specified user from following the authenticating user.
+    }
+    params
+    {
+        either string screen_name
+        either long user_id
+        optional bool include_entities
+        optional bool skip_status
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+    returns
+    {
+        The user object.
+    }
+}
+
+endpoint UserResponse Destroy : Post blocks/destroy
+{
+    description
+    {
+        Un-blocks the user specified in the ID parameter for the authenticating user.
+    }
+    params
+    {
+        either string screen_name
+        either long user_id
+        optional bool include_entities
+        optional bool skip_status
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+    returns
+    {
+        The user object.
+    }
+}

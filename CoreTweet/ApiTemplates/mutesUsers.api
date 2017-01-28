@@ -1,0 +1,76 @@
+#namespace MutesUsers
+#description Provides a set of methods for the wrapper of GET/POST mutes/users.
+
+endpoint Cursored<long> Ids : Get mutes/users/ids
+{
+    description
+    {
+        Returns an array of numeric user ids the authenticating user has muted.
+    }
+    returns
+    {
+        The users.
+    }
+    params
+    {
+        optional long cursor
+    }
+}
+
+endpoint Cursored<User> List : Get mutes/users/list
+{
+    description
+    {
+        Returns an array of user objects the authenticating user has muted.
+    }
+    returns
+    {
+        The users.
+    }
+    params
+    {
+        optional long cursor
+        optional bool include_entities
+        optional bool skip_status
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint UserResponse Create : Post mutes/users/create
+{
+    description
+    {
+        Mutes the user specified in the ID parameter for the authenticating user.
+    }
+    returns
+    {
+        The muted user.
+    }
+    params
+    {
+        either string screen_name
+        either long user_id
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint UserResponse Destroy : Post mutes/users/destroy
+{
+    description
+    {
+        Un-mutes the user specified in the ID parameter for the authenticating user.
+    }
+    returns
+    {
+        The unmuted user.
+    }
+    params
+    {
+        either string screen_name
+        either long user_id
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}

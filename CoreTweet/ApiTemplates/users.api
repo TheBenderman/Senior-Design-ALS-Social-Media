@@ -1,0 +1,190 @@
+#namespace Users
+#description Provides a set of methods for the wrapper of GET/POST users.
+
+endpoint Listed<User> Contributees : Get users/contributees
+{
+    description
+    {
+        Returns a collection of users that the specified user can "contribute" to.
+    }
+    returns
+    {
+        The users.
+    }
+    params
+    {
+        either long user_id
+        either string screen_name
+        optional bool include_entities
+        optional bool skip_status
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint Listed<User> Contributors : Get users/contributors
+{
+    description
+    {
+        Returns a collection of users who can contribute to the specified account.
+    }
+    returns
+    {
+        The users.
+    }
+    params
+    {
+        either long user_id
+        either string screen_name
+        optional bool include_entities
+        optional bool skip_status
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint Listed<User> Lookup : Get users/lookup
+{
+    description
+    {
+        Returns fully-hydrated user objects for up to 100 users per request, as specified by comma-separated values passed to the user_id and/or screen_name parameters.
+    }
+    returns
+    {
+        The users.
+    }
+    params
+    {
+        either IEnumerable<long> user_id
+        either IEnumerable<string> screen_name
+        optional bool include_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint ProfileBannerSizes ProfileBanner : Get users/profile_banner
+{
+    description
+    {
+        Returns the size of the specified user's profile banner.
+    }
+    returns
+    {
+        The sizes.
+    }
+    params
+    {
+        either long user_id
+        either string screen_name
+    }
+}
+
+endpoint Listed<User> Search : Get users/search
+{
+    description
+    {
+        Provides a simple, relevance-based search interface to public user accounts on Twitter.
+    }
+    returns
+    {
+        The users.
+    }
+    params
+    {
+        required string q
+        optional int page
+        optional int count
+        optional bool include_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint UserResponse Show : Get users/show
+{
+    description
+    {
+        Returns a variety of information about the user specified by the required user_id or screen_name parameter.
+    }
+    returns
+    {
+        The user.
+    }
+    params
+    {
+        either long user_id
+        either string screen_name
+        optional bool include_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint Listed<Category> Suggestions : Get users/suggestions
+{
+    description
+    {
+        Returns the list of suggested user categories.
+    }
+    returns
+    {
+        The categories.
+    }
+    params
+    {
+        optional string lang
+    }
+}
+
+endpoint CategoryResponse Suggestion : Get users/suggestions/{slug}
+{
+    description
+    {
+        Access the users in a given category of the Twitter suggested user list.
+    }
+    returns
+    {
+        The category.
+    }
+    params
+    {
+        required string slug
+        optional string lang
+    }
+}
+
+endpoint Listed<User> SuggestedMembers : Get users/suggestions/{slug}/members
+{
+    description
+    {
+        Access the users in a given category of the Twitter suggested user list.
+    }
+    returns
+    {
+        The users.
+    }
+    params
+    {
+        required string slug
+    }
+}
+
+endpoint UserResponse ReportSpam : Post users/report_spam
+{
+    description
+    {
+        Report the specified user as a spam account to Twitter.
+    }
+    returns
+    {
+        The user.
+    }
+    params
+    {
+        either string screen_name
+        either long user_id
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}

@@ -1,0 +1,97 @@
+#namespace DirectMessages
+#description Provides a set of methods for the wrapper of GET/POST direct_messages.
+
+endpoint Listed<DirectMessage> Received : Get direct_messages
+{
+    description
+    {
+        Returns the most recent direct messages sent to the authenticating user.
+    }
+    params
+    {
+        optional long since_id
+        optional long max_id
+        optional int count
+        optional int page
+        optional bool full_text
+        optional bool include_entities
+    }
+    returns
+    {
+        The direct messages.
+    }
+}
+
+endpoint Listed<DirectMessage> Sent : Get direct_messages/sent
+{
+    description
+    {
+        Returns the most recent direct messages sent by the authenticating user.
+    }
+    params
+    {
+        optional long since_id
+        optional long max_id
+        optional int count
+        optional int page
+        optional bool full_text
+        optional bool include_entities
+    }
+    returns
+    {
+        The direct messages.
+    }
+}
+
+endpoint DirectMessageResponse Show : Get direct_messages/show
+{
+    description
+    {
+        Returns a single direct message, specified by an id parameter.
+    }
+    params
+    {
+        required long id 
+        optional bool full_text
+    }
+    returns
+    {
+        The direct message.
+    }
+}
+
+endpoint DirectMessageResponse New : Post direct_messages/new
+{
+    description
+    {
+        Sends a new direct message to the specified user from the authenticating user.
+    }
+    params
+    {
+        either long user_id
+        either string screen_name
+        required string text 
+    }
+    returns
+    {
+        The direct message.
+    }
+}
+
+
+endpoint DirectMessageResponse Destroy : Post direct_messages/destroy
+{
+    description
+    {
+        Destroys the direct message specified in the required ID parameter.
+    }
+    params
+    {
+        required long id
+        optional bool include_entities 
+    }
+    returns
+    {
+        The direct message.
+    }
+}

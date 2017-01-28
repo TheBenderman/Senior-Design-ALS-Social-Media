@@ -7,7 +7,7 @@ namespace Connectome.Twitter.API
 {
     class Program
     {
-        /*
+        
         static int Main (string[] args)
         {
             TwitterAPI api = TwitterAPI.Instance;
@@ -19,6 +19,6 @@ namespace Connectome.Twitter.API
             api.printHomeTimeline();
 
             return 0;
-        }*/
+        }
     }
 }
