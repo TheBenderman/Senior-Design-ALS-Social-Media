@@ -18,7 +18,17 @@ public class TwitterController : MonoBehaviour {
 
     #region Twitter Home Timeline Members
     public GameObject homeTimeLineObjects;
-    public Text homeTimeLineText;
+    public Image profilePic;
+    public Text realName;
+    public Text twitterHandle;
+    public Text timeStamp;
+    public Text bodyText;
+    public Button lastTweetButton;
+    public Button favoriteButton;
+    public Button retweetButton;
+    public Button replyButton;
+    public Button privateMessageButton;
+    public Button nextTweetButton;
     #endregion
 
     private static TwitterAPI api;
@@ -63,8 +73,6 @@ public class TwitterController : MonoBehaviour {
     {
         homeTimeLineObjects.SetActive(true);
         loginObjects.SetActive(false);
-
-        homeTimeLineText.text = api.getTop5HomeTimeLineTweets();
     }
 	
 	// Update is called once per frame
