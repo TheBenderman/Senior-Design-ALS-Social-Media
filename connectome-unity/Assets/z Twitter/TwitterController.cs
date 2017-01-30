@@ -106,11 +106,7 @@ public class TwitterController : MonoBehaviour {
 	{
 		twitterHandle.text = HomeTimeLine [index].User.ScreenName;
 		realName.text = HomeTimeLine [index].User.Name;
-		bodyText.text = HomeTimeLine [index].Text;
-
-		if (currentTweet % 4 == 0) {
-			Debug.Log ("This is a BackButton");
-		}
+        bodyText.text = HomeTimeLine[index].Text;
 
 		StartCoroutine (setProfilePic (HomeTimeLine [index].User.ProfileImageUrl));
 	}
@@ -129,10 +125,10 @@ public class TwitterController : MonoBehaviour {
 		if (currentTweet < HomeTimeLine.Count - 1) {
 			currentTweet += 1;
 		} else {
+            // SHOULD HAVE SOME ANIMATION HERE SHOWING THAT IT IS BEING REFRESHED
 			HomeTimeLine = api.getHomeTimeLine ();
 		}
 
-		Debug.Log ("Next: " + currentTweet);
 		setTweet (currentTweet);
 	}
 
