@@ -27,6 +27,7 @@ public class TwitterController : MonoBehaviour {
     public Text timeStamp;
     public Text bodyText;
     public Button lastTweetButton;
+    public Button homeButton;
     public Button favoriteButton;
     public Button retweetButton;
     public Button replyButton;
@@ -34,6 +35,15 @@ public class TwitterController : MonoBehaviour {
     public Button nextTweetButton;
 	private List<Status> HomeTimeLine;
 	private int currentTweet = 0;
+    #endregion
+
+    #region Twitter Home Members
+    public GameObject homeObjects;
+    public Button timelineButton;
+    public Button profileButton;
+    public Button messagesButton;
+    public Button settingsButton;
+    public Button searchButton;
     #endregion
 
     private static TwitterAPI api;
@@ -44,6 +54,7 @@ public class TwitterController : MonoBehaviour {
             api = TwitterAPI.Instance;
 
         homeTimeLineObjects.SetActive(false);
+        homeObjects.SetActive(false);
         loginObjects.SetActive(true);
 
         authenticationURL.text = "The authorization URL has been copied to your clipboard! Please visit this url to authenticate twitter.";
@@ -66,17 +77,27 @@ public class TwitterController : MonoBehaviour {
         }
 
 		if (api.enterPinCode (pinCode)) {
-			addHomeTimeLine();
+            //addHomeTimeLine();
+            navigateToTwitterHome();
 		} else {
 			errorMessage.text = "Please input a value for the pin code!";
 		}
 
     }
 
+    public void navigateToTwitterHome()
+    {
+        homeTimeLineObjects.SetActive(false);
+        homeObjects.SetActive(true);
+        loginObjects.SetActive(false);
+    }
+
     public void addHomeTimeLine()
     {
         homeTimeLineObjects.SetActive(true);
         loginObjects.SetActive(false);
+        homeObjects.SetActive(false);
+
 		HomeTimeLine = api.getHomeTimeLine ();
 		setTweet (currentTweet);
     }
