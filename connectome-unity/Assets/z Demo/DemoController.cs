@@ -7,6 +7,7 @@ using System.Collections;
 using Connectome.Emotiv.Enum;
 using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Interface;
+using Connectome.Emotiv.Common;
 
 namespace Connectome.Unity.Demo
 {

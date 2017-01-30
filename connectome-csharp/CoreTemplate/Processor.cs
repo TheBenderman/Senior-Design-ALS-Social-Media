@@ -10,24 +10,24 @@ namespace Connectome.Core.Template
     /// A processor is a process that has children. The children can be processors or processees.
     /// Processors use type T to determine if they are successful, and push Type C to their children.
     /// </summary>
-    public abstract class Processor<T,C> : IProcessable<T> {
+    public abstract class Processor<T,A> : IProcessable<T> {
         #region Constructor
-        public Processor(C parameter)
+        public Processor(A argument)
         {
-            c = parameter;
+            Argument = argument;
         }
         #endregion
         #region Public Attributes
         /// <summary>
         /// The stored obj for the children to process.
         /// </summary>
-        public C c;
+        public A Argument;
         #endregion
         #region Abstract Methods
         /// <summary>
         /// Defines the children of this processor
         /// </summary>
-        public abstract IProcessable<C>[] Children { get; set; }
+        public abstract IProcessable<A>[] Children { get; set; }
         #endregion
         #region IEmotivProcessor Public Methods
         /// <summary>
@@ -38,7 +38,7 @@ namespace Connectome.Core.Template
             bool suc = false; 
             for (int i = 0; i < Children.Length; i++)
             {
-                if (Children[i].Process(this.c))
+                if (Children[i].Process(this.Argument))
                 {
                     suc = true;
                     OnChildExecute?.Invoke(t, i);

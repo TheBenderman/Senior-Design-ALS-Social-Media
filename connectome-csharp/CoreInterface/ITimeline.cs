@@ -9,22 +9,23 @@ namespace Connectome.Core.Interface
     /// Epic data structore 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface ITimeline<T> where T : ITime 
+    public interface ITimeline<T> : IEnumerable<T> where T : ITime
     {
+        #region Property
         long Duration { get; }
-
-        T this[long time, long tme] {set;get;}
-        T this[long time] {set;get;}
-
+        #endregion
+        #region Indexer
+        T this[long time] {get;}
+        IEnumerable<T> this[long time, long tme] {get;}
+        #endregion
+        #region Methods
         void Register(T t);
         void Register(IEnumerable<T> t);
-
-        T Get(int i);
-        IEnumerable<T> GetInterval(int begin, int end);
-
+        T Get(long i);
+        IEnumerable<T> GetInterval(long begin, long end);
         T Earliest();
         T Latest();
-
-        void NormalizeTime(); 
+        void NormalizeTime();
+        #endregion
     }
 }

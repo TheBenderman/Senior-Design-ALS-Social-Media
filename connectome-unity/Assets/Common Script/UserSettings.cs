@@ -73,7 +73,11 @@ namespace Connectome.Unity.Common
         /// <summary>
         /// Device being used by user. 
         /// </summary>
-        public static IEmotivDevice Device; 
+        public static IEmotivDevice Device;
+        /// <summary>
+        /// Device being used by user. 
+        /// </summary>
+        public static IEmotivReader Reader;
         #endregion
 
         #region Social

@@ -9,7 +9,8 @@ using Connectome.Core.Template;
 /// A wrapper for the Processee
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class ProcesseePlugin<T> : ProcessorPlugin<T> {
+public class ProcesseePlugin<T> : ProcessPlugin<T>
+{
     #region Public Attributes
     public UnityEvent OnExecute;
     #endregion
@@ -19,14 +20,12 @@ public class ProcesseePlugin<T> : ProcessorPlugin<T> {
     #region Overridden Methods
     public override IProcessable<T> GetPlugin()
     {
-        if (p is Processee<T> && !EventLoaded)
+        if (Process is Processee<T> && !EventLoaded)
         {
-            ((Processee<T>)p).OnExecute += (m) => { OnExecute.Invoke(); };
+            ((Processee<T>)Process).OnExecute += (m) => { OnExecute.Invoke(); };
             EventLoaded = true;
         }
-        return base.p; 
+        return base.Process; 
     }
     #endregion
-
-
 }

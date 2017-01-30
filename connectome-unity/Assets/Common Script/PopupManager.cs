@@ -25,7 +25,7 @@ namespace Connectome.Unity.Common
         #endregion
 
         #region Unity Built-in
-        void Start()
+        void Awake()
         {
             instence = this; 
         }
@@ -51,7 +51,7 @@ namespace Connectome.Unity.Common
             Instence.AvailableDevice = pop;
             // Closing out of the device triggers an event to reconnect back to it.
             pop.OnDisconnectAttempted += (suc, msg) => { ReconnectDevice(); Instence.AvailableDevice = null; }; 
-			UserSettings.Device = pop; 
+
             pop.transform.SetParent(Instence.transform.parent);
             pop.transform.localPosition = new Vector2(0,0); 
             return pop; 

@@ -4,6 +4,7 @@ using System.Timers;
 using Connectome.Emotiv.Interface;
 using Connectome.Emotiv.Enum;
 using Connectome.Emotiv.Template;
+using Connectome.Emotiv.Common;
 
 namespace Connectome.Emotiv.Implementation
 {

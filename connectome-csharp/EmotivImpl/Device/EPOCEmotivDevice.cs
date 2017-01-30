@@ -1,4 +1,5 @@
-﻿using Connectome.Emotiv.Enum;
+﻿using Connectome.Emotiv.Common;
+using Connectome.Emotiv.Enum;
 using Connectome.Emotiv.Interface;
 using Connectome.Emotiv.Template;
 using Emotiv;

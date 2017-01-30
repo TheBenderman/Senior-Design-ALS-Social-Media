@@ -9,13 +9,13 @@ using UnityEngine.Events;
 /// A wrapper for Processors
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class ProcessorPlugin<T> : MonoBehaviour
+public class ProcessPlugin<T> : MonoBehaviour
 {
     #region Protected Attributes
     /// <summary>
     /// The Attached plugin
     /// </summary>
-    protected IProcessable<T> p;
+    protected IProcessable<T> Process;
     #endregion
     #region Public Methods
     /// <summary>
@@ -24,7 +24,7 @@ public class ProcessorPlugin<T> : MonoBehaviour
     /// <returns></returns>
     public virtual IProcessable<T> GetPlugin()
     {
-        return p;
+        return Process;
     }
 
     /// <summary>
@@ -33,7 +33,15 @@ public class ProcessorPlugin<T> : MonoBehaviour
     /// <param name="p"></param>
     public virtual void SetPlugin(IProcessable<T> p)
     {
-        this.p = p;
+        this.Process = p;
+    }
+
+    /// <summary>
+    /// Initlizes Process 
+    /// </summary>
+    public virtual void Init()
+    {
+
     }
     #endregion
 }

@@ -1,6 +1,7 @@
-﻿using Connectome.Core.Int;
+﻿
 using Connectome.Core.Interface;
 using Connectome.Core.Template;
+using Connectome.Emotiv.Event;
 using Connectome.Emotiv.Interface;
 using System;
 using System.Collections.Generic;
@@ -14,13 +15,9 @@ namespace Connectome.Core.Implementation
     /// to this processor must be of the Timeline type.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class TimelineProcessor<T> : Processor<T, ITimeline<IEmotivState>>
+    public class TimelineProcessor<T> : Processor<T, ITimeline<IEmotivState>>, IEmotivReaderTracker
     {
         #region public Attributes
-        /// <summary>
-        /// The stored timeline
-        /// </summary>
-        private ITimeline<IEmotivState> Timeline;
         /// <summary>
         /// The children processor/processees
         /// </summary>
@@ -36,6 +33,13 @@ namespace Connectome.Core.Implementation
             params IProcessable<ITimeline<IEmotivState>>[] children) : base(timeline)
         {
             Children = children;
+        }
+
+        #endregion
+        #region IEmotivReaderTracker
+        public void Track(EmotivReadArgs args)
+        {
+            Argument.Register(args.State); 
         }
         #endregion
     }

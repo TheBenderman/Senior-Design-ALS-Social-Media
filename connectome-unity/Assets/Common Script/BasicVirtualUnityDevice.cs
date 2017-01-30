@@ -6,6 +6,7 @@ using Connectome.Emotiv.Interface;
 using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Enum;
 using System;
+using Connectome.Emotiv.Common;
 
 namespace Connectome.Unity.Common
 {
@@ -47,7 +48,7 @@ namespace Connectome.Unity.Common
         {
             get
             {
-                throw new NotImplementedException();
+               return true;
             }
         }
         #endregion
@@ -118,7 +119,7 @@ namespace Connectome.Unity.Common
             }
             else
             {
-                return new EmotivState(EmotivCommandType.NEUTRAL, time);
+                return new EmotivState(EmotivCommandType.NEUTRAL, 0f,  time);
             }
         }
         #endregion

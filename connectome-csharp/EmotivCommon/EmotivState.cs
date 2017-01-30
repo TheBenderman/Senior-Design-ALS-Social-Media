@@ -1,4 +1,5 @@
 ﻿
+using Connectome.Core.Interface;
 using Connectome.Emotiv.Enum;
 using Connectome.Emotiv.Interface;
 
@@ -7,7 +8,7 @@ namespace Connectome.Emotiv.Common
     /// <summary>
     /// EmotivState that holds command, power, and time. 
     /// </summary>
-    public class EmotivState : IEmotivState
+    public class EmotivState : IEmotivState, ITime
     {
         #region Constroctor  
         /// <summary>

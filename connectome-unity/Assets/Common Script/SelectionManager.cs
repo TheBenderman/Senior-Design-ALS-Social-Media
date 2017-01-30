@@ -97,7 +97,7 @@ namespace Connectome.Unity.Common
         {
             SelectionList[index].GetComponent<Button>().Select();
             ResetProgressBar();
-            Debug.Log("The selected element = " + SelectionList[index].name);
+            //Debug.Log("The selected element = " + SelectionList[index].name);
         }
         /// <summary>
         /// Unity's built-in Update method.
@@ -120,6 +120,7 @@ namespace Connectome.Unity.Common
         /// </summary>
         private void OnEnable()
         {
+            SelectedIndex = 0; 
             ChangeSelection(SelectedIndex);
             StartCoroutine(CheckProcessors());
         }
@@ -130,6 +131,8 @@ namespace Connectome.Unity.Common
         /// </summary>
         public void ResetInterval()
         {
+            Debug.Log("Refresh");
+            SelectionList[SelectedIndex].GetComponent<Button>().Select();
             CurrentWait = 0;
         }
         /// <summary>
@@ -147,15 +150,18 @@ namespace Connectome.Unity.Common
         /// <returns></returns>
         private IEnumerator CheckProcessors()
         {
+            yield return new WaitForSeconds(1f);
+            IEnumerable<ProcessPlugin < SelectionManager >> processes =  ProcessorList.GetComponentsInChildren<ProcessPlugin<SelectionManager>>();
+            foreach (ProcessPlugin<SelectionManager> process in processes)//Potential performance issue
+            {
+                process.Init(); 
+            }
+
             while (true)//For now
             {
-                foreach (ProcessorPlugin<SelectionManager> processor in ProcessorList.GetComponentsInChildren<ProcessorPlugin<SelectionManager>>())//Potential performance issue
+                foreach (ProcessPlugin<SelectionManager> process in processes)//Potential performance issue
                 {
-                    Debug.Log(processor.GetPlugin());
-                    if (processor.GetPlugin() != null)
-                    {
-                        processor.GetPlugin().Process(this);
-                    }
+                        process.GetPlugin().Process(this);
                 }
                 yield return new WaitForSeconds(ProcessorWaitTime);
             }

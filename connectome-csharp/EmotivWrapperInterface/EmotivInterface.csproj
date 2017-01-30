@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Enum\EmotivStateType.cs" />
     <Compile Include="Event\EmotivReadArgs.cs" />
+    <Compile Include="IEmotivReaderTracker.cs" />
     <Compile Include="IEmotivState.cs" />
     <Compile Include="IEmotivReader.cs" />
     <Compile Include="IEmotivDevice.cs" />

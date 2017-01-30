@@ -3,85 +3,180 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections;
 
-namespace Connectome.Core.Int
+namespace Connectome.Core.Common
 {
-    public class Timeline<T> : ITimeline<T> where T : ITime
+    public class Timeline<T> : ITimeline<T> where T : class, ITime
     {
-        private IDictionary<long, T> Dict;
-       
+        #region Private Fields
+
+        /// <summary>
+        /// Elements
+        /// </summary>
+        private T[] E;
+
+        /// <summary>
+        /// Pointer
+        /// </summary>
+        private int P;
+
+        private object Locker; 
+
+        #endregion
+        #region Constructors
         public Timeline()
         {
-            Dict = new Dictionary<long, T>();
+            Locker = new object(); 
+            E = new T[0];
+            P = -1; 
         }
 
+        public Timeline(ITimeline<T> tl) : this()
+        {
+            //TODO o somethng
+        }
+        #endregion
+        #region ITimeline Indexer
         public T this[long time]
         {
             get
             {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
+                return Get(time); 
             }
         }
 
-        public T this[long time, long tme]
+        public IEnumerable<T> this[long from, long to]
         {
             get
             {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
+                return GetInterval(from, to); 
             }
         }
-
+        #endregion
+        #region ITimeline Properties
         public long Duration
         {
             get
             {
-                throw new NotImplementedException();
+                return E.Length; 
             }
         }
-
+        #endregion
+        #region ITimeline Methods
         public T Earliest()
         {
-            throw new NotImplementedException();
-        }
-
-        public T Get(int i)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<T> GetInterval(int begin, int end)
-        {
-            throw new NotImplementedException();
+            if(E.Length == 0)
+            {
+                return null;
+            }
+            T min = E[0];
+            for (int i = 0; i < P; i++)
+            {
+                if (E[i].Time < min.Time)
+                    min = E[i];
+            }
+            return min;
         }
 
         public T Latest()
         {
-            throw new NotImplementedException();
+            if (E.Length == 0)
+            {
+                return null;
+            }
+
+            T max = E[0]; 
+            for (int i = 0; i < P; i++)
+            {
+                if (E[i].Time > max.Time)
+                    max = E[i]; 
+            }
+            return max; 
         }
 
+        public T Get(long i)
+        {
+            return E.Where(s => s.Time == i).SingleOrDefault(); 
+        }
+    
+        public IEnumerable<T> GetInterval(long begin, long end)
+        {
+            List<T> dickbutt = new List<T>();
+
+            for (int i = 0; i < P; i++)
+            {
+                if(E[i].Time >= begin && E[i].Time < end)
+                {
+                    dickbutt.Add(E[i]); 
+                }
+            }
+
+            return dickbutt; 
+        }
         public void NormalizeTime()
         {
+            //NOPE! 
             throw new NotImplementedException();
         }
 
         public void Register(IEnumerable<T> t)
         {
-            throw new NotImplementedException();
+            foreach (var item in t)
+            {
+                Register(t); 
+            }
         }
 
         public void Register(T t)
         {
-            throw new NotImplementedException();
+            lock (Locker)
+            {
+                for (int i = 0; i < P; i++)
+                {
+                    if(E[i].Time == t.Time)
+                    {
+                        E[i] = t;
+                        return; 
+                    }
+                }
+           
+                InsureSpace();
+
+                E[P+1] = t;
+                P++; 
+            }
         }
+        #endregion
+
+        private void InsureSpace()
+        {
+            if(P+1 == E.Length)
+            {
+                T[] newList = new T[(E.Length + 1) * 2];
+
+                E.CopyTo(newList, 0);
+
+                E = newList;
+            }
+        }
+
+        #region IEnumerator
+        public IEnumerator<T> GetEnumerator()
+        {
+            for (int i = 0; i < P; i++)
+            {
+                yield return E[i]; 
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            for (int i = 0; i < P; i++)
+            {
+                yield return E[i];
+            }
+        }
+        #endregion
     }
 }
