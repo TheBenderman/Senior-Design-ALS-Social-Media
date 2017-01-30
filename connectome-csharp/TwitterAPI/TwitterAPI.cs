@@ -1,10 +1,13 @@
 ﻿using CoreTweet;
+using CoreTweet.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using Newtonsoft.Json.Linq;
 
 namespace Connectome.Twitter.API
 {
@@ -14,6 +17,8 @@ namespace Connectome.Twitter.API
         private static TwitterAPI instance;
         private OAuth.OAuthSession session;
         private Tokens tokens;
+        private int refillTweetsNumber = 3;
+        private int initialTweetsNumber = 3;
 
         public static TwitterAPI Instance
         {
@@ -86,11 +91,17 @@ namespace Connectome.Twitter.API
             tokens.Statuses.Update(new { status = tweet });
         }
 
-        public CoreTweet.Rest.Statuses getHomeTimeLine()
+        public List<Status> getHomeTimeLine()
         {
-            return tokens.Statuses;
-        }
+            List<Status> list = new List<Status>();
+            foreach (var status in tokens.Statuses.HomeTimeline(count => initialTweetsNumber)) {
+                list.Add(status);
+            }
 
+            initialTweetsNumber += refillTweetsNumber;
+            return list;
+        }
+        
         public void publishTweetWithPicture(String tweet, String picPath)
         {
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -100,10 +111,14 @@ namespace Connectome.Twitter.API
 
         public void printHomeTimeline()
         {
-            foreach(var status in tokens.Statuses.HomeTimeline(count => 50))
-            {
-                Console.WriteLine("long tweet by {0}: {1}", status.User.ScreenName, status.Text);
-            }
+            //Console.WriteLine(tokens.Statuses.HomeTimeline(count => 2).Json);
+            JArray results = JArray.Parse(tokens.Statuses.HomeTimeline(count => 3).Json);
+            Console.WriteLine(results);
+            //foreach(var status in tokens.Statuses.HomeTimeline(count => 50))
+            //{
+            //Console.WriteLine("long tweet by {0}: {1}", status.User.ScreenName, status.Text);
+            //Console.WriteLine();
+            //}
         }
 
         public string getTop5HomeTimeLineTweets()
@@ -114,7 +129,7 @@ namespace Connectome.Twitter.API
             {
                 timeLineString += "Tweet by " + status.User.ScreenName + " : " + status.Text + "\n";
                 //Console.WriteLine("long tweet by {0}: {1}", status.User.ScreenName, status.Text);
-            }
+            } 
 
             return timeLineString;
         }

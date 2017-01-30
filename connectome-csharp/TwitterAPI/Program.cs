@@ -18,6 +18,7 @@ namespace Connectome.Twitter.API
 
             api.printHomeTimeline();
 
+            while (true) { };
             return 0;
         }
     }

@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using Connectome.Twitter;
 using Connectome.Twitter.API;
+using CoreTweet;
+using CoreTweet.Core;
+using CoreTweet.Rest;
 
 public class TwitterController : MonoBehaviour {
 
@@ -29,6 +32,8 @@ public class TwitterController : MonoBehaviour {
     public Button replyButton;
     public Button privateMessageButton;
     public Button nextTweetButton;
+	private List<Status> HomeTimeLine;
+	private int currentTweet = 0;
     #endregion
 
     private static TwitterAPI api;
@@ -60,20 +65,67 @@ public class TwitterController : MonoBehaviour {
             errorMessage.text = "Please input a value for the pin code!";
         }
 
-        api.enterPinCode(pinCode);
+		if (api.enterPinCode (pinCode)) {
+			addHomeTimeLine();
+		} else {
+			errorMessage.text = "Please input a value for the pin code!";
+		}
 
-        ///
-        /// NEED TO VALIDATE THAT THE PIN CODE WAS ENTERED CORRECTLY HERE.
-        ///
-
-        addHomeTimeLine();
     }
 
     public void addHomeTimeLine()
     {
         homeTimeLineObjects.SetActive(true);
         loginObjects.SetActive(false);
+		HomeTimeLine = api.getHomeTimeLine ();
+		setTweet (currentTweet);
     }
+
+	public void setTweet(int index)
+	{
+		twitterHandle.text = HomeTimeLine [index].User.ScreenName;
+		realName.text = HomeTimeLine [index].User.Name;
+		bodyText.text = HomeTimeLine [index].Text;
+
+		if (currentTweet % 4 == 0) {
+			Debug.Log ("This is a BackButton");
+		}
+
+		StartCoroutine (setProfilePic (HomeTimeLine [index].User.ProfileImageUrl));
+	}
+
+	public IEnumerator setProfilePic(string url) {
+		WWW www = new WWW(url);
+		yield return www;
+		profilePic.sprite = Sprite.Create(
+			www.texture, 
+			new Rect(0, 0, www.texture.width, www.texture.height), 
+			new Vector2(0, 0));
+	}
+
+	public void nextTweet() {
+
+		if (currentTweet < HomeTimeLine.Count - 1) {
+			currentTweet += 1;
+		} else {
+			HomeTimeLine = api.getHomeTimeLine ();
+		}
+
+		Debug.Log ("Next: " + currentTweet);
+		setTweet (currentTweet);
+	}
+
+	public void previousTweet() {
+		if (currentTweet > 0) {
+			currentTweet--;
+		}
+		
+		setTweet (currentTweet);
+	}
+
+	public void refreshTimeline() {
+		
+	}
 	
 	// Update is called once per frame
 	void Update () {
