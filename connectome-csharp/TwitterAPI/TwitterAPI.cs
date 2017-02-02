@@ -1,8 +1,6 @@
 ﻿using CoreTweet;
-using CoreTweet.Core;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Net.Security;
@@ -13,7 +11,6 @@ namespace Connectome.Twitter.API
 {
     public class TwitterAPI
     {
-
         private static TwitterAPI instance;
         private OAuth.OAuthSession session;
         private Tokens tokens;
@@ -76,7 +73,32 @@ namespace Connectome.Twitter.API
             return null;
         }
 
-        public Boolean enterPinCode(String pinCode)
+        public string getAccessToken()
+        {
+            if (!string.IsNullOrEmpty(tokens.AccessToken))
+            {
+                return tokens.AccessToken;
+            }
+
+            return "";
+        }
+
+        public string getAccessTokenSecret()
+        {
+            if (!string.IsNullOrEmpty(tokens.AccessTokenSecret))
+            {
+                return tokens.AccessTokenSecret;
+            }
+
+            return "";
+        }
+
+        public void setTokens(string accessToken, string accessTokenSecret)
+        {
+            tokens = Tokens.Create("AeMBFSekBw8CiP19URpCeMsMy", "GhfHgUVq6i69VM1PaAQtZdnFH7eVLhlXcL9oAc6hnbnM2nOntf", accessToken, accessTokenSecret);
+        }
+
+        public Boolean enterPinCode(string pinCode)
         {
             tokens = session.GetTokens(pinCode);
 
