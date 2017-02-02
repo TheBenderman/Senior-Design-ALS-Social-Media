@@ -5,10 +5,8 @@ using UnityEngine.UI;
 
 public class KeyboardManager : MonoBehaviour {
     GameObject Keyboard;
-
 	// Use this for initialization
 	void Start () {
-		
 	}
 	
 	// Update is called once per frame
@@ -21,8 +19,14 @@ public class KeyboardManager : MonoBehaviour {
         Keyboard = Instantiate(Resources.Load(keyboardtype),GameObject.Find("Canvas").transform) as GameObject;
         GameObject.FindGameObjectWithTag("Exit").GetComponent<Button>().onClick.AddListener(() =>
         {
+            Keyboard.GetComponent<KeyboardData>().ActiveField.text = "";
             removeKeyboard();
         });
+    }
+
+    public void setActiveTextBox(InputField field)
+    {
+        Keyboard.GetComponent<KeyboardData>().ActiveField = field;
     }
 
     public void removeKeyboard()
