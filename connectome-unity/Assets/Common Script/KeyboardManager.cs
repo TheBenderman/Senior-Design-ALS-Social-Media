@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class KeyboardManager : MonoBehaviour {
     GameObject Keyboard;
+    public string KeyboardPrefabName;
 	// Use this for initialization
 	void Start () {
 	}
@@ -22,6 +24,11 @@ public class KeyboardManager : MonoBehaviour {
             Keyboard.GetComponent<KeyboardData>().ActiveField.text = "";
             removeKeyboard();
         });
+    }
+
+    public void setKeyboard()
+    {
+        setKeyboard(KeyboardPrefabName);
     }
 
     public void setActiveTextBox(InputField field)
