@@ -7,6 +7,15 @@ using UnityEngine;
 /// </summary>
 public class ConnectomeEditorTools : EditorWindow {
     /// <summary>
+    /// Create and add a Selection Manager to the scene.
+    /// </summary>
+    [MenuItem("Connectome/Add Selection Manager")]
+    static void AddSelectionManager()
+    {
+        GameObject selectionManager = GameObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefab/SelectionManager.prefab"));
+        Debug.LogWarning("Selection Manager Added. Make sure to manually set it up and place in the correct spot!");
+    }
+    /// <summary>
     /// Create a new Unity Scene and insert all common prefabs.
     /// </summary>
     [MenuItem("Connectome/Create Connectome Scene")]

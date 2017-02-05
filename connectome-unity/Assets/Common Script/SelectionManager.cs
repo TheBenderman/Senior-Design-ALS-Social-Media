@@ -3,6 +3,7 @@ using Connectome.Emotiv.Template;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Connectome.Unity.Common
@@ -22,6 +23,7 @@ namespace Connectome.Unity.Common
         /// </summary>
         [Range(0.0f, 10.0f)]
         public int WaitInterval = 2;
+        private Button button;
         /// <summary>
         /// The list of processors attached to the selection manager.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Connectome.Unity.Common
         /// <summary>
         /// Gets the button of the currently selected object.
         /// </summary>
-        public Button CurrentSelection { get { return SelectionList[SelectedIndex].GetComponent<Button>(); } }
+        public Button CurrentSelection { get { return button; } }
         /// <summary>
         /// The amount of time, in seconds, to wait before the processors are updated.
         /// </summary>
@@ -45,6 +47,8 @@ namespace Connectome.Unity.Common
         /// </summary>
         public float ProgressBarValue { get { return ProgressBar.value; } set { ProgressBar.value = value; } }
         public Button DisplayText;//JUST FOR TESTING PURPOSES
+        public UnityEvent OnSelectionChange;
+        public bool AllowSelection;
         #endregion
         #region Private attributes
         /// <summary>
@@ -57,6 +61,20 @@ namespace Connectome.Unity.Common
         private float CurrentWait = 0;
         #endregion
         #region Public methods
+        /// <summary>
+        /// Makes the selection manager start cycling through the selection list
+        /// </summary>
+        public void Activate()
+        {
+            AllowSelection = true;
+        }
+        /// <summary>
+        /// Stops the selection manager from cycling through the selection list
+        /// </summary>
+        public void Deactivate()
+        {
+            AllowSelection = false;
+        }
         /// <summary>
         /// Hilights to next selection 
         /// </summary>
@@ -95,7 +113,9 @@ namespace Connectome.Unity.Common
         /// <param name="index"></param>
         private void ChangeSelection(int index)
         {
-            SelectionList[index].GetComponent<Button>().Select();
+            button = SelectionList[SelectedIndex].GetComponent<Button>();
+            CurrentSelection.Select();
+            OnSelectionChange.Invoke();
             ResetProgressBar();
             //Debug.Log("The selected element = " + SelectionList[index].name);
         }
@@ -106,8 +126,17 @@ namespace Connectome.Unity.Common
         /// </summary>
         private void Update()
         {
+            if (AllowSelection)
+            {
+                CurrentSelection.Select();//To prevent clicks from taking focus away from the selection. Is this performance heavy?
+                UpdateSelectionWait();
+            }
+        }
+
+        private void UpdateSelectionWait()
+        {
             CurrentWait += Time.deltaTime;
-            if(CurrentWait >= WaitInterval)
+            if (CurrentWait >= WaitInterval)
             {
                 Next();
                 ResetInterval();
@@ -120,7 +149,6 @@ namespace Connectome.Unity.Common
         /// </summary>
         private void OnEnable()
         {
-            SelectedIndex = 0; 
             ChangeSelection(SelectedIndex);
             StartCoroutine(CheckProcessors());
         }
@@ -141,8 +169,8 @@ namespace Connectome.Unity.Common
         private void ResetProgressBar()
         {
             ProgressBarValue = 0;
-            ProgressBar.gameObject.SetActive(false);
-            DisplayText.gameObject.SetActive(false);
+            //ProgressBar.gameObject.SetActive(false);
+            DisplayText.gameObject.SetActive(false);//For testing
         }
         /// <summary>
         /// Go through each processor and check progress

@@ -67,6 +67,23 @@ namespace Connectome.Unity.Common
         {
             return PlayerPrefs.GetFloat(key);
         }
+        /// <summary>
+        /// Sets whether flashing is on or off
+        /// </summary>
+        /// <param name="val"></param>
+        public static void SetFlashingSetting(bool val)
+        {
+            PlayerPrefs.SetInt("UseFlashing", val ? 0 : 1);
+        }
+        /// <summary>
+        /// Gets the current flashing setting.
+        /// If it wasn't set yet, return false
+        /// </summary>
+        /// <returns></returns>
+        public static bool GetFlashingSetting()
+        {
+            return PlayerPrefs.GetInt("UseFlashing", 1) == 0;
+        }
         #endregion
 
         #region Public Attributes
