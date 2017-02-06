@@ -143,6 +143,18 @@ namespace Connectome.Twitter.API
             //}
         }
 
+
+        public List<Status> getConversation(string username, string tweetid) {
+            List<Status> list = new List<Status>();
+            foreach (var status in tokens.Search.Tweets(q => "to:"+username, since_id => tweetid, count => 100)) {
+                if (status.InReplyToStatusId.ToString().Contains(tweetid)) {
+                    list.Add(status);
+                }
+            }
+
+            return list;
+        }
+
         public string getTop5HomeTimeLineTweets()
         {
             string timeLineString = "";

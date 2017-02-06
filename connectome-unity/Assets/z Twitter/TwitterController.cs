@@ -36,6 +36,7 @@ public class TwitterController : MonoBehaviour {
     public Button nextTweetButton;
 	private List<Status> HomeTimeLine;
 	private int currentTweet = 0;
+	private int lastTweet = 0;
     #endregion
 
     #region Twitter Home Members
@@ -53,10 +54,16 @@ public class TwitterController : MonoBehaviour {
     public Image replyToProfilePic;
     public Text replyToUsername;
     public Text replyToText;
+	public Text TitleView;
     public InputField tweetText;
     public Button tweetButton;
     public Button cancelTweetButton;
     #endregion
+
+	#region Twitter States
+	public bool inTimeLine = false;
+	public bool inConversation = false;
+	#endregion
 
     private static TwitterAPI api;
 
@@ -126,6 +133,32 @@ public class TwitterController : MonoBehaviour {
         return default(T);
     }
 
+	public void navigateToConversation() 
+	{
+		inConversation = true;
+		inTimeLine = false;
+		TitleView.text = "Coversation";
+		populateConversation ();
+		// Hide all elements except those related to authentication
+		homeTimeLineObjects.SetActive(true);
+		homeObjects.SetActive(false);
+		loginObjects.SetActive(false);
+		composeTweetObjects.SetActive(false);
+	}
+
+	public void populateConversation() {
+		Status currentStatus = HomeTimeLine[currentTweet];
+		Debug.Log ("ID FOR THIS TWEET: " + currentStatus.Id.ToString());
+		List<Status> convo = api.getConversation (currentStatus.User.ScreenName, currentStatus.Id.ToString());
+		if (convo.Count > 0) {
+			HomeTimeLine = api.getConversation (currentStatus.User.ScreenName, currentStatus.Id.ToString ());
+			lastTweet = currentTweet;
+			currentTweet = 0;
+		} else {
+			Debug.Log ("No Conversation for this post");
+		}
+	}
+
     // This function navigates the user back to the user authentication page. Here the user will need to open the link that is copied to their clipboard in a browser, and then enter the PIN code shown.
     public void navigateToTwitterAuthPage()
     {
@@ -134,7 +167,6 @@ public class TwitterController : MonoBehaviour {
         homeObjects.SetActive(false);
         loginObjects.SetActive(true);
         composeTweetObjects.SetActive(false);
-
         authenticationURL.text = "The authorization URL has been copied to your clipboard! Please visit this url to authenticate twitter.";
 
         // Copy the authentication URL to the user's clipboard.
@@ -182,9 +214,25 @@ public class TwitterController : MonoBehaviour {
         composeTweetObjects.SetActive(false);
     }
 
+	public void backButton() 
+	{
+		if (inTimeLine) {
+			homeTimeLineObjects.SetActive(false);
+			homeObjects.SetActive(true);
+			loginObjects.SetActive(false);
+			composeTweetObjects.SetActive(false);
+		} else if (inConversation) {
+			addHomeTimeLine ();
+			currentTweet = lastTweet;
+		}
+	}
+
     // This function populates the user homepage.
     public void addHomeTimeLine()
     {
+		inTimeLine = true;
+		inConversation = false;
+		TitleView.text = "Timeline";
         // Set all objects to be invisible except those related to the timeline.
         homeTimeLineObjects.SetActive(true);
         loginObjects.SetActive(false);
@@ -233,7 +281,9 @@ public class TwitterController : MonoBehaviour {
 			currentTweet += 1;
 		} else {
             // SHOULD HAVE SOME ANIMATION HERE SHOWING THAT IT IS BEING REFRESHED
-			HomeTimeLine = makeTwitterAPICall(() => api.getHomeTimeLine ());
+			if (inTimeLine) {	
+				HomeTimeLine = makeTwitterAPICall (() => api.getHomeTimeLine ());
+			}
 		}
 
 		setTweet (currentTweet);
@@ -264,7 +314,7 @@ public class TwitterController : MonoBehaviour {
         Status currentStatus = HomeTimeLine[currentTweet];
 
         tweetTitle.text = "Reply to " + currentStatus.User.ScreenName;
-        setReplyToProfilePic(currentStatus.User.ProfileImageUrl);
+		StartCoroutine(setReplyToProfilePic(currentStatus.User.ProfileImageUrl));
         replyToText.text = currentStatus.Text;
         replyToUsername.text = currentStatus.User.ScreenName;
         tweetText.text = "@" + currentStatus.User.ScreenName + " ";

@@ -16,7 +16,7 @@ namespace Connectome.Twitter.API
             String pin = Console.ReadLine();
             api.enterPinCode(pin);
 
-            api.printHomeTimeline();
+            //api.getConversation();
 
             while (true) { };
             return 0;
