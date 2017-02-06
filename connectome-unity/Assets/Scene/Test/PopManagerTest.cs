@@ -1,5 +1,4 @@
-﻿using Connectome.Unity.Common;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,13 +23,13 @@ namespace Connectome.Unity.KLD
 
         public void popIt()
         {
-           var window =  PopupManager.PopUpVirtualUnityDevice(); 
+           PopupManager.PopUpVirtualUnityDevice(); 
             
         }
 
 		public void reconnectPopUp() 
 		{
-			var window = PopupManager.ReconnectDevice (); 
+			PopupManager.ReconnectDevice (); 
 		}
     }
 }

@@ -42,12 +42,10 @@
   <ItemGroup>
     <Compile Include="EmotivState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Timeline.cs" />
+    <Compile Include="TimelineCurser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CoreInterface\CoreInterface.csproj">
-      <Project>{0892C23C-2CBE-4590-BBF2-F0979B360F1A}</Project>
-      <Name>CoreInterface</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EmotivWrapperInterface\EmotivInterface.csproj">
       <Project>{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}</Project>
       <Name>EmotivInterface</Name>

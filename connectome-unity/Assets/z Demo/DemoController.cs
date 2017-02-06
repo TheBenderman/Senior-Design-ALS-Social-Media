@@ -95,7 +95,7 @@ namespace Connectome.Unity.Demo
         /// </summary>
         public void Activate()
         {
-            ValuesRead = Enumerable.Repeat(new EmotivState(EmotivCommandType.NULL, 0), Interval).ToArray();
+            ValuesRead = Enumerable.Repeat(new EmotivState(EmotivCommandType.NULL, 0, 0), Interval).ToArray();
 
             inputGenerator = InputContainer.Instence;
 
@@ -118,7 +118,7 @@ namespace Connectome.Unity.Demo
 
             if (forcedYes)
                 {
-                    ValuesRead[IntervalOffset = (IntervalOffset + 1 % Interval) % Interval] = new EmotivState(TargetCommand, PassThreshhold);
+                    ValuesRead[IntervalOffset = (IntervalOffset + 1 % Interval) % Interval] = new EmotivState(TargetCommand, PassThreshhold, 0);
                 }
                 else
                 {
@@ -217,7 +217,7 @@ namespace Connectome.Unity.Demo
         {
             Interval = (int)s.value;
 
-            ValuesRead = Enumerable.Repeat(new EmotivState(EmotivCommandType.NULL, 0f), Interval).ToArray();
+            ValuesRead = Enumerable.Repeat(new EmotivState(EmotivCommandType.NULL, 0f, 0), Interval).ToArray();
         }
 
         /// <summary>

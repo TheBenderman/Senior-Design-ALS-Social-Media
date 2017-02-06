@@ -12,7 +12,7 @@ public class ConnectomeEditorTools : EditorWindow {
     [MenuItem("Connectome/Add Selection Manager")]
     static void AddSelectionManager()
     {
-        GameObject selectionManager = GameObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefab/SelectionManager.prefab"));
+        Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefab/SelectionManager.prefab"));
         Debug.LogWarning("Selection Manager Added. Make sure to manually set it up and place in the correct spot!");
     }
     /// <summary>

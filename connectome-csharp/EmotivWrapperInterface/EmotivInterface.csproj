@@ -42,17 +42,14 @@
   <ItemGroup>
     <Compile Include="Enum\EmotivStateType.cs" />
     <Compile Include="Event\EmotivReadArgs.cs" />
+    <Compile Include="IEmotivInterpreter.cs" />
     <Compile Include="IEmotivReaderTracker.cs" />
     <Compile Include="IEmotivState.cs" />
     <Compile Include="IEmotivReader.cs" />
     <Compile Include="IEmotivDevice.cs" />
+    <Compile Include="ITime.cs" />
+    <Compile Include="ITimeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CoreInterface\CoreInterface.csproj">
-      <Project>{0892C23C-2CBE-4590-BBF2-F0979B360F1A}</Project>
-      <Name>CoreInterface</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,7 +1,6 @@
 ﻿
-using Connectome.Core.Interface;
-using Connectome.Emotiv.Enum;
 using Connectome.Emotiv.Interface;
+using Connectome.Emotiv.Enum;
 
 namespace Connectome.Emotiv.Common
 {
@@ -17,14 +16,14 @@ namespace Connectome.Emotiv.Common
         /// <param name="cmd"></param>
         /// <param name="pwr"></param>
         /// <param name="time"></param>
-        public EmotivState(EmotivCommandType cmd, float pwr, long time =0)
+        public EmotivState(EmotivCommandType cmd, float pwr, long time)
         {
             Command = cmd;
             Power = pwr;
             Time = time; 
         }
         #endregion 
-        #region Interface 
+        #region IEmotivState Interface 
         /// <summary>
         /// Command type 
         /// </summary>
@@ -33,12 +32,14 @@ namespace Connectome.Emotiv.Common
         /// State power 0.0 to 1.0 
         /// </summary>     
         public float Power { get; }
+        #endregion
+        #region ITime Interface 
         /// <summary>
         /// Time of catpured state 
         /// </summary>
         public long Time { get; }
         #endregion
-        #region Override 
+        #region Object Override 
         /// <summary>
         /// returns: "Time: {Time}, Command: {Command}, Power: {Power}"
         /// </summary>

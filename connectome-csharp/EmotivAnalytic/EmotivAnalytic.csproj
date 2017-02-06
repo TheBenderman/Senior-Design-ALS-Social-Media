@@ -49,22 +49,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CoreCommon\CoreCommon.csproj">
-      <Project>{222C9344-8CFB-4157-AF2F-6A340A0B373C}</Project>
-      <Name>CoreCommon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CoreImplementation\CoreImplementation.csproj">
-      <Project>{D5CBDF60-FA7F-4D55-B8AA-E5C391B789EF}</Project>
-      <Name>CoreImplementation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CoreInterface\CoreInterface.csproj">
-      <Project>{0892C23C-2CBE-4590-BBF2-F0979B360F1A}</Project>
-      <Name>CoreInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CoreTemplate\CoreTemplate.csproj">
-      <Project>{219FD18E-DBD6-4BED-B337-F77753A86770}</Project>
-      <Name>CoreTemplate</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotNetEmotivSDK\DotNetEmotivSDK.csproj">
       <Project>{d3337309-9682-425e-8edc-2ecfacf79565}</Project>
       <Name>DotNetEmotivSDK</Name>
