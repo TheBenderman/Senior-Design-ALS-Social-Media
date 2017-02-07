@@ -20,6 +20,18 @@ public class KeyboardData : MonoBehaviour {
         ActiveField.caretPosition = ActiveField.selectionFocusPosition;
     }
 
+    /// <summary>
+    /// Updates the text using a text component (The text displayed on the button, for example).
+    /// </summary>
+    /// <param name="buttonText"></param>
+    public void UpdateText(Text buttonText)
+    {
+        UpdateText(buttonText.text);
+    }
+
+    /// <summary>
+    /// Do we want to backspace by word or by letter?
+    /// </summary>
     public void BackspaceText()
     {
         if (ActiveField.text.Length > 0)
