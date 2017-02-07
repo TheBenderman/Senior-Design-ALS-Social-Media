@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace Connectome.Twitter.API
 {
@@ -224,5 +225,25 @@ namespace Connectome.Twitter.API
         }
 
         // Need to create a method to get the DM conversation
+        public List<DirectMessage> buildDMConversation(string sender)
+        {
+            List<DirectMessage> list = new List<DirectMessage>();
+            foreach (var dm in tokens.DirectMessages.Sent(count => 100).Where(x => x.Recipient.Equals(sender)))
+                list.Add(dm);
+
+            foreach (var dm in tokens.DirectMessages.Received(count => 100).Where(x => x.Sender.Equals(sender)))
+                list.Add(dm);
+
+            return list.OrderBy(x => x.CreatedAt).ToList();
+        }
+
+        public List<Status> search(string text)
+        {
+            List <Status> statuses = new List<Status>();
+            foreach (var status in tokens.Search.Tweets(q => text))
+                statuses.Add(status);
+
+            return statuses.OrderBy(x => x.CreatedAt).ToList();
+        }
     }
 }
