@@ -1,11 +1,13 @@
 ﻿using CoreTweet;
 using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace Connectome.Twitter.API
 {
@@ -13,10 +15,12 @@ namespace Connectome.Twitter.API
     {
         private static TwitterAPI instance;
         private OAuth.OAuthSession session;
-        private Tokens tokens;
+        private Tokens tokens; // This is where the OAuth tokens are stored
+
         private int refillTweetsNumber = 3;
         private int initialTweetsNumber = 3;
 
+        // Singleton object for the API
         public static TwitterAPI Instance
         {
             get
@@ -32,7 +36,40 @@ namespace Connectome.Twitter.API
         {
             ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 
-            session = OAuth.Authorize("AeMBFSekBw8CiP19URpCeMsMy", "GhfHgUVq6i69VM1PaAQtZdnFH7eVLhlXcL9oAc6hnbnM2nOntf");  
+            Configuration config = null;
+            try
+            {
+                // Open the config file for the dll
+                string exeConfigPath = this.GetType().Assembly.Location;
+                config = ConfigurationManager.OpenExeConfiguration(exeConfigPath);
+            }
+            catch(Exception ex)
+            {
+                // handle error
+            }
+
+            if (config != null)
+            {
+                // Grab the keys from the config file
+                string consumerKey = GetAppSetting(config, "consumerKey");
+                string consumerSecret = GetAppSetting(config, "consumerSecret");
+
+                // Store the keys for the app, these should probably be stored in a file
+                session = OAuth.Authorize(consumerKey, consumerSecret);
+            } 
+        }
+
+        // Function to grab a specific app setting from a configuration file
+        private string GetAppSetting(Configuration config, string key)
+        {
+            KeyValueConfigurationElement element = config.AppSettings.Settings[key];
+            if (element != null)
+            {
+                string value = element.Value;
+                if (!string.IsNullOrEmpty(value))
+                    return value;
+            }
+            return string.Empty;
         }
 
         // Politely ignore the below code :-)
@@ -63,16 +100,19 @@ namespace Connectome.Twitter.API
         }
         #endregion
 
+        // Return the url that the user needs to authorize twitter for the application
         public String getAuthorizationURL()
         {
+            // Make sure the user has a valid session
             if (session != null)
             {
                 return session.AuthorizeUri.ToString();
             }
 
-            return null;
+            throw new TwitterAuthException("Unable to get session for user.");
         }
 
+        // Return the access token that was generated during authentication
         public string getAccessToken()
         {
             if (!string.IsNullOrEmpty(tokens.AccessToken))
@@ -80,9 +120,10 @@ namespace Connectome.Twitter.API
                 return tokens.AccessToken;
             }
 
-            return "";
+            throw new TwitterAuthException("Unable to get the tokens for user.");
         }
 
+        // Return the access token that was generated during authentication
         public string getAccessTokenSecret()
         {
             if (!string.IsNullOrEmpty(tokens.AccessTokenSecret))
@@ -90,9 +131,10 @@ namespace Connectome.Twitter.API
                 return tokens.AccessTokenSecret;
             }
 
-            return "";
+            throw new TwitterAuthException("Unable to get the tokens for user.");
         }
 
+        // Set the tokens. Used by the able to set the tokens from a previous session
         public void setTokens(string accessToken, string accessTokenSecret)
         {
             tokens = Tokens.Create("AeMBFSekBw8CiP19URpCeMsMy", "GhfHgUVq6i69VM1PaAQtZdnFH7eVLhlXcL9oAc6hnbnM2nOntf", accessToken, accessTokenSecret);
@@ -100,19 +142,21 @@ namespace Connectome.Twitter.API
 
         public Boolean enterPinCode(string pinCode)
         {
-            tokens = session.GetTokens(pinCode);
+            tokens = session.GetTokens(pinCode); // get the oauth tokens for the entered pin code
 
             if (tokens != null)
                 return true;
             else
-                return false;
+                throw new TwitterAuthException("Unable to get the tokens for user.");
         }
 
+        // publish a tweet
         public void publishTweet(String tweet)
         {
             tokens.Statuses.Update(new { status = tweet });
         }
 
+        // Get the user's home time line
         public List<Status> getHomeTimeLine()
         {
             List<Status> list = new List<Status>();
@@ -123,26 +167,6 @@ namespace Connectome.Twitter.API
             initialTweetsNumber += refillTweetsNumber;
             return list;
         }
-        
-        public void publishTweetWithPicture(String tweet, String picPath)
-        {
-#pragma warning disable CS0618 // Type or member is obsolete
-            tokens.Statuses.UpdateWithMedia(new { status = tweet, media = new FileInfo(picPath) });
-#pragma warning restore CS0618 // Type or member is obsolete
-        }
-
-        public void printHomeTimeline()
-        {
-            //Console.WriteLine(tokens.Statuses.HomeTimeline(count => 2).Json);
-            JArray results = JArray.Parse(tokens.Statuses.HomeTimeline(count => 3).Json);
-            Console.WriteLine(results);
-            //foreach(var status in tokens.Statuses.HomeTimeline(count => 50))
-            //{
-            //Console.WriteLine("long tweet by {0}: {1}", status.User.ScreenName, status.Text);
-            //Console.WriteLine();
-            //}
-        }
-
 
         public List<Status> getConversation(string screenName, string id) {
             List<Status> list = new List<Status>();
@@ -166,6 +190,60 @@ namespace Connectome.Twitter.API
             } 
 
             return timeLineString;
+        }
+
+        public List<DirectMessage> getReceivedDMs()
+        {
+            List<DirectMessage> list = new List<DirectMessage>();
+            foreach (var dm in tokens.DirectMessages.Received(count => 100))
+            {
+                list.Add(dm);
+            }
+
+            return list;
+        }
+
+        public List<DirectMessage> getSentDMs()
+        {
+            List<DirectMessage> list = new List<DirectMessage>();
+            foreach (var dm in tokens.DirectMessages.Sent(count => 100))
+            {
+                list.Add(dm);
+            }
+
+            return list;
+        }
+
+        public DirectMessage getDM(string dmID)
+        {
+            return tokens.DirectMessages.Show(id => dmID);
+        }
+
+        public void createDM(string screenName, string reply)
+        {
+            tokens.DirectMessages.New(screen_name => screenName, text => reply);
+        }
+
+        // Need to create a method to get the DM conversation
+        public List<DirectMessage> buildDMConversation(string sender)
+        {
+            List<DirectMessage> list = new List<DirectMessage>();
+            foreach (var dm in tokens.DirectMessages.Sent(count => 100).Where(x => x.Recipient.Equals(sender)))
+                list.Add(dm);
+
+            foreach (var dm in tokens.DirectMessages.Received(count => 100).Where(x => x.Sender.Equals(sender)))
+                list.Add(dm);
+
+            return list.OrderBy(x => x.CreatedAt).ToList();
+        }
+
+        public List<Status> search(string text)
+        {
+            List <Status> statuses = new List<Status>();
+            foreach (var status in tokens.Search.Tweets(q => text))
+                statuses.Add(status);
+
+            return statuses.OrderBy(x => x.CreatedAt).ToList();
         }
     }
 }
