@@ -36,7 +36,6 @@ public class TwitterController : MonoBehaviour {
     public Button nextTweetButton;
 	private List<Status> HomeTimeLine;
 	private int currentTweet = 0;
-	private int lastTweet = 0;
     #endregion
 
     #region Twitter Home Members
@@ -58,6 +57,7 @@ public class TwitterController : MonoBehaviour {
     public InputField tweetText;
     public Button tweetButton;
     public Button cancelTweetButton;
+	public Button seeConversation;
     #endregion
 
 	#region Twitter States
@@ -135,8 +135,6 @@ public class TwitterController : MonoBehaviour {
 
 	public void navigateToConversation() 
 	{
-		inConversation = true;
-		inTimeLine = false;
 		TitleView.text = "Coversation";
 		populateConversation ();
 		// Hide all elements except those related to authentication
@@ -151,9 +149,12 @@ public class TwitterController : MonoBehaviour {
 		Debug.Log ("ID FOR THIS TWEET: " + currentStatus.Id.ToString());
 		List<Status> convo = api.getConversation (currentStatus.User.ScreenName, currentStatus.Id.ToString());
 		if (convo.Count > 0) {
-			HomeTimeLine = api.getConversation (currentStatus.User.ScreenName, currentStatus.Id.ToString ());
-			lastTweet = currentTweet;
+			HomeTimeLine = convo;
 			currentTweet = 0;
+			inConversation = true;
+			inTimeLine = false;
+			seeConversation.gameObject.SetActive (false);
+			setTweet (currentTweet);
 		} else {
 			Debug.Log ("No Conversation for this post");
 		}
@@ -223,8 +224,15 @@ public class TwitterController : MonoBehaviour {
 			composeTweetObjects.SetActive(false);
 		} else if (inConversation) {
 			addHomeTimeLine ();
-			currentTweet = lastTweet;
+			currentTweet = 0;
+			Debug.Log ("Current Tweet in Back button: " + currentTweet);
+			seeConversation.gameObject.SetActive (true);
 		}
+	}
+
+	public void cancelTweetReplyButton() {
+		homeTimeLineObjects.SetActive (true);
+		composeTweetObjects.SetActive (false);
 	}
 
     // This function populates the user homepage.
@@ -312,6 +320,7 @@ public class TwitterController : MonoBehaviour {
         composeTweetObjects.SetActive(true);
 
         Status currentStatus = HomeTimeLine[currentTweet];
+		Debug.Log ("Current in reply " + currentTweet);
 
         tweetTitle.text = "Reply to " + currentStatus.User.ScreenName;
 		StartCoroutine(setReplyToProfilePic(currentStatus.User.ProfileImageUrl));

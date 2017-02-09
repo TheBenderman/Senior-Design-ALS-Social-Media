@@ -144,10 +144,10 @@ namespace Connectome.Twitter.API
         }
 
 
-        public List<Status> getConversation(string username, string tweetid) {
+        public List<Status> getConversation(string screenName, string id) {
             List<Status> list = new List<Status>();
-            foreach (var status in tokens.Search.Tweets(q => "to:"+username, since_id => tweetid, count => 100)) {
-                if (status.InReplyToStatusId.ToString().Contains(tweetid)) {
+            foreach (var status in tokens.Search.Tweets(q => "to:"+screenName, since_id => id, count => 100)) {
+                if (status.InReplyToStatusId.ToString().Contains(id)) {
                     list.Add(status);
                 }
             }
