@@ -24,6 +24,7 @@ public class KeyboardManager : MonoBehaviour {
             Keyboard.GetComponent<KeyboardData>().ActiveField.text = "";
             removeKeyboard();
         });
+        SelectionManager.Instance.PushSelections(Keyboard.GetComponent<KeyboardData>().BaseSelections);
     }
 
     public void setKeyboard()

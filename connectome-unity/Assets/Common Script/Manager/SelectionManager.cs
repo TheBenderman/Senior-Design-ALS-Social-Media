@@ -12,12 +12,13 @@ using UnityEngine.UI;
 /// </summary>
 public class SelectionManager : MonoBehaviour
 {
+    public static SelectionManager Instance;
     #region Inspector Attrinutes
     public bool AllowSelection;
     /// <summary>
     /// Hold selectable game objects 
     /// </summary>
-    public Button[] SelectionList;
+    public SelectableObject[] SelectionList;
     /// <summary>
     /// The time, in seconds, to wait before the selection changes.
     /// </summary>
@@ -26,26 +27,13 @@ public class SelectionManager : MonoBehaviour
     
 
     public UnityEvent OnSelectionChange;
-    /// <summary>
-    /// The bar that will fill in to indicate when 
-    /// the current selection will be clicked.
-    /// </summary>
-    public Slider ProgressBar;
     #endregion
     #region Public Attributes
 
     /// <summary>
     /// The list of processors attached to the selection manager.
     /// </summary>
-    public Button CurrentSelection { get { return SelectionList[SelectedIndex]; } }
-
-    /// <summary>
-    /// Used to get or set the fill value of the ProgressBar.
-    /// </summary>
-    public float ProgressBarValue { get { return ProgressBar.value; } set { ProgressBar.value = value; } }
-
-    [HideInInspector]
-    public Button DisplayText;//JUST FOR TESTING PURPOSES
+    public SelectableObject CurrentSelection { get { return SelectionList[SelectedIndex]; } }
 
     #endregion
     #region Private Attributes
@@ -95,13 +83,15 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     public void TriggerClick()
     {
-        if(AllowSelection)
-            CurrentSelection.onClick.Invoke();
+        if (AllowSelection)
+            CurrentSelection.TriggerClick(this);
     }
 
-    public void ResetBar()
+    public void PushSelections(SelectableObject[] Selections)
     {
-        ProgressBarValue = 0;
+        SelectionList = Selections;
+        ChangeSelection(0);
+        ResetInterval();
     }
     #endregion
     #region Private Methods
@@ -115,7 +105,6 @@ public class SelectionManager : MonoBehaviour
         Select(index);
         SelectedIndex = index; 
         OnSelectionChange.Invoke();
-        ResetProgressBar();
         //Debug.Log("The selected element = " + SelectionList[index].name);
     }
    
@@ -136,7 +125,7 @@ public class SelectionManager : MonoBehaviour
     private void Select(int index)
     {
         if(AllowSelection)
-            SelectionList[SelectedIndex].Select(); 
+            SelectionList[index].Select(SelectionList[(SelectionList.Length + index - 1) % SelectionList.Length]); 
     }
 
    
@@ -150,15 +139,6 @@ public class SelectionManager : MonoBehaviour
         Select(SelectedIndex);
         CurrentWait = 0;
     }
-    /// <summary>
-    /// Set the ProgressBar back to 0
-    /// </summary>
-    private void ResetProgressBar()
-    {
-        ProgressBarValue = 0;
-        //ProgressBar.gameObject.SetActive(false);
-        DisplayText.gameObject.SetActive(false);//For testing
-    }
 
     #endregion
     #region Unity Methods
@@ -171,7 +151,7 @@ public class SelectionManager : MonoBehaviour
     {
         if (AllowSelection)
         {
-            Select(SelectedIndex);//To prevent clicks from taking focus away from the selection. Is this performance heavy?
+            //Select(SelectedIndex);//To prevent clicks from taking focus away from the selection. Is this performance heavy?
             UpdateSelectionWait();
         }
     }
@@ -186,6 +166,11 @@ public class SelectionManager : MonoBehaviour
         {
             ChangeSelection(SelectedIndex);
         }
+    }
+
+    private void Awake()
+    {
+        Instance = this;
     }
     #endregion
     #region Validation

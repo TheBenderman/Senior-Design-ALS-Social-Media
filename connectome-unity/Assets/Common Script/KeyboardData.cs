@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class KeyboardData : MonoBehaviour {
-    private KeyboardManager manager;
     public InputField ActiveField;
     public bool IsCaps;
     public int TextLimit;
+    public SelectableObject[] BaseSelections;
+
     private void Start()
     {
         ActiveField.characterLimit = TextLimit;

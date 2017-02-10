@@ -43,11 +43,11 @@ namespace Connectome.Unity.UI
         /// <summary>
         /// Holds refrence to image element. 
         /// </summary>
-        private Button button;
+        private SelectableObject TheObject;
         /// <summary>
         /// Use this to set the button to the correct colors
         /// </summary>
-        public Button CurrentButton { get { return button; } }
+        public SelectableObject CurrentButton { get { return TheObject; } }
         /// <summary>
         /// The button's current color block. Needs to be saved because we can't reference it in a single line.
         /// </summary>
@@ -92,8 +92,8 @@ namespace Connectome.Unity.UI
         /// </summary>
         public void UpdateSelection()
         {
-            button = Manager.CurrentSelection;
-            ButtonColor = CurrentButton.colors;
+            TheObject = Manager.CurrentSelection;
+            ButtonColor = CurrentButton.GetColor();
             SetColor(defaultColor);
         }
         /// <summary>
@@ -110,7 +110,7 @@ namespace Connectome.Unity.UI
         public void SetColor(Color color)
         {
             ButtonColor.highlightedColor = color;
-            CurrentButton.colors = ButtonColor;
+            //CurrentButton.colors = ButtonColor;
         }
         #endregion
         #region Coroutines

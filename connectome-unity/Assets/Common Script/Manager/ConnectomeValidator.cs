@@ -29,7 +29,7 @@ public class ConnectomeValidator : MonoBehaviour
 
         if(components.Length != 1)
         {
-            Debug.LogError("Only a sinlge " + t.FullName + " must exist. There are: " + components.Length); 
+            //Debug.LogError("Only a sinlge " + t.FullName + " must exist. There are: " + components.Length); 
         }
     }
 
