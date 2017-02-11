@@ -14,8 +14,10 @@ public class SelectableButton : SelectableObject
     /// We need to manually set this in the editor to guarantee it isn't null, due to Script Execution Order.
     /// </summary>
     public Button button;
-
-    public override void TriggerClick(SelectionManager manager)
+    /// <summary>
+    /// TriggerClick invokes the button's onClick.
+    /// </summary>
+    public override void TriggerClick()
     {
         button.onClick.Invoke();
     }

@@ -103,7 +103,7 @@ public class SelectionManager : MonoBehaviour
     public void TriggerClick()
     {
         if (AllowSelection)
-            CurrentSelection.TriggerClick(this);
+            CurrentSelection.TriggerClick();
     }
 
     /// <summary>

@@ -10,10 +10,6 @@ using UnityEngine.UI;
 public class SelectablePanel : SelectableObject
 {
     /// <summary>
-    /// The list of objects that will get pushed onto the stack when this object is selected.
-    /// </summary>
-    public SelectableObject[] SelectableList;
-    /// <summary>
     /// Used to change the color when this object is selected.
     /// </summary>
     public Image image;
@@ -43,10 +39,12 @@ public class SelectablePanel : SelectableObject
             previous.ResetColor();//We have to manually change the color back to the unselected one for Images.
         }
     }
-
-    public override void TriggerClick(SelectionManager manager)
+    /// <summary>
+    /// TriggerClick for panels directly pushes the next list onto the stack
+    /// </summary>
+    public override void TriggerClick()
     {
-        manager.PushSelections(SelectableList);
+        PushSelectableList();
     }
 
     /// <summary>
