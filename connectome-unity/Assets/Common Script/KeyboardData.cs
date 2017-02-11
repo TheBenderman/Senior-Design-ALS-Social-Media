@@ -4,15 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class KeyboardData : MonoBehaviour {
+    /// <summary>
+    /// The text field used to display the text.
+    /// </summary>
     public InputField ActiveField;
+    /// <summary>
+    /// In case we want to include this functionality.
+    /// </summary>
     public bool IsCaps;
-    public int TextLimit;
+    /// <summary>
+    /// The initial selections when the keyboard first pops up.
+    /// </summary>
     public SelectableObject[] BaseSelections;
-
-    private void Start()
-    {
-        ActiveField.characterLimit = TextLimit;
-    }
     public void UpdateText(string text)
     {
         ActiveField.ConcatToCurrentText(IsCaps ? text.ToUpper() : text);
@@ -42,5 +45,13 @@ public class KeyboardData : MonoBehaviour {
         //Having trouble with cursor not showing in the input field
         ActiveField.Select();
         ActiveField.caretPosition = ActiveField.selectionFocusPosition;
+    }
+    /// <summary>
+    /// Remove the keyboard from the scene and return to the previous selection screen.
+    /// </summary>
+    public void ExitKeyboard()
+    {
+        SelectionManager.Instance.PopSelections();
+        Destroy(this.gameObject);
     }
 }

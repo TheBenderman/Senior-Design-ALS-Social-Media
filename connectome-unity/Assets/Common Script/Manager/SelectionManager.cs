@@ -12,20 +12,39 @@ using UnityEngine.UI;
 /// </summary>
 public class SelectionManager : MonoBehaviour
 {
+    #region Static Attributes
+    /// <summary>
+    /// Static reference
+    /// </summary>
     public static SelectionManager Instance;
+    #endregion
     #region Inspector Attrinutes
     public bool AllowSelection;
     /// <summary>
-    /// Hold selectable game objects 
+    /// Hold the initial selection when this scene is started.
     /// </summary>
-    public SelectableObject[] SelectionList;
+    public SelectableObject[] BaseSelection;
+    /// <summary>
+    /// Contains all of the selections the user has gone through in this scene.
+    /// </summary>
+    public Stack<SelectableObject[]> SelectionStack;
     /// <summary>
     /// The time, in seconds, to wait before the selection changes.
     /// </summary>
     [Range(0.0f, 10.0f)]
     public int WaitInterval = 2;
-    
 
+    /// <summary>
+    /// The default color we want buttons to be(if flash is turned off)
+    /// </summary>
+    public Color DefaultSelectColor;
+    /// <summary>
+    /// The color when the object is NOT selected
+    /// </summary>
+    public Color DefaultUnselectColor;
+    /// <summary>
+    /// Any events that fire off when the selection changes.
+    /// </summary>
     public UnityEvent OnSelectionChange;
     #endregion
     #region Public Attributes
@@ -33,7 +52,7 @@ public class SelectionManager : MonoBehaviour
     /// <summary>
     /// The list of processors attached to the selection manager.
     /// </summary>
-    public SelectableObject CurrentSelection { get { return SelectionList[SelectedIndex]; } }
+    public SelectableObject CurrentSelection { get { return SelectionStack.Peek()[SelectedIndex]; } }
 
     #endregion
     #region Private Attributes
@@ -66,7 +85,7 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     public void Next()
     {
-        SelectedIndex = (SelectedIndex + 1) % SelectionList.Length;
+        SelectedIndex = (SelectedIndex + 1) % SelectionStack.Peek().Length;
         ChangeSelection(SelectedIndex);
     }
 
@@ -75,7 +94,7 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     public void Previous()
     {
-        SelectedIndex = (SelectedIndex - 1 + SelectionList.Length) % SelectionList.Length;
+        SelectedIndex = (SelectedIndex - 1 + SelectionStack.Peek().Length) % SelectionStack.Peek().Length;
         ChangeSelection(SelectedIndex);
     }
     /// <summary>
@@ -87,10 +106,25 @@ public class SelectionManager : MonoBehaviour
             CurrentSelection.TriggerClick(this);
     }
 
+    /// <summary>
+    /// Add the list of selectable objects to the current stack.
+    /// This counts as selecting, so reset the interval and reset the current selection.
+    /// </summary>
+    /// <param name="Selections"></param>
     public void PushSelections(SelectableObject[] Selections)
     {
-        SelectionList = Selections;
-        ChangeSelection(0);
+        SelectionStack.Push(Selections);
+        ChangeSelection(0);//After adding a new list of selections, start counting from the first index
+        ResetInterval();
+    }
+    /// <summary>
+    /// Remove the current selection list from the stack and go to the previous list.
+    /// This counts as selecting, so reset the interval and reset the current selection.
+    /// </summary>
+    public void PopSelections()
+    {
+        SelectionStack.Pop();
+        ChangeSelection(0);//After removing the selections, start counting from the first index
         ResetInterval();
     }
     #endregion
@@ -119,13 +153,16 @@ public class SelectionManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Selects element at index 
+    /// Selects element from the top-most selection list in the stack, at index 
     /// </summary>
     /// <param name="index"></param>
     private void Select(int index)
     {
-        if(AllowSelection)
-            SelectionList[index].Select(SelectionList[(SelectionList.Length + index - 1) % SelectionList.Length]); 
+        if (AllowSelection)
+        {
+            int CurrentSelectionLength = SelectionStack.Peek().Length;
+            SelectionStack.Peek()[index].Select(SelectionStack.Peek()[(CurrentSelectionLength + index - 1) % CurrentSelectionLength]);
+        }
     }
 
    
@@ -151,26 +188,25 @@ public class SelectionManager : MonoBehaviour
     {
         if (AllowSelection)
         {
-            //Select(SelectedIndex);//To prevent clicks from taking focus away from the selection. Is this performance heavy?
             UpdateSelectionWait();
         }
     }
-
     /// <summary>
-    /// Unity's built-in OnEnable method.
-    /// Start the coroutine to check the attached processors
+    /// Built-in Awake Method.
+    /// Used to attach the singleton instance.
     /// </summary>
-    private void OnEnable()
-    {
-        if (AllowSelection)
-        {
-            ChangeSelection(SelectedIndex);
-        }
-    }
-
     private void Awake()
     {
         Instance = this;
+    }
+    /// <summary>
+    /// Built-in Start method.
+    /// Used to initialize stack and push the base selection to it.
+    /// </summary>
+    private void Start()
+    {
+        SelectionStack = new Stack<SelectableObject[]>();
+        PushSelections(BaseSelection);
     }
     #endregion
     #region Validation
@@ -187,21 +223,21 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     private void ValidateSelectionList()
     {
-        if (SelectionList == null)
+        if (BaseSelection == null)
         {
             Debug.LogError("SelectionList cannot be null");
         }
 
-        if (SelectionList.Length == 0)
+        if (BaseSelection.Length == 0)
         {
             Debug.LogError("SelectionList cannot be empty");
         }
 
-        for (int i = 0; i < SelectionList.Length; i++)
+        for (int i = 0; i < BaseSelection.Length; i++)
         {
-            if (SelectionList[i] == null)
+            if (BaseSelection[i] == null)
             {
-                Debug.LogError("SelectionList element cannot be null. Check index " + i);
+                Debug.LogError("BaseSelection element cannot be null. Check index " + i);
             }
         }
     }

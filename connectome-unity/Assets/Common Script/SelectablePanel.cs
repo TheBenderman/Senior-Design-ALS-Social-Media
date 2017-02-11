@@ -1,31 +1,46 @@
-﻿using System;
+﻿using Connectome.Unity.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// A SelectablePanel is a SelectableObject that contains SelectableObjects.
+/// </summary>
 public class SelectablePanel : SelectableObject
 {
+    /// <summary>
+    /// The list of objects that will get pushed onto the stack when this object is selected.
+    /// </summary>
     public SelectableObject[] SelectableList;
+    /// <summary>
+    /// Used to change the color when this object is selected.
+    /// </summary>
     public Image image;
-    public Color SelectedColor;
-    public Color DefaultColor;
 
     private void Start()
     {
         image = GetComponent<Image>();
     }
-    public override ColorBlock GetColor()
+    public override Color CurrentColor
     {
-        throw new NotImplementedException();
+        get
+        {
+            return image.color;
+        }
+
+        set
+        {
+            image.color = value;
+        }
     }
 
     public override void Select(SelectableObject previous)
     {
-        image.color = new Color(SelectedColor.r, SelectedColor.g, SelectedColor.b, SelectedColor.a);
+        CurrentColor = SelectionManager.Instance.DefaultSelectColor;//Color change is handled in the Button flicker, but do it here in case.
         if(previous != null)
         {
-            previous.ResetColor();
+            previous.ResetColor();//We have to manually change the color back to the unselected one for Images.
         }
     }
 
@@ -34,8 +49,11 @@ public class SelectablePanel : SelectableObject
         manager.PushSelections(SelectableList);
     }
 
+    /// <summary>
+    /// Used for "deselecting" a panel.
+    /// </summary>
     public override void ResetColor()
     {
-        image.color = new Color(DefaultColor.r, DefaultColor.g, DefaultColor.b, DefaultColor.a);
+        image.color = SelectionManager.Instance.DefaultUnselectColor;
     }
 }

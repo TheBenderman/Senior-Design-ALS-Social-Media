@@ -16,7 +16,7 @@ public class ConnectomeValidator : MonoBehaviour
     {
         ValidateClassSingleExistence(typeof(SelectionManager));
         ValidateClassSingleExistence(typeof(EmotivDeviceManager));
-        //ValidateClassSingleExistence(typeof(KeyboardManager));
+        ValidateClassSingleExistence(typeof(KeyboardManager));
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class ConnectomeValidator : MonoBehaviour
 
         if(components.Length != 1)
         {
-            //Debug.LogError("Only a sinlge " + t.FullName + " must exist. There are: " + components.Length); 
+            Debug.LogError("Only a sinlge " + t.FullName + " must exist. There are: " + components.Length); 
         }
     }
 

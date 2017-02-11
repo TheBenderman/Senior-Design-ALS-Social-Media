@@ -7,7 +7,8 @@ using UnityEngine.UI;
 namespace Connectome.Unity.UI
 {
     /// <summary>
-    /// Makes a button flash different colors.
+    /// Makes a selection flash different colors.
+    /// TODO: possibly merge into SelectionManager? or Change name to something like SelectionColorHandler?
     /// </summary>
     public class ButtonFlicker : MonoBehaviour
     {
@@ -23,11 +24,6 @@ namespace Connectome.Unity.UI
         [Tooltip("Flicking interval in millisecond")]
         [Range(0, 1000)]
         public int Interval = 0;
-        /// <summary>
-        /// The Associated Selection Manager.
-        /// Used to get the current button.
-        /// </summary>
-        public SelectionManager Manager;
 
         #endregion
         #region Private attributes
@@ -39,30 +35,18 @@ namespace Connectome.Unity.UI
         /// Checks if we called the coroutine yet.
         /// </summary>
         private bool FlickActivated = false;
-
-        /// <summary>
-        /// Holds refrence to image element. 
-        /// </summary>
-        private SelectableObject TheObject;
-        /// <summary>
-        /// Use this to set the button to the correct colors
-        /// </summary>
-        public SelectableObject CurrentButton { get { return TheObject; } }
-        /// <summary>
-        /// The button's current color block. Needs to be saved because we can't reference it in a single line.
-        /// </summary>
-        private ColorBlock ButtonColor;
-        /// <summary>
-        /// The default color we want buttons to be(if flash is turned off)
-        /// </summary>
-        public Color defaultColor;
         #endregion
         #region GameObject overrides
+        /// <summary>
+        /// Built in Start method
+        /// </summary>
         void Start()
         {
             FlickIndex = 0;
         }
-
+        /// <summary>
+        /// Built in Update Method
+        /// </summary>
         private void Update()
         {
             if (!FlickActivated && UserSettings.GetFlashingSetting())
@@ -92,9 +76,7 @@ namespace Connectome.Unity.UI
         /// </summary>
         public void UpdateSelection()
         {
-            TheObject = Manager.CurrentSelection;
-            ButtonColor = CurrentButton.GetColor();
-            SetColor(defaultColor);
+            SetColor(SelectionManager.Instance.DefaultSelectColor);
         }
         /// <summary>
         /// Call the coroutine to start flashing
@@ -109,8 +91,7 @@ namespace Connectome.Unity.UI
         /// <param name="color"></param>
         public void SetColor(Color color)
         {
-            ButtonColor.highlightedColor = color;
-            //CurrentButton.colors = ButtonColor;
+            SelectionManager.Instance.CurrentSelection.CurrentColor = color;
         }
         #endregion
         #region Coroutines
@@ -122,7 +103,7 @@ namespace Connectome.Unity.UI
 
 
                 //flick 
-                if (CurrentButton != null)
+                if (SelectionManager.Instance.CurrentSelection != null)
                 {
                     FlickIndex = ++FlickIndex % Flicks.Length;
                     SetColor(Flicks[FlickIndex]);
@@ -130,7 +111,7 @@ namespace Connectome.Unity.UI
 
             }
             //The flashing was turned off, so reset
-            SetColor(defaultColor);
+            SetColor(SelectionManager.Instance.DefaultSelectColor);
             FlickActivated = false;
 
         }
