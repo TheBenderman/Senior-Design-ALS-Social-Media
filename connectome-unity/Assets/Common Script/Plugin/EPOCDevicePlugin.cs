@@ -13,6 +13,9 @@ namespace Connectome.Unity.Plugin
     /// </summary>
     public class EPOCDevicePlugin : EmotivDeviceContainer
     {
+        #region Private 
+        private static EPOCEmotivDevice DeviceInstance; 
+        #endregion
         #region Inspector Attributes 
         public string Username;
         public string Password;
@@ -25,7 +28,11 @@ namespace Connectome.Unity.Plugin
         /// <returns></returns>
         protected override IEmotivDevice CreateDevice()
         {
-            return new EPOCEmotivDevice(Username, Password, Profile);
+            if (DeviceInstance == null)
+            { 
+                 DeviceInstance = new EPOCEmotivDevice(Username, Password, Profile);
+            }
+            return DeviceInstance;
         }
         #endregion
     }

@@ -1,0 +1,387 @@
+#namespace Statuses
+#description Provides a set of methods for the wrapper of GET/POST statuses.
+
+endpoint Listed<Status> MentionsTimeline : Get statuses/mentions_timeline
+{
+    description
+    {
+        Returns the most recent mentions (tweets containing a users's &#64;screen_name) for the authenticating user.
+    }
+    returns
+    {
+        The statuses.
+    }
+    params
+    {
+        optional int count
+        optional long since_id
+        optional long max_id
+        optional bool trim_user
+        optional bool contributor_details
+        optional bool include_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint Listed<Status> UserTimeline : Get statuses/user_timeline
+{
+    description
+    {
+        Returns a collection of the most recent Tweets posted by the user indicated by the screen_name or user_id parameters.
+    }
+    returns
+    {
+        The statuses.
+    }
+    params
+    {
+        either
+        either long user_id
+        either string screen_name
+        optional int count
+        optional long since_id
+        optional long max_id
+        optional bool trim_user
+        optional bool exclude_replies
+        optional bool contributor_details
+        optional bool include_rts
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint Listed<Status> HomeTimeline : Get statuses/home_timeline
+{
+    description
+    {
+        Returns a collection of the most recent Tweets and retweets posted by the authenticating user and the users they follow.
+    }
+    returns
+    {
+        The statuses.
+    }
+    params
+    {
+        optional int count
+        optional long since_id
+        optional long max_id
+        optional bool trim_user
+        optional bool exclude_replies
+        optional bool contributor_details
+        optional bool include_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint Listed<Status> RetweetsOfMe : Get statuses/retweets_of_me
+{
+    description
+    {
+        Returns the most recent tweets authored by the authenticating user that have recently been retweeted by others.
+    }
+    returns
+    {
+        The statuses.
+    }
+    params
+    {
+        optional int count
+        optional long since_id
+        optional long max_id
+        optional bool trim_user
+        optional bool include_entities
+        optional bool include_user_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint Embed Oembed : Get statuses/oembed
+{
+    description
+    {
+        Returns information allowing the creation of an embedded representation of a Tweet on third party sites.
+    }
+    returns
+    {
+        The HTML code and more.
+    }
+    params
+    {
+        either long id
+        either string url
+        optional int maxwidth
+        optional bool hide_media
+        optional bool hide_thread
+        optional bool omit_script
+        optional string align
+        optional string related
+        optional string lang
+        optional string widget_type
+        optional bool hide_tweet
+    }
+}
+
+endpoint StatusResponse Show : Get statuses/show/{id}
+{
+    description
+    {
+        Returns a single Tweet, specified by the id parameter.
+    }
+    returns
+    {
+        The status.
+    }
+    params
+    {
+        required long id
+        optional bool trim_user
+        optional bool include_my_retweet
+        optional bool include_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint Listed<Status> Retweets : Get statuses/retweets/{id}
+{
+    description
+    {
+        Returns up to 100 of the first retweets of a given tweet.
+    }
+    returns
+    {
+        The statuses.
+    }
+    params
+    {
+        required long id
+        optional int count
+        optional bool trim_user
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint Listed<Status> Lookup : Get statuses/lookup
+{
+    description
+    {
+        Returns fully-hydrated tweet objects for up to 100 tweets per request, as specified by comma-separated values passed to the id parameter.
+    }
+    returns
+    {
+        The statuses.
+    }
+    params
+    {
+        required IEnumerable<long> id
+        optional bool trim_user
+        optional bool include_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint Dictionary<Status> LookupMap : Impl
+{
+    description
+    {
+        Returns fully-hydrated tweet objects for up to 100 tweets per request, as specified by comma-separated values passed to the id parameter.
+    }
+    returns
+    {
+        The statuses.
+    }
+    params
+    {
+        required IEnumerable<long> id
+        optional bool trim_user
+        optional bool include_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+#raw
+#if SYNC
+private DictionaryResponse<string, Status> LookupMapImpl(IEnumerable<KeyValuePair<string, object>> parameters)
+{
+    if(parameters == null) throw new ArgumentNullException("parameters");
+    return this.Tokens.AccessApiDictionaryImpl<string, Status>(MethodType.Post, "statuses/lookup",
+        parameters.Concat(new[] { new KeyValuePair<string, object>("map", "true") }), "id");
+}
+#endif
+#if ASYNC
+private Task<DictionaryResponse<string, Status>> LookupMapAsyncImpl(IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
+{
+    if(parameters == null) throw new ArgumentNullException("parameters");
+    return this.Tokens.AccessApiDictionaryAsyncImpl<string, Status>(MethodType.Post, "statuses/lookup",
+        parameters.Concat(new[] { new KeyValuePair<string, object>("map", "true") }), cancellationToken, "id");
+}
+#endif
+#endraw
+
+endpoint Cursored<long> RetweetersIds : Get statuses/retweeters/ids
+{
+    description
+    {
+        Returns a collection of up to 100 user IDs belonging to users who have retweeted the tweet specified by the id parameter.
+    }
+    returns
+    {
+        The IDs.
+    }
+    params
+    {
+        required long id
+        semi-optional long cursor
+    }
+}
+
+endpoint StatusResponse Update : Post statuses/update
+{
+    description
+    {
+        Updates the authenticating user’s current status, also known as Tweeting.
+    }
+    returns
+    {
+        The updated status.
+    }
+    params
+    {
+        required string status
+        optional long in_reply_to_status_id
+        optional bool possibly_sensitive
+        optional double lat
+        optional double @long
+        optional string place_id
+        optional bool display_coordinates
+        optional bool trim_user
+        optional IEnumerable<long> media_ids
+        optional string attachment_url
+        optional bool auto_populate_reply_metadata
+        optional IEnumerable<long> exclude_reply_user_ids
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint StatusResponse UpdateWithMedia : Impl
+{
+    with
+    {
+        [Obsolete]=Use Media.Upload and Statuses.Update.
+    }
+    description
+    {
+        Updates the authenticating user’s current status and attaches media for upload.
+    }
+    params
+    {
+        required string status
+        either Stream media
+        either IEnumerable<byte> media
+        either FileInfo media when FILEINFO
+        optional bool possibly_sensitive
+        optional long in_reply_to_status_id
+        optional double lat
+        optional double @long
+        optional string place_id
+        optional bool display_coordinates
+        // optional bool trim_user
+    }
+    returns
+    {
+        The updated status.
+    }
+}
+
+#raw
+#if SYNC
+private StatusResponse UpdateWithMediaImpl(IEnumerable<KeyValuePair<string, object>> parameters)
+{
+    if(parameters == null) throw new ArgumentNullException("parameters");
+    var list = parameters.ToList();
+    list.Where(kvp => kvp.Key == "media").ToArray().ForEach(kvp =>
+    {
+        list.Remove(kvp);
+        list.Add(new KeyValuePair<string, object>("media[]", kvp.Value));
+    });
+    return this.Tokens.AccessApiImpl<StatusResponse>(MethodType.Post, "statuses/update_with_media", list, "");
+}
+#endif
+#if ASYNC
+private Task<StatusResponse> UpdateWithMediaAsyncImpl(IEnumerable<KeyValuePair<string, object>> parameters, CancellationToken cancellationToken)
+{
+    if(parameters == null) throw new ArgumentNullException("parameters");
+    var list = parameters.ToList();
+    list.Where(kvp => kvp.Key == "media").ToArray().ForEach(kvp =>
+    {
+        list.Remove(kvp);
+        list.Add(new KeyValuePair<string, object>("media[]", kvp.Value));
+    });
+    return this.Tokens.AccessApiAsyncImpl<StatusResponse>(MethodType.Post, "statuses/update_with_media", list, cancellationToken, "");
+}
+#endif
+#endraw
+
+endpoint StatusResponse Destroy : Post statuses/destroy/{id}
+{
+    description
+    {
+        Destroys the status specified by the required ID parameter.
+    }
+    returns
+    {
+        The destroyed status.
+    }
+    params
+    {
+        required long id
+        optional bool trim_user
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint StatusResponse Retweet : Post statuses/retweet/{id}
+{
+    description
+    {
+        Retweets a tweet.
+    }
+    returns
+    {
+        The retweeted status.
+    }
+    params
+    {
+        required long id
+        optional bool trim_user
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint StatusResponse Unretweet : Post statuses/unretweet/{id}
+{
+    description
+    {
+        Untweets a retweeted status.
+    }
+    returns
+    {
+        The original Tweet with retweet details embedded.
+    }
+    params
+    {
+        required long id
+        optional bool trim_user
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}

@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 
-namespace Connectome.Unity.UI
+namespace Connectome.Unity.Menu
 {
     /// <summary>
     /// Makes a selection flash different colors.
     /// TODO: possibly merge into SelectionManager? or Change name to something like SelectionColorHandler?
     /// </summary>
-    public class ButtonFlicker : MonoBehaviour
+    public class ButtonFlicker : SelectionHighlighter
     {
         #region Public attributes
         /// <summary>
@@ -35,6 +35,10 @@ namespace Connectome.Unity.UI
         /// Checks if we called the coroutine yet.
         /// </summary>
         private bool FlickActivated = false;
+
+        private Button CurrentButton;
+        private Color DefaultColor; 
+
         #endregion
         #region GameObject overrides
         /// <summary>
@@ -43,17 +47,7 @@ namespace Connectome.Unity.UI
         void Start()
         {
             FlickIndex = 0;
-        }
-        /// <summary>
-        /// Built in Update Method
-        /// </summary>
-        private void Update()
-        {
-            if (!FlickActivated && UserSettings.GetFlashingSetting())
-            {
-                StartFlicker();
-                FlickActivated = true;
-            }
+            StartCoroutine(flick()); 
         }
 
         void OnValidate()
@@ -76,44 +70,44 @@ namespace Connectome.Unity.UI
         /// </summary>
         public void UpdateSelection()
         {
-            SetColor(SelectionManager.Instance.DefaultSelectColor);
+            //SetColor(SelectionManager.Instance.DefaultSelectColor);
         }
-        /// <summary>
-        /// Call the coroutine to start flashing
-        /// </summary>
-        public void StartFlicker()
-        {
-            StartCoroutine(flick());
-        }
+
         /// <summary>
         /// Sets the highlighted color of the button 
         /// </summary>
         /// <param name="color"></param>
         public void SetColor(Color color)
         {
-            SelectionManager.Instance.CurrentSelection.CurrentColor = color;
+            CurrentButton.image.color = color; 
+        }
+
+        public override void Highlight(GameObject go)
+        {
+            if(CurrentButton != null)
+            {
+                CurrentButton.image.color = DefaultColor; 
+            }
+
+            CurrentButton =  go.GetComponent<Button>();
+            DefaultColor = CurrentButton.image.color; 
         }
         #endregion
         #region Coroutines
         private IEnumerator flick()
         {
-            while (UserSettings.GetFlashingSetting())
+            while (true)
             {
                 yield return new WaitForSeconds((float)Interval / 1000);
 
 
-                //flick 
-                if (SelectionManager.Instance.CurrentSelection != null)
-                {
-                    FlickIndex = ++FlickIndex % Flicks.Length;
-                    SetColor(Flicks[FlickIndex]);
-                }
+                if (CurrentButton == null)
+                    continue; 
+
+                FlickIndex = ++FlickIndex % Flicks.Length;
+                SetColor(Flicks[FlickIndex]);
 
             }
-            //The flashing was turned off, so reset
-            SetColor(SelectionManager.Instance.DefaultSelectColor);
-            FlickActivated = false;
-
         }
         #endregion
     }

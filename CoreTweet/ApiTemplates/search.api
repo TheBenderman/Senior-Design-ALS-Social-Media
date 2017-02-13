@@ -1,0 +1,29 @@
+#namespace Search
+#description Provides a set of methods for the wrapper of GET search.
+
+endpoint SearchResult Tweets : Get search/tweets
+{
+    description
+    {
+        Returns a collection of relevant Tweets matching a specified query.
+    }
+    returns
+    {
+        The statuses.
+    }
+    params
+    {
+        required string q
+        optional string geocode
+        optional string lang
+        optional string locale
+        optional string result_type
+        optional int count
+        optional string until
+        optional long since_id
+        optional long max_id
+        optional bool include_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}

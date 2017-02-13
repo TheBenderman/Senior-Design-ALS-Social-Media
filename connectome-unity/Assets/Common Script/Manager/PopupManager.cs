@@ -5,6 +5,9 @@ using Connectome.Emotiv.Interface;
 using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Enum;
 using Connectome.Unity.Plugin;
+using System;
+using UnityEngine.UI;
+using Connectome.Unity.Keyboard;
 
 /// <summary>
 /// Pops up windows such as a Virtual Device. 
@@ -22,6 +25,10 @@ public class PopupManager : MonoBehaviour
         }
     }
     #endregion
+    #region 
+    public SelectionManager SelectionManager; 
+    #endregion
+
     #region Unity Built-in
     void Awake()
     {
@@ -39,7 +46,7 @@ public class PopupManager : MonoBehaviour
     /// </summary>
     private BasicVirtualUnityDevice AvailableDevice; 
 
-    public static BasicVirtualUnityDevice PopUpVirtualUnityDevice(GameObject config = null)
+    public static BasicVirtualUnityDevice PopUpVirtualUnityDevice()
     {
         if(Instance.AvailableDevice != null)
         {
@@ -68,6 +75,25 @@ public class PopupManager : MonoBehaviour
 		recon.transform.localPosition = new Vector2(0,0); 
 		return recon; 
 	}
-	#endregion
+    #endregion
+
+    #region 
+
+    public KeyboardManager KeyboardManager;
+
+    public static void GetInputFromKeyboard(Action<string> onSubmit)
+    {
+        //KeyboardPrompt keyboardPrompt = Instantiate(Instance.PromptKeyboardPrefab, Instance.transform.parent);
+
+        //keyboardPrompt.transform.localPosition = new Vector2(0, 0);
+        Instance.KeyboardManager.Show(); 
+
+        onSubmit += (s) => Instance.SelectionManager.Pop();
+
+        Instance.KeyboardManager.Prompt(onSubmit);
+        Instance.SelectionManager.Push(Instance.KeyboardManager.Keyboard); 
+    }
+
+    #endregion
 }
 

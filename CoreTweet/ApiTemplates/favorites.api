@@ -1,0 +1,63 @@
+#namespace Favorites
+#description Provides a set of methods for the wrapper of GET/POST favorites.
+
+endpoint Listed<Status> List : Get favorites/list
+{
+    description
+    {
+        Returns the 20 most recent Tweets favorited by the authenticating or specified user.
+    }
+    params
+    {
+        optional long id
+        optional string screen_name
+        optional int count
+        optional long since_id
+        optional long max_id
+        optional bool include_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+    returns
+    {
+        The statuses.
+    }
+}
+
+endpoint StatusResponse Create : Post favorites/create
+{
+    description
+    {
+        Favorites the status specified in the ID parameter as the authenticating user.
+    }
+    params
+    {
+        required long id
+        optional bool include_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+    returns
+    {
+        The favorited status.
+    }
+}
+
+endpoint StatusResponse Destroy : Post favorites/destroy
+{
+    description
+    {
+        Un-favorites the status specified in the ID parameter as the authenticating user.
+    }
+    params
+    {
+        required long id
+        optional bool include_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+    returns
+    {
+        The unfavorited status.
+    }
+}

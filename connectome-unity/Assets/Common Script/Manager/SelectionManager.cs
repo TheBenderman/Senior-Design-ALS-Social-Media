@@ -1,11 +1,11 @@
 ﻿using Connectome.Emotiv.Interface;
 using Connectome.Emotiv.Template;
+using Connectome.Unity.Menu;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-
 
 /// <summary>
 /// Allows highlighting a selection of game objects and surfing* between them.
@@ -21,49 +21,27 @@ public class SelectionManager : MonoBehaviour
     #region Inspector Attrinutes
     public bool AllowSelection;
     /// <summary>
-    /// Hold the initial selection when this scene is started.
-    /// </summary>
-    public SelectableObject[] BaseSelection;
-    /// <summary>
     /// Contains all of the selections the user has gone through in this scene.
     /// </summary>
-    public Stack<SelectableObject[]> SelectionStack;
+    public Stack<ISelectionMenu> SelectionStack;
+
+    public SelectionHighlighter Highlighter;
+
+    public SelectionMenu MainMenu; 
+
     /// <summary>
     /// The time, in seconds, to wait before the selection changes.
     /// </summary>
     [Range(0.0f, 10.0f)]
     public int WaitInterval = 2;
-
-    /// <summary>
-    /// The default color we want buttons to be(if flash is turned off)
-    /// </summary>
-    public Color DefaultSelectColor;
-    /// <summary>
-    /// The color when the object is NOT selected
-    /// </summary>
-    public Color DefaultUnselectColor;
-    /// <summary>
-    /// Any events that fire off when the selection changes.
-    /// </summary>
-    public UnityEvent OnSelectionChange;
-    #endregion
-    #region Public Attributes
-
-    /// <summary>
-    /// The list of processors attached to the selection manager.
-    /// </summary>
-    public SelectableObject CurrentSelection { get { return SelectionStack.Peek()[SelectedIndex]; } }
-
     #endregion
     #region Private Attributes
-    /// <summary>
-    /// Hold currently selected element. 
-    /// </summary>
-    private int SelectedIndex = 0;
+
     /// <summary>
     /// The current interval
     /// </summary>
     private float CurrentWait = 0;
+
     #endregion
     #region Public Methods
     /// <summary>
@@ -85,8 +63,8 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     public void Next()
     {
-        SelectedIndex = (SelectedIndex + 1) % SelectionStack.Peek().Length;
-        ChangeSelection(SelectedIndex);
+        Highlighter.EnableHighlight(); 
+        SelectionStack.Peek().SelectNext(Highlighter); 
     }
 
     /// <summary>
@@ -94,78 +72,65 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     public void Previous()
     {
-        SelectedIndex = (SelectedIndex - 1 + SelectionStack.Peek().Length) % SelectionStack.Peek().Length;
-        ChangeSelection(SelectedIndex);
+       // SelectedIndex = (SelectedIndex - 1 + SelectionStack.Peek().Length) % SelectionStack.Peek().Length;
+       //ChangeSelection(SelectedIndex);
     }
     /// <summary>
-    /// Clicks the currently selected button
+    /// Clicks the currently selected elements. A submenu is pushed if the invoked elements contains one. 
     /// </summary>
     public void TriggerClick()
     {
-        if (AllowSelection)
-            CurrentSelection.TriggerClick();
+        if (!AllowSelection)
+            return;
+
+        ISelectionMenu subMenu =  SelectionStack.Peek().InvokeSelected();
+        if(subMenu != null)
+        {
+            Push(subMenu); 
+        }
+        else
+        {
+            //Pop();  TODO yet to inforce 
+        }
     }
 
     /// <summary>
-    /// Add the list of selectable objects to the current stack.
-    /// This counts as selecting, so reset the interval and reset the current selection.
+    /// Add selection menu to the current stack.
     /// </summary>
     /// <param name="Selections"></param>
-    public void PushSelections(SelectableObject[] Selections)
+    public void Push(ISelectionMenu Selections)
     {
         SelectionStack.Push(Selections);
-        ChangeSelection(0);//After adding a new list of selections, start counting from the first index
-        ResetInterval();
+        ResetSelection(); 
     }
+
+    /// <summary>
+    /// Pushes a selection menu GameObject to selection stack
+    /// </summary>
+    /// <param name="menu"></param>
+    public void PushSelectionMenu(SelectionMenu menu)
+    {
+        Push(menu); 
+    }
+
     /// <summary>
     /// Remove the current selection list from the stack and go to the previous list.
     /// This counts as selecting, so reset the interval and reset the current selection.
     /// </summary>
-    public void PopSelections()
+    public void Pop()
     {
-        SelectionStack.Pop();
-        ChangeSelection(0);//After removing the selections, start counting from the first index
-        ResetInterval();
-    }
-    #endregion
-    #region Private Methods
-    /// <summary>
-    /// Hilights game object at a given index
-    /// </summary>
-    /// TODO validate index. 
-    /// <param name="index"></param>
-    private void ChangeSelection(int index)
-    {
-        Select(index);
-        SelectedIndex = index; 
-        OnSelectionChange.Invoke();
-        //Debug.Log("The selected element = " + SelectionList[index].name);
-    }
-   
-    private void UpdateSelectionWait()
-    {
-        CurrentWait += Time.deltaTime;
-        if (CurrentWait >= WaitInterval)
+        if (SelectionStack.Count > 1)
         {
-            Next();
-            ResetInterval();
+            SelectionStack.Pop();
+            ResetSelection();
         }
+        else
+        {
+            Debug.LogWarning("Poping main selection menu attempted");
+        }
+        
     }
 
-    /// <summary>
-    /// Selects element from the top-most selection list in the stack, at index 
-    /// </summary>
-    /// <param name="index"></param>
-    private void Select(int index)
-    {
-        if (AllowSelection)
-        {
-            int CurrentSelectionLength = SelectionStack.Peek().Length;
-            SelectionStack.Peek()[index].Select(SelectionStack.Peek()[(CurrentSelectionLength + index - 1) % CurrentSelectionLength]);
-        }
-    }
-
-   
     /// <summary>
     /// Sets the current wait time back to 0.
     /// Can be used to refresh the waiting time when the user
@@ -173,10 +138,15 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     public void ResetInterval()
     {
-        Select(SelectedIndex);
         CurrentWait = 0;
     }
 
+    public void ResetSelection()
+    {
+        Highlighter.DisableHighlight();
+        SelectionStack.Peek().ResetSelection();
+        ResetInterval(); 
+    }
     #endregion
     #region Unity Methods
     /// <summary>
@@ -186,9 +156,17 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (AllowSelection)
+        if (!AllowSelection)
         {
-            UpdateSelectionWait();
+            return;
+        }
+
+        CurrentWait += Time.deltaTime;
+
+        if (CurrentWait >= WaitInterval)
+        {
+            Next();
+            ResetInterval();
         }
     }
     /// <summary>
@@ -205,8 +183,9 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        SelectionStack = new Stack<SelectableObject[]>();
-        PushSelections(BaseSelection);
+        SelectionStack = new Stack<ISelectionMenu>();
+
+        Push(MainMenu);
     }
     #endregion
     #region Validation
@@ -223,7 +202,7 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     private void ValidateSelectionList()
     {
-        if (BaseSelection == null)
+        /*if (BaseSelection == null)
         {
             Debug.LogError("SelectionList cannot be null");
         }
@@ -239,7 +218,14 @@ public class SelectionManager : MonoBehaviour
             {
                 Debug.LogError("BaseSelection element cannot be null. Check index " + i);
             }
+        }*/
+
+
+        if (MainMenu == null)
+        {
+           
         }
+
     }
     #endregion
 }

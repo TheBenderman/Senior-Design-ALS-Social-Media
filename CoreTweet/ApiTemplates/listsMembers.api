@@ -1,0 +1,130 @@
+#namespace ListsMembers
+#description Provides a set of methods for the wrapper of GET/POST lists/members.
+
+endpoint Cursored<User> List : Get lists/members
+{
+    description
+    {
+        Returns the members of the specified list.
+    }
+    returns
+    {
+        The users.
+    }
+    params
+    {
+        either long list_id
+        either string slug, string owner_screen_name
+        either string slug, long owner_id
+        optional int count
+        semi-optional long cursor
+        optional bool include_entities
+        optional bool skip_status
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint UserResponse Show : Get lists/members/show
+{
+    description
+    {
+        Check if the specified user is a member of the specified list.
+    }
+    returns
+    {
+        The user.
+    }
+    params
+    {		
+        either[0] long list_id
+        either[0] string slug, string owner_screen_name
+        either[0] string slug, long owner_id
+        either[1] long user_id
+        either[1] string screen_name
+        optional bool include_entities
+        optional bool skip_status
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+}
+
+endpoint ListResponse Create : Post lists/members/create
+{
+    description
+    {
+        Add a member to a list.
+    }
+    returns
+    {
+        The list.
+    }
+    params
+    {
+        either[0] long list_id
+        either[0] string slug, string owner_screen_name
+        either[0] string slug, long owner_id
+        either[1] long user_id
+        either[1] string screen_name
+    }
+}
+
+endpoint ListResponse CreateAll : Post lists/members/create_all
+{
+    description
+    {
+        Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names.
+    }
+    returns
+    {
+        The list.
+    }
+    params
+    {
+        either[0] long list_id
+        either[0] string slug, string owner_screen_name
+        either[0] string slug, long owner_id
+        either[1] IEnumerable<long> user_id
+        either[1] IEnumerable<string> screen_name
+    }
+}
+
+endpoint ListResponse Destroy : Post lists/members/destroy
+{
+    description
+    {
+        Removes the specified member from the list.
+    }
+    returns
+    {
+        The list.
+    }
+    params
+    {
+        either[0] long list_id
+        either[0] string slug, string owner_screen_name
+        either[0] string slug, long owner_id
+        either[1] long user_id
+        either[1] string screen_name
+    }
+}
+
+endpoint ListResponse DestroyAll : Post lists/members/destroy_all
+{
+    description
+    {
+        Removes multiple members from a list, by specifying a comma-separated list of member ids or screen names.
+    }
+    returns
+    {
+        The list.
+    }
+    params
+    {
+        either[0] long list_id
+        either[0] string slug, string owner_screen_name
+        either[0] string slug, long owner_id
+        either[1] IEnumerable<long> user_id
+        either[1] IEnumerable<string> screen_name
+    }
+}

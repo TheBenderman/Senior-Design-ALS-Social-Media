@@ -1,0 +1,11 @@
+language: csharp
+
+sudo: false
+
+addons:
+  apt:
+    packages:
+    - doxygen
+
+script:
+  - make all
