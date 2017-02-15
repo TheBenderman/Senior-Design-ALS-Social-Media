@@ -10,13 +10,14 @@ namespace Connectome.Twitter.API
         
         static int Main (string[] args)
         {
-            TwitterAPI api = TwitterAPI.Instance;
-            Console.WriteLine("Please visit the url here: " + api.getAuthorizationURL());
+			TwitterAuthenticator authenticator = TwitterAuthenticator.Instance;
+			Console.WriteLine("Please visit the url here: " + authenticator.getAuthorizationURL());
             Console.WriteLine("Enter your pin code: ");
             String pin = Console.ReadLine();
-            api.enterPinCode(pin);
+			authenticator.enterPinCode(pin);
 
-            //api.getConversation();
+			TwitterInteractor interactor = new TwitterInteractor(authenticator);
+			interactor.getTop5HomeTimeLineTweets();
 
             while (true) { };
             return 0;

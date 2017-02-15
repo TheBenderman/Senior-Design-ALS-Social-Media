@@ -70,14 +70,15 @@ public class TwitterController : MonoBehaviour {
     public Text TweetStatusText; 
     #endregion
 
-    private static TwitterAPI api;
+    private static TwitterAuthenticator Authenticator;
+    private static TwitterInteractor Interactor;
 
     
 
 	// Use this for initialization
 	void Start () {
-        if (api == null)
-            api = TwitterAPI.Instance;
+        if (Authenticator == null)
+            Authenticator = TwitterAuthenticator.Instance;
 
         // See if the accesstoken and access secret have already been entered before
         string accesstoken = PlayerPrefs.GetString("Access Token");
@@ -87,10 +88,11 @@ public class TwitterController : MonoBehaviour {
         if (Remember && !string.IsNullOrEmpty(accesstoken) && !string.IsNullOrEmpty(accessSecret))
         {
             // Set the tokens to the previously received tokens
-            makeTwitterAPICallNoReturnVal(() => api.setTokens(accesstoken, accessSecret));
+            makeTwitterAPICallNoReturnVal(() => Authenticator.setTokens(accesstoken, accessSecret));
 
+            Interactor = new TwitterInteractor(Authenticator);
             // Hacky way to do this, verify that the credentials are fine.
-            makeTwitterAPICall(() => api.getHomeTimeLine()); 
+            makeTwitterAPICall(() => Interactor.getHomeTimeLine()); 
 
             navigateToTwitterHome();
         }
@@ -155,7 +157,7 @@ public class TwitterController : MonoBehaviour {
 	public void populateConversation() {
 		Status currentStatus = HomeTimeLine[currentTweet];
 		Debug.Log ("ID FOR THIS TWEET: " + currentStatus.Id.ToString());
-		List<Status> convo = api.getConversation (currentStatus.User.ScreenName, currentStatus.Id.ToString());
+		List<Status> convo = Interactor.getConversation (currentStatus.User.ScreenName, currentStatus.Id.ToString());
 		if (convo.Count > 0) {
 			HomeTimeLine = convo;
 			currentTweet = 0;
@@ -181,7 +183,7 @@ public class TwitterController : MonoBehaviour {
 
         // Copy the authentication URL to the user's clipboard.
         TextEditor te = new TextEditor();
-        te.text = makeTwitterAPICall(() => api.getAuthorizationURL());
+        te.text = makeTwitterAPICall(() => Authenticator.getAuthorizationURL());
         te.SelectAll();
         te.Copy();
 
@@ -200,9 +202,9 @@ public class TwitterController : MonoBehaviour {
             return;
         }
 
-		if (makeTwitterAPICall(() => api.enterPinCode(pinCode))) {
-            string accessToken = makeTwitterAPICall(() => api.getAccessToken());
-            string accessSecret = makeTwitterAPICall(() => api.getAccessTokenSecret());
+		if (makeTwitterAPICall(() => Authenticator.enterPinCode(pinCode))) {
+            string accessToken = makeTwitterAPICall(() => Authenticator.getAccessToken());
+            string accessSecret = makeTwitterAPICall(() => Authenticator.getAccessTokenSecret());
 
             // Save the access token so they do not have to authenticate themselves again.
             PlayerPrefs.SetString("Access Token", accessToken);
@@ -259,7 +261,7 @@ public class TwitterController : MonoBehaviour {
         composeTweetObjects.SetActive(false);
 
         // Get the tweets for the user.
-        HomeTimeLine = makeTwitterAPICall(() => api.getHomeTimeLine());
+        HomeTimeLine = makeTwitterAPICall(() => Interactor.getHomeTimeLine());
 		setTweet (currentTweet);
     }
 
@@ -301,7 +303,7 @@ public class TwitterController : MonoBehaviour {
 		} else {
             // SHOULD HAVE SOME ANIMATION HERE SHOWING THAT IT IS BEING REFRESHED
 			if (inTimeLine) {	
-				HomeTimeLine = makeTwitterAPICall (() => api.getHomeTimeLine ());
+				HomeTimeLine = makeTwitterAPICall (() => Authenticator.getHomeTimeLine ());
 			}
 		}
 
@@ -354,7 +356,7 @@ public class TwitterController : MonoBehaviour {
         {
             try
             {
-                api.publishTweet(msg);
+                Interactor.publishTweet(msg);
                 TweetStatusText.text = "Tweeted!";
                 attempts = 0; 
             }
