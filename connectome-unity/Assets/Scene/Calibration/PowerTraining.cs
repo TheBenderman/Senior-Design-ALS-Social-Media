@@ -4,7 +4,6 @@ using UnityEngine;
 using Connectome.Emotiv.Enum;
 using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Interface;
-using Connectome.Unity.Common;
 using UnityEngine.UI;
 using System;
 
