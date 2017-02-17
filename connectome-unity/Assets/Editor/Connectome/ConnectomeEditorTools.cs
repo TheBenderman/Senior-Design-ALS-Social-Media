@@ -7,6 +7,9 @@ using UnityEngine;
 /// </summary>
 public class ConnectomeEditorTools : EditorWindow {
 
+    private const string ASSET_PATH = "Assets/Prefab/";
+    private const string VALIDATOR_PREFAB = "ConnectomeValidator";
+    private const string CANVAS_PREFAB = "ConnectomeCanvas";
     /// <summary>
     /// Create a new Unity Scene and insert all common prefabs.
     /// </summary>
@@ -23,10 +26,15 @@ public class ConnectomeEditorTools : EditorWindow {
     [MenuItem("Connectome/Generate Common Objects")]
     static void GenerateCommonObjects()
     {
-        if (!GameObject.Find("ConnectomeValidator"))
+        if (!GameObject.Find(VALIDATOR_PREFAB))
         {
-            GameObject connectomeValidator = GameObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefab/ConnectomeValidator.prefab"));
-            connectomeValidator.name = "ConnectomeValidator";
+            GameObject connectomeValidator = GameObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(ASSET_PATH + VALIDATOR_PREFAB + ".prefab"));
+            connectomeValidator.name = VALIDATOR_PREFAB;
+        }
+        if (!GameObject.Find(CANVAS_PREFAB))
+        {
+            GameObject connectomeCanvas = GameObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(ASSET_PATH + CANVAS_PREFAB + ".prefab"));
+            connectomeCanvas.name = CANVAS_PREFAB;
         }
     }
 }

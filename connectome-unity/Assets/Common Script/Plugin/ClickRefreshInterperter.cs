@@ -27,7 +27,7 @@ namespace Connectome.Unity.Plugin
 
         [Header("Threshholds")]
         public float RefreshThreshhold;
-        public float ClickThreshhold;
+        //public float ClickThreshhold;Value is in UserSettings
 
         [Header("Events")]
         public UnityEvent OnRefresh;
@@ -73,7 +73,7 @@ namespace Connectome.Unity.Plugin
             }
 
             //Click
-            if (targetRate >= ClickThreshhold)
+            if (targetRate >= UserSettings.GetPassThreshold())
             {
                 if (OnClick != null)
                     OnClick.Invoke();

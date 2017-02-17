@@ -40,7 +40,8 @@ public class PopupManager : MonoBehaviour
     /// Holds Virtual Device prefab
     /// </summary>
     public BasicVirtualUnityDevice VirtualUnityDevicePrefab;
-
+    public UserSettingsWindow SettingsWindow;
+    private UserSettingsWindow CurrentSettingsWindow;
     /// <summary>
     /// Current popped device. 
     /// </summary>
@@ -60,6 +61,17 @@ public class PopupManager : MonoBehaviour
         pop.transform.SetParent(Instance.transform.parent);
         pop.transform.localPosition = new Vector2(0,0); 
         return pop; 
+    }
+    public void DisplayUserWindow()
+    {
+        if (Instance.CurrentSettingsWindow != null)
+        {
+            return;
+        }
+        UserSettingsWindow pop = Instantiate(Instance.SettingsWindow);
+        Instance.CurrentSettingsWindow = pop;
+        pop.transform.SetParent(Instance.transform.parent);
+        pop.transform.localPosition = new Vector2(0, 0);
     }
     #endregion
     #region Popup ReconnectDeviceWindow

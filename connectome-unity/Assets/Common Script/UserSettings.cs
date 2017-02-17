@@ -65,6 +65,16 @@ public static class UserSettings
     {
         return PlayerPrefs.GetFloat(key);
     }
+
+    public static float GetPassThreshold()
+    {
+        return PlayerPrefs.GetFloat("passThreshold", 0.89f);
+    }
+
+    public static float GetDuration()
+    {
+        return PlayerPrefs.GetFloat("duration", 2f);
+    }
     /// <summary>
     /// Sets whether flashing is on or off
     /// </summary>

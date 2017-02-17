@@ -31,9 +31,10 @@ public class SelectionManager : MonoBehaviour
 
     /// <summary>
     /// The time, in seconds, to wait before the selection changes.
+    /// This variable is in UserSettings now
     /// </summary>
-    [Range(0.0f, 10.0f)]
-    public int WaitInterval = 2;
+    //[Range(0.0f, 10.0f)]
+    //public int WaitInterval = 2;
     #endregion
     #region Private Attributes
 
@@ -163,7 +164,7 @@ public class SelectionManager : MonoBehaviour
 
         CurrentWait += Time.deltaTime;
 
-        if (CurrentWait >= WaitInterval)
+        if (CurrentWait >= UserSettings.GetDuration())
         {
             Next();
             ResetInterval();
