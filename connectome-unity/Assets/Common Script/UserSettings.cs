@@ -48,12 +48,12 @@ public static class UserSettings
     }
 
     /// <summary>
-    /// Sets the Trigger Threshold in PlayerPrefs
+    /// Sets the Target Power in PlayerPrefs
     /// </summary>
     /// <param name="value"></param>
-    public static void SetTriggerThreshold(float value)
+    public static void SetTargetPower(float value)
     {
-        PlayerPrefs.SetFloat("triggerThreshold", value);
+        PlayerPrefs.SetFloat("TargetPower", value);
     }
 
     /// <summary>
@@ -74,6 +74,11 @@ public static class UserSettings
     public static float GetDuration()
     {
         return PlayerPrefs.GetFloat("duration", 2f);
+    }
+
+    public static float GetTargetPower()
+    {
+        return PlayerPrefs.GetFloat("TargetPower", 0);
     }
     /// <summary>
     /// Sets whether flashing is on or off
