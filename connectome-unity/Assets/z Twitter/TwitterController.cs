@@ -1,17 +1,16 @@
-﻿using System.Collections;
+﻿using Connectome.Twitter.API;
+using CoreTweet;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
-using Connectome.Twitter;
-using Connectome.Twitter.API;
-using CoreTweet;
-using CoreTweet.Core;
-using CoreTweet.Rest;
-using System;
 
 public class TwitterController : MonoBehaviour {
 
-    public bool Remember; 
+    public bool Remember;
     #region Twitter Login Members
     public GameObject loginObjects;
     public Text authenticationURL;
@@ -61,18 +60,57 @@ public class TwitterController : MonoBehaviour {
 	public Button seeConversation;
     #endregion
 
-	#region Twitter States
-	public bool inTimeLine = false;
+    #region DM Members
+    public GameObject DMObjects;
+    public GameObject SelectConvObjects;
+    public GameObject ViewConvObjects;
+    public Image DMConvoProfilePic;
+    public Text DMName;
+    public Text DMUsername;
+    public Button LastDMUser;
+    public Button NextDMUser;
+    public Button MessageDMUser;
+    public Button DMUserHome;
+    private List<User> conversationUsers;
+    private int currentUser = 0;
+    #endregion
+
+    #region Twitter States
+    public bool inTimeLine = false;
 	public bool inConversation = false;
     #endregion
 
     #region Not sure
-    public Text TweetStatusText; 
+    public Text TweetStatusText;
     #endregion
 
-    private static TwitterAPI api;
+    public String[] objectsToManage = new String[]
+    {
+        "loginObjects",
+        "homeTimeLineObjects",
+        "homeObjects",
+        "composeTweetObjects",
+        "SelectConvObjects",
+        "ViewConvObjects"
+    };
 
-    
+    public void setActiveObject(String objectName)
+    {
+        IEnumerable<UnityEngine.Object> all_Objs = Resources.FindObjectsOfTypeAll(typeof(GameObject));
+        all_Objs = all_Objs.Where(x => Array.FindIndex(objectsToManage, y => y.Equals(x.name)) > -1);
+
+        foreach (UnityEngine.Object g in all_Objs)
+        {
+            GameObject gameobj = (GameObject) g;
+
+            if (gameobj.name.Equals(objectName))
+                gameobj.SetActive(true);
+            else
+                gameobj.SetActive(false);
+        }
+    }
+
+    private static TwitterAPI api;
 
 	// Use this for initialization
 	void Start () {
@@ -101,6 +139,7 @@ public class TwitterController : MonoBehaviour {
 
 	}
 
+    #region TwitterAPIFunctions
     // This function allows us to make a call to the API for functions that do not have a return value.
     // This is used to catch any twitter authentication exceptions that may arise, and then navigate the user back to the authentication page if it fails.
     public void makeTwitterAPICallNoReturnVal(Action apiFunction)
@@ -141,15 +180,17 @@ public class TwitterController : MonoBehaviour {
         return default(T);
     }
 
-	public void navigateToConversation() 
+    #endregion TwitterAPIFunctions
+
+    #region NavigationFunctions
+
+    public void navigateToConversation() 
 	{
 		TitleView.text = "Coversation";
 		populateConversation ();
-		// Hide all elements except those related to authentication
-		homeTimeLineObjects.SetActive(true);
-		homeObjects.SetActive(false);
-		loginObjects.SetActive(false);
-		composeTweetObjects.SetActive(false);
+
+        setActiveObject("homeTimeLineObjects");
+
 	}
 
 	public void populateConversation() {
@@ -168,15 +209,15 @@ public class TwitterController : MonoBehaviour {
 		}
 	}
 
+    #endregion NavigationFunctions
+
     // This function navigates the user back to the user authentication page. Here the user will need to open the link that is copied to their clipboard in a browser, and then enter the PIN code shown.
     public void navigateToTwitterAuthPage()
     {
         SelectionManager.Instance.Deactivate();
-        // Hide all elements except those related to authentication
-        homeTimeLineObjects.SetActive(false);
-        homeObjects.SetActive(false);
-        loginObjects.SetActive(true);
-        composeTweetObjects.SetActive(false);
+
+        setActiveObject("loginObjects");
+
         authenticationURL.text = "The authorization URL has been copied to your clipboard! Please visit this url to authenticate twitter.";
 
         // Copy the authentication URL to the user's clipboard.
@@ -217,11 +258,7 @@ public class TwitterController : MonoBehaviour {
     // This function navigates the user to the twitter home page. From this page, the user can choose whether they wish to navigate to their timeline, their own profile, messages...
     public void navigateToTwitterHome()
     {
-        // Set all objects to be invisible except those related to the home page.
-        homeTimeLineObjects.SetActive(false);
-        homeObjects.SetActive(true);
-        loginObjects.SetActive(false);
-        composeTweetObjects.SetActive(false);
+        setActiveObject("homeObjects");
 
         SelectionManager.Instance.Activate();
     }
@@ -229,10 +266,7 @@ public class TwitterController : MonoBehaviour {
 	public void backButton() 
 	{
 		if (inTimeLine) {
-			homeTimeLineObjects.SetActive(false);
-			homeObjects.SetActive(true);
-			loginObjects.SetActive(false);
-			composeTweetObjects.SetActive(false);
+            setActiveObject("homeObjects");
 		} else if (inConversation) {
 			addHomeTimeLine ();
 			currentTweet = 0;
@@ -242,8 +276,7 @@ public class TwitterController : MonoBehaviour {
 	}
 
 	public void cancelTweetReplyButton() {
-		homeTimeLineObjects.SetActive (true);
-		composeTweetObjects.SetActive (false);
+        setActiveObject("homeTimeLineObjects");
 	}
 
     // This function populates the user homepage.
@@ -253,10 +286,7 @@ public class TwitterController : MonoBehaviour {
 		inConversation = false;
 		TitleView.text = "Timeline";
         // Set all objects to be invisible except those related to the timeline.
-        homeTimeLineObjects.SetActive(true);
-        loginObjects.SetActive(false);
-        homeObjects.SetActive(false);
-        composeTweetObjects.SetActive(false);
+        setActiveObject("homeTimeLineObjects");
 
         // Get the tweets for the user.
         HomeTimeLine = makeTwitterAPICall(() => api.getHomeTimeLine());
@@ -325,10 +355,7 @@ public class TwitterController : MonoBehaviour {
     public void replyToTweet()
     {
         // Make all objects except those related to replying to a tweet to be hidden.
-        homeTimeLineObjects.SetActive(false);
-        homeObjects.SetActive(false);
-        loginObjects.SetActive(false);
-        composeTweetObjects.SetActive(true);
+        setActiveObject("composeTweetObjects");
 
         Status currentStatus = HomeTimeLine[currentTweet];
 		Debug.Log ("Current in reply " + currentTweet);
@@ -338,9 +365,6 @@ public class TwitterController : MonoBehaviour {
         replyToText.text = currentStatus.Text;
         replyToUsername.text = currentStatus.User.ScreenName;
         tweetText.text = "@" + currentStatus.User.ScreenName + " ";
-
-
-       
     }
 	
     /// <summary>
@@ -382,8 +406,58 @@ public class TwitterController : MonoBehaviour {
         PopupManager.GetInputFromKeyboard(Tweet);
     }
 
-	// Update is called once per frame
-	void Update () {
+    public void handleTwitterConversations()
+    {
+        List<User> users = makeTwitterAPICall(() => api.getUniqueDMs());
+
+        setActiveObject("SelectConvObjects");
+
+        conversationUsers = users;
+        setUser(currentUser);
+    }
+
+    // This function sets the current tweet for the user.
+    public void setUser(int index)
+    {
+        StartCoroutine(setDMUserProfilePic(conversationUsers[index].ProfileImageUrl));
+        DMUsername.text = conversationUsers[index].ScreenName;
+        DMName.text = conversationUsers[index].Name;
+    }
+
+    public IEnumerator setDMUserProfilePic(string url)
+    {
+        WWW www = new WWW(url);
+        yield return www;
+        DMConvoProfilePic.sprite = Sprite.Create(
+            www.texture,
+            new Rect(0, 0, www.texture.width, www.texture.height),
+            new Vector2(0, 0));
+    }
+
+    // This function populates the timeline ui with the next tweet in the list.
+    public void nextUser()
+    {
+        if (currentUser < conversationUsers.Count - 1)
+        {
+            currentUser += 1;
+        }
+
+        setUser(currentUser);
+    }
+
+    // This function populates the timeline ui with the last tweet in the list.
+    public void previousUser()
+    {
+        if (currentUser > 0)
+        {
+            currentUser--;
+        }
+
+        setUser(currentUser);
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 }
