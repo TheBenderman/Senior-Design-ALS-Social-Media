@@ -116,6 +116,19 @@ namespace Connectome.Twitter.API
 
 			return statuses.OrderBy(x => x.CreatedAt).ToList();
 		}
+
+        public List<User> getUniqueDMs()
+        {
+            List<DirectMessage> sentList = new List<DirectMessage>();
+            Tokens tokens = authenticator.getTokens();
+            var users = tokens.DirectMessages.Sent(count => 100).OrderBy(x => x.CreatedAt)
+                .Select(x => x.Recipient);
+            users = users.Union(tokens.DirectMessages.Received(count => 100).OrderBy(x => x.CreatedAt)
+                .Select(x => x.Sender));
+            users = users.GroupBy(x => x.Name).First();
+
+            return users.ToList();
+        }
 		#endregion
 
 	}

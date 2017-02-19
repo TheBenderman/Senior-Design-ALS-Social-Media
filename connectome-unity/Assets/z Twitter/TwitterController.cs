@@ -8,7 +8,8 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TwitterController : MonoBehaviour {
+public class TwitterController : MonoBehaviour
+{
 
     public bool Remember;
     #region Twitter Login Members
@@ -34,8 +35,8 @@ public class TwitterController : MonoBehaviour {
     public Button replyButton;
     public Button privateMessageButton;
     public Button nextTweetButton;
-	private List<Status> HomeTimeLine;
-	private int currentTweet = 0;
+    private List<Status> HomeTimeLine;
+    private int currentTweet = 0;
     #endregion
 
     #region Twitter Home Members
@@ -53,11 +54,11 @@ public class TwitterController : MonoBehaviour {
     public Image replyToProfilePic;
     public Text replyToUsername;
     public Text replyToText;
-	public Text TitleView;
+    public Text TitleView;
     public InputField tweetText;
     public Button tweetButton;
     public Button cancelTweetButton;
-	public Button seeConversation;
+    public Button seeConversation;
     #endregion
 
     #region DM Members
@@ -77,7 +78,7 @@ public class TwitterController : MonoBehaviour {
 
     #region Twitter States
     public bool inTimeLine = false;
-	public bool inConversation = false;
+    public bool inConversation = false;
     #endregion
 
     #region Not sure
@@ -101,7 +102,7 @@ public class TwitterController : MonoBehaviour {
 
         foreach (UnityEngine.Object g in all_Objs)
         {
-            GameObject gameobj = (GameObject) g;
+            GameObject gameobj = (GameObject)g;
 
             if (gameobj.name.Equals(objectName))
                 gameobj.SetActive(true);
@@ -110,10 +111,12 @@ public class TwitterController : MonoBehaviour {
         }
     }
 
-    private static TwitterAPI api;
+    private static TwitterAuthenticator Authenticator;
+    private static TwitterInteractor Interactor;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         if (Authenticator == null)
             Authenticator = TwitterAuthenticator.Instance;
 
@@ -129,7 +132,7 @@ public class TwitterController : MonoBehaviour {
 
             Interactor = new TwitterInteractor(Authenticator);
             // Hacky way to do this, verify that the credentials are fine.
-            makeTwitterAPICall(() => Interactor.getHomeTimeLine()); 
+            makeTwitterAPICall(() => Interactor.getHomeTimeLine());
 
             navigateToTwitterHome();
         }
@@ -138,7 +141,7 @@ public class TwitterController : MonoBehaviour {
             navigateToTwitterAuthPage();
         }
 
-	}
+    }
 
     #region TwitterAPIFunctions
     // This function allows us to make a call to the API for functions that do not have a return value.
@@ -149,7 +152,7 @@ public class TwitterController : MonoBehaviour {
         {
             apiFunction();
         }
-        catch(TwitterException te)
+        catch (TwitterException te)
         {
             PlayerPrefs.SetString("Access Token", "");
             PlayerPrefs.SetString("Access Secret", "");
@@ -185,30 +188,34 @@ public class TwitterController : MonoBehaviour {
 
     #region NavigationFunctions
 
-    public void navigateToConversation() 
-	{
-		TitleView.text = "Coversation";
-		populateConversation ();
+    public void navigateToConversation()
+    {
+        TitleView.text = "Coversation";
+        populateConversation();
 
         setActiveObject("homeTimeLineObjects");
 
-	}
+    }
 
-	public void populateConversation() {
-		Status currentStatus = HomeTimeLine[currentTweet];
-		Debug.Log ("ID FOR THIS TWEET: " + currentStatus.Id.ToString());
-		List<Status> convo = Interactor.getConversation (currentStatus.User.ScreenName, currentStatus.Id.ToString());
-		if (convo.Count > 0) {
-			HomeTimeLine = convo;
-			currentTweet = 0;
-			inConversation = true;
-			inTimeLine = false;
-			seeConversation.gameObject.SetActive (false);
-			setTweet (currentTweet);
-		} else {
-			Debug.Log ("No Conversation for this post");
-		}
-	}
+    public void populateConversation()
+    {
+        Status currentStatus = HomeTimeLine[currentTweet];
+        Debug.Log("ID FOR THIS TWEET: " + currentStatus.Id.ToString());
+        List<Status> convo = Interactor.getConversation(currentStatus.User.ScreenName, currentStatus.Id.ToString());
+        if (convo.Count > 0)
+        {
+            HomeTimeLine = convo;
+            currentTweet = 0;
+            inConversation = true;
+            inTimeLine = false;
+            seeConversation.gameObject.SetActive(false);
+            setTweet(currentTweet);
+        }
+        else
+        {
+            Debug.Log("No Conversation for this post");
+        }
+    }
 
     #endregion NavigationFunctions
 
@@ -242,7 +249,8 @@ public class TwitterController : MonoBehaviour {
             return;
         }
 
-		if (makeTwitterAPICall(() => Authenticator.enterPinCode(pinCode))) {
+        if (makeTwitterAPICall(() => Authenticator.enterPinCode(pinCode)))
+        {
             string accessToken = makeTwitterAPICall(() => Authenticator.getAccessToken());
             string accessSecret = makeTwitterAPICall(() => Authenticator.getAccessTokenSecret());
 
@@ -251,9 +259,11 @@ public class TwitterController : MonoBehaviour {
             PlayerPrefs.SetString("Access Secret", accessSecret);
 
             navigateToTwitterHome();
-		} else {
-			errorMessage.text = "Please input a value for the pin code!";
-		}
+        }
+        else
+        {
+            errorMessage.text = "Please input a value for the pin code!";
+        }
     }
 
     // This function navigates the user to the twitter home page. From this page, the user can choose whether they wish to navigate to their timeline, their own profile, messages...
@@ -264,55 +274,60 @@ public class TwitterController : MonoBehaviour {
         SelectionManager.Instance.Activate();
     }
 
-	public void backButton() 
-	{
-		if (inTimeLine) {
+    public void backButton()
+    {
+        if (inTimeLine)
+        {
             setActiveObject("homeObjects");
-		} else if (inConversation) {
-			addHomeTimeLine ();
-			currentTweet = 0;
-			Debug.Log ("Current Tweet in Back button: " + currentTweet);
-			seeConversation.gameObject.SetActive (true);
-		}
-	}
+        }
+        else if (inConversation)
+        {
+            addHomeTimeLine();
+            currentTweet = 0;
+            Debug.Log("Current Tweet in Back button: " + currentTweet);
+            seeConversation.gameObject.SetActive(true);
+        }
+    }
 
-	public void cancelTweetReplyButton() {
+    public void cancelTweetReplyButton()
+    {
         setActiveObject("homeTimeLineObjects");
-	}
+    }
 
     // This function populates the user homepage.
     public void addHomeTimeLine()
     {
-		inTimeLine = true;
-		inConversation = false;
-		TitleView.text = "Timeline";
+        inTimeLine = true;
+        inConversation = false;
+        TitleView.text = "Timeline";
         // Set all objects to be invisible except those related to the timeline.
         setActiveObject("homeTimeLineObjects");
 
         // Get the tweets for the user.
         HomeTimeLine = makeTwitterAPICall(() => Interactor.getHomeTimeLine());
-		setTweet (currentTweet);
+        setTweet(currentTweet);
     }
 
     // This function sets the current tweet for the user.
-	public void setTweet(int index)
-	{
-		twitterHandle.text = HomeTimeLine [index].User.ScreenName;
-		realName.text = HomeTimeLine [index].User.Name;
+    public void setTweet(int index)
+    {
+        twitterHandle.text = HomeTimeLine[index].User.ScreenName;
+        realName.text = HomeTimeLine[index].User.Name;
         bodyText.text = HomeTimeLine[index].Text;
 
         // Populate the profile picture for the user, requires a separate thread to run.
-		StartCoroutine (setProfilePic (HomeTimeLine [index].User.ProfileImageUrl));
-	}
+        StartCoroutine(setProfilePic(HomeTimeLine[index].User.ProfileImageUrl));
+    }
 
-	public IEnumerator setProfilePic(string url) {
-		WWW www = new WWW(url);
-		yield return www;
-		profilePic.sprite = Sprite.Create(
-			www.texture, 
-			new Rect(0, 0, www.texture.width, www.texture.height), 
-			new Vector2(0, 0));
-	}
+    public IEnumerator setProfilePic(string url)
+    {
+        WWW www = new WWW(url);
+        yield return www;
+        profilePic.sprite = Sprite.Create(
+            www.texture,
+            new Rect(0, 0, www.texture.width, www.texture.height),
+            new Vector2(0, 0));
+    }
 
     public IEnumerator setReplyToProfilePic(string url)
     {
@@ -325,32 +340,40 @@ public class TwitterController : MonoBehaviour {
     }
 
     // This function populates the timeline ui with the next tweet in the list.
-    public void nextTweet() {
+    public void nextTweet()
+    {
 
-		if (currentTweet < HomeTimeLine.Count - 1) {
-			currentTweet += 1;
-		} else {
+        if (currentTweet < HomeTimeLine.Count - 1)
+        {
+            currentTweet += 1;
+        }
+        else
+        {
             // SHOULD HAVE SOME ANIMATION HERE SHOWING THAT IT IS BEING REFRESHED
-			if (inTimeLine) {	
-				HomeTimeLine = makeTwitterAPICall (() => Authenticator.getHomeTimeLine ());
-			}
-		}
+            if (inTimeLine)
+            {
+                HomeTimeLine = makeTwitterAPICall(() => Interactor.getHomeTimeLine());
+            }
+        }
 
-		setTweet (currentTweet);
-	}
+        setTweet(currentTweet);
+    }
 
     // This function populates the timeline ui with the last tweet in the list.
-	public void previousTweet() {
-		if (currentTweet > 0) {
-			currentTweet--;
-		}
-		
-		setTweet (currentTweet);
-	}
+    public void previousTweet()
+    {
+        if (currentTweet > 0)
+        {
+            currentTweet--;
+        }
 
-	public void refreshTimeline() {
-		
-	}
+        setTweet(currentTweet);
+    }
+
+    public void refreshTimeline()
+    {
+
+    }
 
     // This function brings the user to a screen that allows them to reply to a tweet.
     public void replyToTweet()
@@ -359,15 +382,15 @@ public class TwitterController : MonoBehaviour {
         setActiveObject("composeTweetObjects");
 
         Status currentStatus = HomeTimeLine[currentTweet];
-		Debug.Log ("Current in reply " + currentTweet);
+        Debug.Log("Current in reply " + currentTweet);
 
         tweetTitle.text = "Reply to " + currentStatus.User.ScreenName;
-		StartCoroutine(setReplyToProfilePic(currentStatus.User.ProfileImageUrl));
+        StartCoroutine(setReplyToProfilePic(currentStatus.User.ProfileImageUrl));
         replyToText.text = currentStatus.Text;
         replyToUsername.text = currentStatus.User.ScreenName;
         tweetText.text = "@" + currentStatus.User.ScreenName + " ";
     }
-	
+
     /// <summary>
     /// Appemts 10 time to tweet a message 
     /// </summary>
@@ -381,13 +404,13 @@ public class TwitterController : MonoBehaviour {
             {
                 Interactor.publishTweet(msg);
                 TweetStatusText.text = "Tweeted!";
-                attempts = 0; 
+                attempts = 0;
             }
             catch (Exception e)
             {
-                if(attempts == 0)
+                if (attempts == 0)
                 {
-                    if(e.Message.Contains("Status is a duplicate"))
+                    if (e.Message.Contains("Status is a duplicate"))
                     {
                         TweetStatusText.text = "Failed to tweet: Duplicate status!";
                     }
@@ -409,7 +432,7 @@ public class TwitterController : MonoBehaviour {
 
     public void handleTwitterConversations()
     {
-        List<User> users = makeTwitterAPICall(() => api.getUniqueDMs());
+        List<User> users = makeTwitterAPICall(() => Interactor.getUniqueDMs());
 
         setActiveObject("SelectConvObjects");
 
@@ -458,7 +481,8 @@ public class TwitterController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
-		
-	}
+    void Update()
+    {
+
+    }
 }
