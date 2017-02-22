@@ -1,16 +1,106 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CoreTweet;
+using UnityEngine.UI;
+using System;
 
-public class TweetReplyHandler : MonoBehaviour {
+public class TweetReplyHandler : TwitterObjects {
 
-	// Use this for initialization
-	void Start () {
-		
+	#region Handlers
+	public AuthenticationHandler authHandler;
+	public TimeLineHandler timelineHandler;
+	public ConversationHandler convoHandler;
+	#endregion
+
+	#region Twitter Compose Tweet Members
+	public GameObject composeTweetObjects;
+	public Text TweetStatusText;
+	public Text tweetTitle;
+	public Image replyToProfilePic;
+	public Text replyToUsername;
+	public Text replyToText;
+	public InputField tweetText;
+	public Button tweetButton;
+	public Button cancelTweetButton;
+	public Button seeConversation;
+	public string composeTweetObjectsString = "composeTweetObjects";
+	#endregion
+
+
+	// This function brings the user to a screen that allows them to reply to a tweet.
+	public void replyToTweet()
+	{
+		// Make all objects except those related to replying to a tweet to be hidden.
+		setActiveObject(composeTweetObjectsString);
+
+		Status currentStatus;
+		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle)) {
+			currentStatus = timelineHandler.hometimelineStatuses [timelineHandler.getCurrentTweet ()];
+		} else {
+			currentStatus = convoHandler.conversationtimelineStatuses [convoHandler.currentTweet];
+		}
+
+		Debug.Log("Current in reply " + timelineHandler.getCurrentTweet());
+
+		tweetTitle.text = "Reply to " + currentStatus.User.ScreenName;
+		StartCoroutine(setReplyToProfilePic(currentStatus.User.ProfileImageUrl));
+		replyToText.text = currentStatus.Text;
+		replyToUsername.text = currentStatus.User.ScreenName;
+		tweetText.text = "@" + currentStatus.User.ScreenName + " ";
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	public void cancelTweetReplyButton()
+	{
+		setActiveObject(timelineHandler.homeTimeLineObjectsString);
+	}
+
+	public IEnumerator setReplyToProfilePic(string url)
+	{
+		WWW www = new WWW(url);
+		yield return www;
+		replyToProfilePic.sprite = Sprite.Create(
+			www.texture,
+			new Rect(0, 0, www.texture.width, www.texture.height),
+			new Vector2(0, 0));
+	}
 		
+	/// <summary>
+	/// Appemts 10 time to tweet a message 
+	/// </summary>
+	/// <param name="msg"></param>
+	public void Tweet(string msg)
+	{
+		int attempts = 10;
+		while (attempts-- > 0)
+		{
+			try
+			{
+				authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.publishTweet(msg));
+				TweetStatusText.text = "Tweeted!";
+				attempts = 0;
+			}
+			catch (Exception e)
+			{
+				if (attempts == 0)
+				{
+					if (e.Message.Contains("Status is a duplicate"))
+					{
+						TweetStatusText.text = "Failed to tweet: Duplicate status!";
+					}
+					else
+					{
+						TweetStatusText.text = "Failed to tweet: Connection error. Fix your internet";
+					}
+					Debug.Log("Failed to tweet " + e);
+				}
+			}
+		}
+
+	}
+
+	public void TweetFromKeyboard()
+	{
+		PopupManager.GetInputFromKeyboard(Tweet);
 	}
 }

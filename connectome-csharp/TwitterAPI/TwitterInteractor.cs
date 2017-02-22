@@ -8,13 +8,17 @@ namespace Connectome.Twitter.API
 	public class TwitterInteractor
 	{
 
-        private int refillTweetsNumber = 3;
+        private int refillTweetsNumber = 20;
 		private int initialTweetsNumber = 3;
 		private TwitterAuthenticator authenticator;
 
 		public TwitterInteractor(TwitterAuthenticator twitauth){
-			authenticator = twitauth;
+            authenticator = twitauth;
 		}
+
+        public TwitterAuthenticator getA() {
+            return this.authenticator;
+        }
 
 		#region TwitterInteraction
 		// publish a tweet
