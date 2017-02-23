@@ -137,7 +137,8 @@ namespace Connectome.Twitter.API
         // Set the tokens. Used by the able to set the tokens from a previous session
         public void setTokens(string accessToken, string accessTokenSecret)
         {
-            tokens = Tokens.Create("AeMBFSekBw8CiP19URpCeMsMy", "GhfHgUVq6i69VM1PaAQtZdnFH7eVLhlXcL9oAc6hnbnM2nOntf", accessToken, accessTokenSecret);
+            tokens = Tokens.Create(GetAppSetting(config, "consumerKey"), GetAppSetting(config, "consumerSecret"), 
+                accessToken, accessTokenSecret);
         }
 
         public Boolean enterPinCode(string pinCode)
@@ -148,6 +149,11 @@ namespace Connectome.Twitter.API
                 return true;
             else
                 throw new TwitterAuthException("Unable to get the tokens for user.");
+        }
+
+        public string getCurrentUser()
+        {
+            return tokens.User.ScreenName;
         }
 
         // publish a tweet

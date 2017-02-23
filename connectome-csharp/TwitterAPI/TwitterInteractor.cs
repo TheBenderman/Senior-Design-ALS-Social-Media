@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using CoreTweet;
+using CoreTweet.Core;
 
 namespace Connectome.Twitter.API
 {
 	public class TwitterInteractor
 	{
-
         private int refillTweetsNumber = 20;
 		private int initialTweetsNumber = 3;
 		private TwitterAuthenticator authenticator;
@@ -19,6 +19,12 @@ namespace Connectome.Twitter.API
         public TwitterAuthenticator getA() {
             return this.authenticator;
         }
+
+	    public string getCurrentUser()
+	    {
+	        ListedResponse<Status> statuses = authenticator.getTokens().Statuses.UserTimeline(count => 1);
+	        return statuses.First().User.ScreenName;
+	    }
 
 		#region TwitterInteraction
 		// publish a tweet
@@ -103,13 +109,16 @@ namespace Connectome.Twitter.API
 		public List<DirectMessage> buildDMConversation(string sender)
 		{
 			List<DirectMessage> list = new List<DirectMessage>();
-			foreach (var dm in authenticator.getTokens().DirectMessages.Sent(count => 100).Where(x => x.Recipient.Equals(sender)))
+			foreach (var dm in authenticator.getTokens().DirectMessages.Sent(count => 100).Where(x => x.Recipient.ScreenName.Equals(sender)))
 				list.Add(dm);
 
-			foreach (var dm in authenticator.getTokens().DirectMessages.Received(count => 100).Where(x => x.Sender.Equals(sender)))
+			foreach (var dm in authenticator.getTokens().DirectMessages.Received(count => 100).Where(x => x.Sender.ScreenName.Equals(sender)))
 				list.Add(dm);
 
-			return list.OrderBy(x => x.CreatedAt).ToList();
+		    list = list.GroupBy(x => x.Id).Select(x => x.First()).
+                OrderByDescending(x => x.CreatedAt.DateTime).ToList();
+
+		    return list;
 		}
 
 		public List<Status> search(string text)
@@ -123,13 +132,14 @@ namespace Connectome.Twitter.API
 
         public List<User> getUniqueDMs()
         {
-            List<DirectMessage> sentList = new List<DirectMessage>();
             Tokens tokens = authenticator.getTokens();
-            var users = tokens.DirectMessages.Sent(count => 100).OrderBy(x => x.CreatedAt)
+            IEnumerable<User> users = tokens.DirectMessages.Sent(count => 100).OrderByDescending(x => x.CreatedAt.DateTime)
                 .Select(x => x.Recipient);
-            users = users.Union(tokens.DirectMessages.Received(count => 100).OrderBy(x => x.CreatedAt)
+            users = users.Union(tokens.DirectMessages.Received(count => 100).OrderByDescending(x => x.CreatedAt.DateTime)
                 .Select(x => x.Sender));
-            users = users.GroupBy(x => x.Name).First();
+
+            users = users.GroupBy(x => x.Id).Select(group => group.First());
+            users = users.Where(x => x.ScreenName != getCurrentUser());
 
             return users.ToList();
         }

@@ -33,13 +33,9 @@ public class AuthenticationHandler : TwitterObjects
 		string accesstoken = PlayerPrefs.GetString("Access Token");
 		string accessSecret = PlayerPrefs.GetString("Access Secret");
 
-		Debug.Log ("AT" + accesstoken);
-		Debug.Log ("AS" + accessSecret);
-
 		// If the access token and access secret have been set before, then load them back into the API
 		if (Remember && !string.IsNullOrEmpty(accesstoken) && !string.IsNullOrEmpty(accessSecret))
 		{
-			Debug.Log ("I'm inside initializeAuth");
 			// Set the tokens to the previously received tokens
 			makeTwitterAPICallNoReturnVal(() => Authenticator.setTokens(accesstoken, accessSecret));
 			Interactor = new TwitterInteractor (Authenticator);
