@@ -20,7 +20,7 @@ namespace Connectome.Unity.Keyboard
         /// <summary>
         /// The initial selections when the keyboard first pops up.
         /// </summary>
-        public SelectableObject[] BaseSelections;
+        //public SelectableObject[] BaseSelections;
         public void UpdateString(string text)
         {
             ActiveField.ConcatToCurrentText(IsCaps ? text.ToUpper() : text);

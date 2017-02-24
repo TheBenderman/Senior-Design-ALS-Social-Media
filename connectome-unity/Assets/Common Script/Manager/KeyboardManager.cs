@@ -24,10 +24,10 @@ namespace Connectome.Unity.Keyboard
         /// </summary>
         private void Awake()
         {
-            Keyboard.OnClick += (go) =>
-            {
-                AppendText(Keyboard.KeyToString(go));
-            };
+            //Keyboard.OnClick += (go) =>
+            //{
+            //    AppendText(Keyboard.KeyToString(go));
+           // };
         }
         #endregion
         #region IKeyboardManager Overrides
@@ -56,7 +56,8 @@ namespace Connectome.Unity.Keyboard
         /// </summary>
         public virtual void Show()
         {
-            gameObject.SetActive(true);
+            //gameObject.SetActive(true);
+            setKeyboard();
         }
 
         /// <summary>
@@ -88,7 +89,8 @@ namespace Connectome.Unity.Keyboard
 
         private void setKeyboard(string keyboardtype)
         {
-            KeyboardGameObject = Instantiate(Resources.Load(keyboardtype), GameObject.Find("Canvas").transform) as GameObject;
+            KeyboardGameObject = Instantiate(Resources.Load(keyboardtype), this.transform) as GameObject;
+  
             //Commenting this out to try calling the same methods from Keyboard Data.
             //This would elminiate the need to find the game object with the Exit tag just to set these methods via code, and just do it in the editor.
             /*GameObject.FindGameObjectWithTag("Exit").GetComponent<Button>().onClick.AddListener(() =>
@@ -106,7 +108,7 @@ namespace Connectome.Unity.Keyboard
 
         private void setKeyboard()
         {
-            setKeyboard(KeyboardPrefabName);
+            setKeyboard(((KeyboardType)UserSettings.GetKeyboard()).ToString());
         }
 
         private void removeKeyboard()

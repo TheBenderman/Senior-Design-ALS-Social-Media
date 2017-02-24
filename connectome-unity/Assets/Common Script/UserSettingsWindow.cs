@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,9 +18,15 @@ public class UserSettingsWindow : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
+        KeyboardDrop.ClearOptions();
+        foreach (KeyboardType type in Enum.GetValues(typeof(KeyboardType)))
+        {
+            KeyboardDrop.options.Add(new Dropdown.OptionData() { text = type.ToString() });
+        }
         DurationSlider.value = UserSettings.GetDuration();
         PassThresholdSlider.value = UserSettings.GetPassThreshold() * 100;
         TargetPowerSlider.value = UserSettings.GetTargetPower();
+        KeyboardDrop.value = UserSettings.GetKeyboard();
         SetPassThresholdTextValue();
         SetDurationTextValue();
         SetTargetPowerTextValue();
@@ -73,6 +80,11 @@ public class UserSettingsWindow : MonoBehaviour {
     public void CloseUserSettingsWindow()
     {
         Destroy(gameObject);
+    }
+
+    public void SetKeyboardType()
+    {
+        UserSettings.SetKeyboard(KeyboardDrop.value);
     }
 
 
