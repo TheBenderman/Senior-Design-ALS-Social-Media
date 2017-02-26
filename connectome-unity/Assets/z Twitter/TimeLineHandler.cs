@@ -64,9 +64,10 @@ public class TimeLineHandler: TwitterObjects
 	// This function sets the current tweet for the user.
 	public void setTweet(int index)
 	{
-		twitterHandle.text = hometimelineStatuses[index].User.ScreenName;
+		twitterHandle.text = "@" + hometimelineStatuses[index].User.ScreenName;
 		realName.text = hometimelineStatuses[index].User.Name;
 		bodyText.text = hometimelineStatuses[index].Text;
+		timeStamp.text = hometimelineStatuses[index].CreatedAt.DateTime.ToString("HH:mmtt - dd MMM yyyy");
 
 		// Populate the profile picture for the user, requires a separate thread to run.
 		StartCoroutine(setProfilePic(hometimelineStatuses[index].User.ProfileImageUrl));

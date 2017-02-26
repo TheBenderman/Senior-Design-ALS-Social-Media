@@ -14,6 +14,7 @@ public class DirectMessageHandler : TwitterObjects {
 	public Image DMConvoProfilePic;
 	public Text DMName;
 	public Text DMUsername;
+	public Text LastMessageText;
 	public Button LastDMUser;
 	public Button NextDMUser;
 	public Button MessageDMUser;
@@ -51,6 +52,22 @@ public class DirectMessageHandler : TwitterObjects {
 		StartCoroutine(setDMUserProfilePic(conversationUsers[index].ProfileImageUrl));
 		DMUsername.text = conversationUsers[index].ScreenName;
 		DMName.text = conversationUsers[index].Name;
+
+		string currentUser = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getCurrentUser());
+
+		Debug.Log("Current user : " + currentUser);
+
+		string otherUser = conversationUsers[this.currentUser].ScreenName;
+
+		Debug.Log("Other User : " + otherUser);
+
+		List<DirectMessage> dms = authHandler.makeTwitterAPICall(
+			() => authHandler.Interactor.buildDMConversation(otherUser));
+
+		DirectMessage latestMessage = dms.OrderByDescending((arg) => arg.CreatedAt).First();
+
+		LastMessageText.text = latestMessage.Sender.ScreenName + " - (" + Utilities.ElapsedTime(latestMessage.CreatedAt.DateTime)
+			+ ") - " + latestMessage.Text;
 	}
 
 	public IEnumerator setDMUserProfilePic(string url)
@@ -89,9 +106,9 @@ public class DirectMessageHandler : TwitterObjects {
     {
         setActiveObject(viewConvObjectsString);
 
-        string currentUser = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getCurrentUser());
+        string currentUserName = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getCurrentUser());
 
-        Debug.Log("Current user : " + currentUser);
+        Debug.Log("Current user : " + currentUserName);
 
         string otherUser = conversationUsers[this.currentUser].ScreenName;
 
