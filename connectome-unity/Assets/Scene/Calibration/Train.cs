@@ -20,34 +20,24 @@ public class Train : BaseTrainingScreen
     public Timeline<IEmotivState> timeline;
     private long[][] timelineCheckPoints;
     private Boolean incrementSlider;
+    private Boolean secondTime = false;
+    private Boolean complete;
 
 
     // Use this for initialization
     void Start () {
-
-        slider.maxValue = Start_Screen.sliderLength;
-
-        //Creates the device
         deviceSetup(Start_Screen.deviceValue);
-        reader = new BasicEmotivReader(device, false);
+        setup();
+       
+    }
 
-        createTestArray();
-
-        //Creates the timeline and timeline checkpoints
-        timelineCheckPoints = new long[(ect.Length+2)][];
-        timeline = new Timeline<IEmotivState>();
-
-        for (int i = 0; i < ect.Length; i++)
+    private void OnEnable()
+    {
+        if (secondTime)
         {
-            timelineCheckPoints[i] = new long[2];
+            deviceSetup(Start_Screen.deviceValue);
+            setup();
         }
-
-        //Starts reading from the device
-        reader.OnRead += (e) => timeline.Register(e.State);
-        reader.Start();
-        incrementSlider = true;
-
-        Activate();
     }
 
     //Randomizes the array of push and neutral order
@@ -66,6 +56,10 @@ public class Train : BaseTrainingScreen
             slider.value += Time.deltaTime;
         }
         
+        if(complete && slider.value == slider.maxValue)
+        {
+            reset();
+        }
 
         //Changes the button's color if the user is pushing
         if(timeline.Latest().Command.Equals(EmotivCommandType.PUSH))
@@ -122,10 +116,13 @@ public class Train : BaseTrainingScreen
 
                 setButtonText("Complete!");
                 reader.Stop();
+                reader = null;
 
                 int[][] data = analyzeData();
                 setAccuracyResultText(data[0], data[1]);
                 collectData = false;
+                slider.value = 0;
+                complete = true;
 
             }  
         }
@@ -183,6 +180,46 @@ public class Train : BaseTrainingScreen
 
     public override void reset()
     {
-        throw new NotImplementedException();
+
+        resultText.text = "";
+
+        for (int i = 0; i < results.Length; i++)
+        {
+                results[i].text = "";
+            
+        }
+
+        slider.value = 0;
+        secondTime = true;
+        device = null;
+        setButtonText("Start!");
+        mainMenu.SetActive(true);
+        currentPanel.SetActive(false);
+    }
+
+    void setup()
+    {
+        slider.maxValue = Start_Screen.sliderLength;
+        complete = false;
+
+        reader = new BasicEmotivReader(device, false);
+
+        createTestArray();
+
+        //Creates the timeline and timeline checkpoints
+        timelineCheckPoints = new long[(ect.Length + 2)][];
+        timeline = new Timeline<IEmotivState>();
+
+        for (int i = 0; i < ect.Length; i++)
+        {
+            timelineCheckPoints[i] = new long[2];
+        }
+
+        //Starts reading from the device
+        reader.OnRead += (e) => timeline.Register(e.State);
+        reader.Start();
+        incrementSlider = true;
+
+        Activate();
     }
 }

@@ -17,30 +17,25 @@ public class PowerTraining : BaseTrainingScreen {
     private float highscore;
     private Boolean passedTest;
     private Boolean started;
+    private Boolean secondRun = false;
+    private Boolean complete;
 
     public Text maxPower;
 
     // Use this for initialization
     void Start () {
-        currentPoint = 0;
-        highscore = 0;
-        passedTest = false;
-        started = false;
-
-        slider.maxValue = Start_Screen.sliderLength;
 
         deviceSetup(Start_Screen.deviceValue);
+        setup();
 
-        reader = new BasicEmotivReader(device, false);
-
-        reader.OnRead += (e) => powerChecker(e.State);
-
-        activate();
     }
 
     private void OnEnable()
     {
-
+        if(secondRun)
+        {
+            setup();
+        }
     }
 
     // Update is called once per frame
@@ -61,16 +56,25 @@ public class PowerTraining : BaseTrainingScreen {
             currentPoint++;
         }
 
+        if (complete)
+        {
+            if(slider.value == slider.maxValue)
+            {
+                reset();
+            }
+        }
+
         if (currentPoint >= ect.Length || (slider.value == slider.maxValue && started))
         {
             reader.Stop();
             passedTest = false;
             setButtonText("Complete!");
-
+            lastPower = 0;
+            slider.value = 0;
+            slider.maxValue = 5;
+            complete = true;
 
         }
-
-
 
     }
 
@@ -130,5 +134,25 @@ public class PowerTraining : BaseTrainingScreen {
         updateButtonColor(Color.white);
         setButtonText("Starting");
         slider.value = 0;
+        secondRun = true;
+        mainMenu.SetActive(true);
+        currentPanel.SetActive(false);
+    }
+
+    void setup()
+    {
+        currentPoint = 0;
+        highscore = 0;
+        passedTest = false;
+        started = false;
+        complete = false;
+
+        slider.maxValue = Start_Screen.sliderLength;
+
+        reader = new BasicEmotivReader(device, false);
+
+        reader.OnRead += (e) => powerChecker(e.State);
+
+        activate();
     }
 }
