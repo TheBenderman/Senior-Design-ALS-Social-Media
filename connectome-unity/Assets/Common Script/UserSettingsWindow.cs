@@ -27,6 +27,7 @@ public class UserSettingsWindow : MonoBehaviour {
         PassThresholdSlider.value = UserSettings.GetPassThreshold() * 100;
         TargetPowerSlider.value = UserSettings.GetTargetPower();
         KeyboardDrop.value = UserSettings.GetKeyboard();
+        KeyboardDrop.RefreshShownValue();
         SetPassThresholdTextValue();
         SetDurationTextValue();
         SetTargetPowerTextValue();
