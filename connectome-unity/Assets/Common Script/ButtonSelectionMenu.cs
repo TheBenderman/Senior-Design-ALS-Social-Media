@@ -30,6 +30,11 @@ namespace Connectome.Unity.Menu
         /// <returns>A ButtonSelectionMenu within invoked button if exist</returns>
         public override ISelectionMenu InvokeSelected()
         {
+            if(Pointer==-1)
+            {
+                return null; 
+            }
+
             Selection[Pointer].onClick.Invoke();
 
             return Selection[Pointer].GetComponent<ButtonSelectionMenu>();

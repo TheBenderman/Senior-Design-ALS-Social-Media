@@ -15,14 +15,14 @@ namespace Connectome.Unity.Plugin
     {
         protected override IEmotivDevice CreateDevice()
         {
-            return PopupManager.PopUpVirtualUnityDevice();
+            return DisplayManager.PopUpVirtualUnityDevice();
         }
 
         private void OnValidate()
         {
-            if(PopupManager.Instance == null)
+            if(DisplayManager.Instance == null)
             {
-                Debug.LogWarning("VirtualDevicePlugin is created from PopupManager. Make sure a PopupManager exists.");
+              //  Debug.LogWarning("VirtualDevicePlugin is created from PopupManager. Make sure a PopupManager exists.");
             }
         }
 

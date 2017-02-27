@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,12 +15,22 @@ public class UserSettingsWindow : MonoBehaviour {
     public InputField TargetPowerText;
 
     public Dropdown KeyboardDrop;
+
+    public Toggle FlashingToggle;
     
 	// Use this for initialization
 	void Start () {
+        KeyboardDrop.ClearOptions();
+        foreach (KeyboardType type in Enum.GetValues(typeof(KeyboardType)))
+        {
+            KeyboardDrop.options.Add(new Dropdown.OptionData() { text = type.ToString() });
+        }
         DurationSlider.value = UserSettings.GetDuration();
         PassThresholdSlider.value = UserSettings.GetPassThreshold() * 100;
         TargetPowerSlider.value = UserSettings.GetTargetPower();
+        KeyboardDrop.value = UserSettings.GetKeyboard();
+        FlashingToggle.isOn = UserSettings.GetFlashingSetting();
+        KeyboardDrop.RefreshShownValue();
         SetPassThresholdTextValue();
         SetDurationTextValue();
         SetTargetPowerTextValue();
@@ -75,5 +86,13 @@ public class UserSettingsWindow : MonoBehaviour {
         Destroy(gameObject);
     }
 
+    public void SetKeyboardType()
+    {
+        UserSettings.SetKeyboard(KeyboardDrop.value);
+    }
 
+    public void SetFlashingOption()
+    {
+        UserSettings.SetFlashingSetting(FlashingToggle.isOn);
+    }
 }

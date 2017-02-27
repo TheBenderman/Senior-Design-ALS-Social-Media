@@ -32,7 +32,7 @@ public abstract class BaseTrainingScreen : MonoBehaviour {
     {
         if (Start_Screen.username == null)
         {
-            device = PopupManager.PopUpVirtualUnityDevice();
+            device = DisplayManager.PopUpVirtualUnityDevice();
         }
         else if (Start_Screen.username != null)
         {

@@ -17,6 +17,12 @@ namespace Connectome.Unity.Keyboard
         /// Holds prompt event.
         /// </summary>
         private Action<string> OnSubmit;
+
+        /// <summary>
+        /// Holds Accumelated text 
+        /// </summary>
+        public InputField InputField;
+
         #endregion
         #region Unity Overrides
         /// <summary>
@@ -24,10 +30,10 @@ namespace Connectome.Unity.Keyboard
         /// </summary>
         private void Awake()
         {
-            Keyboard.OnClick += (go) =>
-            {
-                AppendText(Keyboard.KeyToString(go));
-            };
+            //Keyboard.OnClick += (go) =>
+            //{
+            //    AppendText(Keyboard.KeyToString(go));
+           // };
         }
         #endregion
         #region IKeyboardManager Overrides
@@ -38,7 +44,7 @@ namespace Connectome.Unity.Keyboard
         public virtual void Submit()
         {
             OnSubmit(GetSubmissionText());
-            Hide();
+            removeKeyboard();
         }
         
         /// <summary>
@@ -57,6 +63,7 @@ namespace Connectome.Unity.Keyboard
         public virtual void Show()
         {
             gameObject.SetActive(true);
+            setKeyboard();
         }
 
         /// <summary>
@@ -70,7 +77,7 @@ namespace Connectome.Unity.Keyboard
         #region IKeyboardManager Abstract  
         public abstract void ResetText();
         public abstract void AppendText(string text);
-        public abstract string GetSubmissionText();
+
         #endregion
         #region Abstract Properties
         /// <summary>
@@ -88,30 +95,49 @@ namespace Connectome.Unity.Keyboard
 
         private void setKeyboard(string keyboardtype)
         {
-            KeyboardGameObject = Instantiate(Resources.Load(keyboardtype), GameObject.Find("Canvas").transform) as GameObject;
+            KeyboardGameObject = Instantiate(Resources.Load(keyboardtype), this.transform) as GameObject;
+  
             //Commenting this out to try calling the same methods from Keyboard Data.
             //This would elminiate the need to find the game object with the Exit tag just to set these methods via code, and just do it in the editor.
-            /*GameObject.FindGameObjectWithTag("Exit").GetComponent<Button>().onClick.AddListener(() =>
+            GameObject.FindGameObjectWithTag("Exit").GetComponent<Button>().onClick.AddListener(() =>
             {
-                Keyboard.GetComponent<KeyboardData>().ActiveField.text = "";
+                //Keyboard.GetComponent<KeyboardData>().ActiveField.text = "";
                 removeKeyboard();
-                SelectionManager.Instance.PopSelections();
-            }); */
+               // SelectionManager.Instance.PopSelections();
+            });
+
+            //Submit Button instantiation
+            GameObject.FindGameObjectWithTag("Submit").GetComponent<Button>().onClick.AddListener(() =>
+            {
+                //Keyboard.GetComponent<KeyboardData>().ActiveField.text = "";
+                Submit();
+                // SelectionManager.Instance.PopSelections();
+            });
 
             //SelectionManager.Instance.PushSelections(Keyboard.GetComponent<KeyboardData>().BaseSelections);
 
             //Do this here in case we have apps with different character limits, so just this value has to change to change the keyboards.
-            KeyboardGameObject.GetComponent<KeyboardData>().ActiveField.characterLimit = TextLimit;
+            InputField = KeyboardGameObject.GetComponent<KeyboardData>().ActiveField;
+            InputField.characterLimit = TextLimit;
         }
 
         private void setKeyboard()
         {
-            setKeyboard(KeyboardPrefabName);
+            setKeyboard(((KeyboardType)UserSettings.GetKeyboard()).ToString());
         }
 
         private void removeKeyboard()
         {
             Destroy(KeyboardGameObject.gameObject);
+        }
+
+        /// <summary>
+        /// Grabs Text from InputField
+        /// </summary>
+        /// <param name="text"></param>
+        public virtual string GetSubmissionText()
+        {
+            return InputField.text;
         }
         #endregion
     }

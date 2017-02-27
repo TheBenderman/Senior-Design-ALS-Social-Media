@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum KeyboardType
+{
+    PhraseKeyboard,
+    QWERTYKeyboard
+}
 public static class UserSettings
 {
     #region Login
@@ -96,6 +102,16 @@ public static class UserSettings
     public static bool GetFlashingSetting()
     {
         return PlayerPrefs.GetInt("UseFlashing", 1) == 0;
+    }
+
+    public static void SetKeyboard(int keyboardprefab)
+    {
+        PlayerPrefs.SetInt("Keyboard", keyboardprefab);
+    }
+
+    public static int GetKeyboard()
+    {
+        return PlayerPrefs.GetInt("Keyboard", 0);
     }
     #endregion
 

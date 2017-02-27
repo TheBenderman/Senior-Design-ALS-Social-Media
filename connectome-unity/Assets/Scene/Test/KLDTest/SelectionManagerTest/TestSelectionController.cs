@@ -10,7 +10,7 @@ namespace Connectome.KLD.SelectionTest
     {
         public void CallKey(Text text)
         {
-            PopupManager.GetInputFromKeyboard(s => text.text = s); 
+            DisplayManager.GetInputFromKeyboard(s => text.text = s); 
         }
     }
 }

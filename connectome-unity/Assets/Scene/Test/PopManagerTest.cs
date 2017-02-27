@@ -7,7 +7,7 @@ namespace Connectome.Unity.KLD
 {
     public class PopManagerTest : MonoBehaviour
     {
-        public PopupManager pop; 
+        public DisplayManager pop; 
 
         // Use this for initialization
         void Start()
@@ -23,13 +23,13 @@ namespace Connectome.Unity.KLD
 
         public void popIt()
         {
-           PopupManager.PopUpVirtualUnityDevice(); 
+           DisplayManager.PopUpVirtualUnityDevice(); 
             
         }
 
 		public void reconnectPopUp() 
 		{
-			PopupManager.ReconnectDevice (); 
+			DisplayManager.ReconnectDevice (); 
 		}
     }
 }
