@@ -12,12 +12,12 @@ using Connectome.Unity.Keyboard;
 /// <summary>
 /// Pops up windows such as a Virtual Device. 
 /// </summary>
-public class PopupManager : MonoBehaviour
+public class DisplayManager : MonoBehaviour
 {
     #region Singleton 
-    private static PopupManager instance;
+    private static DisplayManager instance;
 		
-    public static PopupManager Instance
+    public static DisplayManager Instance
     {
         get
         {
@@ -89,7 +89,7 @@ public class PopupManager : MonoBehaviour
 	}
     #endregion
 
-    #region 
+    #region KeyboardManager
 
     public KeyboardManager KeyboardManager;
 

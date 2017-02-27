@@ -8,7 +8,7 @@ namespace Connectome.Twitter.API
     class Program
     {
         
-        static int Main (string[] args)
+        public static void Main ()
         {
             TwitterAPI api = TwitterAPI.Instance;
             Console.WriteLine("Please visit the url here: " + api.getAuthorizationURL());
@@ -16,10 +16,12 @@ namespace Connectome.Twitter.API
             String pin = Console.ReadLine();
             api.enterPinCode(pin);
 
-            //api.getConversation();
 
-            while (true) { };
-            return 0;
-        }
+            Console.WriteLine("Write a tweeet: ");
+            api.publishTweet(Console.ReadLine());
+
+            Console.WriteLine("[End]");
+            Console.ReadLine();     
+           }
     }
 }

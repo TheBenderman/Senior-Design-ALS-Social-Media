@@ -8,6 +8,7 @@ using CoreTweet;
 using CoreTweet.Core;
 using CoreTweet.Rest;
 using System;
+using System.Net; 
 
 public class TwitterController : MonoBehaviour {
 
@@ -75,30 +76,38 @@ public class TwitterController : MonoBehaviour {
     
 
 	// Use this for initialization
-	void Start () {
-        if (api == null)
-            api = TwitterAPI.Instance;
-
-        // See if the accesstoken and access secret have already been entered before
-        string accesstoken = PlayerPrefs.GetString("Access Token");
-        string accessSecret = PlayerPrefs.GetString("Access Secret");
-
-        // If the access token and access secret have been set before, then load them back into the API
-        if (Remember && !string.IsNullOrEmpty(accesstoken) && !string.IsNullOrEmpty(accessSecret))
+	void Start ()
+    {
+        try
         {
-            // Set the tokens to the previously received tokens
-            makeTwitterAPICallNoReturnVal(() => api.setTokens(accesstoken, accessSecret));
+            if (api == null)
+                api = TwitterAPI.Instance;
 
-            // Hacky way to do this, verify that the credentials are fine.
-            makeTwitterAPICall(() => api.getHomeTimeLine()); 
+            // See if the accesstoken and access secret have already been entered before
+            string accesstoken = PlayerPrefs.GetString("Access Token");
+            string accessSecret = PlayerPrefs.GetString("Access Secret");
 
-            navigateToTwitterHome();
+            // If the access token and access secret have been set before, then load them back into the API
+            if (Remember && !string.IsNullOrEmpty(accesstoken) && !string.IsNullOrEmpty(accessSecret))
+            {
+                // Set the tokens to the previously received tokens
+                makeTwitterAPICallNoReturnVal(() => api.setTokens(accesstoken, accessSecret));
+
+                // Hacky way to do this, verify that the credentials are fine.
+                makeTwitterAPICall(() => api.getHomeTimeLine());
+
+                navigateToTwitterHome();
+            }
+            else // Otherwise, we need to authenticate the user.
+            {
+                navigateToTwitterAuthPage();
+            }
         }
-        else // Otherwise, we need to authenticate the user.
+        catch(Exception e)
         {
+            TweetStatusText.text = "error: " + e;
             navigateToTwitterAuthPage();
         }
-
 	}
 
     // This function allows us to make a call to the API for functions that do not have a return value.
@@ -170,14 +179,14 @@ public class TwitterController : MonoBehaviour {
 
     // This function navigates the user back to the user authentication page. Here the user will need to open the link that is copied to their clipboard in a browser, and then enter the PIN code shown.
     public void navigateToTwitterAuthPage()
-    {
+    { 
         SelectionManager.Instance.Deactivate();
         // Hide all elements except those related to authentication
         homeTimeLineObjects.SetActive(false);
         homeObjects.SetActive(false);
         loginObjects.SetActive(true);
         composeTweetObjects.SetActive(false);
-        authenticationURL.text = "The authorization URL has been copied to your clipboard! Please visit this url to authenticate twitter.";
+        authenticationURL.text = "The authorization URL has been copied to your clipboard! Please visit this url to authenticate twitter."; 
 
         // Copy the authentication URL to the user's clipboard.
         TextEditor te = new TextEditor();
@@ -368,18 +377,17 @@ public class TwitterController : MonoBehaviour {
                     }
                     else
                     {
-                        TweetStatusText.text = "Failed to tweet: Connection error. Fix your internet";
+                        TweetStatusText.text = "Failed to tweet: Connection error: "+ e;
                     }
                     Debug.Log("Failed to tweet " + e);
                 }
             }
         }
-
     }
 
     public void TweetFromKeyboard()
     {
-        PopupManager.GetInputFromKeyboard(Tweet);
+        DisplayManager.GetInputFromKeyboard(Tweet);
     }
 
 	// Update is called once per frame

@@ -56,7 +56,7 @@ namespace Connectome.Unity.Keyboard
         /// </summary>
         public virtual void Show()
         {
-            //gameObject.SetActive(true);
+            gameObject.SetActive(true);
             setKeyboard();
         }
 

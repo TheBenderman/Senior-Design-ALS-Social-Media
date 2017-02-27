@@ -45,14 +45,16 @@ namespace Connectome.Twitter.API
             }
             catch(Exception ex)
             {
-                // handle error
+                throw; 
             }
 
             if (config != null)
             {
+
+                //TODO Unity can't find .config file -KLD
                 // Grab the keys from the config file
-                string consumerKey = GetAppSetting(config, "consumerKey");
-                string consumerSecret = GetAppSetting(config, "consumerSecret");
+                string consumerKey = "AeMBFSekBw8CiP19URpCeMsMy";// GetAppSetting(config, "consumerKey");
+                string consumerSecret = "GhfHgUVq6i69VM1PaAQtZdnFH7eVLhlXcL9oAc6hnbnM2nOntf";// GetAppSetting(config, "consumerSecret");
 
                 // Store the keys for the app, these should probably be stored in a file
                 session = OAuth.Authorize(consumerKey, consumerSecret);
@@ -151,9 +153,9 @@ namespace Connectome.Twitter.API
         }
 
         // publish a tweet
-        public void publishTweet(String tweet)
+        public void publishTweet(string tweet)
         {
-            tokens.Statuses.Update(new { status = tweet });
+            tokens.Statuses.Update(status:tweet);
         }
 
         // Get the user's home time line
