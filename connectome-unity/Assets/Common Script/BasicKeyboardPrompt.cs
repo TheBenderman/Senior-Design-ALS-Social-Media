@@ -12,10 +12,7 @@ namespace Connectome.Unity.Keyboard
     public class BasicKeyboardPrompt : KeyboardManager
     {
         #region Inspecter Attributes
-        /// <summary>
-        /// Holds Accumelated text 
-        /// </summary>
-        public InputField InputField;
+
         
         /// <summary>
         /// Holds Target Keyboard
@@ -42,15 +39,6 @@ namespace Connectome.Unity.Keyboard
         public override void AppendText(string text)
         {
             InputField.text += text;
-        }
-
-        /// <summary>
-        /// Grabs Text from InputField
-        /// </summary>
-        /// <param name="text"></param>
-        public override string GetSubmissionText()
-        {
-            return InputField.text;
         }
 
         /// <summary>
