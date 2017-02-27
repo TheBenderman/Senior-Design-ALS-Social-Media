@@ -15,6 +15,8 @@ public class UserSettingsWindow : MonoBehaviour {
     public InputField TargetPowerText;
 
     public Dropdown KeyboardDrop;
+
+    public Toggle FlashingToggle;
     
 	// Use this for initialization
 	void Start () {
@@ -27,6 +29,7 @@ public class UserSettingsWindow : MonoBehaviour {
         PassThresholdSlider.value = UserSettings.GetPassThreshold() * 100;
         TargetPowerSlider.value = UserSettings.GetTargetPower();
         KeyboardDrop.value = UserSettings.GetKeyboard();
+        FlashingToggle.isOn = UserSettings.GetFlashingSetting();
         KeyboardDrop.RefreshShownValue();
         SetPassThresholdTextValue();
         SetDurationTextValue();
@@ -88,5 +91,8 @@ public class UserSettingsWindow : MonoBehaviour {
         UserSettings.SetKeyboard(KeyboardDrop.value);
     }
 
-
+    public void SetFlashingOption()
+    {
+        UserSettings.SetFlashingSetting(FlashingToggle.isOn);
+    }
 }
