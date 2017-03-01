@@ -97,14 +97,8 @@ public class DisplayManager : MonoBehaviour
 
     public static void GetInputFromKeyboard(Action<string> onSubmit)
     {
-        //KeyboardPrompt keyboardPrompt = Instantiate(Instance.PromptKeyboardPrefab, Instance.transform.parent);
-
-        //keyboardPrompt.transform.localPosition = new Vector2(0, 0);
-        //Instance.KeyboardManager.Show(); 
-
-        //onSubmit += (s) => Instance.SelectionManager.Pop();
-
-        Instance.KeyboardManager.Prompt(onSubmit);
+        Instance.KeyboardManager.SubmitAction = onSubmit;
+        Instance.KeyboardManager.Show();
         Instance.SelectionManager.Push(Instance.KeyboardManager.KeyboardGameObject.GetComponent<ButtonSelectionMenu>()); 
     }
     #endregion

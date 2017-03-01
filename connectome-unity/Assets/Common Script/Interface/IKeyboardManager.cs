@@ -34,13 +34,13 @@ namespace Connectome.Unity.Keyboard
         /// Prompts the manager.
         /// </summary>
         /// <param name="onSubmit"></param>
-        void Prompt(Action<string> onSubmit);
+        void SetOnSubmit(Action<string> onSubmit);
 
         /// <summary>
         /// Collects Text data for submition. 
         /// </summary>
         /// <returns></returns>
-        string GetSubmissionText();
+        string SubmissionText();
         #endregion
     }
 }
