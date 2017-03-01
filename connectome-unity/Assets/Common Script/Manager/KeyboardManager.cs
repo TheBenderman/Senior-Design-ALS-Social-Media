@@ -86,7 +86,7 @@ namespace Connectome.Unity.Keyboard
         public abstract IKeyboard<GameObject> Keyboard { get; }
         #endregion
         #region Memory
-        private GameObject KeyboardGameObject;
+        public GameObject KeyboardGameObject;
         private  string KeyboardPrefabName;
         /// <summary>
         /// TODO? This value will eventually come from some fixed spot, based on the social media we are using.
@@ -103,7 +103,7 @@ namespace Connectome.Unity.Keyboard
             {
                 //Keyboard.GetComponent<KeyboardData>().ActiveField.text = "";
                 removeKeyboard();
-               // SelectionManager.Instance.PopSelections();
+                SelectionManager.Instance.Pop();
             });
 
             //Submit Button instantiation
@@ -111,7 +111,7 @@ namespace Connectome.Unity.Keyboard
             {
                 //Keyboard.GetComponent<KeyboardData>().ActiveField.text = "";
                 Submit();
-                // SelectionManager.Instance.PopSelections();
+                SelectionManager.Instance.Pop();
             });
 
             //SelectionManager.Instance.PushSelections(Keyboard.GetComponent<KeyboardData>().BaseSelections);
