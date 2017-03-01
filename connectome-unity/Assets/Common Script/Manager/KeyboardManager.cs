@@ -70,7 +70,7 @@ namespace Connectome.Unity.Keyboard
         /// </summary>
         public virtual void Show()
         {
-            SetKeyboard(((KeyboardType)UserSettings.GetKeyboard()).ToString());
+            SetKeyboard(((KeyboardType)UserSettings.CurrentKeyboard).ToString());
         }
 
         /// <summary>

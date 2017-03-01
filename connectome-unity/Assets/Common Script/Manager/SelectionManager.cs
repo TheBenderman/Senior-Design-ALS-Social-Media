@@ -164,7 +164,7 @@ public class SelectionManager : MonoBehaviour
 
         CurrentWait += Time.deltaTime;
 
-        if (CurrentWait >= UserSettings.GetDuration())
+        if (CurrentWait >= UserSettings.Duration)
         {
             Next();
             ResetInterval();
