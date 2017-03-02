@@ -25,5 +25,15 @@ namespace Connectome.Unity.Menu
         /// </summary>
         /// <param name="h"></param>
         void SelectNext(ISelectionHighlighter h);
+
+        /// <summary>
+        /// Called after menu is popped
+        /// </summary>
+        void OnPop();
+
+        /// <summary>
+        /// Called after menu is pushed
+        /// </summary>
+        void OnPush(); 
     }
 }

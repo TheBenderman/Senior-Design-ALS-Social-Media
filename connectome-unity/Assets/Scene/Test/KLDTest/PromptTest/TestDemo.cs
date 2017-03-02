@@ -19,7 +19,9 @@ namespace Connectome.KLD.PromptTest
         public void PutTextFromPrompt(Text text)
         { 
             //lambda could be replaced with s => TwitterClient.Tweet(s)
-            prompt.Popup(s => text.text = s);
+            //prompt.Popup(s => text.text = s);
+
+            DisplayManager.GetInputFromKeyboard(s => text.text = s); 
         }
     }
 }
