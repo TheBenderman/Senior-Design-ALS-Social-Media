@@ -59,7 +59,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TwitterAuthException.cs" />
-    <Compile Include="TwitterAPI.cs" />
+    <Compile Include="TwitterAuthenticator.cs" />
+    <Compile Include="IAuthentication.cs" />
+    <Compile Include="TwitterInteractor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

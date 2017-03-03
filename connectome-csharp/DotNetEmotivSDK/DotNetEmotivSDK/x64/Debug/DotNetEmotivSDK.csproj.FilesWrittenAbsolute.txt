@@ -1,0 +1,5 @@
+/Users/sheperd/bin/win64/edk.dll
+/Users/sheperd/bin/win64/DotNetEmotivSDK.dll.mdb
+/Users/sheperd/bin/win64/DotNetEmotivSDK.dll
+/Users/sheperd/Senior-Design-ALS-Social-Media/connectome-csharp/DotNetEmotivSDK/DotNetEmotivSDK/x64/Debug/DotNetEmotivSDK.dll
+/Users/sheperd/Senior-Design-ALS-Social-Media/connectome-csharp/DotNetEmotivSDK/DotNetEmotivSDK/x64/Debug/DotNetEmotivSDK.dll.mdb

@@ -27,3 +27,8 @@ C:\Users\neb45\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-unity\
 C:\Users\neb45\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\DotNetEmotivSDK.pdb
 C:\Users\neb45\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.dll
 C:\Users\neb45\Documents\GitHub\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.pdb
+C:\Users\neb45\Documents\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\edk.dll
+C:\Users\neb45\Documents\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\DotNetEmotivSDK.dll
+C:\Users\neb45\Documents\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\DotNetEmotivSDK.pdb
+C:\Users\neb45\Documents\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.dll
+C:\Users\neb45\Documents\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.pdb
