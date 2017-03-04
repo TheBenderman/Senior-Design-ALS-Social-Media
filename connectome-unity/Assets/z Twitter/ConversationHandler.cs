@@ -104,7 +104,7 @@ public class ConversationHandler : TwitterObjects {
 		// Skip this onclick if the scene is on the Timeline
 		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle))
 			return;
-		
+
 		if (currentTweetConvo > 0)
 		{
 			currentTweetConvo--;

@@ -101,6 +101,6 @@ public class TweetReplyHandler : TwitterObjects {
 
 	public void TweetFromKeyboard()
 	{
-		PopupManager.GetInputFromKeyboard(Tweet);
+		DisplayManager.GetInputFromKeyboard(Tweet);
 	}
 }

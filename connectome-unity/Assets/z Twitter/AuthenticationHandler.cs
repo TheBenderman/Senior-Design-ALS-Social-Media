@@ -11,31 +11,35 @@ public class AuthenticationHandler : TwitterObjects
 {
 	#region AuthenticationMembers
 	public bool Remember = true;
-    public GameObject loginObjects;
-    public Text authenticationURL;
-    public Text userMessage;
-    public Text errorMessage;
-    public InputField userInput;
-    public Button submitButton;
+	public GameObject loginObjects;
+	public Text authenticationURL;
+	public Text userMessage;
+	public Text errorMessage;
+	public InputField userInput;
+	public Button submitButton;
 	public string loginPage = "loginObjects";
 	public string homePage = "homeObjects";
 	public TwitterAuthenticator Authenticator;
 	public TwitterInteractor Interactor;
-    #endregion
+	#endregion
 
 	public void initializeAuthComponent()
-    {
+	{
 		if (Authenticator == null) {
 			Authenticator = TwitterAuthenticator.Instance;
 		}
-		
+
 		// See if the accesstoken and access secret have already been entered before
 		string accesstoken = PlayerPrefs.GetString("Access Token");
 		string accessSecret = PlayerPrefs.GetString("Access Secret");
 
+		Debug.Log ("AT" + accesstoken);
+		Debug.Log ("AS" + accessSecret);
+
 		// If the access token and access secret have been set before, then load them back into the API
 		if (Remember && !string.IsNullOrEmpty(accesstoken) && !string.IsNullOrEmpty(accessSecret))
 		{
+			Debug.Log ("I'm inside initializeAuth");
 			// Set the tokens to the previously received tokens
 			makeTwitterAPICallNoReturnVal(() => Authenticator.setTokens(accesstoken, accessSecret));
 			Interactor = new TwitterInteractor (Authenticator);
@@ -46,7 +50,7 @@ public class AuthenticationHandler : TwitterObjects
 			navigateToTwitterAuthPage();
 		}
 
-    }
+	}
 
 	// This is the on click event for when the user enters their pin code that they received from the twitter website.
 	public void onPinEnter()
@@ -72,7 +76,7 @@ public class AuthenticationHandler : TwitterObjects
 
 			if (Interactor == null)
 				Interactor = new TwitterInteractor (Authenticator);
-			
+
 			navigateToTwitterHome ();
 		}
 		else

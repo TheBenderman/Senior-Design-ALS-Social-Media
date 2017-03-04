@@ -38,11 +38,11 @@ public class TimeLineHandler: TwitterObjects
 	public AuthenticationHandler authHandler;
 
 	#endregion
-			
+
 	// This function populates the user homepage.
 	public void addHomeTimeLine()
 	{
-		
+
 		try {
 			// Set all objects to be invisible except those related to the timeline.
 			setActiveObject(homeTimeLineObjectsString);
@@ -64,10 +64,9 @@ public class TimeLineHandler: TwitterObjects
 	// This function sets the current tweet for the user.
 	public void setTweet(int index)
 	{
-		twitterHandle.text = "@" + hometimelineStatuses[index].User.ScreenName;
+		twitterHandle.text = hometimelineStatuses[index].User.ScreenName;
 		realName.text = hometimelineStatuses[index].User.Name;
 		bodyText.text = hometimelineStatuses[index].Text;
-		timeStamp.text = hometimelineStatuses[index].CreatedAt.DateTime.ToString("HH:mmtt - dd MMM yyyy");
 
 		// Populate the profile picture for the user, requires a separate thread to run.
 		StartCoroutine(setProfilePic(hometimelineStatuses[index].User.ProfileImageUrl));
@@ -89,7 +88,7 @@ public class TimeLineHandler: TwitterObjects
 		// Skip this onclick if the scene is on something other than the Timeline
 		if (!TitleView.text.Equals (timelineTitle))
 			return;
-		
+
 		if (currentTweet < hometimelineStatuses.Count - 1)
 		{
 			currentTweet += 1;
@@ -108,7 +107,7 @@ public class TimeLineHandler: TwitterObjects
 		// Skip this onclick if the scene is on something other than the Timeline
 		if (!TitleView.text.Equals (timelineTitle))
 			return;
-		
+
 		if (currentTweet > 0)
 		{
 			currentTweet--;

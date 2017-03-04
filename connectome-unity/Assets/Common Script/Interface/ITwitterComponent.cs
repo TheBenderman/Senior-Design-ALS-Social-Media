@@ -6,11 +6,11 @@ using CoreTweet;
 
 namespace Connectome.Unity.Menu
 {
-    /// <summary>
-    /// Represents a ui component on the Twitter scene such as Authentication, timeline, messages etc
-    /// </summary>
+	/// <summary>
+	/// Represents a ui component on the Twitter scene such as Authentication, timeline, messages etc
+	/// </summary>
 	public interface ITwitterComponent
-    {
-        void showComponent();
-    }
+	{
+		void showComponent();
+	}
 }

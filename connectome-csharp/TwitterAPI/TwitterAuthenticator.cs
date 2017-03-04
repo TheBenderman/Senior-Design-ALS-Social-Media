@@ -52,7 +52,7 @@ namespace Connectome.Twitter.API
 				return Tokens.AccessToken;
 			}
 
-			throw new TwitterAuthException("Unable to get the tokens for user.");
+			throw new Exception("Unable to get the tokens for user.");
 		}
 
 		// Return the access token that was generated during authentication
@@ -63,7 +63,7 @@ namespace Connectome.Twitter.API
 				return Tokens.AccessTokenSecret;
 			}
 
-			throw new TwitterAuthException("Unable to get the tokens for user.");
+			throw new Exception("Unable to get the tokens for user.");
 		}
 
 
@@ -142,7 +142,7 @@ namespace Connectome.Twitter.API
 				return Session.AuthorizeUri.ToString();
 			}
 
-			throw new TwitterAuthException("Unable to get session for user.");
+			throw new Exception("Unable to get session for user.");
 		}
 
 
@@ -159,7 +159,7 @@ namespace Connectome.Twitter.API
 			if (Tokens != null)
 				return true;
 			else
-				throw new TwitterAuthException("Unable to get the tokens for user.");
+				throw new Exception("Unable to get the tokens for user.");
 		}
 		#endregion
 
