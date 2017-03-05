@@ -1,0 +1,48 @@
+#namespace Trends
+#description Provides a set of methods for the wrapper of GET trends.
+
+endpoint Listed<TrendLocation> Available : Get trends/available
+{
+    description
+    {
+        Returns the locations that Twitter has trending topic information for.
+    }
+    returns
+    {
+        The locations.
+    }
+}
+
+endpoint Listed<TrendLocation> Closest : Get trends/closest
+{
+    description
+    {
+        Returns the locations that Twitter has trending topic information for, closest to a specified location.
+    }
+    returns
+    {
+        The locations.
+    }
+    params
+    {
+        required double lat
+        required double @long
+    }
+}
+
+endpoint Listed<TrendsResult> Place : Get trends/place
+{
+    description
+    {
+        Returns the top 10 trending topics for a specific id, if trending information is available for it.
+    }
+    returns
+    {
+        The queries.
+    }
+    params
+    {
+        required long id
+        optional string exclude
+    }
+}

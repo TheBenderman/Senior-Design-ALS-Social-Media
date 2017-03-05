@@ -1,5 +1,4 @@
-﻿using Connectome.Unity.Common;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +7,7 @@ namespace Connectome.Unity.KLD
 {
     public class PopManagerTest : MonoBehaviour
     {
-        public PopupManager pop; 
+        public DisplayManager pop; 
 
         // Use this for initialization
         void Start()
@@ -24,13 +23,13 @@ namespace Connectome.Unity.KLD
 
         public void popIt()
         {
-           var window =  PopupManager.PopUpVirtualUnityDevice(); 
+           DisplayManager.PopUpVirtualUnityDevice(); 
             
         }
 
 		public void reconnectPopUp() 
 		{
-			var window = PopupManager.ReconnectDevice (); 
+			DisplayManager.ReconnectDevice (); 
 		}
     }
 }

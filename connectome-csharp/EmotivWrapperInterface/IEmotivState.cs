@@ -2,12 +2,13 @@
 
 namespace Connectome.Emotiv.Interface
 {
-    //TODO require IEquality for comparing. 
+    //TODO require IEquality & IComparable for comparing. 
     /// <summary>
     /// State to be read from device. 
     /// </summary>
-    public interface IEmotivState
+    public interface IEmotivState : ITime
     {
+        #region Get Properties
         /// <summary>
         /// Command.
         /// </summary>
@@ -16,9 +17,6 @@ namespace Connectome.Emotiv.Interface
         /// Power 0.0 to 1.0.
         /// </summary>
         float Power { get; }
-        /// <summary>
-        /// Time in ms in which the state was read. 
-        /// </summary>
-        long Time { get; }
+        #endregion
     }
 }

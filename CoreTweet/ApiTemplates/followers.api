@@ -1,0 +1,44 @@
+#namespace Followers
+#description Provides a set of methods for the wrapper of GET followers.
+
+endpoint Cursored<long> Ids : Get followers/ids
+{
+    description
+    {
+        Returns a cursored collection of user IDs for every user following the specified user.
+    }
+    params
+    {
+        either long user_id
+        either string screen_name
+        semi-optional long cursor
+        optional int count
+    }
+    returns
+    {
+        The IDs.
+    }
+}
+
+endpoint Cursored<User> List : Get followers/list
+{
+    description
+    {
+        Returns a cursored collection of user objects for users following the specified user.
+    }
+    params
+    {
+        either long user_id
+        either string screen_name
+        semi-optional long cursor
+        optional int count
+        optional bool skip_status
+        optional bool include_user_entities
+        optional bool include_ext_alt_text
+        optional TweetMode tweet_mode
+    }
+    returns
+    {
+        The users.
+    }
+}

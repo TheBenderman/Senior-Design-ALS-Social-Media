@@ -1,0 +1,62 @@
+#namespace SavedSearches
+#description Provides a set of methods for the wrapper of GET/POST saved_searches.
+
+endpoint Listed<SearchQuery> List : Get saved_searches/list
+{
+    description
+    {
+        Returns the authenticated user’s saved search queries.
+    }
+    returns
+    {
+        The saved searches.
+    }
+}
+
+endpoint SearchQueryResponse Show : Get saved_searches/show/{id}
+{
+    description
+    {
+        Retrieve the information for the saved search represented by the given id.
+    }
+    returns
+    {
+        The saved search.
+    }
+    params
+    {
+        required long id
+    }
+}
+
+endpoint SearchQueryResponse Create : Post saved_searches/create
+{
+    description
+    {
+        Create a new saved search for the authenticated user.
+    }
+    returns
+    {
+        The saved search.
+    }
+    params
+    {
+        required string query
+    }
+}
+
+endpoint SearchQueryResponse Destroy : Post saved_searches/destroy/{id}
+{
+    description
+    {
+        Destroys a saved search for the authenticating user.
+    }
+    returns
+    {
+        The saved search.
+    }
+    params
+    {
+        required long id
+    }
+}

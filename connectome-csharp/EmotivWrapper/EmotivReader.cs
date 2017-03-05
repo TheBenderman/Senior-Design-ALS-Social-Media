@@ -135,7 +135,7 @@ namespace Connectome.Emotiv.Template
             }
 
             while (LastTime == ReadingTimer.ElapsedMilliseconds) ;
-            LastTime = ReadingTimer.ElapsedMilliseconds;
+                LastTime = ReadingTimer.ElapsedMilliseconds;
         }
         #endregion
         #region IEmotivReader Public Get Property
