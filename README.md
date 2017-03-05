@@ -14,8 +14,13 @@ First, import the project Connectome-csharp into visual studio. Rebuild all of t
 
 ## Contributors
 [Nathan Bender](https://github.com/TheBenderman)
+
 [Kennan Meyer](https://github.com/kennanmeyer)
+
 [Sheik Hassan](https://github.com/hassanNS)
+
 [Khaled Alhendi](https://github.com/KLD0093)
+
 [Kevin Garrone](https://github.com/Pirobi)
+
 [Jon Schuck](https://github.com/sceith)
