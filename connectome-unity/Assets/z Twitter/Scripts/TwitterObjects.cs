@@ -14,7 +14,8 @@ public class TwitterObjects : MonoBehaviour
 		"homeObjects",
 		"composeTweetObjects",
 		"SelectConvObjects",
-		"ViewConvObjects"
+		"ViewConvObjects",
+		"profileObjects"
 	};
 	public void setActiveObject(String objectName)
 	{
