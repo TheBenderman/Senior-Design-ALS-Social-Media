@@ -17,8 +17,9 @@ namespace Connectome.Twitter.API
 			authenticator.enterPinCode(pin);
 
 			TwitterInteractor interactor = new TwitterInteractor(authenticator);
-			interactor.getTop5HomeTimeLineTweets();
-
+			string user_name = interactor.getLoggedInUserScreenName();
+            interactor.getLoggedInUserTimeline();
+            interactor.getFollowing("ShayKashMoney");
             while (true) { };
             return 0;
         }

@@ -81,8 +81,8 @@ public class ConversationHandler : TwitterObjects {
 	// This function populates the timeline ui with the next tweet in the list.
 	public void nextTweet()
 	{
-		// Skip this onclick if the scene is on the Timeline
-		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle))
+		// Skip this onclick if the scene is not on Conversation
+		if (!timelineHandler.TitleView.text.Equals (timelineHandler.convoTitle))
 			return;
 
 		if (currentTweetConvo < conversationtimelineStatuses.Count - 1)
@@ -102,7 +102,7 @@ public class ConversationHandler : TwitterObjects {
 	public void previousTweet()
 	{
 		// Skip this onclick if the scene is on the Timeline
-		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle))
+		if (!timelineHandler.TitleView.text.Equals (timelineHandler.convoTitle))
 			return;
 
 		if (currentTweetConvo > 0)
