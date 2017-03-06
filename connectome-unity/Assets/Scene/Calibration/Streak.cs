@@ -7,6 +7,9 @@ using Connectome.Emotiv.Interface;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Connectome.Calibration.API;
+using Connectome.Calibration.API.Interfaces;
+using Connectome.Calibration.API.Loggers;
 
 public class Streak : BaseTrainingScreen
 {
@@ -23,7 +26,7 @@ public class Streak : BaseTrainingScreen
     private Boolean run;
     private Boolean secondRun = false;
 
-    private ArrayList intervals = new ArrayList();
+    private ArrayList intervals;
 
     // Use this for initialization
     void Start () {
@@ -38,6 +41,7 @@ public class Streak : BaseTrainingScreen
     {
         if (secondRun)
         {
+            deviceSetup(Start_Screen.deviceValue);
             setup();
         }
     }
@@ -147,8 +151,12 @@ public class Streak : BaseTrainingScreen
 
     void displayResults()
     {
+        LoggerInterface logger = new CsvLogger("Streak.csv");
         resultTitleText.text = "Results";
         averageStreakText.text = "Average: " + resultsInSeconds(getAverageStreak());
+        logger.add(resultsInSeconds(highscore));
+        logger.add(resultsInSeconds(getAverageStreak()));
+        logger.write();
     }
 
     long getAverageStreak()
@@ -182,6 +190,8 @@ public class Streak : BaseTrainingScreen
         highscoreText.text = "0";
         slider.value = 0;
         reader = null;
+        device = null;
+        intervals = null;
         secondRun = true;
         mainMenu.SetActive(true);
         currentPanel.SetActive(false);
@@ -193,6 +203,7 @@ public class Streak : BaseTrainingScreen
         streakCounter = 0;
         highscore = 0;
         run = true;
+        intervals = new ArrayList();
 
         reader = new BasicEmotivReader(device, false);
 

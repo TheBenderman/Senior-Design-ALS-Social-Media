@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using Connectome.Calibration.API.Interfaces;
+using Connectome.Calibration.API.Loggers;
 
 public class Train : BaseTrainingScreen
 {
@@ -22,6 +24,8 @@ public class Train : BaseTrainingScreen
     private Boolean incrementSlider;
     private Boolean secondTime = false;
     private Boolean complete;
+    private LoggerInterface accuracyLogger;
+    private LoggerInterface accuracyFalsePositiveLogger;
 
 
     // Use this for initialization
@@ -132,19 +136,43 @@ public class Train : BaseTrainingScreen
     //Displays the results to the user in the UI for Accuracy
     private void setAccuracyResultText(int[] commandCounter, int[] commandTotal)
     {
+        int percent;
+        int[] neutralHolder = new int[results.Length/2];
+        int counter = 0;
         resultText.text = "Accuracy Results";
 
         for (int i = 0; i < results.Length; i++)
         {
             if(commandTotal[i] > 0)
             {
-                results[i].text = ect[i] + ": " + ((commandCounter[i] * 100) / commandTotal[i]) + "%";
+                percent = ((commandCounter[i] * 100) / commandTotal[i]);
+
+                results[i].text = ect[i] + ": " + percent + "%";
+
+                if(ect[i] == EmotivCommandType.NEUTRAL)
+                {
+                    neutralHolder[counter] = percent;
+                    counter++;
+                }
+                else
+                {
+                    accuracyLogger.add(percent.ToString());
+                }
+                
             }
             else
             {
                 results[i].text = ect[i] + ": " + "0%";
             }
         }
+
+        foreach(int per in neutralHolder)
+        {
+            accuracyLogger.add(per.ToString());
+        }
+
+        accuracyLogger.write();
+        //accuracyFalsePositiveLogger.write();
     }
 
     //Calculates the number of times the user gave the correct command in each interval
@@ -155,6 +183,8 @@ public class Train : BaseTrainingScreen
         int[][] data = new int[2][];
         int[] commandCounter = new int[ect.Length];
         int[] commandTotal = new int[ect.Length];
+        float totalFalsePositivePower = 0;
+        float falsePostiveCounter = 0;
 
         for (int i = 0; i < ect.Length; i++)
         {
@@ -167,13 +197,23 @@ public class Train : BaseTrainingScreen
                 {
                     commandCounter[i] += 1;
                 }
+                else
+                {
+                    if(x.Command == EmotivCommandType.NEUTRAL)
+                    {
+                        if (x.Power > 0)
+                        {
+                            totalFalsePositivePower += (x.Power * 100);
+                            falsePostiveCounter++;
+                        }
+                    }
+                }
                 commandTotal[i] += 1;
             }
         }
-
+        accuracyFalsePositiveLogger.add(((falsePostiveCounter)).ToString());
         data[0] = commandCounter;
         data[1] = commandTotal;
-
 
         return data;
     }
@@ -219,6 +259,8 @@ public class Train : BaseTrainingScreen
         reader.OnRead += (e) => timeline.Register(e.State);
         reader.Start();
         incrementSlider = true;
+        accuracyLogger = new CsvLogger("Accuracy.csv");
+        accuracyFalsePositiveLogger = new CsvLogger("AccuracyFalsePositiveLogger.csv");
 
         Activate();
     }
