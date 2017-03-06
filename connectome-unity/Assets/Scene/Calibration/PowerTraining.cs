@@ -6,6 +6,8 @@ using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Interface;
 using UnityEngine.UI;
 using System;
+using Connectome.Calibration.API.Interfaces;
+using Connectome.Calibration.API.Loggers;
 
 public class PowerTraining : BaseTrainingScreen {
 
@@ -15,32 +17,30 @@ public class PowerTraining : BaseTrainingScreen {
     private float currentPower;
     private float lastPower;
     private float highscore;
+    private float startSecond;
     private Boolean passedTest;
     private Boolean started;
+    private Boolean secondRun = false;
+    private Boolean complete;
+    private Boolean waitSecond = true;
 
     public Text maxPower;
 
     // Use this for initialization
     void Start () {
-        currentPoint = 0;
-        highscore = 0;
-        passedTest = false;
-        started = false;
-
-        slider.maxValue = Start_Screen.sliderLength;
 
         deviceSetup(Start_Screen.deviceValue);
+        setup();
 
-        reader = new BasicEmotivReader(device, false);
-
-        reader.OnRead += (e) => powerChecker(e.State);
-
-        activate();
     }
 
     private void OnEnable()
     {
-
+        if(secondRun)
+        {
+            deviceSetup(Start_Screen.deviceValue);
+            setup();
+        }
     }
 
     // Update is called once per frame
@@ -56,9 +56,18 @@ public class PowerTraining : BaseTrainingScreen {
         {
             setButtonText((ect[currentPoint] * 100).ToString() +"%");
             currentPower = ect[currentPoint];
+            highscore = currentPower - (float).1;
             passedTest = false;
             slider.value = 0;
             currentPoint++;
+        }
+
+        if (complete)
+        {
+            if(slider.value == slider.maxValue)
+            {
+                reset();
+            }
         }
 
         if (currentPoint >= ect.Length || (slider.value == slider.maxValue && started))
@@ -66,11 +75,12 @@ public class PowerTraining : BaseTrainingScreen {
             reader.Stop();
             passedTest = false;
             setButtonText("Complete!");
-
+            lastPower = 0;
+            slider.value = 0;
+            slider.maxValue = 5;
+            complete = true;
 
         }
-
-
 
     }
 
@@ -98,14 +108,24 @@ public class PowerTraining : BaseTrainingScreen {
     {
         if(e.Power >= currentPower)
         {
-            passedTest = true;
+            if(waitSecond)
+            {
+                startSecond = e.Time;
+                waitSecond = false;
+            }
+
+            if ((e.Time - startSecond) > 1000)
+            {
+                passedTest = true;
+                waitSecond = true;
+            }
+        }
+        else
+        {
+            waitSecond = true;
         }
         lastPower = e.Power;
 
-        if(e.Power > highscore)
-        {
-            highscore = e.Power;
-        }
     }
 
     void colorRange(float power)
@@ -123,6 +143,9 @@ public class PowerTraining : BaseTrainingScreen {
 
     public override void reset()
     {
+        LoggerInterface logger = new CsvLogger("Power.csv");
+        logger.add(Math.Round(highscore * 100).ToString());
+        logger.write();
         currentPoint = 0;
         currentPower = 0;
         lastPower = 0;
@@ -130,5 +153,27 @@ public class PowerTraining : BaseTrainingScreen {
         updateButtonColor(Color.white);
         setButtonText("Starting");
         slider.value = 0;
+        secondRun = true;
+        reader = null;
+        device = null;
+        mainMenu.SetActive(true);
+        currentPanel.SetActive(false);
+    }
+
+    void setup()
+    {
+        currentPoint = 0;
+        highscore = 0;
+        passedTest = false;
+        started = false;
+        complete = false;
+
+        slider.maxValue = Start_Screen.sliderLength;
+
+        reader = new BasicEmotivReader(device, false);
+
+        reader.OnRead += (e) => powerChecker(e.State);
+
+        activate();
     }
 }

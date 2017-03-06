@@ -7,6 +7,9 @@ using Connectome.Emotiv.Interface;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Connectome.Calibration.API;
+using Connectome.Calibration.API.Interfaces;
+using Connectome.Calibration.API.Loggers;
 
 public class Streak : BaseTrainingScreen
 {
@@ -21,25 +24,26 @@ public class Streak : BaseTrainingScreen
     private long startTime;
     private long endTime;
     private Boolean run;
+    private Boolean secondRun = false;
 
-    private ArrayList intervals = new ArrayList();
+    private ArrayList intervals;
 
     // Use this for initialization
     void Start () {
 
-        slider.maxValue = Start_Screen.sliderLength;
-        streakCounter = 0;
-        highscore = 0;
-        run = true;
-        
         //Creates the device
         deviceSetup(Start_Screen.deviceValue);
+        setup();
 
-        reader = new BasicEmotivReader(device, false);
+    }
 
-        reader.OnRead += (e) => counter(e.State);
-        reader.Start();
-
+    private void OnEnable()
+    {
+        if (secondRun)
+        {
+            deviceSetup(Start_Screen.deviceValue);
+            setup();
+        }
     }
 
     private void OnApplicationQuit()
@@ -63,6 +67,15 @@ public class Streak : BaseTrainingScreen
             else
             {
                 dehighlightButton();
+            }
+        }
+        else
+        {
+            dehighlightButton();
+            slider.value += Time.deltaTime;
+            if(slider.value == slider.maxValue)
+            {
+                reset();
             }
         }
     }
@@ -117,6 +130,8 @@ public class Streak : BaseTrainingScreen
             displayResults();
             run = false;
             dehighlightButton();
+            slider.value = 0;
+            slider.maxValue = 10;
         }
     }
 
@@ -136,8 +151,12 @@ public class Streak : BaseTrainingScreen
 
     void displayResults()
     {
+        LoggerInterface logger = new CsvLogger("Streak.csv");
         resultTitleText.text = "Results";
         averageStreakText.text = "Average: " + resultsInSeconds(getAverageStreak());
+        logger.add(resultsInSeconds(highscore));
+        logger.add(resultsInSeconds(getAverageStreak()));
+        logger.write();
     }
 
     long getAverageStreak()
@@ -162,9 +181,35 @@ public class Streak : BaseTrainingScreen
         updateButtonColor(Color.white);
     }
 
+
     public override void reset()
     {
-        throw new NotImplementedException();
+        dehighlightButton();
+        resultTitleText.text = "";
+        averageStreakText.text = "";
+        highscoreText.text = "0";
+        slider.value = 0;
+        reader = null;
+        device = null;
+        intervals = null;
+        secondRun = true;
+        mainMenu.SetActive(true);
+        currentPanel.SetActive(false);
     }
+
+    void setup()
+    {
+        slider.maxValue = Start_Screen.sliderLength;
+        streakCounter = 0;
+        highscore = 0;
+        run = true;
+        intervals = new ArrayList();
+
+        reader = new BasicEmotivReader(device, false);
+
+        reader.OnRead += (e) => counter(e.State);
+        reader.Start();
+    }
+
 }
 
