@@ -4,6 +4,7 @@ using UnityEngine;
 using CoreTweet;
 using UnityEngine.UI;
 using System;
+using Connectome.Unity.Keyboard;
 
 public class TweetReplyHandler : TwitterObjects {
 
@@ -101,6 +102,6 @@ public class TweetReplyHandler : TwitterObjects {
 
 	public void TweetFromKeyboard()
 	{
-		DisplayManager.GetInputFromKeyboard(Tweet);
+		KeyboardManager.GetInputFromKeyboard(Tweet);
 	}
 }

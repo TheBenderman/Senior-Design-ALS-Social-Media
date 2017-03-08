@@ -3,16 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 namespace Connectome.Unity.Keyboard
 {
     //TODO this is slipt into two: Part of it is now KeyboardManager. Have this extend ConnectomeKeyboard 
-    public class KeyboardData : MonoBehaviour
+    public class KeyboardData : KeyboardTemplate
     {
-        /// <summary>
-        /// The text field used to display the text.
-        /// </summary>
-        public InputField ActiveField;
         /// <summary>
         /// In case we want to include this functionality.
         /// </summary>
@@ -23,10 +20,10 @@ namespace Connectome.Unity.Keyboard
         //public SelectableObject[] BaseSelections;
         public void UpdateString(string text)
         {
-            ActiveField.ConcatToCurrentText(IsCaps ? text.ToUpper() : text);
+            InputField.ConcatToCurrentText(IsCaps ? text.ToUpper() : text);
             //Having trouble with cursor not showing in the input field
-            ActiveField.Select();
-            ActiveField.caretPosition = ActiveField.selectionFocusPosition;
+            InputField.Select();
+            InputField.caretPosition = InputField.selectionFocusPosition;
         }
 
         /// <summary>
@@ -43,13 +40,23 @@ namespace Connectome.Unity.Keyboard
         /// </summary>
         public void BackspaceText()
         {
-            if (ActiveField.text.Length > 0)
+            if (InputField.text.Length > 0)
             {
-                ActiveField.BackSpaceCurrentText();
+                InputField.BackSpaceCurrentText();
             }
             //Having trouble with cursor not showing in the input field
-            ActiveField.Select();
-            ActiveField.caretPosition = ActiveField.selectionFocusPosition;
+            InputField.Select();
+            InputField.caretPosition = InputField.selectionFocusPosition;
+        }
+
+        public override void Show()
+        {
+            transform.SetParent(DisplayManager.Instance.transform);
+        }
+
+        public override void Hide()
+        {
+            transform.SetParent(KeyboardManager.Instance.transform);
         }
     }
 }

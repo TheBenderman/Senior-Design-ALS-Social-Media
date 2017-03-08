@@ -58,6 +58,8 @@ public static class UserSettings
     /// </summary>
     public static int CurrentKeyboard { get { return PlayerPrefs.GetInt("Keyboard", 0); } set { PlayerPrefs.SetInt("Keyboard", value); } }
 
+    public static string CurrentKeyboardName { get { return ((KeyboardType)CurrentKeyboard).ToString(); } }
+
     /// <summary>
     /// Attribute for Refresh Rate
     /// </summary>

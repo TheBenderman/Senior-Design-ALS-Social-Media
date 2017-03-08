@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Connectome.Unity.Keyboard;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -53,6 +54,7 @@ public class UserSettingsWindow : MonoBehaviour {
         SetTargetPowerTextValue();
         SetRefreshRateTextValue();
         SetFreqTextValue();
+        UpdateCurrentKeyboard();
     }
     
     public void ToggleFrequencySetting()
@@ -162,6 +164,15 @@ public class UserSettingsWindow : MonoBehaviour {
     public void SetFreqSliderValue()
     {
         FreqSlider.value = float.Parse(FreqText.text);
+    }
+
+    public void UpdateCurrentKeyboard()
+    {
+        if (!KeyboardManager.Instance.KeyboardGameObject.name.Equals(((KeyboardType)KeyboardDrop.value).ToString()))
+        {
+            KeyboardManager.Instance.RemoveKeyboard();
+            KeyboardManager.Instance.SetKeyboard(UserSettings.CurrentKeyboardName);
+        }
     }
     #endregion
 

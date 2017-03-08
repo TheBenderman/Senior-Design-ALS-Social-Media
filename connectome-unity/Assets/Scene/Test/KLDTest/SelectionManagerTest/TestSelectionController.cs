@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Connectome.Unity.Keyboard;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ namespace Connectome.KLD.SelectionTest
     {
         public void CallKey(Text text)
         {
-            DisplayManager.GetInputFromKeyboard(s => text.text = s); 
+            KeyboardManager.GetInputFromKeyboard(s => text.text = s); 
         }
     }
 }
