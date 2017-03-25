@@ -32,3 +32,13 @@ C:\Users\neb45\Documents\Senior-Design-ALS-Social-Media\connectome-unity\Assets\
 C:\Users\neb45\Documents\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\DotNetEmotivSDK.pdb
 C:\Users\neb45\Documents\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.dll
 C:\Users\neb45\Documents\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.pdb
+Z:\nathanbender\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\edk.dll
+Z:\nathanbender\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\DotNetEmotivSDK.dll
+Z:\nathanbender\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\DotNetEmotivSDK.pdb
+Z:\nathanbender\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.dll
+Z:\nathanbender\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.pdb
+Y:\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\edk.dll
+Y:\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\DotNetEmotivSDK.dll
+Y:\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\DotNetEmotivSDK.pdb
+Y:\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.dll
+Y:\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.pdb

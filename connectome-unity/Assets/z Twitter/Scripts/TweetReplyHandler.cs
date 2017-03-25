@@ -36,7 +36,7 @@ public class TweetReplyHandler : TwitterObjects {
 
 		Status currentStatus;
 		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle)) {
-			currentStatus = timelineHandler.hometimelineStatuses [timelineHandler.getCurrentTweet ()];
+			currentStatus = timelineHandler.getCurrentTweet ();
 		} else {
 			currentStatus = convoHandler.conversationtimelineStatuses [convoHandler.currentTweet];
 		}

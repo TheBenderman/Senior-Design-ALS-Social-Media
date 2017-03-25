@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using Connectome.Twitter.API.NavigatableTwitterObjects;
 using CoreTweet;
 using CoreTweet.Core;
 
@@ -11,11 +14,34 @@ namespace Connectome.Twitter.API
         private int refillTweetsNumber = 20;
 		private int initialTweetsNumber = 3;
         private int initialProfileTweetsNumber = 3;
+
 		private TwitterAuthenticator authenticator;
+
+	    private Thread timelineThread;
+	    private Thread dmThread;
+
+	    private DMUsersNavigatable dmUsersNavigatable;
+	    private HomeTimelineNavigatable homeTimelineNavigatable;
 
 		public TwitterInteractor(TwitterAuthenticator twitauth){
             authenticator = twitauth;
+
+            dmUsersNavigatable = new DMUsersNavigatable(authenticator);
+            homeTimelineNavigatable = new HomeTimelineNavigatable(authenticator);
+
+		    dmUsersNavigatable.startThread();
+            homeTimelineNavigatable.startThread();
 		}
+
+	    public DMUsersNavigatable getDmUsersNavigatable()
+	    {
+	        return dmUsersNavigatable;
+	    }
+
+	    public HomeTimelineNavigatable getHomeTimelineNavigatable()
+	    {
+	        return homeTimelineNavigatable;
+	    }
 
         public TwitterAuthenticator getA() {
             return this.authenticator;
@@ -27,24 +53,10 @@ namespace Connectome.Twitter.API
 	        return statuses.First().User.ScreenName;
 	    }
 
-		#region TwitterInteraction
 		// publish a tweet
 		public void publishTweet(String tweet)
 		{
 			authenticator.getTokens().Statuses.Update(new { status = tweet });
-		}
-
-		// Get the user's home time line
-		public List<Status> getHomeTimeLine()
-		{
-			List<Status> list = new List<Status>();
-			foreach (var status in authenticator.getTokens().Statuses.HomeTimeline(count => initialTweetsNumber))
-			{
-				list.Add(status);
-			}
-
-			initialTweetsNumber += refillTweetsNumber;
-			return list;
 		}
 
 		public List<Status> getConversation(string screenName, string id)
@@ -61,41 +73,7 @@ namespace Connectome.Twitter.API
 			return list;
 		}
 
-		public string getTop5HomeTimeLineTweets()
-		{
-			string timeLineString = "";
-
-			foreach (var status in authenticator.getTokens().Statuses.HomeTimeline(count => 5))
-			{
-				timeLineString += "Tweet by " + status.User.ScreenName + " : " + status.Text + "\n";
-				Console.WriteLine("long tweet by {0}: {1}", status.User.ScreenName, status.Text);
-			}
-
-			return timeLineString;
-		}
-
-		public List<DirectMessage> getReceivedDMs()
-		{
-			List<DirectMessage> list = new List<DirectMessage>();
-			foreach (var dm in authenticator.getTokens().DirectMessages.Received(count => 100))
-			{
-				list.Add(dm);
-			}
-
-			return list;
-		}
-
-		public List<DirectMessage> getSentDMs()
-		{
-			List<DirectMessage> list = new List<DirectMessage>();
-			foreach (var dm in authenticator.getTokens().DirectMessages.Sent(count => 100))
-			{
-				list.Add(dm);
-			}
-
-			return list;
-		}
-
+		#region DM Functions
 		public DirectMessage getDM(string dmID)
 		{
 			return authenticator.getTokens().DirectMessages.Show(id => dmID);
@@ -122,6 +100,8 @@ namespace Connectome.Twitter.API
 		    return list;
 		}
 
+		#endregion
+
 		public List<Status> search(string text)
 		{
 			List<Status> statuses = new List<Status>();
@@ -130,24 +110,6 @@ namespace Connectome.Twitter.API
 
 			return statuses.OrderBy(x => x.CreatedAt).ToList();
 		}
-
-        public List<User> getUniqueDMs()
-        {
-            Tokens tokens = authenticator.getTokens();
-            IEnumerable<User> users = tokens.DirectMessages.Sent(count => 100).OrderByDescending(x => x.CreatedAt.DateTime)
-                .Select(x => x.Recipient);
-            users = users.Union(tokens.DirectMessages.Received(count => 100).OrderByDescending(x => x.CreatedAt.DateTime)
-                .Select(x => x.Sender));
-
-            users = users.GroupBy(x => x.Id).Select(group => group.First());
-            users = users.Where(x => x.ScreenName != getCurrentUser());
-
-            return users.ToList();
-        }
-
-
-
-        #endregion
 
         #region profile functions
         public string getLoggedInUserScreenName() {

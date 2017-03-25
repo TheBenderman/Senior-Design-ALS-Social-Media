@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using CoreTweet;
 using UnityEditor;
+using System;
 
 public class DirectMessageHandler : TwitterObjects {
 	#region DM Members
@@ -27,9 +28,8 @@ public class DirectMessageHandler : TwitterObjects {
     public Text DMTitle;
     public List<GameObject> messageObjects;
 
-	private List<User> conversationUsers;
     private List<DirectMessage> directMessages;
-	private int currentUser = 0;
+	private User currentUser;
     private int currentDMPage = 0;
 	public AuthenticationHandler authHandler;
 	public string selectConvoObjectsString = "SelectConvObjects";
@@ -38,26 +38,29 @@ public class DirectMessageHandler : TwitterObjects {
 
     public void handleTwitterConversations()
 	{
-		List<User> users = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getUniqueDMs());
+		authHandler.makeTwitterAPICallNoReturnVal (() => authHandler.Interactor.getDmUsersNavigatable().resetCurrentObject());
 
 		setActiveObject(selectConvoObjectsString);
 
-		conversationUsers = users;
-		setUser(currentUser);
+		currentUser = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getDmUsersNavigatable().getNewerObject());
+		if (currentUser != null)
+			setUser (currentUser);
+		else
+			throw new Exception ("No next user.");
 	}
 
 	// This function sets the current tweet for the user.
-	public void setUser(int index)
+	public void setUser(User user)
 	{
-		StartCoroutine(setDMUserProfilePic(conversationUsers[index].ProfileImageUrl));
-		DMUsername.text = conversationUsers[index].ScreenName;
-		DMName.text = conversationUsers[index].Name;
+		StartCoroutine(setDMUserProfilePic(user.ProfileImageUrl));
+		DMUsername.text = user.ScreenName;
+		DMName.text = user.Name;
 
 		string currentUser = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getCurrentUser());
 
 		Debug.Log("Current user : " + currentUser);
 
-		string otherUser = conversationUsers[this.currentUser].ScreenName;
+		string otherUser = user.ScreenName;
 
 		Debug.Log("Other User : " + otherUser);
 
@@ -68,6 +71,9 @@ public class DirectMessageHandler : TwitterObjects {
 
 		LastMessageText.text = latestMessage.Sender.ScreenName + " - (" + Utilities.ElapsedTime(latestMessage.CreatedAt.DateTime)
 			+ ") - " + latestMessage.Text;
+
+		LastDMUser.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getDmUsersNavigatable().hasNewerObject());
+		NextDMUser.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getDmUsersNavigatable().hasOlderObject());
 	}
 
 	public IEnumerator setDMUserProfilePic(string url)
@@ -83,23 +89,21 @@ public class DirectMessageHandler : TwitterObjects {
 	// This function populates the timeline ui with the next tweet in the list.
 	public void nextUser()
 	{
-		if (currentUser < conversationUsers.Count - 1)
-		{
-			currentUser += 1;
-		}
-
-		setUser(currentUser);
+		currentUser = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getDmUsersNavigatable().getOlderObject());
+		if (currentUser != null)
+			setUser (currentUser);
+		else
+			throw new Exception ("No next user.");
 	}
 
 	// This function populates the timeline ui with the last tweet in the list.
 	public void previousUser()
 	{
-		if (currentUser > 0)
-		{
-			currentUser--;
-		}
-
-		setUser(currentUser);
+		currentUser = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getDmUsersNavigatable().getNewerObject());
+		if (currentUser != null)
+			setUser (currentUser);
+		else
+			throw new Exception ("No previous user.");
 	}
 
     public void messageUser()
@@ -110,7 +114,7 @@ public class DirectMessageHandler : TwitterObjects {
 
         Debug.Log("Current user : " + currentUserName);
 
-        string otherUser = conversationUsers[this.currentUser].ScreenName;
+		string otherUser = currentUser.ScreenName;
 
         Debug.Log("Other User : " + otherUser);
 
@@ -193,7 +197,7 @@ public class DirectMessageHandler : TwitterObjects {
 
     public void BackToUsersPage()
     {
-        currentUser = 0;
+        currentUser = null;
         handleTwitterConversations();
     }
 
