@@ -30,14 +30,14 @@ namespace Connectome.Unity.Menu
         /// <returns>A ButtonSelectionMenu within invoked button if exist</returns>
         public override ISelectionMenu InvokeSelected()
         {
-            if(Pointer==-1)
+            if(Pointer == -1)
             {
                 return null; 
             }
 
             Selection[Pointer].onClick.Invoke();
 
-            return Selection[Pointer].GetComponent<ButtonSelectionMenu>();
+            return Selection[Pointer].GetComponent<SelectionMenu>();
         }
 
         /// <summary>
@@ -62,6 +62,10 @@ namespace Connectome.Unity.Menu
         public override void ResetSelection()
         {
             Pointer = -1;
+        }
+        public override void OnPush()
+        {
+            ResetSelection(); 
         }
         #endregion
         #region Virtual Methods

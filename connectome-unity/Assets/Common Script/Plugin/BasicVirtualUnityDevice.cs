@@ -169,25 +169,8 @@ namespace Connectome.Unity.Plugin
         {
             ForceCount += ForceAddSize;
         }
-
-        /// <summary>
-        /// Turns the flashing buttons on when checked
-        /// </summary>
-        /// <param name="t"></param>
-        public void SetFlashSetting(Toggle t)
-        {
-            UserSettings.SetFlashingSetting(t.isOn);
-        }
         #endregion
         #region Gameobject Methods
-        /// <summary>
-        /// Set flashing to off so it lines up with the default toggle setting(off) when application runs next time.
-        /// Most likely because playerprefs carries over between runs.
-        /// </summary>
-        private void OnApplicationQuit()
-        {
-            UserSettings.SetFlashingSetting(false);
-        }
 
         public override void Setup()
         {

@@ -11,7 +11,7 @@ namespace Connectome.Unity.Menu
     /// </summary>
     public abstract class SelectionMenu : MonoBehaviour, ISelectionMenu
     {
-        #region ISelectionMenu
+        #region ISelectionMenu Abstract
         /// <summary>
         /// Invokes current pointed selection 
         /// </summary>
@@ -28,6 +28,21 @@ namespace Connectome.Unity.Menu
         /// </summary>
         /// <param name="h"></param>
         public abstract void SelectNext(ISelectionHighlighter h);
+
+        #endregion
+        #region ISelectionMenu Virtual
+        /// <summary>
+        /// Called after menu is popped
+        /// </summary>
+        public virtual void OnPop()
+        {
+        }
+        /// <summary>
+        /// Called after menu is pushed
+        /// </summary>
+        public virtual void OnPush()
+        {
+        }
         #endregion
     }
 }

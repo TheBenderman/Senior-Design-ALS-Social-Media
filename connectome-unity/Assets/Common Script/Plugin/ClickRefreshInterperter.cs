@@ -73,7 +73,7 @@ namespace Connectome.Unity.Plugin
             }
 
             //Click
-            if (targetRate >= UserSettings.GetPassThreshold())
+            if (targetRate >= UserSettings.PassThreshold)
             {
                 if (OnClick != null)
                     OnClick.Invoke();

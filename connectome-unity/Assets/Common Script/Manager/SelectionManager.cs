@@ -87,7 +87,7 @@ public class SelectionManager : MonoBehaviour
         ISelectionMenu subMenu =  SelectionStack.Peek().InvokeSelected();
         if(subMenu != null)
         {
-            Push(subMenu); 
+            Push(subMenu);
         }
         else
         {
@@ -102,7 +102,7 @@ public class SelectionManager : MonoBehaviour
     public void Push(ISelectionMenu Selections)
     {
         SelectionStack.Push(Selections);
-        ResetSelection(); 
+        Selections.OnPush();
     }
 
     /// <summary>
@@ -122,7 +122,8 @@ public class SelectionManager : MonoBehaviour
     {
         if (SelectionStack.Count > 1)
         {
-            SelectionStack.Pop();
+            ISelectionMenu menu = SelectionStack.Pop();
+            menu.OnPop(); 
             ResetSelection();
         }
         else
@@ -164,7 +165,7 @@ public class SelectionManager : MonoBehaviour
 
         CurrentWait += Time.deltaTime;
 
-        if (CurrentWait >= UserSettings.GetDuration())
+        if (CurrentWait >= UserSettings.Duration)
         {
             Next();
             ResetInterval();

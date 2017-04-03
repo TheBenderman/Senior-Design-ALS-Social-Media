@@ -8,20 +8,19 @@ namespace Connectome.Twitter.API
     class Program
     {
         
-        public static void Main ()
+        static int Main (string[] args)
         {
-            TwitterAPI api = TwitterAPI.Instance;
-            Console.WriteLine("Please visit the url here: " + api.getAuthorizationURL());
+			TwitterAuthenticator authenticator = TwitterAuthenticator.Instance;
+			Console.WriteLine("Please visit the url here: " + authenticator.getAuthorizationURL());
             Console.WriteLine("Enter your pin code: ");
             String pin = Console.ReadLine();
-            api.enterPinCode(pin);
+			authenticator.enterPinCode(pin);
 
+			TwitterInteractor interactor = new TwitterInteractor(authenticator);
+			interactor.getTop5HomeTimeLineTweets();
 
-            Console.WriteLine("Write a tweeet: ");
-            api.publishTweet(Console.ReadLine());
-
-            Console.WriteLine("[End]");
-            Console.ReadLine();     
-           }
+            while (true) { };
+            return 0;
+        }
     }
 }

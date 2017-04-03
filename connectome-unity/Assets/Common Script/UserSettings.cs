@@ -36,83 +36,37 @@ public static class UserSettings
 
     #region Settings
     /// <summary>
-    /// Set the Pass Threshold in PlayerPrefs
+    /// Attribute for Pass Threshold
     /// </summary>
-    /// <param name="value"></param>
-    public static void SetPassThreshold(float value)
-    {
-        PlayerPrefs.SetFloat("passThreshold", value);
-    }
+    public static float PassThreshold { get { return PlayerPrefs.GetFloat("PassThreshold", 0.89f); } set { PlayerPrefs.SetFloat("PassThreshold", value); } }
+    /// <summary>
+    /// Attribute for Duration
+    /// </summary>
+    public static float Duration { get { return PlayerPrefs.GetFloat("Duration", 2f); } set { PlayerPrefs.SetFloat("Duration", value); } }
+    /// <summary>
+    /// Attribute for Target Power
+    /// </summary>
+    public static float TargetPower { get { return PlayerPrefs.GetFloat("TargetPower", 0); } set { PlayerPrefs.SetFloat("TargetPower", value); } }
 
     /// <summary>
-    /// Set the Duration in PlayerPrefs
+    /// Attribute for the Flashing Setting
     /// </summary>
-    /// <param name="value"></param>
-    public static void SetDuration(float value)
-    {
-        PlayerPrefs.SetFloat("duration", value);
-    }
+    public static bool UseFlashingButtons { get { return PlayerPrefs.GetInt("UseFlashing", 1) == 0; } set { PlayerPrefs.SetInt("UserFlashing", value ? 0 : 1); } }
 
     /// <summary>
-    /// Sets the Target Power in PlayerPrefs
+    /// Attribute for Current Keyboard
     /// </summary>
-    /// <param name="value"></param>
-    public static void SetTargetPower(float value)
-    {
-        PlayerPrefs.SetFloat("TargetPower", value);
-    }
+    public static int CurrentKeyboard { get { return PlayerPrefs.GetInt("Keyboard", 0); } set { PlayerPrefs.SetInt("Keyboard", value); } }
 
     /// <summary>
-    /// Returns the settings value from PlayerPrefs
+    /// Attribute for Refresh Rate
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
-    public static float GetSettingsValue(string key)
-    {
-        return PlayerPrefs.GetFloat(key);
-    }
+    public static float RefreshRate { get { return PlayerPrefs.GetFloat("RefreshRate", 0.3f); } set { PlayerPrefs.SetFloat("RefreshRate", value); } }
 
-    public static float GetPassThreshold()
-    {
-        return PlayerPrefs.GetFloat("passThreshold", 0.89f);
-    }
-
-    public static float GetDuration()
-    {
-        return PlayerPrefs.GetFloat("duration", 2f);
-    }
-
-    public static float GetTargetPower()
-    {
-        return PlayerPrefs.GetFloat("TargetPower", 0);
-    }
     /// <summary>
-    /// Sets whether flashing is on or off
+    /// Attribute for Flashing Frequency
     /// </summary>
-    /// <param name="val"></param>
-    public static void SetFlashingSetting(bool val)
-    {
-        PlayerPrefs.SetInt("UseFlashing", val ? 0 : 1);
-    }
-    /// <summary>
-    /// Gets the current flashing setting.
-    /// If it wasn't set yet, return false
-    /// </summary>
-    /// <returns></returns>
-    public static bool GetFlashingSetting()
-    {
-        return PlayerPrefs.GetInt("UseFlashing", 1) == 0;
-    }
-
-    public static void SetKeyboard(int keyboardprefab)
-    {
-        PlayerPrefs.SetInt("Keyboard", keyboardprefab);
-    }
-
-    public static int GetKeyboard()
-    {
-        return PlayerPrefs.GetInt("Keyboard", 0);
-    }
+    public static int Frequency { get { return PlayerPrefs.GetInt("Frequency", 15); } set { PlayerPrefs.SetInt("Frequency", value); } }
     #endregion
 
     #region Social

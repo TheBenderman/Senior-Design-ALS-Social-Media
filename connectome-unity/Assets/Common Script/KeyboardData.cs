@@ -51,13 +51,5 @@ namespace Connectome.Unity.Keyboard
             ActiveField.Select();
             ActiveField.caretPosition = ActiveField.selectionFocusPosition;
         }
-        /// <summary>
-        /// Remove the keyboard from the scene and return to the previous selection screen.
-        /// </summary>
-        public void ExitKeyboard()
-        {
-            SelectionManager.Instance.Pop();
-            Destroy(this.gameObject);
-        }
     }
 }
