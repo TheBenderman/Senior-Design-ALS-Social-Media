@@ -9,6 +9,7 @@ namespace Connectome.Twitter.API
     public abstract class TwitterObjectNavigatable<T>
     {
         protected Thread twitterThread;
+        protected volatile bool _shouldStop;
 
         protected List<T> twitterObjects;
 
@@ -24,6 +25,19 @@ namespace Connectome.Twitter.API
         }
 
         public abstract void startThread();
+
+        public void RequestStop()
+        {
+            _shouldStop = true;
+        }
+
+        public void stopThread() {
+            if (twitterThread.IsAlive)
+            {
+                RequestStop();
+                twitterThread.Join();
+            }
+        }
 
         public void endThread()
         {

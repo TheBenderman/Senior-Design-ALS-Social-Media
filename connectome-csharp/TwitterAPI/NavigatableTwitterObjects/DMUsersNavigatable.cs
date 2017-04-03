@@ -20,6 +20,7 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
             twitterThread = new Thread(() => fetchDMs());
             shouldContinueThread = true;
             twitterThread.Start();
+            while (!twitterThread.IsAlive) ;
         }
 
         public override User getNewerObject()
@@ -100,7 +101,7 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
 
                 Thread.Sleep(3000);
             }
-            while (shouldContinueThread);
+            while (!_shouldStop);
         }
 
         private string getCurrentUser()

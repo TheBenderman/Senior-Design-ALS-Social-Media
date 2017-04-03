@@ -63,8 +63,8 @@ public class TimeLineHandler: TwitterObjects
 		bodyText.text = tweet.Text;
 	    timeStamp.text = tweet.CreatedAt.ToString();
 
-	    lastTweetButton.GetComponentInChildren<Text>().text = "< " + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNumNewerObjects()) + " newer tweets.";
-        nextTweetButton.GetComponentInChildren<Text>().text = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNumOlderObjects()) + " older tweets. >";
+		lastTweetButton.GetComponentInChildren<Text>().text = "< (" + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNumNewerObjects()) + ") newer tweets.";
+		nextTweetButton.GetComponentInChildren<Text>().text = "(" + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNumOlderObjects()) + ") >";
 
 		lastTweetButton.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().hasNewerObject());
 		nextTweetButton.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().hasOlderObject());
@@ -86,6 +86,10 @@ public class TimeLineHandler: TwitterObjects
 	// This function populates the timeline ui with the next tweet in the list.
 	public void nextTweet()
 	{
+		// Skip this onclick if the scene is on the Timeline
+		if (!TitleView.text.Equals (timelineTitle))
+			return;
+
 		currentTweet = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().getOlderObject());
 		if (currentTweet != null)
 			setTweet (currentTweet);
@@ -96,6 +100,9 @@ public class TimeLineHandler: TwitterObjects
 	// This function populates the timeline ui with the last tweet in the list.
 	public void previousTweet()
 	{
+		if (!TitleView.text.Equals (timelineTitle))
+			return;
+		
 		currentTweet = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
 		if (currentTweet != null)
 			setTweet (currentTweet);

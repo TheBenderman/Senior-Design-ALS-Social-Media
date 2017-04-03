@@ -19,6 +19,7 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
             twitterThread = new Thread(() => fetchHomeTimelineTweets());
             shouldContinueThread = true;
             twitterThread.Start();
+            while (!twitterThread.IsAlive) ;
         }
 
         public override Status getNewerObject()
@@ -107,7 +108,7 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
 
                 Thread.Sleep(3000);
             }
-            while (shouldContinueThread);
+            while (!_shouldStop);
         }
         #endregion
     }
