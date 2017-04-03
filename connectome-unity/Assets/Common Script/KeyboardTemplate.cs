@@ -13,9 +13,9 @@ namespace Connectome.Unity.Keyboard
         /// </summary>
         public InputField InputField;
         public string SubmissionText { get { return InputField.text; } }
-        public virtual void AddSubmitAction(Action<string> onSubmit)
+        public virtual void AddSubmitAction(Action<string> submitAction)
         {
-            onSubmit += onSubmit;
+            onSubmit += submitAction;
         }
         public virtual void Submit()
         {
