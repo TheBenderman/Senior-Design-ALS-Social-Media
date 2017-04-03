@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Connectome.Unity.Keyboard;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,6 @@ public class KeyboardDemoController : MonoBehaviour {
     
     public void DisplayText()
     {
-        DisplayManager.GetInputFromKeyboard(SetText);
+        KeyboardManager.GetInputFromKeyboard(SetText);
     }
 }

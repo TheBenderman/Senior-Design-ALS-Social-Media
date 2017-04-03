@@ -58,6 +58,8 @@ public static class UserSettings
     /// </summary>
     public static int CurrentKeyboard { get { return PlayerPrefs.GetInt("Keyboard", 0); } set { PlayerPrefs.SetInt("Keyboard", value); } }
 
+    public static string CurrentKeyboardName { get { return ((KeyboardType)CurrentKeyboard).ToString(); } }
+
     /// <summary>
     /// Attribute for Refresh Rate
     /// </summary>
@@ -67,9 +69,25 @@ public static class UserSettings
     /// Attribute for Flashing Frequency
     /// </summary>
     public static int Frequency { get { return PlayerPrefs.GetInt("Frequency", 15); } set { PlayerPrefs.SetInt("Frequency", value); } }
-    #endregion
 
-    #region Social
-    #endregion
-}
+    public static Color BackgroundColor
+    {
+        get { return new Color(PlayerPrefs.GetFloat("BGR", 1), PlayerPrefs.GetFloat("BGG", 1), PlayerPrefs.GetFloat("BGB", 1), 1); }
+        set { PlayerPrefs.SetFloat("BGR", value.r); PlayerPrefs.SetFloat("BGG", value.g); PlayerPrefs.SetFloat("BGB", value.b); }
+    }
+    public static Color HighlighterColor
+    {
+        get { return new Color(PlayerPrefs.GetFloat("HR", 1), PlayerPrefs.GetFloat("HG", 1), PlayerPrefs.GetFloat("HB", 1), 1); }
+        set { PlayerPrefs.SetFloat("HR", value.r); PlayerPrefs.SetFloat("HG", value.g); PlayerPrefs.SetFloat("HB", value.b); }
+    }
+    public static Color FlashingColor
+    {
+        get { return new Color(PlayerPrefs.GetFloat("FR", 1), PlayerPrefs.GetFloat("FG", 1), PlayerPrefs.GetFloat("FB", 1), 1); }
+        set { PlayerPrefs.SetFloat("FR", value.r); PlayerPrefs.SetFloat("FG", value.g); PlayerPrefs.SetFloat("FB", value.b); }
+    }
+        #endregion
+
+        #region Social
+        #endregion
+    }
 

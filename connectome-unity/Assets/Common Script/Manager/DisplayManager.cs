@@ -90,16 +90,10 @@ public class DisplayManager : MonoBehaviour
 		return recon; 
 	}
     #endregion
-
-    #region KeyboardManager
-
-    public KeyboardManager KeyboardManager;
-
-    public static void GetInputFromKeyboard(Action<string> onSubmit)
+    #region Keyboard
+    public static void DisplayGameObject(GameObject obj)
     {
-        Instance.KeyboardManager.SubmitAction = onSubmit;
-        Instance.KeyboardManager.Show();
-        Instance.SelectionManager.Push(Instance.KeyboardManager.KeyboardGameObject.GetComponent<ButtonSelectionMenu>()); 
+
     }
     #endregion
 }

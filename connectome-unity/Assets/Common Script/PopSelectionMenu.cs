@@ -7,6 +7,12 @@ using UnityEngine;
 public class PopSelectionMenu : SelectionMenu
 {
     /// <summary>
+    /// The number of times to pop
+    /// </summary>
+    [Tooltip("The number of times the selection manager will pop")]
+    public int PopIndex;
+
+    /// <summary>
     /// Used as a scripted in a game object that will pop the menu. 
     /// </summary>
     public override ISelectionMenu InvokeSelected()
@@ -16,8 +22,10 @@ public class PopSelectionMenu : SelectionMenu
 
     public override void OnPush()
     {
-        SelectionManager.Instance.Pop();
-        SelectionManager.Instance.Pop();
+        for(int i = 0; i < PopIndex; i++)
+        {
+            SelectionManager.Instance.Pop();
+        }
     }
 
     public override void ResetSelection()

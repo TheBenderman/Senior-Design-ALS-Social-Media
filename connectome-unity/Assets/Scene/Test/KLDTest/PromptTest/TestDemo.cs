@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Connectome.Unity.Keyboard;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +22,7 @@ namespace Connectome.KLD.PromptTest
             //lambda could be replaced with s => TwitterClient.Tweet(s)
             //prompt.Popup(s => text.text = s);
 
-            DisplayManager.GetInputFromKeyboard(s => text.text = s); 
+            KeyboardManager.GetInputFromKeyboard(s => text.text = s); 
         }
     }
 }
