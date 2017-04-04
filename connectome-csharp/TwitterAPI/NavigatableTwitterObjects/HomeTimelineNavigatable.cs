@@ -9,6 +9,8 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
 {
     public class HomeTimelineNavigatable : TwitterObjectNavigatable<Status>
     {
+        private int refreshTime = 60000;
+        
         public HomeTimelineNavigatable(TwitterAuthenticator authenticator) : base(authenticator)
         {
             twitterObjects = new List<Status>();
@@ -16,7 +18,15 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
 
         public override void startThread()
         {
-            twitterThread = new Thread(() => fetchHomeTimelineTweets());
+            twitterThread = new Thread(() => {
+                try
+                {
+                    fetchHomeTimelineTweets();
+                }
+                catch (Exception e) {
+                    OnExp?.Invoke(e);
+                }
+            });
             shouldContinueThread = true;
             twitterThread.Start();
             while (!twitterThread.IsAlive) ;
@@ -106,7 +116,7 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
                         twitterObjects.Add(status);
                 }
 
-                Thread.Sleep(3000);
+                Thread.Sleep(refreshTime);
             }
             while (!_shouldStop);
         }

@@ -10,6 +10,7 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
 {
     public class DMUsersNavigatable : TwitterObjectNavigatable<User>
     {
+        private int refreshTime = 60000;
         public DMUsersNavigatable(TwitterAuthenticator authenticator) : base(authenticator)
         {
             twitterObjects = new List<User>();
@@ -17,7 +18,16 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
 
         public override void startThread()
         {
-            twitterThread = new Thread(() => fetchDMs());
+            twitterThread = new Thread(() => {
+                try
+                {
+                    fetchDMs();
+                }
+                catch (Exception e)
+                {
+                    OnExp?.Invoke(e);
+                }
+            });
             shouldContinueThread = true;
             twitterThread.Start();
             while (!twitterThread.IsAlive) ;
@@ -99,7 +109,7 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
 
                 twitterObjects.Intersect(users.ToList());
 
-                Thread.Sleep(3000);
+                Thread.Sleep(refreshTime);
             }
             while (!_shouldStop);
         }

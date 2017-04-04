@@ -10,6 +10,7 @@ namespace Connectome.Twitter.API
     {
         protected Thread twitterThread;
         protected volatile bool _shouldStop;
+        public Action<Exception> OnExp;
 
         protected List<T> twitterObjects;
 
