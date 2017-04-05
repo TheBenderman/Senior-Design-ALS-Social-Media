@@ -44,6 +44,25 @@ public class TwitterController : TwitterObjects
 		authHandler.initializeAuthComponent ();
 	}
 
+    void OnApplicationQuit()
+    {
+		AppDomain.CurrentDomain.ProcessExit += (e, o) => { 
+			authHandler.Interactor.getHomeTimelineNavigatable().stopThread();
+			authHandler.Interactor.getDmUsersNavigatable().stopThread();
+		};
+        Debug.Log("Destroying twitter threads.");
+    }
+
+    void OnDestroy()
+    {
+		AppDomain.CurrentDomain.ProcessExit += (e, o) => { 
+			authHandler.Interactor.getHomeTimelineNavigatable().stopThread();
+			authHandler.Interactor.getDmUsersNavigatable().stopThread();
+		};
+
+        Debug.Log("Destroying twitter threads.");
+    }
+
 	public void backButton()
 	{
 		Debug.Log (timelineHandler.TitleView.text);

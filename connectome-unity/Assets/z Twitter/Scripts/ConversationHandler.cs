@@ -38,7 +38,7 @@ public class ConversationHandler : TwitterObjects {
 
 	public void populateConversation()
 	{
-		Status currentStatus = timelineHandler.hometimelineStatuses[timelineHandler.getCurrentTweet()];
+		Status currentStatus = timelineHandler.getCurrentTweet ();
 		Debug.Log("ID FOR THIS TWEET: " + currentStatus.Id.ToString());
 		List<Status> convo = authHandler.makeTwitterAPICall(
 			() => authHandler.Interactor.getConversation(currentStatus.User.ScreenName, currentStatus.Id.ToString())
@@ -50,6 +50,8 @@ public class ConversationHandler : TwitterObjects {
 			seeConversation.gameObject.SetActive (false);
 			setTweet(currentTweetConvo);
 			timelineHandler.TitleView.text = timelineHandler.convoTitle;
+			timelineHandler.lastTweetButton.GetComponentInChildren<Text>().text = "<";
+			timelineHandler.nextTweetButton.GetComponentInChildren<Text>().text = ">";
 		}
 		else
 		{

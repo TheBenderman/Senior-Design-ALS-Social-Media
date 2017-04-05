@@ -27,13 +27,7 @@ public class TimeLineHandler: TwitterObjects
 	public string convoTitle = "Conversation";
 	public string homeTimeLineObjectsString = "homeTimeLineObjects";
 
-	private List<Status> Hometimeline;
-	public List<Status> hometimelineStatuses {
-		get { return Hometimeline; }
-		set { Hometimeline = value; }
-	}
-
-	private int currentTweet = 0;
+	private Status currentTweet = null;
 	public Text TitleView;
 	public AuthenticationHandler authHandler;
 
@@ -49,11 +43,11 @@ public class TimeLineHandler: TwitterObjects
 			if (authHandler.Interactor == null) {
 				Debug.Log("IT'S BADD!");
 			}
-			//Debug.Log();
-			// Get the tweets for the user.
-			hometimelineStatuses = authHandler.makeTwitterAPICall( () => authHandler.Interactor.getHomeTimeLine());
-			currentTweet = 0;
-			setTweet(currentTweet);
+
+            authHandler.Interactor.getHomeTimelineNavigatable().resetCurrentObject();
+			currentTweet = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
+			if(currentTweet != null)
+				setTweet(currentTweet);
 			TitleView.text = timelineTitle;
 		}
 		catch (Exception e) {
@@ -62,14 +56,21 @@ public class TimeLineHandler: TwitterObjects
 	}
 
 	// This function sets the current tweet for the user.
-	public void setTweet(int index)
+	public void setTweet(Status tweet)
 	{
-		twitterHandle.text = hometimelineStatuses[index].User.ScreenName;
-		realName.text = hometimelineStatuses[index].User.Name;
-		bodyText.text = hometimelineStatuses[index].Text;
+		twitterHandle.text = tweet.User.ScreenName;
+		realName.text = tweet.User.Name;
+		bodyText.text = tweet.Text;
+	    timeStamp.text = tweet.CreatedAt.ToString();
+
+		lastTweetButton.GetComponentInChildren<Text>().text = "< (" + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNumNewerObjects()) + ") newer tweets.";
+		nextTweetButton.GetComponentInChildren<Text>().text = "(" + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNumOlderObjects()) + ") >";
+
+		lastTweetButton.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().hasNewerObject());
+		nextTweetButton.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().hasOlderObject());
 
 		// Populate the profile picture for the user, requires a separate thread to run.
-		StartCoroutine(setProfilePic(hometimelineStatuses[index].User.ProfileImageUrl));
+		StartCoroutine(setProfilePic(tweet.User.ProfileImageUrl));
 	}
 
 	public IEnumerator setProfilePic(string url)
@@ -85,38 +86,31 @@ public class TimeLineHandler: TwitterObjects
 	// This function populates the timeline ui with the next tweet in the list.
 	public void nextTweet()
 	{
-		// Skip this onclick if the scene is on something other than the Timeline
+		// Skip this onclick if the scene is on the Timeline
 		if (!TitleView.text.Equals (timelineTitle))
 			return;
 
-		if (currentTweet < hometimelineStatuses.Count - 1)
-		{
-			currentTweet += 1;
-		}
+		currentTweet = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().getOlderObject());
+		if (currentTweet != null)
+			setTweet (currentTweet);
 		else
-		{
-			hometimelineStatuses = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimeLine());
-		}
-
-		setTweet(currentTweet);
+			throw new Exception ("No next tweet.");
 	}
 
 	// This function populates the timeline ui with the last tweet in the list.
 	public void previousTweet()
 	{
-		// Skip this onclick if the scene is on something other than the Timeline
 		if (!TitleView.text.Equals (timelineTitle))
 			return;
-
-		if (currentTweet > 0)
-		{
-			currentTweet--;
-		}
-
-		setTweet(currentTweet);
+		
+		currentTweet = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
+		if (currentTweet != null)
+			setTweet (currentTweet);
+		else
+			throw new Exception ("No previous tweet.");
 	}
 
-	public int getCurrentTweet() 
+	public Status getCurrentTweet() 
 	{
 		return this.currentTweet;
 	}
