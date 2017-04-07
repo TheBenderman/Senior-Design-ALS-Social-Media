@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
 
 namespace Connectome.Unity.UI
@@ -8,7 +7,8 @@ namespace Connectome.Unity.UI
     /// <summary>
     /// Flickers an Image element using colours. 
     /// </summary>
-    public class ImageFlicker : MonoBehaviour
+    [RequireComponent(typeof(Image))]
+    public class ImageFlicker : SelectionHighlighter
     {
         #region Public attributes
         /// <summary>
@@ -19,21 +19,22 @@ namespace Connectome.Unity.UI
         /// <summary>
         /// Time in ms to be waited betweeen a flick.
         /// </summary>
-        [Tooltip("Flicking interval in millisecond")]
-        [Range(0, 1000)]
-        public int Interval = 0;
+        [Range(0, 100)]
+        public int Frequency = 0;
 
         #endregion
         #region Private attributes
         /// <summary>
         /// Holds current color index. 
         /// </summary>
-        private int FlickIndex;
+        protected int FlickIndex;
 
         /// <summary>
         /// Holds refrence to image element. 
         /// </summary>
         private Image Image;
+
+        Coroutine FlickRoutine; 
         #endregion
         #region GameObject overrides
         void Start()
@@ -41,7 +42,7 @@ namespace Connectome.Unity.UI
             FlickIndex = 0;
             Image = GetComponent<Image>();
 
-            StartCoroutine(flick());
+            FlickRoutine = StartCoroutine(flick());
         }
 
         void OnValidate()
@@ -69,17 +70,40 @@ namespace Connectome.Unity.UI
         {
             while (true)
             {
-                yield return new WaitForSeconds((float)Interval / 1000);
+                yield return new WaitForSeconds((1f / ((float)Frequency)));
 
-
-                //flick 
-                FlickIndex = ++FlickIndex % Flicks.Length;
-                Image.color = Flicks[FlickIndex];
-
+                if (!disable)
+                {
+                    OnFlick();
+                }
+                   
             }
-
-
         }
         #endregion
+
+        bool disable; 
+
+        protected virtual void OnFlick()
+        {
+            FlickIndex = ++FlickIndex % Flicks.Length;
+            Image.color = Flicks[FlickIndex];
+        }
+
+        public override void EnableHighlight()
+        {
+            disable = false; 
+        }
+
+        public override void DisableHighlight()
+        {
+            disable = true;
+            //base.DisableHighlight();
+            if(Image!= null)
+                Image.color = new Color(0, 0, 0, 0);
+
+           
+            //StopCoroutine(FlickRoutine); 
+        }
     }
+
 }

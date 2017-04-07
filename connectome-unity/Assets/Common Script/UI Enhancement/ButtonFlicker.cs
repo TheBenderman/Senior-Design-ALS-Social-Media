@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Connectome.Unity.UI;
 
 
-namespace Connectome.Unity.Menu
+namespace Connectome.Unity.UI
 {
     /// <summary>
     /// Makes a selection flash different colors.

@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Connectome.Unity.Menu
+namespace Connectome.Unity.UI
 {
     /// <summary>
     /// Represnts a highlighter that can highlight elements in a selection menu.

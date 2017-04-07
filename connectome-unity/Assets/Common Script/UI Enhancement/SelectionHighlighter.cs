@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Connectome.Unity.Menu
+namespace Connectome.Unity.UI
 {
     /// <summary>
     /// A highlighter that abjust it's size and position to the highlighted object. 

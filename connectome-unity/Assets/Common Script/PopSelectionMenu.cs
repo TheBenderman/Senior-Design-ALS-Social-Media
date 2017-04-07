@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Connectome.Unity.UI;
 
 public class PopSelectionMenu : SelectionMenu
 {
@@ -10,6 +11,7 @@ public class PopSelectionMenu : SelectionMenu
     /// The number of times to pop
     /// </summary>
     [Tooltip("The number of times the selection manager will pop")]
+    [Range(2, int.MaxValue)]
     public int PopIndex;
 
     /// <summary>

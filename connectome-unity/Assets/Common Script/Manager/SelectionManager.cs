@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Connectome.Unity.UI;
 
 /// <summary>
 /// Allows highlighting a selection of game objects and surfing* between them.
