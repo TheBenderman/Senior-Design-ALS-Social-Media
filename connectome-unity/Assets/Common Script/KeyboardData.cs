@@ -10,6 +10,16 @@ namespace Connectome.Unity.Keyboard
     //TODO this is slipt into two: Part of it is now KeyboardManager. Have this extend ConnectomeKeyboard 
     public class KeyboardData : KeyboardTemplate
     {
+        public GameObject PositivePhrasesObj;
+        public GameObject NeutralPhrasesObj;
+        public GameObject NegativePhrasesObj;
+        /// <summary>
+        /// Called when this keyboard is loaded
+        /// </summary>
+        private void Start()
+        {
+            PopulateButtonText();
+        }
         /// <summary>
         /// In case we want to include this functionality.
         /// </summary>
@@ -57,6 +67,24 @@ namespace Connectome.Unity.Keyboard
         public override void Hide()
         {
             transform.SetParent(KeyboardManager.Instance.transform);
+        }
+
+        public void PopulateButtonText()
+        {
+
+            //Populate the button text
+            foreach (Button b in PositivePhrasesObj.GetComponentsInChildren<Button>())
+            {
+                b.SetButtonText("");//TODO insert parsing logic here
+            }
+            foreach (Button b in NeutralPhrasesObj.GetComponentsInChildren<Button>())
+            {
+                b.SetButtonText("");//TODO insert parsing logic here
+            }
+            foreach (Button b in NegativePhrasesObj.GetComponentsInChildren<Button>())
+            {
+                b.SetButtonText("");//TODO insert parsing logic here
+            }
         }
     }
 }
