@@ -44,7 +44,7 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
                 return currentTwitterObject;
             }
 
-            int index = twitterObjects.IndexOf(currentTwitterObject);
+            int index = twitterObjects.FindIndex(x => x.Id == currentTwitterObject.Id);
             if (index == -1)
                 throw new Exception("Error! Can't find current direct message user.");
 
@@ -68,7 +68,7 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
                 return currentTwitterObject;
             }
 
-            int index = twitterObjects.IndexOf(currentTwitterObject);
+            int index = twitterObjects.FindIndex(x => x.Id == currentTwitterObject.Id);
             if (index == -1)
                 throw new Exception("Error! Can't find current direct message user.");
 
@@ -90,9 +90,9 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
 
         public override int getNumNewerObjects()
         {
-            int index = twitterObjects.IndexOf(currentTwitterObject);
+            int index = twitterObjects.FindIndex(x => x.Id == currentTwitterObject.Id);
 
-            return twitterObjects.Count - index + 1;
+            return twitterObjects.Count - index - 1;
         }
 
         private void fetchDMs()
@@ -107,7 +107,7 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
                 users = users.GroupBy(x => x.Id).Select(group => group.First());
                 users = users.Where(x => x.ScreenName != getCurrentUser());
 
-                twitterObjects.Intersect(users.ToList());
+                twitterObjects = users.ToList();
 
                 Thread.Sleep(refreshTime);
             }

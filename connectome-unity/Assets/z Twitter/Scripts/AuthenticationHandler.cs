@@ -6,6 +6,8 @@ using Connectome.Unity.Menu;
 using Connectome.Twitter.API;
 using CoreTweet;
 using System;
+using System.Threading;
+using UnityEditor;
 
 public class AuthenticationHandler : TwitterObjects
 {
@@ -43,13 +45,35 @@ public class AuthenticationHandler : TwitterObjects
 			// Set the tokens to the previously received tokens
 			makeTwitterAPICallNoReturnVal(() => Authenticator.setTokens(accesstoken, accessSecret));
 			Interactor = new TwitterInteractor (Authenticator);
+
+            // Recover from errors having to do with exceptions in home timeline thread
+		    Interactor.getHomeTimelineNavigatable().OnExp = exception =>
+		    {
+                Debug.Log(exception.Message.ToString());
+                Interactor.getHomeTimelineNavigatable().endThread();
+                Interactor.getHomeTimelineNavigatable().resetCurrentObject();
+		        Interactor.getHomeTimelineNavigatable().startThread();
+
+		        //Some error message here
+		    };
+
+            // Recover from errors having to do with exceptions in dm users thread
+		    Interactor.getDmUsersNavigatable().OnExp = exception =>
+		    {
+                Debug.Log(exception.Message.ToString());
+                Interactor.getDmUsersNavigatable().endThread();
+                Interactor.getDmUsersNavigatable().resetCurrentObject();
+                Interactor.getDmUsersNavigatable().startThread();
+
+                //Some error message here
+		    };
+
 			navigateToTwitterHome ();
 		}
 		else // Otherwise, we need to authenticate the user.
 		{
 			navigateToTwitterAuthPage();
 		}
-
 	}
 
 	// This is the on click event for when the user enters their pin code that they received from the twitter website.

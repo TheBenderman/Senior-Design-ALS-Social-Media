@@ -54,14 +54,8 @@ public class DirectMessageHandler : TwitterObjects {
 		StartCoroutine(setDMUserProfilePic(user.ProfileImageUrl));
 		DMUsername.text = user.ScreenName;
 		DMName.text = user.Name;
-
-		string currentUser = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getCurrentUser());
-
-		Debug.Log("Current user : " + currentUser);
-
+ 
 		string otherUser = user.ScreenName;
-
-		Debug.Log("Other User : " + otherUser);
 
 		List<DirectMessage> dms = authHandler.makeTwitterAPICall(
 			() => authHandler.Interactor.buildDMConversation(otherUser));
@@ -71,7 +65,10 @@ public class DirectMessageHandler : TwitterObjects {
 		LastMessageText.text = latestMessage.Sender.ScreenName + " - (" + Utilities.ElapsedTime(latestMessage.CreatedAt.DateTime)
 			+ ") - " + latestMessage.Text;
 
-		LastDMUser.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getDmUsersNavigatable().hasNewerObject());
+        LastDMUser.GetComponentInChildren<Text>().text = "< (" + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getDmUsersNavigatable().getNumNewerObjects()) + ") newer";
+        NextDMUser.GetComponentInChildren<Text>().text = "(" + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getDmUsersNavigatable().getNumOlderObjects()) + ") older >";
+
+        LastDMUser.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getDmUsersNavigatable().hasNewerObject());
 		NextDMUser.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getDmUsersNavigatable().hasOlderObject());
 	}
 

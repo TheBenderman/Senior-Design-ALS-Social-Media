@@ -39,8 +39,7 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
 
             if (currentTwitterObject == null)
             {
-                currentTwitterObject = twitterObjects[twitterObjects.Count - 1];
-                    // Get the last tweet, which is the newest
+                currentTwitterObject = twitterObjects[twitterObjects.Count - 1]; // Get the last tweet, which is the newest
                 return currentTwitterObject;
             }
 
@@ -92,7 +91,7 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
         {
             int index = twitterObjects.IndexOf(currentTwitterObject);
 
-            return twitterObjects.Count - index + 1;
+            return twitterObjects.Count - index - 1;
         }
 
         #region private methods

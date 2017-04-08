@@ -36,7 +36,6 @@ public class TimeLineHandler: TwitterObjects
 	// This function populates the user homepage.
 	public void addHomeTimeLine()
 	{
-
 		try {
 			// Set all objects to be invisible except those related to the timeline.
 			setActiveObject(homeTimeLineObjectsString);
@@ -48,6 +47,9 @@ public class TimeLineHandler: TwitterObjects
 			currentTweet = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
 			if(currentTweet != null)
 				setTweet(currentTweet);
+            else
+                throw new Exception("No first tweet.");
+
 			TitleView.text = timelineTitle;
 		}
 		catch (Exception e) {
@@ -61,10 +63,10 @@ public class TimeLineHandler: TwitterObjects
 		twitterHandle.text = tweet.User.ScreenName;
 		realName.text = tweet.User.Name;
 		bodyText.text = tweet.Text;
-	    timeStamp.text = tweet.CreatedAt.ToString();
+	    timeStamp.text = Utilities.ElapsedTime(tweet.CreatedAt.DateTime);
 
 		lastTweetButton.GetComponentInChildren<Text>().text = "< (" + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNumNewerObjects()) + ") newer tweets.";
-		nextTweetButton.GetComponentInChildren<Text>().text = "(" + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNumOlderObjects()) + ") >";
+		nextTweetButton.GetComponentInChildren<Text>().text = "(" + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNumOlderObjects()) + ") older tweets >";
 
 		lastTweetButton.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().hasNewerObject());
 		nextTweetButton.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().hasOlderObject());
