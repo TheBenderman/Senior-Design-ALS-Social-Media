@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Boomlagoon.JSON;
+using System.IO;
 
 namespace Connectome.Unity.Keyboard
 {
     //TODO this is slipt into two: Part of it is now KeyboardManager. Have this extend ConnectomeKeyboard 
     public class KeyboardData : KeyboardTemplate
     {
-        public GameObject PositivePhrasesObj;
-        public GameObject NeutralPhrasesObj;
-        public GameObject NegativePhrasesObj;
+        public List<GameObject> PhraseTypes;
         /// <summary>
         /// Called when this keyboard is loaded
         /// </summary>
@@ -24,10 +24,6 @@ namespace Connectome.Unity.Keyboard
         /// In case we want to include this functionality.
         /// </summary>
         public bool IsCaps;
-        /// <summary>
-        /// The initial selections when the keyboard first pops up.
-        /// </summary>
-        //public SelectableObject[] BaseSelections;
         public void UpdateString(string text)
         {
             InputField.ConcatToCurrentText(IsCaps ? text.ToUpper() : text);
@@ -71,20 +67,24 @@ namespace Connectome.Unity.Keyboard
 
         public void PopulateButtonText()
         {
-
+            JSONObject obj = JSONObject.Parse(File.ReadAllText("Assets/Resources/" + gameObject.name + ".json"));
             //Populate the button text
-            foreach (Button b in PositivePhrasesObj.GetComponentsInChildren<Button>())
-            {
-                b.SetButtonText("");//TODO insert parsing logic here
+            int i = 0;
+            foreach (JSONValue panel in obj.GetArray("data")){
+                Button[] phrases = PhraseTypes[i].GetComponentsInChildren<Button>(true);
+                JSONArray paneldata = panel.Obj.GetArray("paneldata");
+                int j = 1;
+                foreach(JSONValue button in paneldata)
+                {
+                    if (!phrases[j].gameObject.Equals(PhraseTypes[i].gameObject))
+                    {
+                        phrases[j].SetButtonText(button.Obj.GetString("buttonname"));
+                    }
+                    j++;
+                }
+                i++;
             }
-            foreach (Button b in NeutralPhrasesObj.GetComponentsInChildren<Button>())
-            {
-                b.SetButtonText("");//TODO insert parsing logic here
-            }
-            foreach (Button b in NegativePhrasesObj.GetComponentsInChildren<Button>())
-            {
-                b.SetButtonText("");//TODO insert parsing logic here
-            }
+
         }
     }
 }
