@@ -15,7 +15,8 @@ public class TwitterObjects : MonoBehaviour
 		"composeTweetObjects",
 		"SelectConvObjects",
 		"ViewConvObjects",
-		"profileObjects"
+		"profileObjects",
+        "ImageObjects"
 	};
 	public void setActiveObject(String objectName)
 	{
@@ -26,10 +27,13 @@ public class TwitterObjects : MonoBehaviour
 		{
 			GameObject gameobj = (GameObject)g;
 
-			if (gameobj.name.Equals(objectName))
-				gameobj.SetActive(true);
+			if (gameobj.name.Equals (objectName))
+			{
+				Debug.Log (gameobj.name);
+				gameobj.SetActive (true);
+			}
 			else
-				gameobj.SetActive(false);
+				gameobj.SetActive (false);
 		}
 	}
 }

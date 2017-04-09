@@ -1,1 +1,14 @@
-﻿<Properties />
+﻿<Properties StartupConfiguration="{B84FA3A0-D58E-4F07-A718-98B897303AFA}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../connectome-unity/Assets/Common Script/Manager/ConnectomeScene.cs">
+    <Files>
+      <File FileName="../connectome-unity/Assets/Common Script/Manager/ConnectomeScene.cs" Line="44" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Emotiv.EmotivAnalytic PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+</Properties>

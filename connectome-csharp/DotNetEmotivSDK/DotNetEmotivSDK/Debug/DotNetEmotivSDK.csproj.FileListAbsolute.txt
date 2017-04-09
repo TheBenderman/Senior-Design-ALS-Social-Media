@@ -42,3 +42,4 @@ Y:\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\DotNetEmotivSD
 Y:\Senior-Design-ALS-Social-Media\connectome-unity\Assets\Library\DotNetEmotivSDK.pdb
 Y:\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.dll
 Y:\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.pdb
+Y:\Senior-Design-ALS-Social-Media\connectome-csharp\DotNetEmotivSDK\DotNetEmotivSDK\Debug\DotNetEmotivSDK.csprojResolveAssemblyReference.cache

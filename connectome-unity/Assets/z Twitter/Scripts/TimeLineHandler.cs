@@ -6,115 +6,207 @@ using UnityEngine.UI;
 using CoreTweet;
 using Connectome.Twitter.API;
 using System;
+using System.Text.RegularExpressions;
 
-public class TimeLineHandler: TwitterObjects
+public class TimeLineHandler : TwitterObjects
 {
-	#region Twitter Home Timeline Members
-	public GameObject homeTimeLineObjects;
-	public Image profilePic;
-	public Text realName;
-	public Text twitterHandle;
-	public Text timeStamp;
-	public Text bodyText;
-	public Button lastTweetButton;
-	public Button homeButton;
-	public Button favoriteButton;
-	public Button retweetButton;
-	public Button replyButton;
-	public Button privateMessageButton;
-	public Button nextTweetButton;
-	public string timelineTitle = "Timeline";
-	public string convoTitle = "Conversation";
-	public string homeTimeLineObjectsString = "homeTimeLineObjects";
+    #region Twitter Home Timeline Members
 
-	private Status currentTweet = null;
-	public Text TitleView;
-	public AuthenticationHandler authHandler;
+    public GameObject homeTimeLineObjects;
+    public Image profilePic;
+    public Text realName;
+    public Text twitterHandle;
+    public Text timeStamp;
+    public Text bodyText;
+    public Button lastTweetButton;
+    public Button homeButton;
+    public Button favoriteButton;
+    public Button retweetButton;
+    public Button replyButton;
+    public Button imagesButton;
+    public Button privateMessageButton;
+    public Button nextTweetButton;
+    public string timelineTitle = "Timeline";
+    public string convoTitle = "Conversation";
+    public string homeTimeLineObjectsString = "homeTimeLineObjects";
 
-	#endregion
+    private Status currentTweet = null;
+    public Text TitleView;
+    public AuthenticationHandler authHandler;
 
-	// This function populates the user homepage.
-	public void addHomeTimeLine()
-	{
-		try {
-			// Set all objects to be invisible except those related to the timeline.
-			setActiveObject(homeTimeLineObjectsString);
-			if (authHandler.Interactor == null) {
-				Debug.Log("IT'S BADD!");
-			}
+    #endregion
+
+    #region image members
+	public GameObject ImageObjects;
+    public Button lastImageButton;
+    public Button backImageButton;
+    public Button replyImageButton;
+    public Button nextImageButton;
+    public Image userImage;
+    private List<String> imageURLs;
+    private int currentImageIndex;
+    #endregion
+
+    // This function populates the user homepage.
+    public void addHomeTimeLine()
+    {
+        try
+        {
+            // Set all objects to be invisible except those related to the timeline.
+            setActiveObject(homeTimeLineObjectsString);
+            if (authHandler.Interactor == null)
+            {
+                Debug.Log("IT'S BADD!");
+            }
 
             authHandler.Interactor.getHomeTimelineNavigatable().resetCurrentObject();
-			currentTweet = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
-			if(currentTweet != null)
-				setTweet(currentTweet);
+            currentTweet = authHandler.makeTwitterAPICall(
+                    () => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
+            if (currentTweet != null)
+                setTweet(currentTweet);
             else
                 throw new Exception("No first tweet.");
 
-			TitleView.text = timelineTitle;
+            TitleView.text = timelineTitle;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+    }
+
+    // This function sets the current tweet for the user.
+    public void setTweet(Status tweet)
+    {
+        twitterHandle.text = "@" + tweet.User.ScreenName;
+        realName.text = tweet.User.Name;
+        bodyText.text = tweet.Text;
+
+		if (tweet.FullText != null && string.IsNullOrEmpty(tweet.FullText)) {
+			bodyText.text = tweet.FullText;
+		} else {
+			bodyText.text = tweet.Text;
 		}
-		catch (Exception e) {
-			Debug.Log ("Something went wrong!");
+
+        timeStamp.text = Utilities.ElapsedTime(tweet.CreatedAt.DateTime);
+
+        lastTweetButton.GetComponentInChildren<Text>().text = "< (" +
+                                                              authHandler.makeTwitterAPICall(
+                                                                  () =>
+                                                                      authHandler.Interactor.getHomeTimelineNavigatable()
+                                                                          .getNumNewerObjects()) + ") newer tweets.";
+        nextTweetButton.GetComponentInChildren<Text>().text = "(" +
+                                                              authHandler.makeTwitterAPICall(
+                                                                  () =>
+                                                                      authHandler.Interactor.getHomeTimelineNavigatable()
+                                                                          .getNumOlderObjects()) + ") older tweets >";
+
+        lastTweetButton.enabled =
+            authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().hasNewerObject());
+        nextTweetButton.enabled =
+            authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().hasOlderObject());
+		imagesButton.enabled = tweet.Entities != null && tweet.Entities.Media != null && tweet.Entities.Media.Length > 0;
+
+        // Populate the profile picture for the user, requires a separate thread to run.
+        StartCoroutine(setProfilePic(tweet.User.ProfileImageUrl));
+    }
+
+    public IEnumerator setProfilePic(string url)
+    {
+        WWW www = new WWW(url);
+        yield return www;
+        profilePic.sprite = Sprite.Create(
+            www.texture,
+            new Rect(0, 0, www.texture.width, www.texture.height),
+            new Vector2(0, 0));
+    }
+
+    // This function populates the timeline ui with the next tweet in the list.
+    public void nextTweet()
+    {
+        // Skip this onclick if the scene is on the Timeline
+        if (!TitleView.text.Equals(timelineTitle))
+            return;
+
+        currentTweet = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getOlderObject());
+        if (currentTweet != null)
+            setTweet(currentTweet);
+        else
+            throw new Exception("No next tweet.");
+    }
+
+    // This function populates the timeline ui with the last tweet in the list.
+    public void previousTweet()
+    {
+        if (!TitleView.text.Equals(timelineTitle))
+            return;
+
+        currentTweet = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
+        if (currentTweet != null)
+            setTweet(currentTweet);
+        else
+            throw new Exception("No previous tweet.");
+    }
+
+    public Status getCurrentTweet()
+    {
+        return this.currentTweet;
+    }
+
+    public void populateImages()
+    {
+        Status currentTweet = getCurrentTweet();
+		MediaEntity [] currentTweetMedia = currentTweet.Entities.Media;
+
+        imageURLs = new List<string>();
+
+		if (currentTweetMedia == null || currentTweetMedia.Length == 0) {
+			Debug.Log ("Uh oh. Shouldn't be here.");
+			return;
 		}
-	}
+        
+		foreach (MediaEntity media in currentTweetMedia) {
+			imageURLs.Add (media.MediaUrl);
+		}
 
-	// This function sets the current tweet for the user.
-	public void setTweet(Status tweet)
+		currentImageIndex = 0;
+
+		setCurrentImage();
+        setActiveObject("ImageObjects");
+    }
+
+	public void imagesBackToCurrentTweet()
 	{
-		twitterHandle.text = tweet.User.ScreenName;
-		realName.text = tweet.User.Name;
-		bodyText.text = tweet.Text;
-	    timeStamp.text = Utilities.ElapsedTime(tweet.CreatedAt.DateTime);
-
-		lastTweetButton.GetComponentInChildren<Text>().text = "< (" + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNumNewerObjects()) + ") newer tweets.";
-		nextTweetButton.GetComponentInChildren<Text>().text = "(" + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNumOlderObjects()) + ") older tweets >";
-
-		lastTweetButton.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().hasNewerObject());
-		nextTweetButton.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().hasOlderObject());
-
-		// Populate the profile picture for the user, requires a separate thread to run.
-		StartCoroutine(setProfilePic(tweet.User.ProfileImageUrl));
+		setActiveObject (homeTimeLineObjectsString);
 	}
 
-	public IEnumerator setProfilePic(string url)
+    public void setCurrentImage()
+    {
+		StartCoroutine(setUserImage(imageURLs[currentImageIndex]));
+
+		nextImageButton.enabled = currentImageIndex < imageURLs.Count - 1;
+		lastImageButton.enabled = currentImageIndex > 0;
+    }
+
+	public void nextImage()
 	{
-		WWW www = new WWW(url);
-		yield return www;
-		profilePic.sprite = Sprite.Create(
-			www.texture,
-			new Rect(0, 0, www.texture.width, www.texture.height),
-			new Vector2(0, 0));
+		currentImageIndex++;
+		setCurrentImage ();
 	}
 
-	// This function populates the timeline ui with the next tweet in the list.
-	public void nextTweet()
+	public void lastImage()
 	{
-		// Skip this onclick if the scene is on the Timeline
-		if (!TitleView.text.Equals (timelineTitle))
-			return;
-
-		currentTweet = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().getOlderObject());
-		if (currentTweet != null)
-			setTweet (currentTweet);
-		else
-			throw new Exception ("No next tweet.");
+		currentImageIndex--;
+		setCurrentImage();
 	}
 
-	// This function populates the timeline ui with the last tweet in the list.
-	public void previousTweet()
-	{
-		if (!TitleView.text.Equals (timelineTitle))
-			return;
-		
-		currentTweet = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
-		if (currentTweet != null)
-			setTweet (currentTweet);
-		else
-			throw new Exception ("No previous tweet.");
-	}
-
-	public Status getCurrentTweet() 
-	{
-		return this.currentTweet;
-	}
-
+    public IEnumerator setUserImage(string url)
+    {
+        WWW www = new WWW(url);
+        yield return www;
+        userImage.sprite = Sprite.Create(
+            www.texture,
+            new Rect(0, 0, www.texture.width, www.texture.height),
+            new Vector2(0, 0));
+    }
 }

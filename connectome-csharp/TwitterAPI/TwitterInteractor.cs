@@ -9,57 +9,69 @@ using CoreTweet.Core;
 
 namespace Connectome.Twitter.API
 {
-	public class TwitterInteractor
-	{
+    public class TwitterInteractor
+    {
         private int refillTweetsNumber = 20;
-		private int initialTweetsNumber = 3;
+        private int initialTweetsNumber = 3;
         private int initialProfileTweetsNumber = 3;
 
-		private TwitterAuthenticator authenticator;
+        private TwitterAuthenticator authenticator;
 
-	    private Thread timelineThread;
-	    private Thread dmThread;
+        private Thread timelineThread;
+        private Thread dmThread;
 
-	    private DMUsersNavigatable dmUsersNavigatable;
-	    private HomeTimelineNavigatable homeTimelineNavigatable;
+        private DMUsersNavigatable dmUsersNavigatable;
+        private HomeTimelineNavigatable homeTimelineNavigatable;
 
-		public TwitterInteractor(TwitterAuthenticator twitauth){
+        public TwitterInteractor(TwitterAuthenticator twitauth)
+        {
             authenticator = twitauth;
 
             dmUsersNavigatable = new DMUsersNavigatable(authenticator);
             homeTimelineNavigatable = new HomeTimelineNavigatable(authenticator);
 
-		    dmUsersNavigatable.startThread();
+            dmUsersNavigatable.startThread();
             homeTimelineNavigatable.startThread();
-		}
+        }
 
-	    public DMUsersNavigatable getDmUsersNavigatable()
-	    {
-	        return dmUsersNavigatable;
-	    }
+        public DMUsersNavigatable getDmUsersNavigatable()
+        {
+            return dmUsersNavigatable;
+        }
 
-	    public HomeTimelineNavigatable getHomeTimelineNavigatable()
-	    {
-	        return homeTimelineNavigatable;
-	    }
+        public HomeTimelineNavigatable getHomeTimelineNavigatable()
+        {
+            return homeTimelineNavigatable;
+        }
 
-        public TwitterAuthenticator getA() {
+        public TwitterAuthenticator getA()
+        {
             return this.authenticator;
         }
 
-	    public string getCurrentUser()
-	    {
-	        ListedResponse<Status> statuses = authenticator.getTokens().Statuses.UserTimeline(count => 1);
-	        return statuses.First().User.ScreenName;
-	    }
+        public string getCurrentUser()
+        {
+            ListedResponse<Status> statuses = authenticator.getTokens().Statuses.UserTimeline(count => 1);
+            return statuses.First().User.ScreenName;
+        }
 
-		// publish a tweet
-		public void publishTweet(String tweet)
-		{
-			authenticator.getTokens().Statuses.Update(new { status = tweet });
-		}
+        // publish a tweet
+        public void publishTweet(String tweet)
+        {
+            authenticator.getTokens().Statuses.Update(new {status = tweet});
+        }
 
-		public List<Status> getConversation(string screenName, string id)
+        public void replyToTweet(long id, String tweet)
+        {
+            authenticator.getTokens().Statuses.Update(in_reply_to_status_id: id, status: tweet);
+        }
+
+        public void retweet(long tweetid)
+        {
+            authenticator.getTokens().Statuses.Retweet(id: tweetid);
+        }
+
+        public List<Status> getConversation(string screenName, string id)
 		{
 			List<Status> list = new List<Status>();
 			foreach (var status in authenticator.getTokens().Search.Tweets(q => "to:" + screenName, since_id => id, count => 100))
