@@ -6,6 +6,7 @@ using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Interface;
 using UnityEngine.UI;
 using System;
+using Connectome.Unity.UI;
 
 public abstract class BaseTrainingScreen : MonoBehaviour {
 

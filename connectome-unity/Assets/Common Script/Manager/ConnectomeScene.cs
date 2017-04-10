@@ -1,6 +1,7 @@
 ﻿using Connectome.Emotiv.Enum;
 using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Interface;
+using Connectome.Unity.Expection;
 using Connectome.Unity.Keyboard;
 using Connectome.Unity.UI;
 using System;
@@ -22,7 +23,24 @@ public class ConnectomeScene : MonoBehaviour
     [Header("Highlighter")]
     public SelectionHighlighter SelectionHighlighter;
 
+    public EmotivLoginDisplayPanel LoginPanel;  
 
+    public void Start()
+    {
+        try
+        {
+            EmotivDeviceManager.Setup();
+        }
+        catch (NullEmotivDeviceException)
+        {
+            LoginPanel.OnDismiss += Start; 
+            DisplayManager.Display(LoginPanel); 
+            return; 
+        }
+
+
+        SelectionManager.StartSelecting(); 
+    }
 
     private void OnValidate()
     { 

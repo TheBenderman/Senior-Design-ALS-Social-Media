@@ -1,4 +1,6 @@
-﻿using Connectome.Unity.Template;
+﻿using Connectome.Unity.Expection;
+using Connectome.Unity.Template;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,15 +39,12 @@ public class EmotivDeviceManager : MonoBehaviour
     /// <summary>
     /// Sets up Device, Reader and interpeters then start interpreter coroutine 
     /// </summary>
-    void Start()
+    public void Setup()
     {
-        DevicePlugin.Setup(); 
-        ReaderPlugin.SetUp(DevicePlugin); 
+        DevicePlugin.Setup();
 
-        if(currentInstance != null)
-        {
-            Debug.LogWarningFormat("There are more than one existence of EmotivDeviceManager. Prev: {0} New: {1}", currentInstance.name, this.name);
-        }
+        ReaderPlugin.SetUp(DevicePlugin);
+
         currentInstance = this; 
       
         foreach (var Intepreter in Interpreters)

@@ -5,6 +5,7 @@ using UnityEngine;
 using Connectome.Emotiv.Interface;
 using System;
 using Connectome.Unity.Template;
+using Connectome.Unity.UI;
 
 namespace Connectome.Unity.Plugin
 {
@@ -14,9 +15,10 @@ namespace Connectome.Unity.Plugin
     public class EPOCDevicePlugin : EmotivDeviceContainer
     {
         #region Private 
-        private static EPOCEmotivDevice DeviceInstance; 
+        private static EPOCEmotivDevice DeviceInstance;
         #endregion
-        #region Inspector Attributes 
+        #region Public Inspector Attributes 
+       
         public string Username;
         public string Password;
         public string Profile;
