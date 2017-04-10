@@ -21,6 +21,7 @@ public class AuthenticationHandler : TwitterObjects
 	public Button submitButton;
 	public string loginPage = "loginObjects";
 	public string homePage = "homeObjects";
+	public string loggedInUser = "";
 	public TwitterAuthenticator Authenticator;
 	public TwitterInteractor Interactor;
 	#endregion

@@ -125,7 +125,7 @@ namespace Connectome.Twitter.API
 
         #region profile functions
         public string getLoggedInUserScreenName() {
-            return authenticator.getTokens().ScreenName.ToString();
+            return authenticator.getLoggedInUserScreenName();
         }
 
         public List<Status> getLoggedInUserTimeline() {
@@ -157,6 +157,7 @@ namespace Connectome.Twitter.API
                 list.Add(user);
                 //Console.Write(user.ScreenName.ToString() + "\n");
             }
+            
             return list;
         }
 

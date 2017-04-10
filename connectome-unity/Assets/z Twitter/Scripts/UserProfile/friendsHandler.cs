@@ -33,12 +33,9 @@ public class friendsHandler : TwitterObjects {
 
 	public AuthenticationHandler authHandler;
 
-
 	public void showFollowers() {
 		Title.text = "Followers";
 		isFollowers = true;
-
-		Debug.Log (authHandler.Interactor.getLoggedInUserScreenName ());
 
 		List<User> followers = authHandler.makeTwitterAPICall( () =>
 			authHandler.Interactor.getFollowers (
@@ -109,7 +106,7 @@ public class friendsHandler : TwitterObjects {
 				setFriend (followersList [currentFriend]);
 			}
 		} else {
-			if (currentFriend > followingList.Count) {
+			if (currentFriend > 0) {
 				currentFriend--;
 				setFriend (followingList [currentFriend]);
 			}
