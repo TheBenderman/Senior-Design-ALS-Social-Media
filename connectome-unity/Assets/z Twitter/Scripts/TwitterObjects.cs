@@ -16,7 +16,8 @@ public class TwitterObjects : MonoBehaviour
 		"SelectConvObjects",
 		"ViewConvObjects",
 		"profileObjects",
-        "ImageObjects"
+        "ImageObjects",
+		"profileUserTimeline"
 	};
 	public void setActiveObject(String objectName)
 	{
