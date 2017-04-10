@@ -67,19 +67,17 @@ namespace Connectome.Unity.Keyboard
 
         public void PopulateButtonText()
         {
+            //JSON files must have the same name as the corresponding keyboard prefab.
             JSONObject obj = JSONObject.Parse(File.ReadAllText("Assets/Resources/" + gameObject.name + ".json"));
             //Populate the button text
             int i = 0;
             foreach (JSONValue panel in obj.GetArray("data")){
                 Button[] phrases = PhraseTypes[i].GetComponentsInChildren<Button>(true);
                 JSONArray paneldata = panel.Obj.GetArray("paneldata");
-                int j = 1;
-                foreach(JSONValue button in paneldata)
+                int j = 1;//Start from 1 because GetComponentsInChildren includes the parent object as well, so filter that out.
+                foreach (JSONValue button in paneldata)
                 {
-                    if (!phrases[j].gameObject.Equals(PhraseTypes[i].gameObject))
-                    {
-                        phrases[j].SetButtonText(button.Obj.GetString("buttonname"));
-                    }
+                    phrases[j].SetButtonText(button.Obj.GetString("buttonname"));
                     j++;
                 }
                 i++;
