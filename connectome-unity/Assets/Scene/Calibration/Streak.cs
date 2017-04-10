@@ -73,10 +73,6 @@ public class Streak : BaseTrainingScreen
         {
             dehighlightButton();
             slider.value += Time.deltaTime;
-            if(slider.value == slider.maxValue)
-            {
-                reset();
-            }
         }
     }
 

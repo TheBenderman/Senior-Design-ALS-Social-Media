@@ -15,6 +15,7 @@ public abstract class BaseTrainingScreen : MonoBehaviour {
 
     public Slider slider;
     public Button button;
+    public Button backButton;
 
     public GameObject mainMenu;
     public GameObject currentPanel;

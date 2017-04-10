@@ -60,11 +60,6 @@ public class Train : BaseTrainingScreen
             slider.value += Time.deltaTime;
         }
         
-        if(complete && slider.value == slider.maxValue)
-        {
-            reset();
-        }
-
         //Changes the button's color if the user is pushing
         if(timeline.Latest().Command.Equals(EmotivCommandType.PUSH))
         {
@@ -125,7 +120,6 @@ public class Train : BaseTrainingScreen
                 int[][] data = analyzeData();
                 setAccuracyResultText(data[0], data[1]);
                 collectData = false;
-                slider.value = 0;
                 complete = true;
 
             }  
