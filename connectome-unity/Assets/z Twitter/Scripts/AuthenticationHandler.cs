@@ -7,7 +7,6 @@ using Connectome.Twitter.API;
 using CoreTweet;
 using System;
 using System.Threading;
-using UnityEditor;
 
 public class AuthenticationHandler : TwitterObjects
 {

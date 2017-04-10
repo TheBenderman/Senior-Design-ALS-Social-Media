@@ -8,7 +8,6 @@ using Connectome.Twitter.API;
 using System;
 using System.Text.RegularExpressions;
 using Connectome.Unity.Keyboard;
-using UnityEditor.VersionControl;
 
 public class TimeLineHandler : TwitterObjects
 {
