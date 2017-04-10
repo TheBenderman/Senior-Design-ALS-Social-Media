@@ -60,7 +60,7 @@ public class Streak : BaseTrainingScreen
             resultText.text = resultsInSeconds(getCurrentTime());
             updateHighscore();
 
-            if(getCurrentTime()>1)
+            if (getCurrentTime() > 1)
             {
                 highlightButton();
             }
@@ -68,11 +68,6 @@ public class Streak : BaseTrainingScreen
             {
                 dehighlightButton();
             }
-        }
-        else
-        {
-            dehighlightButton();
-            slider.value += Time.deltaTime;
         }
     }
 
@@ -126,8 +121,6 @@ public class Streak : BaseTrainingScreen
             displayResults();
             run = false;
             dehighlightButton();
-            slider.value = 0;
-            slider.maxValue = 10;
         }
     }
 
