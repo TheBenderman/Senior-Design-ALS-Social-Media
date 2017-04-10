@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using CoreTweet;
 using System;
+using Connectome.Unity.Keyboard;
 
 public class DirectMessageHandler : TwitterObjects {
 	#region DM Members
@@ -106,13 +107,7 @@ public class DirectMessageHandler : TwitterObjects {
     {
         setActiveObject(viewConvObjectsString);
 
-        string currentUserName = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getCurrentUser());
-
-        Debug.Log("Current user : " + currentUserName);
-
 		string otherUser = currentUser.ScreenName;
-
-        Debug.Log("Other User : " + otherUser);
 
         List<DirectMessage> dms = authHandler.makeTwitterAPICall(
             () => authHandler.Interactor.buildDMConversation(otherUser));

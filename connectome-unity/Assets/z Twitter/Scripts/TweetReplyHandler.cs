@@ -28,12 +28,49 @@ public class TweetReplyHandler : TwitterObjects {
 	public string composeTweetObjectsString = "composeTweetObjects";
 	#endregion
 
+	public void ReplyTweet(string msg)
+	{
+		int attempts = 10;
+		Status currentStatus;
+		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle)) {
+			currentStatus = timelineHandler.getCurrentTweet ();
+		} else {
+			currentStatus = convoHandler.conversationtimelineStatuses [convoHandler.currentTweet];
+		}
+
+		while (attempts-- > 0)
+		{
+			try
+			{
+				authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.User.Id.Value, msg));
+				timelineHandler.timelineErrorText.text = "Replied to user!";
+				attempts = 0;
+			}
+			catch (Exception e)
+			{
+				if (attempts == 0)
+				{
+					if (e.Message.Contains("Status is a duplicate"))
+					{
+						timelineHandler.timelineErrorText.text = "Failed to tweet: Duplicate status!";
+					}
+					else
+					{
+						timelineHandler.timelineErrorText.text = "Failed to tweet: Connection error. Fix your internet";
+					}
+
+					Debug.Log("Failed to tweet " + e);
+				}
+			}
+		}
+
+	}
 
 	// This function brings the user to a screen that allows them to reply to a tweet.
 	public void replyToTweet()
 	{
 		// Make all objects except those related to replying to a tweet to be hidden.
-		setActiveObject(composeTweetObjectsString);
+		/*setActiveObject(composeTweetObjectsString);
 
 		Status currentStatus;
 		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle)) {
@@ -49,6 +86,8 @@ public class TweetReplyHandler : TwitterObjects {
 		replyToText.text = currentStatus.Text;
 		replyToUsername.text = currentStatus.User.ScreenName;
 		tweetText.text = "@" + currentStatus.User.ScreenName + " ";
+		*/
+		KeyboardManager.GetInputFromKeyboard(ReplyTweet);
 	}
 
 	public void cancelTweetReplyButton()

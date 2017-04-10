@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Connectome.Twitter.API;
+using UnityEngine.UI;
 
 
 public class TwitterObjects : MonoBehaviour
 {
+	public Text connectomeErrorText;
+
 	public String[] objectsToManage = new String[]
 	{
 		"loginObjects",

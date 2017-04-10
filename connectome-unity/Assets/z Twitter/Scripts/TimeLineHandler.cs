@@ -7,6 +7,8 @@ using CoreTweet;
 using Connectome.Twitter.API;
 using System;
 using System.Text.RegularExpressions;
+using Connectome.Unity.Keyboard;
+using UnityEditor.VersionControl;
 
 public class TimeLineHandler : TwitterObjects
 {
@@ -29,6 +31,7 @@ public class TimeLineHandler : TwitterObjects
     public string timelineTitle = "Timeline";
     public string convoTitle = "Conversation";
     public string homeTimeLineObjectsString = "homeTimeLineObjects";
+	public Text timelineErrorText;
 
     private Status currentTweet = null;
     public Text TitleView;
@@ -52,6 +55,28 @@ public class TimeLineHandler : TwitterObjects
     {
         try
         {
+			lastTweetButton.onClick.AddListener(() => {
+				timelineErrorText.text = "";
+			});
+			homeButton.onClick.AddListener(() => {
+				timelineErrorText.text = "";
+			});
+			/*favoriteButton.onClick.AddListener(() => {
+				timelineErrorText.text = "";
+			});*/
+			retweetButton.onClick.AddListener(() => {
+				timelineErrorText.text = "";
+			});
+			imagesButton.onClick.AddListener(() => {
+				timelineErrorText.text = "";
+			});
+			privateMessageButton.onClick.AddListener(() => {
+				timelineErrorText.text = "";
+			});
+			nextTweetButton.onClick.AddListener(() => {
+				timelineErrorText.text = "";
+			});
+
             // Set all objects to be invisible except those related to the timeline.
             setActiveObject(homeTimeLineObjectsString);
             if (authHandler.Interactor == null)
@@ -94,12 +119,12 @@ public class TimeLineHandler : TwitterObjects
                                                               authHandler.makeTwitterAPICall(
                                                                   () =>
                                                                       authHandler.Interactor.getHomeTimelineNavigatable()
-                                                                          .getNumNewerObjects()) + ") newer tweets.";
+                                                                          .getNumNewerObjects()) + ") newer";
         nextTweetButton.GetComponentInChildren<Text>().text = "(" +
                                                               authHandler.makeTwitterAPICall(
                                                                   () =>
                                                                       authHandler.Interactor.getHomeTimelineNavigatable()
-                                                                          .getNumOlderObjects()) + ") older tweets >";
+                                                                          .getNumOlderObjects()) + ") older >";
 
         lastTweetButton.enabled =
             authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().hasNewerObject());
@@ -177,6 +202,7 @@ public class TimeLineHandler : TwitterObjects
 
 	public void imagesBackToCurrentTweet()
 	{
+		Destroy (userImage.sprite);
 		setActiveObject (homeTimeLineObjectsString);
 	}
 
@@ -209,4 +235,27 @@ public class TimeLineHandler : TwitterObjects
             new Rect(0, 0, www.texture.width, www.texture.height),
             new Vector2(0, 0));
     }
+
+	public void Message(string msg)
+	{
+		int attempts = 10;
+		while (attempts-- > 0) {
+			try {
+				authHandler.makeTwitterAPICallNoReturnVal (() => authHandler.Interactor.createDM (currentTweet.User.ScreenName, msg));
+				timelineErrorText.text = "Messaged!";
+				attempts = 0;
+			} catch (Exception e) {
+				if (attempts == 0) {
+					timelineErrorText.text = "Failed to message: Connection error. Please check your internet.";
+						
+					Debug.Log ("Failed to message " + e);
+				}
+			}
+		}
+	}
+
+	public void messageUser()
+	{
+		KeyboardManager.GetInputFromKeyboard (Message);
+	}
 }

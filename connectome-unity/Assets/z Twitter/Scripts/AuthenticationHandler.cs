@@ -50,10 +50,10 @@ public class AuthenticationHandler : TwitterObjects
 		    Interactor.getHomeTimelineNavigatable().OnExp = exception =>
 		    {
                 Debug.Log(exception.Message.ToString());
-                Interactor.getHomeTimelineNavigatable().endThread();
+                /*Interactor.getHomeTimelineNavigatable().endThread();
                 Interactor.getHomeTimelineNavigatable().resetCurrentObject();
 		        Interactor.getHomeTimelineNavigatable().startThread();
-
+				*/
 		        //Some error message here
 		    };
 
@@ -61,9 +61,11 @@ public class AuthenticationHandler : TwitterObjects
 		    Interactor.getDmUsersNavigatable().OnExp = exception =>
 		    {
                 Debug.Log(exception.Message.ToString());
-                Interactor.getDmUsersNavigatable().endThread();
+                
+				/*Interactor.getDmUsersNavigatable().endThread();
                 Interactor.getDmUsersNavigatable().resetCurrentObject();
                 Interactor.getDmUsersNavigatable().startThread();
+				*/
 
                 //Some error message here
 		    };
