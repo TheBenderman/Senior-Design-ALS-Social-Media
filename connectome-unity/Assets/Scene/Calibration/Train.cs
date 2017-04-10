@@ -254,6 +254,7 @@ public class Train : BaseTrainingScreen
         reader.Start();
         incrementSlider = true;
         accuracyLogger = new CsvLogger("Accuracy.csv");
+        accuracyLogger.add(Start_Screen.profile);
         accuracyFalsePositiveLogger = new CsvLogger("AccuracyFalsePositiveLogger.csv");
 
         Activate();

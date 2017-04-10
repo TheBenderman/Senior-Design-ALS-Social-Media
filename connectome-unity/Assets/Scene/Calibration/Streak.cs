@@ -148,6 +148,7 @@ public class Streak : BaseTrainingScreen
     void displayResults()
     {
         LoggerInterface logger = new CsvLogger("Streak.csv");
+        logger.add(Start_Screen.profile);
         resultTitleText.text = "Results";
         averageStreakText.text = "Average: " + resultsInSeconds(getAverageStreak());
         logger.add(resultsInSeconds(highscore));

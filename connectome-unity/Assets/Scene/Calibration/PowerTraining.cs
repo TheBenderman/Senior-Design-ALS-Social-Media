@@ -133,6 +133,7 @@ public class PowerTraining : BaseTrainingScreen {
     public override void reset()
     {
         LoggerInterface logger = new CsvLogger("Power.csv");
+        logger.add(Start_Screen.profile);
         logger.add(Math.Round(highscore * 100).ToString());
         logger.write();
         currentPoint = 0;
