@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class FlashingController : MonoBehaviour {
 
-    public ImageFlicker high;
+    public FlashingHighlighter high;
     public Text text; 
 
 	public void UpdateValue(Slider s)

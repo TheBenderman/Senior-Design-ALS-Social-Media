@@ -50,14 +50,14 @@ namespace Connectome.Unity.Keyboard
             InputField.caretPosition = InputField.selectionFocusPosition;
         }
 
-        public override void Show()
+       /* public override void Displayed()
         {
-            transform.SetParent(DisplayManager.Instance.transform);
+            InputField.text = ""; 
         }
 
-        public override void Hide()
+        public override void Dismissed()
         {
-            transform.SetParent(KeyboardManager.Instance.transform);
-        }
+            //transform.SetParent(KeyboardManager.Instance.transform);
+        }*/
     }
 }

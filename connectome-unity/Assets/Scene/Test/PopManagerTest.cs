@@ -24,13 +24,13 @@ namespace Connectome.Unity.KLD
 
         public void popIt()
         {
-           DisplayManager.PopUpVirtualUnityDevice(); 
+           //DisplayManager.PopUpVirtualUnityDevice(); 
             
         }
 
 		public void reconnectPopUp() 
 		{
-			DisplayManager.ReconnectDevice (); 
+			//DisplayManager.ReconnectDevice (); 
 		}
     }
 }

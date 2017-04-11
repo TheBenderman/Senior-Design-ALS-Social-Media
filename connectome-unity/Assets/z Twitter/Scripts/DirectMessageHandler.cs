@@ -130,7 +130,7 @@ public class DirectMessageHandler : TwitterObjects {
                 {
                     GameObject.Destroy(messageObject);
                 }
-                catch (System.Exception ex)
+                catch(Exception)
                 {
                     
                 }

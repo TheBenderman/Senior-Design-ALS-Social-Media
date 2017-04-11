@@ -11,25 +11,25 @@ public class PopSelectionMenu : SelectionMenu
     /// The number of times to pop
     /// </summary>
     [Tooltip("The number of times the selection manager will pop")]
-    [Range(2, int.MaxValue)]
-    public int PopIndex;
+    [Range(1, 10)]
+    public int PopIndex = 1;
 
-    /// <summary>
-    /// Used as a scripted in a game object that will pop the menu. 
-    /// </summary>
-    public override ISelectionMenu InvokeSelected()
-    {
-        throw new NotImplementedException();
-    }
-
+   /// <summary>
+   /// Pops itself and then the number of times desired. 
+   /// </summary>
     public override void OnPush()
     {
-        for(int i = 0; i < PopIndex; i++)
+        for(int i = 0; i < PopIndex + 1; i++)
         {
             SelectionManager.Instance.Pop();
         }
     }
 
+    #region Should not be called.
+    public override ISelectionMenu InvokeSelected()
+    {
+        throw new NotImplementedException();
+    }
     public override void ResetSelection()
     {
         throw new NotImplementedException();
@@ -39,4 +39,5 @@ public class PopSelectionMenu : SelectionMenu
     {
         throw new NotImplementedException();
     }
+    #endregion
 }

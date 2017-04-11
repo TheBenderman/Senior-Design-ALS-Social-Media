@@ -10,7 +10,7 @@ namespace Connectome.Unity.Menu
     /// <summary>
     /// GameObject representing a ISelectionMenu
     /// </summary>
-    public abstract class SelectionMenu : MonoBehaviour, ISelectionMenu
+    public abstract class SelectionMenu : DisplayObject, ISelectionMenu
     {
         #region ISelectionMenu Abstract
         /// <summary>

@@ -32,11 +32,7 @@ namespace Connectome.Unity.UI
         /// Holds current color index. 
         /// </summary>
         private int FlickIndex;
-        /// <summary>
-        /// Checks if we called the coroutine yet.
-        /// </summary>
-        private bool FlickActivated = false;
-
+    
         private Button CurrentButton;
         private Color DefaultColor; 
 

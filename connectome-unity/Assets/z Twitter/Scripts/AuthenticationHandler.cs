@@ -146,7 +146,7 @@ public class AuthenticationHandler : TwitterObjects
 		{
 			apiFunction();
 		}
-		catch (Exception te)
+		catch (Exception)
 		{
 			PlayerPrefs.SetString("Access Token", "");
 			PlayerPrefs.SetString("Access Secret", "");

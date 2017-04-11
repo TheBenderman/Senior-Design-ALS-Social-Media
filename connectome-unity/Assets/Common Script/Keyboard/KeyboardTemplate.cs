@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Connectome.Unity.Menu;
+using Connectome.Unity.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 namespace Connectome.Unity.Keyboard
 {
-    public abstract class KeyboardTemplate : MonoBehaviour
+    public abstract class KeyboardTemplate : SelectionMenuContainer
     {
         private Action<string> onSubmit;
         /// <summary>
@@ -20,8 +22,7 @@ namespace Connectome.Unity.Keyboard
         public virtual void Submit()
         {
             onSubmit(SubmissionText);
+            Dismissed();
         }
-        public abstract void Show();
-        public abstract void Hide();
     }
 }

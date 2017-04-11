@@ -34,7 +34,7 @@ public abstract class BaseTrainingScreen : MonoBehaviour {
     {
         if (Start_Screen.username == null)
         {
-            device = DisplayManager.PopUpVirtualUnityDevice();
+            device = new RandomEmotivDevice(); //DisplayManager.PopUpVirtualUnityDevice();
             Start_Screen.profile = "Testing";
         }
         else if (Start_Screen.username != null)

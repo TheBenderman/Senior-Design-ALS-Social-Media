@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public enum KeyboardType
 {
     PhraseKeyboard,
@@ -19,7 +18,8 @@ public static class UserSettings
     /// <param name="userInfo"></param>
     public static void SetLogin(LoginInfo userInfo)
     {
-        PlayerPrefs.SetString("username", userInfo.Login);
+        PlayerPrefs.SetString("username", userInfo.Username);
+        PlayerPrefs.SetString("password", userInfo.Password);
         PlayerPrefs.SetString("profile", userInfo.Profile);
     }
 
@@ -87,7 +87,7 @@ public static class UserSettings
     }
         #endregion
 
-        #region Social
+    #region Social
         #endregion
     }
 

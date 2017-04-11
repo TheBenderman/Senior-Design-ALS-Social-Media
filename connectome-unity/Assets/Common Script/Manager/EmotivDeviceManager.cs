@@ -103,7 +103,7 @@ public class EmotivDeviceManager : MonoBehaviour
     {
         if (DevicePlugin == null)
         {
-            Debug.LogWarning("Device is null");
+            Debug.LogWarning("Device is null", this);
         }
     }
 
@@ -114,7 +114,7 @@ public class EmotivDeviceManager : MonoBehaviour
     {
         if (ReaderPlugin == null)
         {
-            Debug.LogWarning("Reader is null");
+            Debug.LogWarning("Reader is null", this);
         }
     }
 

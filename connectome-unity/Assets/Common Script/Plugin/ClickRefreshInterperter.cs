@@ -27,7 +27,7 @@ namespace Connectome.Unity.Plugin
 
         [Header("Threshholds")]
         public float RefreshThreshhold;
-        //public float ClickThreshhold;Value is in UserSettings
+        public float ClickThreshhold;
 
         [Header("Events")]
         public UnityEvent OnRefresh;

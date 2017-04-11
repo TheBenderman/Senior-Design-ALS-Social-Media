@@ -30,7 +30,7 @@ namespace Connectome.Unity.UI
             }
         }
         #endregion
-        #region 
+        #region Pubilc Inspecter Attributes
         public SelectionManager SelectionManager;
         #endregion
 
@@ -40,7 +40,7 @@ namespace Connectome.Unity.UI
             instance = this;
         }
         #endregion
-
+        /*
         #region to be updated 
         #region Popup BasicVirtualUnityDevice
         /// <summary>
@@ -102,13 +102,29 @@ namespace Connectome.Unity.UI
         }
         #endregion
         #endregion
-
+    */
 
         public static void Display(DisplayObject disObj)
         {
-            disObj.transform.SetParent(Instance.transform);
             disObj.Displayed(); 
         }
+
+        public static void AlignDisplay(DisplayObject disObj)
+        {
+            //return to origonal parent 
+            disObj.OnDismiss += () =>
+            {
+                Debug.Log("Dismiised");
+                //disObj.transform.SetParent(disObj.transform.parent);
+            }; 
+           
+            //move under DisplayManager 
+            disObj.transform.SetParent(Instance.transform);
+
+            //Display 
+            Display(disObj); 
+        }
+
     }
 }
 

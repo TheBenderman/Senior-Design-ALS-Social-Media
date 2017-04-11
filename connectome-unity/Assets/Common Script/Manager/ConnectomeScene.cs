@@ -3,6 +3,7 @@ using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Interface;
 using Connectome.Unity.Expection;
 using Connectome.Unity.Keyboard;
+using Connectome.Unity.Plugin;
 using Connectome.Unity.UI;
 using System;
 using System.Collections;
@@ -14,19 +15,27 @@ using UnityEngine;
 /// </summary>
 public class ConnectomeScene : MonoBehaviour
 {
-   
-    [Header("Managers (Required)")]
+    public bool ApplyUserSettings;
+
+    [Header("Managers")]
     public SelectionManager SelectionManager;
     public EmotivDeviceManager EmotivDeviceManager;
     public KeyboardManager KeyboardManager;
 
-    [Header("Highlighter")]
-    public SelectionHighlighter SelectionHighlighter;
+    [Header("Device Interpeter")]
+    public ClickRefreshInterperter ClickRefreshInterperter; 
 
-    public EmotivLoginDisplayPanel LoginPanel;  
+    [Header("Factories")]
+    public HighlighterFactory HighlighterFactory;
+
+    [Header("UI Components")]
+    public GameObject HighlighterContainer; 
+    public EmotivLoginDisplayPanel LoginPanel;
+
 
     public void Start()
     {
+        ///Login in will set profile type 
         try
         {
             EmotivDeviceManager.Setup();
@@ -38,19 +47,72 @@ public class ConnectomeScene : MonoBehaviour
             return; 
         }
 
-
+        ///Configure layout 
+        if (ApplyUserSettings)
+        {
+            //adjust as proper
+            ConfigureLayout();
+            ConfigureSelectionManager(SelectionManager);
+            //ConfigureHighlighter(SelectionManager, UserConfig.HighlighterType )  HighlighterType is set based on profile type. 
+            ConfigureDeviceInterperter(ClickRefreshInterperter); 
+        }
+        ///Start selecting 
         SelectionManager.StartSelecting(); 
     }
 
+    #region Configurations 
+    
+    private void ConfigureLayout()
+    {
+        //set background color or such 
+    }
+
+    private void ConfigureSelectionManager(SelectionManager sm)
+    {
+        //man.Highlighter = -we should do factory from enums 
+        sm.WaitInterval = UserSettings.Duration;
+    }
+
+    private void ConfigureHighlighter(SelectionManager sm, HighlighterType type)
+    {
+      
+
+        //example for flashing 
+        FlashingHighlighter flashing = HighlighterFactory.CreateHighlighter<FlashingHighlighter>(type);
+
+        flashing.Frequency = UserSettings.Frequency;
+        //flashing.FlashingColors = 
+
+        sm.Highlighter = flashing;
+
+        //move highlighter to scene
+        flashing.transform.SetParent(HighlighterContainer.transform);
+    }
+
+    private void ConfigureDeviceInterperter(ClickRefreshInterperter ClickRefreshInterperter)
+    {
+        ClickRefreshInterperter.Interval = (long) UserSettings.Duration*1000;
+        ClickRefreshInterperter.ClickThreshhold = UserSettings.PassThreshold;
+        ClickRefreshInterperter.RefreshThreshhold = UserSettings.RefreshRate;
+    }
+
+    #endregion
+    #region Validation 
     private void OnValidate()
     { 
+        //validate and/or get from children
         ValidateType(ref SelectionManager);
         ValidateType(ref EmotivDeviceManager);
         ValidateType(ref KeyboardManager);
+
+        if(ApplyUserSettings == false)
+        {
+            Debug.LogWarning("Enable ApplyUserSettings before building.", this);
+        }
     }
 
     /// <summary>
-    /// Errors of a class type exists more than once within children. 
+    /// Attempts to get the class from it's chilren. 
     /// </summary>
     /// <param name="t"></param>
     private T GetValidatedSingleComponentFromChildren<T>(Action<string, UnityEngine.Object> logger) where T : Component
@@ -74,7 +136,7 @@ public class ConnectomeScene : MonoBehaviour
     }
 
     /// <summary>
-    /// Quack
+    /// If a given object is null, it tried to fill it from children. 
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="go"></param>
@@ -88,9 +150,8 @@ public class ConnectomeScene : MonoBehaviour
         {
             go = GetValidatedSingleComponentFromChildren<T>(Debug.LogError);
         }
-
-       
     }
 
+    #endregion
 }
 

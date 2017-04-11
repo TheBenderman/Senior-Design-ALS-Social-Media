@@ -20,7 +20,12 @@ public class SelectionManager : MonoBehaviour
     public static SelectionManager Instance;
     #endregion
     #region Inspector Attrinutes
+
+    /// <summary>
+    /// Allows selection manager to select. 
+    /// </summary>
     public bool AllowSelection;
+
     /// <summary>
     /// Contains all of the selections the user has gone through in this scene.
     /// </summary>
@@ -28,14 +33,14 @@ public class SelectionManager : MonoBehaviour
 
     public SelectionHighlighter Highlighter;
 
-    public SelectionMenu MainMenu; 
+    public SelectionMenu MainMenu;
 
     /// <summary>
     /// The time, in seconds, to wait before the selection changes.
     /// This variable is in UserSettings now
     /// </summary>
-    //[Range(0.0f, 10.0f)]
-    //public int WaitInterval = 2;
+    [Range(0.0f, 10.0f)]
+    public float WaitInterval;
     #endregion
     #region Private Attributes
 
@@ -166,7 +171,7 @@ public class SelectionManager : MonoBehaviour
 
         CurrentWait += Time.deltaTime;
 
-        if (CurrentWait >= UserSettings.Duration)
+        if (CurrentWait >= WaitInterval)
         {
             Next();
             ResetInterval();
