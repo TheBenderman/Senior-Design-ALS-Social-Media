@@ -14,17 +14,17 @@ PluginImporter:
       settings:
         Exclude Editor: 0
         Exclude Linux: 0
-        Exclude Linux64: 1
+        Exclude Linux64: 0
         Exclude LinuxUniversal: 0
         Exclude OSXIntel: 0
-        Exclude OSXIntel64: 1
+        Exclude OSXIntel64: 0
         Exclude OSXUniversal: 0
         Exclude Win: 0
-        Exclude Win64: 1
+        Exclude Win64: 0
     Editor:
       enabled: 1
       settings:
-        CPU: x86
+        CPU: AnyCPU
         DefaultValueInitialized: true
         OS: AnyOS
     Linux:
@@ -32,33 +32,33 @@ PluginImporter:
       settings:
         CPU: x86
     Linux64:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: None
+        CPU: x86_64
     LinuxUniversal:
       enabled: 1
       settings:
-        CPU: x86
+        CPU: AnyCPU
     OSXIntel:
       enabled: 1
       settings:
         CPU: AnyCPU
     OSXIntel64:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: None
+        CPU: AnyCPU
     OSXUniversal:
       enabled: 1
       settings:
-        CPU: x86
+        CPU: AnyCPU
     Win:
       enabled: 1
       settings:
         CPU: AnyCPU
     Win64:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: None
+        CPU: AnyCPU
     WindowsStoreApps:
       enabled: 0
       settings:
