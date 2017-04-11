@@ -70,8 +70,12 @@ namespace Connectome.Unity.Demo
                     Device = new EPOCEmotivDevice(Username.text, Password.text, Profile.text);
                 }
 
-                string error;
-                bool suc = Device.Connect(out error);
+                string error = "";
+                bool suc = true;
+
+                Device.OnConnectAttempted += (b, m) => { error = m; suc = b;  };
+
+                Device.Connect();
 
                 if (suc)
                 {

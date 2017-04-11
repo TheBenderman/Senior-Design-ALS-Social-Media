@@ -70,14 +70,14 @@ namespace Connectome.Unity.Template
             }
         }
 
-        public override bool Connect(out string msg)
+        public override void Connect()
         {
-            return Content.Connect(out msg);
+            Content.Connect();
         }
 
-        public override bool Disconnect(out string msg)
+        public override void Disconnect()
         {
-            return Content.Disconnect(out msg);
+            Content.Disconnect();
         }
 
         public override IEmotivState Read(long time)

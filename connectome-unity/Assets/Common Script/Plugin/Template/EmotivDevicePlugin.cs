@@ -19,8 +19,8 @@ namespace Connectome.Unity.Template
         public abstract event Action OnDisconnectAttempt;
         public abstract event Action<bool, string> OnDisconnectAttempted;
 
-        public abstract bool Connect(out string msg);
-        public abstract bool Disconnect(out string msg);
+        public abstract void Connect();
+        public abstract void Disconnect();
         public abstract IEmotivState Read(long time);
         #endregion
         #region Abstract Methods

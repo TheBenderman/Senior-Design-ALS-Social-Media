@@ -36,15 +36,12 @@ namespace Connectome.Emotiv.Interface
         /// <summary>
         /// Connects device. Invokes OnConnect. 
         /// </summary>
-        /// <param name="msg"></param>
-        /// <returns></returns>
-        bool Connect(out string msg);
+        void Connect();
 
         /// <summary>
         /// Disconnects device. Invokes OnDisconnect. 
         /// </summary>
-        /// <param name="msg"></param>
-        bool Disconnect(out string msg);
+        void Disconnect();
 
         /// <summary>
         /// Reads current state from device. 

@@ -57,7 +57,7 @@ public class ConnectomeScene : MonoBehaviour
             ConfigureDeviceInterperter(ClickRefreshInterperter); 
         }
         ///Start selecting 
-        SelectionManager.StartSelecting(); 
+        SelectionManager.AllowSelection = true; 
     }
 
     #region Configurations 

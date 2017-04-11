@@ -104,8 +104,14 @@ namespace Connectome.Emotiv.Template
         /// <param name="expMsg"></param>
         private void TryDisconnecting(IEmotivDevice device, string expMsg = "Unable to disconnect device: ")
         {
-            string disconnectMsg;
-            if (device.Disconnect(out disconnectMsg) == false)
+            bool didDisconnect = true;
+            string disconnectMsg = "";
+
+            device.OnDisconnectAttempted += (b, m) => { didDisconnect = b; disconnectMsg = m;  };
+
+            device.Disconnect(); 
+  
+            if (didDisconnect == false)
             {
                 ExceptionHandler?.Invoke(new Exception(expMsg + disconnectMsg));
             }
@@ -116,8 +122,14 @@ namespace Connectome.Emotiv.Template
         /// </summary>
         private void TryConnecting(IEmotivDevice device, string expMsg = "Unable to connect device: ")
         {
-            string connectMsg;
-            if (device.Connect(out connectMsg) == false)
+            bool didConnect = true;
+            string connectMsg = "";
+
+            device.OnConnectAttempted += (b, m) => { didConnect = b; connectMsg = m; };
+
+            device.Connect();
+           
+            if (didConnect == false)
             {
                 ExceptionHandler?.Invoke(new Exception(expMsg + connectMsg));
             }
@@ -177,7 +189,9 @@ namespace Connectome.Emotiv.Template
         /// </summary>
         public void Start()
         {
-            TryConnecting(Device);
+            if(!Device.IsConnected)
+                TryConnecting(Device);
+
             KeepReading = true; 
             
             ReadingThread.Start();

@@ -127,8 +127,14 @@ namespace EmotivAnalyticApplication
 
             ConnectionLabel.Text = "Connecting..."; 
             device =  new EPOCEmotivDevice(user, pass, profile);
-            string error; 
-            if (device.Connect(out error))
+
+            bool connected = true;
+            string error = "" ;
+
+            device.OnConnectAttempted += (c, em) => { connected = c; error = em;  };
+            device.Connect();
+
+            if (connected)
             {
                 ConnectionLabel.Text = "Device connected"; 
             }

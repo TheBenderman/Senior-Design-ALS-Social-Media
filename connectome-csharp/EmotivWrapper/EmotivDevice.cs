@@ -28,29 +28,31 @@ namespace Connectome.Emotiv.Template
         /// Connects device.
         /// </summary>
         /// <returns></returns>
-        public bool Connect(out string msg)
+        public void Connect()
         {
             OnConnectAttempt?.Invoke();
+            string msg;
 
             bool suc = ConnectionSetUp(out msg);
 
             OnConnectAttempted?.Invoke(suc,msg);
-          
-            return (Connected = suc);
+
+            Connected = suc;
         }
 
         /// <summary>
         /// Disconnects device.
         /// </summary>
-        public bool Disconnect(out string msg)
+        public void Disconnect()
         {
             OnDisconnectAttempt?.Invoke();
+            string msg;
 
             bool suc = DisconnectionSetUp(out msg);
 
             OnDisconnectAttempted?.Invoke(suc, msg);
 
-            return (Connected = !suc); 
+            Connected = !suc;
         }
 
         #endregion

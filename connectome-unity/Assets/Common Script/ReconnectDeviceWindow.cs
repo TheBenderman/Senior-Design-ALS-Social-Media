@@ -47,17 +47,9 @@ public class ReconnectDeviceWindow: MonoBehaviour
 	/// <returns>bool</returns>
 	public bool Connect() 
 	{ 
-		string err;
-		bool success = EmotivDeviceManager.Instance.DevicePlugin.Connect (out err);
-		if (!success) 
-		{
-			ErrorText.text = "Failed connect because: " + err;
-			return false;		
-		} else 
-		{
-			ErrorText.text = "";
-			return true;
-		}
+		//string err;
+		EmotivDeviceManager.Instance.DevicePlugin.Connect ();
+        return true;  //TODO fix this -KLD
 	}
 
 

@@ -6,32 +6,32 @@ using UnityEngine;
 namespace Connectome.Unity.Menu
 {
 
-    public class SelectionMenuContainer : DisplayObject, ISelectionMenu 
+    public class SelectionMenuContainer : SelectionMenu 
     {
         public SelectionMenu SelectionMenu;
 
         #region ISelectionMenu Interface
-        public ISelectionMenu InvokeSelected()
+        public override ISelectionMenu InvokeSelected()
         {
             return SelectionMenu.InvokeSelected();
         }
 
-        public void OnPop()
+        public override void OnPop()
         {
             SelectionMenu.OnPop();
         }
 
-        public void OnPush()
+        public override void OnPush()
         {
             SelectionMenu.OnPush();
         }
 
-        public void ResetSelection()
+        public override void ResetSelection()
         {
             SelectionMenu.ResetSelection();
         }
 
-        public void SelectNext(ISelectionHighlighter h)
+        public override void SelectNext(ISelectionHighlighter h)
         {
             SelectionMenu.SelectNext(h);
         }
@@ -43,11 +43,7 @@ namespace Connectome.Unity.Menu
         {
             if(SelectionMenu == null)
             {
-                SelectionMenu = GetComponent<SelectionMenu>(); 
-                if(SelectionMenu == null)
-                {
-                    Debug.LogError("Container contains no menu nor in children.", this);
-                }
+                Debug.LogError("Container contains no menu nor in children.", this);
             }
         }
         #endregion

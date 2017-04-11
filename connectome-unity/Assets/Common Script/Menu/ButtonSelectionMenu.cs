@@ -28,7 +28,7 @@ namespace Connectome.Unity.Menu
         /// <summary>
         /// Invoked button at pointer. 
         /// </summary>
-        /// <returns>A ButtonSelectionMenu within invoked button if exist</returns>
+        /// <returns>A SelectionMenu within invoked button if exist</returns>
         public override ISelectionMenu InvokeSelected()
         {
             if(Pointer == -1)

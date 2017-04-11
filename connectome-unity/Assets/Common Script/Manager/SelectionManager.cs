@@ -185,17 +185,16 @@ public class SelectionManager : MonoBehaviour
     {
         Instance = this;
     }
+
     /// <summary>
     /// Used to initialize stack and push the base selection to it.
     /// Called by ConnectomeScene
     /// </summary>
-    public void StartSelecting()
+    public void Start()
     {
         SelectionStack = new Stack<ISelectionMenu>();
 
         Push(MainMenu);
-
-        AllowSelection = true; 
     }
     #endregion
     #region Validation

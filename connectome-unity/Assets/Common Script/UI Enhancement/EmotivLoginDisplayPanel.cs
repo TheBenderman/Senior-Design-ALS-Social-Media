@@ -32,8 +32,14 @@ namespace Connectome.Unity.UI
         {
             IEmotivDevice device = new EPOCEmotivDevice(UsernameInput.text, PasswordInput.text, ProfileInput.text);
             
-            string msg; 
-            if(device.Connect(out msg)) 
+            string msg = "";
+            bool suc = true;
+
+            device.OnConnectAttempted += (b, m) => {msg=m; suc = b; };
+
+            device.Connect(); 
+
+            if (suc) 
             {
                 if (OnLoginedIn != null)
                 {
