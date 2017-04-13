@@ -40,10 +40,16 @@ namespace Connectome.Unity.UI
             //clone size 
             transform.SetParent(go.transform);
 
-            GetRect().anchorMax = new Vector2(1, 1);
-            GetRect().anchorMin = new Vector2(0f, 0f);
+            RectTransform Rect = GetRect(); 
 
-            GetRect().sizeDelta = new Vector2(0f, 0f);
+            Rect.anchorMax = new Vector2(1, 1);
+            Rect.anchorMin = new Vector2(0f, 0f);
+            Rect.sizeDelta = new Vector2(0f, 0f);
+           
+            Rect.offsetMin = new Vector2(Rect.offsetMin.x, 0);
+            Rect.offsetMax = new Vector2(Rect.offsetMax.x, 0);
+            Rect.offsetMin = new Vector2(Rect.offsetMin.y, 0);
+            Rect.offsetMax = new Vector2(Rect.offsetMax.y, 0);
 
             //go to position 
             transform.SetParent(dad);

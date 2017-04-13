@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Connectome.Unity.UI;
+using System;
 
 namespace Connectome.Unity.Menu
 {
@@ -10,6 +11,9 @@ namespace Connectome.Unity.Menu
     /// </summary>
     public interface ISelectionMenu
     {
+        event Action OnPush;
+        event Action OnPop; 
+
         /// <summary>
         /// Invokes current pointed selection 
         /// </summary>
@@ -30,11 +34,11 @@ namespace Connectome.Unity.Menu
         /// <summary>
         /// Called after menu is popped
         /// </summary>
-        void OnPop();
+        void Popped();
 
         /// <summary>
         /// Called after menu is pushed
         /// </summary>
-        void OnPush(); 
+        void Pushed(); 
     }
 }

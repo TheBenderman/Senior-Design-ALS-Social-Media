@@ -12,6 +12,16 @@ namespace Connectome.Unity.Menu
     /// </summary>
     public abstract class SelectionMenu : DisplayObject, ISelectionMenu
     {
+        /// <summary>
+        /// Invoked when menu is pushed into stack. 
+        /// </summary>
+        public event Action OnPush;
+
+        /// <summary>
+        /// Invoked when menu is popped from stack. 
+        /// </summary>
+        public event Action OnPop;
+
         #region ISelectionMenu Abstract
         /// <summary>
         /// Invokes current pointed selection 
@@ -35,14 +45,22 @@ namespace Connectome.Unity.Menu
         /// <summary>
         /// Called after menu is popped
         /// </summary>
-        public virtual void OnPop()
+        public virtual void Popped()
         {
+            if(OnPush != null)
+            {
+                OnPush(); 
+            }
         }
         /// <summary>
         /// Called after menu is pushed
         /// </summary>
-        public virtual void OnPush()
+        public virtual void Pushed()
         {
+            if (OnPop != null)
+            {
+                OnPop();
+            }
         }
         #endregion
     }
