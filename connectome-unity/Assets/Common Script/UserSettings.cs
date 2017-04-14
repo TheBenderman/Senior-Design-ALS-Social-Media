@@ -6,7 +6,8 @@ using UnityEngine;
 public enum KeyboardType
 {
     PhraseKeyboard,
-    QWERTYKeyboard
+    QWERTYKeyboard,
+    GridKeyboard
 }
 public static class UserSettings
 {

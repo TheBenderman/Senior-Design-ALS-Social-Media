@@ -4,9 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+<<<<<<< HEAD:connectome-unity/Assets/Common Script/Keyboard/KeyboardData.cs
+using Connectome.Unity.UI;
+=======
 using Boomlagoon.JSON;
 using System.IO;
-using Connectome.Unity.UI;
+using System.Linq;
+>>>>>>> DynamicKeyboard:connectome-unity/Assets/Common Script/KeyboardData.cs
 
 namespace Connectome.Unity.Keyboard
 {
@@ -70,11 +74,17 @@ namespace Connectome.Unity.Keyboard
             InputField.caretPosition = InputField.selectionFocusPosition;
         }
 
-        public override void Popped()
+<<<<<<< HEAD:connectome-unity/Assets/Common Script/Keyboard/KeyboardData.cs
+=======
+        public override void Show()
         {
-	        base.Popped();
+            transform.SetParent(DisplayManager.Instance.transform);
+        }
+
+        public override void Hide()
+        {
             if (SymToggle) ToggleSymbols();//Reset back to default if the keyboard is exited while Symbols are up
-            
+            transform.SetParent(KeyboardManager.Instance.transform);
         }
 
         public void PopulateButtonText(string file)
@@ -136,5 +146,6 @@ namespace Connectome.Unity.Keyboard
                 SymToggle = true;
             }
         }
+>>>>>>> DynamicKeyboard:connectome-unity/Assets/Common Script/KeyboardData.cs
     }
 }
