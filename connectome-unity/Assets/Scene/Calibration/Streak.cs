@@ -54,9 +54,10 @@ public class Streak : BaseTrainingScreen
 	// Update is called once per frame
 	void Update () {
 
+        incrementSlider();
+
         if (run)
         {
-            incrementSlider();
             resultText.text = resultsInSeconds(getCurrentTime());
             updateHighscore();
 
@@ -69,6 +70,20 @@ public class Streak : BaseTrainingScreen
                 dehighlightButton();
             }
         }
+    }
+
+    void activate()
+    {
+        StartCoroutine(phases());
+    }
+
+    IEnumerator phases()
+    {
+        yield return new WaitForSeconds(slider.maxValue);
+        reader.Start();
+        run = true;
+        setButtonText("Push");
+        slider.value = 0;
     }
 
     void counter(IEmotivState e)
@@ -110,7 +125,7 @@ public class Streak : BaseTrainingScreen
 
     void incrementSlider()
     {
-        if (slider.value != slider.maxValue)
+        if (slider.value != slider.maxValue || run == false)
         {
             slider.value += Time.deltaTime;
         }
@@ -192,13 +207,13 @@ public class Streak : BaseTrainingScreen
         slider.maxValue = Start_Screen.sliderLength;
         streakCounter = 0;
         highscore = 0;
-        run = true;
         intervals = new ArrayList();
-
+        setButtonText("Starting");
+        run = false;
         reader = new BasicEmotivReader(device, false);
 
         reader.OnRead += (e) => counter(e.State);
-        reader.Start();
+        activate();
     }
 
 }
