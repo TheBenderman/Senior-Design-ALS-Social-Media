@@ -17,7 +17,7 @@ public class PopSelectionMenu : SelectionMenu
    /// <summary>
    /// Pops itself and then the number of times desired. 
    /// </summary>
-    public override void OnPush()
+    public override void Pushed()
     {
         for(int i = 0; i < PopIndex + 1; i++)
         {

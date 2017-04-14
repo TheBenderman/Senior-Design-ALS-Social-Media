@@ -16,14 +16,14 @@ namespace Connectome.Unity.Menu
             return SelectionMenu.InvokeSelected();
         }
 
-        public override void OnPop()
+        public override void Popped()
         {
-            SelectionMenu.OnPop();
+            SelectionMenu.Popped();
         }
 
-        public override void OnPush()
+        public override void Pushed()
         {
-            SelectionMenu.OnPush();
+            SelectionMenu.Pushed();
         }
 
         public override void ResetSelection()

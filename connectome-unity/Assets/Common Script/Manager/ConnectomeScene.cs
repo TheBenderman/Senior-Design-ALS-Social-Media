@@ -75,8 +75,6 @@ public class ConnectomeScene : MonoBehaviour
 
     private void ConfigureHighlighter(SelectionManager sm, HighlighterType type)
     {
-      
-
         //example for flashing 
         FlashingHighlighter flashing = HighlighterFactory.CreateHighlighter<FlashingHighlighter>(type);
 

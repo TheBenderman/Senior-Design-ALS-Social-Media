@@ -58,11 +58,10 @@ namespace Connectome.Unity.Keyboard
 
         public static void GetInputFromKeyboard(Action<string> onSubmit)
         {
-            Instance.KeyboardGameObject.OnDismiss += () => Instance.KeyboardGameObject.transform.SetParent(Instance.transform);
-            Instance.KeyboardGameObject.OnDismiss += SelectionManager.Instance.Pop; 
-
+            Instance.KeyboardGameObject.OnPop += () => Instance.KeyboardGameObject.transform.SetParent(Instance.transform);
+            
             Instance.KeyboardGameObject.AddSubmitAction(onSubmit);
-            DisplayManager.AlignDisplay(Instance.KeyboardGameObject);
+            DisplayManager.AlignDisplay(Instance.KeyboardGameObject); 
             SelectionManager.Instance.Push(Instance.KeyboardGameObject);
         }
     }

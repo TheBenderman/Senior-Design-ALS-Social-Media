@@ -64,7 +64,7 @@ namespace Connectome.Unity.Menu
         {
             Pointer = -1;
         }
-        public override void OnPush()
+        public override void Pushed()
         {
             ResetSelection(); 
         }

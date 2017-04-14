@@ -108,7 +108,7 @@ public class SelectionManager : MonoBehaviour
     public void Push(ISelectionMenu Selections)
     {
         SelectionStack.Push(Selections);
-        Selections.OnPush();
+        Selections.Pushed();
     }
 
     /// <summary>
@@ -129,7 +129,7 @@ public class SelectionManager : MonoBehaviour
         if (SelectionStack.Count > 1)
         {
             ISelectionMenu menu = SelectionStack.Pop();
-            menu.OnPop(); 
+            menu.Popped(); 
             ResetSelection();
         }
         else
