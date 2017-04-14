@@ -31,7 +31,6 @@ public class PowerTraining : BaseTrainingScreen {
 
         deviceSetup(Start_Screen.deviceValue);
         setup();
-        reader.Start();
     }
 
     private void OnEnable()
@@ -40,7 +39,6 @@ public class PowerTraining : BaseTrainingScreen {
         {
             deviceSetup(Start_Screen.deviceValue);
             setup();
-            reader.Start();
         }
     }
 
@@ -88,6 +86,7 @@ public class PowerTraining : BaseTrainingScreen {
     {
 
         yield return new WaitForSeconds(slider.maxValue);
+        reader.Start();
         passedTest = true;
         started = true;
 
