@@ -18,7 +18,7 @@ namespace Connectome.Emotiv.Implementation
         protected override IEmotivState ReadingState(IEmotivDevice device, long time)
         {
             IEmotivState currentState = device.Read(time);
-            if (ShouldReadNull == false )
+            if (ShouldReadNull == false)
             {
                 while (currentState.Command == Enum.EmotivCommandType.NULL)
                 { 

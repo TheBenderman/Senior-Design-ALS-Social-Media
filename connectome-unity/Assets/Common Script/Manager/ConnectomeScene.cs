@@ -73,7 +73,7 @@ public class ConnectomeScene : MonoBehaviour
         sm.WaitInterval = UserSettings.Duration;
     }
 
-    private void ConfigureHighlighter(SelectionManager sm, HighlighterType type)
+    private void ConfigureHighlighter(HighlighterType type)
     {
         //example for flashing 
         FlashingHighlighter flashing = HighlighterFactory.CreateHighlighter<FlashingHighlighter>(type);
@@ -81,7 +81,7 @@ public class ConnectomeScene : MonoBehaviour
         flashing.Frequency = UserSettings.Frequency;
         //flashing.FlashingColors = 
 
-        sm.Highlighter = flashing;
+        this.SelectionManager.Highlighter = flashing;
 
         //move highlighter to scene
         flashing.transform.SetParent(HighlighterContainer.transform);

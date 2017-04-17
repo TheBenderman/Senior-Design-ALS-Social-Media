@@ -67,23 +67,12 @@ namespace Connectome.Emotiv.Template
         /// </summary>
         private void ReadThreadLoop()
         {
-            EmotivCommandType? previousState = null;
             InsureMillisecondPassed();
-
             try
             {
                 while (IsReading)
                 {
-                    IEmotivState stateRead = ReadingState(Device, LastTime);
-
-                    OnRead?.Invoke(new EmotivReadArgs(stateRead));
-
-                    if (previousState != stateRead.Command)
-                    {
-                        OnCommandChange?.Invoke(previousState, stateRead.Command);
-                    }
-
-                    previousState = stateRead.Command;
+                    OnRead?.Invoke(new EmotivReadArgs(ReadingState(Device, LastTime)));
                     InsureMillisecondPassed();
                 }
             }
@@ -146,8 +135,9 @@ namespace Connectome.Emotiv.Template
                 ReadingTimer = Stopwatch.StartNew();
             }
 
-            while (LastTime == ReadingTimer.ElapsedMilliseconds) ;
-                LastTime = ReadingTimer.ElapsedMilliseconds;
+            while (LastTime == ReadingTimer.ElapsedMilliseconds);
+
+            LastTime = ReadingTimer.ElapsedMilliseconds;
         }
         #endregion
         #region IEmotivReader Public Get Property
@@ -203,8 +193,11 @@ namespace Connectome.Emotiv.Template
         /// </summary>
         public void Stop()
         {
-            KeepReading = false; 
+            KeepReading = false;
+
+            ReadingThread.Join(); 
         }
+
 
         /// <summary>
         /// Replaces old device with a new one and starts it. Old device is stopped and disconnected.

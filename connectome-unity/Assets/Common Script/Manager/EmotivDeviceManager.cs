@@ -13,6 +13,8 @@ public class EmotivDeviceManager : MonoBehaviour
     #region Singleton
     public static EmotivDeviceManager Instance { get { return currentInstance;  } }
 
+    public bool AutoSetup;
+
     private static EmotivDeviceManager currentInstance;
     #endregion
     #region Public Inspector Attributes 
@@ -57,12 +59,20 @@ public class EmotivDeviceManager : MonoBehaviour
         StartCoroutine(InterpetationProcess()); 
     }
 
+    private void Start()
+    {
+        if(AutoSetup)
+        {
+            Setup(); 
+        }
+    }
+
     /// <summary>
     /// Insures readers is disabled
     /// </summary>
     void OnApplicationQuit()
     {
-        if (ReaderPlugin != null)
+        if (ReaderPlugin.IsReading)
         {
             ReaderPlugin.Stop();
         }
