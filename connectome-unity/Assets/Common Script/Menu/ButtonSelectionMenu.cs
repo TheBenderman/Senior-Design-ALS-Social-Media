@@ -47,12 +47,16 @@ namespace Connectome.Unity.Menu
         /// <param name="h"></param>
         public override void SelectNext(ISelectionHighlighter h)
         {
-            Pointer++;
-            if (ShouldReset())
+            do
             {
-                ResetSelection();
                 Pointer++;
-            }
+                if (ShouldReset())
+                {
+                    ResetSelection();
+                    Pointer++;
+                }
+            } while (!Selection[Pointer].IsInteractable());//Loop until we reach an object that can be selected
+            //Note, I wouldn't recommend having a button selection menu of buttons that are ALL not interactable
 
             h.Highlight(Selection[Pointer].gameObject);
         }

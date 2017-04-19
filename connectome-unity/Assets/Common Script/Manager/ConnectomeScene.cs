@@ -138,6 +138,11 @@ public class ConnectomeScene : MonoBehaviour
         ValidateType(ref EmotivDeviceManager);
         ValidateType(ref KeyboardManager);
 
+        if(ConnectomeCanvas == null)
+        {
+            Debug.LogWarning("A canvas must be attached before building", this);
+        }
+
         if(ApplyUserSettings == false)
         {
             Debug.LogWarning("Enable ApplyUserSettings before building.", this);
