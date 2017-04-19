@@ -21,6 +21,10 @@ namespace Connectome.Unity.Keyboard
         /// </summary>
         [HideInInspector]
         public KeyboardTemplate KeyboardGameObject;
+        /// <summary>
+        /// The value for the rect transform of the generated keyboard 
+        /// </summary>
+        public const float RECT_TOP = -51.8f;
 
         #endregion
         #region Private Attributes

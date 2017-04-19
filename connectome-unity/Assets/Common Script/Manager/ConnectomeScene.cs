@@ -58,7 +58,7 @@ public class ConnectomeScene : MonoBehaviour
             ConfigureLayout();
             ConfigureSelectionManager(SelectionManager);
             //ConfigureHighlighter(SelectionManager, UserConfig.HighlighterType )  HighlighterType is set based on profile type. 
-            ConfigureHighlighter(UserSettings.UseFlashingButtons);//Change to setting highlighter?
+            //ConfigureHighlighter(UserSettings.UseFlashingButtons);//Change to setting highlighter?
 
             ConfigureDeviceInterperter(ClickRefreshInterperter); 
         }
@@ -125,8 +125,8 @@ public class ConnectomeScene : MonoBehaviour
     private void ConfigureDeviceInterperter(ClickRefreshInterperter ClickRefreshInterperter)
     {
         ClickRefreshInterperter.Interval = (long) UserSettings.Duration*1000;
-        ClickRefreshInterperter.ClickThreshhold = UserSettings.PassThreshold;
-        ClickRefreshInterperter.RefreshThreshhold = UserSettings.RefreshRate;
+        ClickRefreshInterperter.ClickThreshhold = UserSettings.PassThreshold/100;//These values in the window are percents
+        ClickRefreshInterperter.RefreshThreshhold = UserSettings.RefreshRate/100;
     }
 
     #endregion

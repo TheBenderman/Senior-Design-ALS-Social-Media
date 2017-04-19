@@ -97,7 +97,6 @@ public class UserSettingsWindow : MonoBehaviour {
         UpdateCurrentKeyboard();
         LoadColors();
         SetSelectedColor(BackgroundColor);
-        UpdateColorSelection(BackgroundColor.color);
     }
     
     public void ToggleFrequencySetting()
@@ -140,7 +139,7 @@ public class UserSettingsWindow : MonoBehaviour {
 
     private void SetFreqValue()
     {
-        UserSettings.RefreshRate = RefreshSlider.value;
+        UserSettings.Frequency = (int)FreqSlider.value;
     }
     #endregion
     #region Public Methods
