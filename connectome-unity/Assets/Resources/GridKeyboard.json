@@ -23,7 +23,7 @@
 					]
 				},
 				{"buttonname":"Space"},
-				{"buttonname":"Submit"}
+				{"buttonname":"Backspace"}
 			]
 		},
 		{
@@ -47,8 +47,8 @@
 						{"buttonname":"W"}
 					]
 				},
-				{"buttonname": "123/Sym"},
-				{"buttonname": "Backspace"}
+				{"buttonname": "Phrases"},
+				{"buttonname": "123/Sym"}
 			]
 		},
 		{	
@@ -75,7 +75,7 @@
 					]
 				},
 				{"buttonname":"Exit"},
-				{"buttonname":"Phrases"}
+				{"buttonname":"Submit"}
 			]
 		}
 ]}

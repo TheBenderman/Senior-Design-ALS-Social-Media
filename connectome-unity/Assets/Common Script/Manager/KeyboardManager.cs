@@ -44,7 +44,7 @@ namespace Connectome.Unity.Keyboard
         public void SetKeyboard(string keyboardtype)
         {
             //Change to making the keyboard appear?
-            KeyboardGameObject = (Instantiate(Resources.Load(keyboardtype), this.transform) as GameObject).GetComponent<KeyboardTemplate>();
+            KeyboardGameObject = (Instantiate(Resources.Load("Keyboards/" + keyboardtype), this.transform) as GameObject).GetComponent<KeyboardTemplate>();
             KeyboardGameObject.name = keyboardtype;
             //Do this here in case we have apps with different character limits, so just this value has to change to change the keyboards.
             KeyboardGameObject.InputField.characterLimit = TextLimit;
