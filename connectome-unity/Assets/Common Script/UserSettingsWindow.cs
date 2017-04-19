@@ -1,4 +1,5 @@
 ﻿using Connectome.Unity.Keyboard;
+using Connectome.Unity.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,6 +46,22 @@ public class UserSettingsWindow : MonoBehaviour {
         {
             //Initialization
         }
+    }
+
+    public void PreviewBackground(Image canvasBackground)
+    {
+        canvasBackground.color = BackgroundColor.color;
+    }
+
+    public void PreviewFrame(FrameHighlighter frame)
+    {
+        frame.FrameColor = HighlighterColor.color;
+    }
+
+    public void PreviewFlashing(FlashingHighlighter flashing)
+    {
+        flashing.FlashingColors[0] = BackgroundColor.color;
+        flashing.FlashingColors[1] = FlashingColor.color;
     }
     
 	// Use this for initialization
