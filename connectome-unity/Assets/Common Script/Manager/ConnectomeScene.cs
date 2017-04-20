@@ -97,8 +97,6 @@ public class ConnectomeScene : MonoBehaviour
             flashing.Frequency = UserSettings.Frequency;
             this.SelectionManager.Highlighter = flashing;
             flashing.transform.SetParent(HighlighterContainer.transform);
-            flashing.FlashingColors[0] = UserSettings.BackgroundColor;
-            flashing.FlashingColors[1] = UserSettings.FlashingColor;
         }
         else
         {
