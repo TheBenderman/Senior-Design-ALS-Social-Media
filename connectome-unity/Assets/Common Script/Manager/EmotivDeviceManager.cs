@@ -28,11 +28,6 @@ public class EmotivDeviceManager : MonoBehaviour
     public EmotivReaderPlugin ReaderPlugin;
 
     /// <summary>
-    /// Rate to interpert interpreters.
-    /// </summary>
-    public float InterpretRate;
-
-    /// <summary>
     /// Hold Interpreters.
     /// </summary>
     public EmotivInterpreterPlugin[] Interpreters;
@@ -87,7 +82,7 @@ public class EmotivDeviceManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(InterpretRate); 
+            yield return new WaitForSeconds(0); 
             foreach (var Intepreter in Interpreters)
             {
                 Intepreter.Interpret();

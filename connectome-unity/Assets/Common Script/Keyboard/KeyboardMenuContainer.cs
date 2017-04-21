@@ -44,7 +44,7 @@ public class KeyboardMenuContainer : KeyboardTemplate
 
     public override void Pushed()
     {
-        base.Popped();
+        base.Pushed();
         InputField.text = ""; 
     }
     #endregion

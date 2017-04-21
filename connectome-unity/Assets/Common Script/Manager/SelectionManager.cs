@@ -101,12 +101,13 @@ public class SelectionManager : MonoBehaviour
     /// <summary>
     /// Add selection menu to the current stack.
     /// </summary>
-    /// <param name="Selections"></param>
-    public void Push(ISelectionMenu Selections)
+    /// <param name="Selection"></param>
+    public void Push(ISelectionMenu Selection)
     {
         SelectionStack.Peek().Paused(); 
-        SelectionStack.Push(Selections);
-        Selections.Pushed();
+        SelectionStack.Push(Selection);
+        Selection.Pushed();
+        ResetInterval();
     }
 
     /// <summary>
@@ -187,7 +188,8 @@ public class SelectionManager : MonoBehaviour
     {
         SelectionStack = new Stack<ISelectionMenu>();
 
-        Push(MainMenu);
+        SelectionStack.Push(MainMenu);
+        MainMenu.Pushed(); 
     }
     #endregion
     #region Validation

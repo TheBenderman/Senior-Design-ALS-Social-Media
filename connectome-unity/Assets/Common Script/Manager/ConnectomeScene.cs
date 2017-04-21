@@ -24,6 +24,7 @@ public class ConnectomeScene : MonoBehaviour
     public KeyboardManager KeyboardManager;
 
     [Header("Device Interpeter")]
+    public LoginEPOCDevicePlugin LoginEPOCDevicePlugin; 
     public ClickRefreshInterperter ClickRefreshInterperter; 
 
     [Header("Factories")]
@@ -51,16 +52,14 @@ public class ConnectomeScene : MonoBehaviour
             return; 
         }
 
+       
         ///Configure layout 
         if (ApplyUserSettings)
         {
-            //adjust as proper
-            ConfigureLayout();
-            ConfigureSelectionManager(SelectionManager);
+            MainConfig();
+            
             //ConfigureHighlighter(SelectionManager, UserConfig.HighlighterType )  HighlighterType is set based on profile type. 
             //ConfigureHighlighter(UserSettings.UseFlashingButtons);//Change to setting highlighter?
-
-            ConfigureDeviceInterperter(ClickRefreshInterperter); 
         }
         ///Start selecting 
         SelectionManager.AllowSelection = true; 
@@ -73,13 +72,14 @@ public class ConnectomeScene : MonoBehaviour
         ConfigureLayout();
         ConfigureSelectionManager(SelectionManager);
         ConfigureDeviceInterperter(ClickRefreshInterperter);
+
+        ConfigureEmotivLogin(); 
     }
     
     private void ConfigureLayout()
     {
         //set background color or such 
         ConnectomeCanvas.GetComponent<Image>().color = UserSettings.BackgroundColor;
-        
     }
 
     private void ConfigureSelectionManager(SelectionManager sm)
@@ -118,6 +118,14 @@ public class ConnectomeScene : MonoBehaviour
 
         //move highlighter to scene
         flashing.transform.SetParent(HighlighterContainer.transform);
+    }
+
+    private void ConfigureEmotivLogin()
+    {
+        LoginEPOCDevicePlugin.Username = UserSettings.Username;
+        LoginEPOCDevicePlugin.Password = UserSettings.Password;
+        LoginEPOCDevicePlugin.Profile = UserSettings.Profile;
+
     }
 
     private void ConfigureDeviceInterperter(ClickRefreshInterperter ClickRefreshInterperter)

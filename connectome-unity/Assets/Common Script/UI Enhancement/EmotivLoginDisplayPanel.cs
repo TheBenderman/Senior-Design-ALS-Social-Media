@@ -46,6 +46,8 @@ namespace Connectome.Unity.UI
                     OnLoginedIn(device);
                 }
 
+                UserSettings.SetLogin(UsernameInput.text,PasswordInput.text, ProfileInput.text);
+
                 Dismissed(); 
             }
             else
@@ -54,6 +56,18 @@ namespace Connectome.Unity.UI
             }
         }
         #endregion
+
+        public override void Displayed()
+        {
+            base.Displayed();
+            this.gameObject.SetActive(true); 
+        }
+
+        public override void Dismissed()
+        {
+            base.Dismissed();
+            this.gameObject.SetActive(false);
+        }
     }
 }
 

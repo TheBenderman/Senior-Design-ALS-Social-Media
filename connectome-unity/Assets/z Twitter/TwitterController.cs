@@ -50,7 +50,6 @@ public class TwitterController : TwitterObjects
 			authHandler.Interactor.getHomeTimelineNavigatable().stopThread();
 			authHandler.Interactor.getDmUsersNavigatable().stopThread();
 		};
-        Debug.Log("Destroying twitter threads.");
     }
 
     void OnDestroy()
@@ -59,8 +58,6 @@ public class TwitterController : TwitterObjects
 			authHandler.Interactor.getHomeTimelineNavigatable().stopThread();
 			authHandler.Interactor.getDmUsersNavigatable().stopThread();
 		};
-
-        Debug.Log("Destroying twitter threads.");
     }
 
 	public void backButton()

@@ -10,7 +10,7 @@ using Connectome.Emotiv.Implementation;
 
 namespace Connectome.Unity.Plugin
 {
-    public class LoginEPOCDevicePlugin : EmotivDeviceContainer
+    public class LoginEPOCDevicePlugin : EPOCDevicePlugin
     {
         public EmotivLoginDisplayPanel LoginWindow;
 
@@ -20,7 +20,16 @@ namespace Connectome.Unity.Plugin
         {
             if(DeviceInstance == null)
             {
-                throw new NullEmotivDeviceException(); 
+                DeviceInstance = base.CreateDevice();
+
+                bool suc = false; 
+                DeviceInstance.OnConnectAttempted += (b,m) => { suc = b;};
+                DeviceInstance.Connect();
+
+                if (suc == false)
+                {
+                    throw new NullEmotivDeviceException();
+                }
             }
 
             return DeviceInstance; 

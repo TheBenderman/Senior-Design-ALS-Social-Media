@@ -30,39 +30,34 @@ public class TweetReplyHandler : TwitterObjects {
 
 	public void ReplyTweet(string msg)
 	{
-		int attempts = 10;
 		Status currentStatus;
-		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle)) {
+		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle))
+        {
 			currentStatus = timelineHandler.getCurrentTweet ();
-		} else {
+		} else
+        {
 			currentStatus = convoHandler.conversationtimelineStatuses [convoHandler.currentTweet];
 		}
 
-		while (attempts-- > 0)
+		try
 		{
-			try
-			{
-				authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.User.Id.Value, msg));
-				timelineHandler.timelineErrorText.text = "Replied to user!";
-				attempts = 0;
-			}
-			catch (Exception e)
-			{
-				if (attempts == 0)
-				{
-					if (e.Message.Contains("Status is a duplicate"))
-					{
-						timelineHandler.timelineErrorText.text = "Failed to tweet: Duplicate status!";
-					}
-					else
-					{
-						timelineHandler.timelineErrorText.text = "Failed to tweet: Connection error. Fix your internet";
-					}
-
-					Debug.Log("Failed to tweet " + e);
-				}
-			}
+			authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.User.Id.Value, msg));
+			timelineHandler.timelineErrorText.text = "Replied to user!";
 		}
+		catch (Exception e)
+		{
+			if (e.Message.Contains("Status is a duplicate"))
+			{
+				timelineHandler.timelineErrorText.text = "Failed to tweet: Duplicate status!";
+			}
+			else
+			{
+				timelineHandler.timelineErrorText.text = "Failed to tweet: Connection error. Fix your internet";
+			}
+
+			Debug.Log("Failed to tweet " + e);
+		}
+		
 
 	}
 
