@@ -46,6 +46,7 @@ public class ColorPicker : MonoBehaviour
 
     private void Start()
     {
+        CurrentColor = UserSettings.BackgroundColor;
         SendChangedEvent();
     }
 

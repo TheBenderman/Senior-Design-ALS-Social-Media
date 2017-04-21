@@ -30,11 +30,7 @@ public class PopSelectionMenu : SelectionMenu
     {
         throw new NotImplementedException();
     }
-    public override void ResetSelection()
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public override void SelectNext(ISelectionHighlighter h)
     {
         throw new NotImplementedException();

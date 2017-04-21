@@ -76,7 +76,7 @@ public class Train : BaseTrainingScreen
 
     private void OnApplicationQuit()
     {
-        reader.Stop();
+        reader.StopReading();
     }
 
     void Activate()
@@ -121,7 +121,7 @@ public class Train : BaseTrainingScreen
                 timelineCheckPoints[pos-1][1] = timeline.Latest().Time;
 
                 setButtonText("Complete!");
-                reader.Stop();
+                reader.StopReading();
                 reader = null;
 
                 int[][] data = analyzeData();
@@ -261,7 +261,7 @@ public class Train : BaseTrainingScreen
 
         //Starts reading from the device
         reader.OnRead += (e) => timeline.Register(e.State);
-        reader.Start();
+        reader.StartReading();
         incrementSlider = true;
         accuracyLogger = new CsvLogger("Accuracy.csv");
         accuracyLogger.add(Start_Screen.profile);

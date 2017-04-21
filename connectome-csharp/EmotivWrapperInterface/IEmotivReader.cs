@@ -7,7 +7,7 @@ namespace Connectome.Emotiv.Interface
     /// <summary>
     /// A Reader is able to read states on it's own invoking events when appropriate. 
     /// </summary>
-    public interface IEmotivReader : IDisposable
+    public interface IEmotivReader
     {
         #region Set Get Properties
         /// <summary>
@@ -28,11 +28,6 @@ namespace Connectome.Emotiv.Interface
         event Action<EmotivReadArgs> OnRead;
 
         /// <summary>
-        /// Invoked everytime new state command is different than previous 
-        /// </summary>
-        event Action<EmotivCommandType?, EmotivCommandType> OnCommandChange;
-
-        /// <summary>
         /// Gets invoked before reading states
         /// </summary>
         event Action OnStart;
@@ -51,12 +46,12 @@ namespace Connectome.Emotiv.Interface
         /// <summary>
         /// Starts Reading from plugged device.
         /// </summary>
-        void Start();
+        void StartReading();
         
         /// <summary>
         /// Stops Reading from plugged device.
         /// </summary>
-        void Stop();
+        void StopReading();
 
         /// <summary>
         /// Sets and starts reading from device. 

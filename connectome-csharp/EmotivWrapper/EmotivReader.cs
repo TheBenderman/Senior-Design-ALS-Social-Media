@@ -10,7 +10,7 @@ namespace Connectome.Emotiv.Template
     /// <summary>
     /// Basic device reader that read a state every millisecond. 
     /// </summary>
-    public abstract class EmotivReader : IEmotivReader, IDisposable
+    public abstract class EmotivReader : IEmotivReader
     {
         #region Private Attributes 
         /// <summary>
@@ -67,23 +67,12 @@ namespace Connectome.Emotiv.Template
         /// </summary>
         private void ReadThreadLoop()
         {
-            EmotivCommandType? previousState = null;
             InsureMillisecondPassed();
-
             try
             {
                 while (IsReading)
                 {
-                    IEmotivState stateRead = ReadingState(Device, LastTime);
-
-                    OnRead?.Invoke(new EmotivReadArgs(stateRead));
-
-                    if (previousState != stateRead.Command)
-                    {
-                        OnCommandChange?.Invoke(previousState, stateRead.Command);
-                    }
-
-                    previousState = stateRead.Command;
+                    OnRead?.Invoke(new EmotivReadArgs(ReadingState(Device, LastTime)));
                     InsureMillisecondPassed();
                 }
             }
@@ -146,8 +135,9 @@ namespace Connectome.Emotiv.Template
                 ReadingTimer = Stopwatch.StartNew();
             }
 
-            while (LastTime == ReadingTimer.ElapsedMilliseconds) ;
-                LastTime = ReadingTimer.ElapsedMilliseconds;
+            while (LastTime == ReadingTimer.ElapsedMilliseconds);
+
+            LastTime = ReadingTimer.ElapsedMilliseconds;
         }
         #endregion
         #region IEmotivReader Public Get Property
@@ -162,11 +152,6 @@ namespace Connectome.Emotiv.Template
         /// Invoked when a state is read. 
         /// </summary>
         public event Action<EmotivReadArgs> OnRead;
-
-        /// <summary>
-        /// Invoked when command type changes 
-        /// </summary>
-        public event Action<EmotivCommandType?, EmotivCommandType> OnCommandChange;
 
         /// <summary>
         /// Invoked when Start is called 
@@ -187,7 +172,7 @@ namespace Connectome.Emotiv.Template
         /// <summary>
         /// Starts a thread calling Read from device. 
         /// </summary>
-        public void Start()
+        public void StartReading()
         {
             if(!Device.IsConnected)
                 TryConnecting(Device);
@@ -201,10 +186,13 @@ namespace Connectome.Emotiv.Template
         /// <summary>
         /// Stops reading 
         /// </summary>
-        public void Stop()
+        public void StopReading()
         {
-            KeepReading = false; 
+            KeepReading = false;
+
+            ReadingThread.Join(); 
         }
+
 
         /// <summary>
         /// Replaces old device with a new one and starts it. Old device is stopped and disconnected.
@@ -214,7 +202,7 @@ namespace Connectome.Emotiv.Template
         {
             if(IsReading)
             {
-                Stop();
+                StopReading();
                 //wait until thread is dead. 
                 ReadingThread.Join();
             }
@@ -222,28 +210,15 @@ namespace Connectome.Emotiv.Template
             if (Device != null)
             {
                 OnStop += (e) =>  { TryDisconnecting(this.Device, "Unable to disconnect previous device: "); }; 
-                Stop();
+                StopReading();
             }
 
             //old device is disconnected and reading is off 
 
             this.Device = Device;
 
-            Start();
+            StartReading();
         }
         #endregion
-       
-        #region IDispose Public Method
-        /// <summary>
-        /// Dispose thread
-        /// </summary>
-        public void Dispose()
-        {
-           if(ReadingThread.IsAlive)
-            {
-                ReadingThread.Abort(); 
-            }
-        }
-        #endregion 
     }
 }

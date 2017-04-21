@@ -1,0 +1,36 @@
+{
+	"keyboardtitle": "Grid Phrase Panel",
+	"data": [
+		{
+			"panelname":"Utlity",
+			"paneldata":[
+				{"buttonname":"Manual Input"},
+				{"buttonname":"Exit"},
+				{"buttonname":"Submit"}
+			]
+		},
+		{
+			"panelname":"Left",
+			"paneldata":[
+				{"buttonname":"You "},
+				{"buttonname":"Me "},
+				{"buttonname":"My "}
+			]
+		},
+		{
+			"panelname":"Middle",
+			"paneldata":[
+				{"buttonname":"He "},
+				{"buttonname":"She "},
+				{"buttonname":"Are "}
+			]
+		},
+		{	
+			"panelname":"Right",
+			"paneldata":[
+				{"buttonname":"For "},
+				{"buttonname":"With "},
+				{"buttonname":"Too "}
+			]
+		}
+]}

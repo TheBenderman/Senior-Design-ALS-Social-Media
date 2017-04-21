@@ -18,20 +18,13 @@ namespace Connectome.Unity.Template
         public abstract bool IsReading { get; }
 
         public abstract event Action<Exception> ExceptionHandler;
-        public abstract event Action<EmotivCommandType?, EmotivCommandType> OnCommandChange;
         public abstract event Action<EmotivReadArgs> OnRead;
         public abstract event Action OnStart;
         public abstract event Action<string> OnStop;
 
         public abstract void PlugDevice(IEmotivDevice Device);
-        public abstract void Start();
-        public abstract void Stop();
-        #endregion
-        #region IDisposable
-        public void Dispose()
-        {
-            Stop();
-        }
+        public abstract void StartReading();
+        public abstract void StopReading();
         #endregion
         #region Abstarct
         /// <summary>

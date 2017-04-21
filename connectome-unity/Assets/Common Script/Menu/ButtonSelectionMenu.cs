@@ -23,6 +23,7 @@ namespace Connectome.Unity.Menu
         /// List of buttons 
         /// </summary>
         public Button[] Selection;
+
         #endregion
         #region SelectionMenu Overrides
         /// <summary>
@@ -42,31 +43,35 @@ namespace Connectome.Unity.Menu
         }
 
         /// <summary>
-        /// Selection next button on the list.  
+        /// Selection next button on the list. Ignores noninteractable buttons. 
         /// </summary>
         /// <param name="h"></param>
         public override void SelectNext(ISelectionHighlighter h)
         {
-            Pointer++;
-            if (ShouldReset())
+            do
             {
-                ResetSelection();
                 Pointer++;
-            }
-
+                if (ShouldReset())
+                {
+                    ResetSelection();
+                    Pointer++;
+                }
+            } while (!Selection[Pointer].IsInteractable());
+            
             h.Highlight(Selection[Pointer].gameObject);
         }
 
         /// <summary>
         /// Reset pointer to the beginning. 
         /// </summary>
-        public override void ResetSelection()
+        public void ResetSelection()
         {
             Pointer = -1;
         }
         public override void Pushed()
         {
-            ResetSelection(); 
+            base.Pushed(); 
+            
         }
         #endregion
         #region Virtual Methods
@@ -79,5 +84,36 @@ namespace Connectome.Unity.Menu
             return Pointer >= Selection.Length;
         }
         #endregion
+
+        private void OnValidate()
+        {
+            ///Check if Selection is set 
+            if(Selection == null || Selection.Length == 0)
+            {
+                Debug.LogError(name + "'s Selection is empty", this);
+                return; 
+            }
+
+            ///Check of a selection is null
+            foreach (Button butt in Selection)
+            {
+                 if(butt == null)
+                {
+                    Debug.LogError("Some elements in Selection are null", this);
+                    return; 
+                }
+            }
+            ///Check if at least 1 button is interabtable 
+            bool interactabe = false; 
+            foreach(Button butt in Selection)
+            {
+                interactabe = interactabe | butt.IsInteractable(); 
+            }
+
+            if(interactabe == false)
+            {
+                Debug.LogError("All " + name +"'s selection are not interactable", this);
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Validates a connectome scene for having required elements to operate. 
@@ -32,6 +33,9 @@ public class ConnectomeScene : MonoBehaviour
     public GameObject HighlighterContainer; 
     public EmotivLoginDisplayPanel LoginPanel;
 
+    [Header("Main Canvas")]
+    public Canvas ConnectomeCanvas;
+
 
     public void Start()
     {
@@ -54,6 +58,8 @@ public class ConnectomeScene : MonoBehaviour
             ConfigureLayout();
             ConfigureSelectionManager(SelectionManager);
             //ConfigureHighlighter(SelectionManager, UserConfig.HighlighterType )  HighlighterType is set based on profile type. 
+            //ConfigureHighlighter(UserSettings.UseFlashingButtons);//Change to setting highlighter?
+
             ConfigureDeviceInterperter(ClickRefreshInterperter); 
         }
         ///Start selecting 
@@ -61,10 +67,19 @@ public class ConnectomeScene : MonoBehaviour
     }
 
     #region Configurations 
+
+    public void MainConfig()
+    {
+        ConfigureLayout();
+        ConfigureSelectionManager(SelectionManager);
+        ConfigureDeviceInterperter(ClickRefreshInterperter);
+    }
     
     private void ConfigureLayout()
     {
         //set background color or such 
+        ConnectomeCanvas.GetComponent<Image>().color = UserSettings.BackgroundColor;
+        
     }
 
     private void ConfigureSelectionManager(SelectionManager sm)
@@ -73,7 +88,25 @@ public class ConnectomeScene : MonoBehaviour
         sm.WaitInterval = UserSettings.Duration;
     }
 
-    private void ConfigureHighlighter(SelectionManager sm, HighlighterType type)
+    private void ConfigureHighlighter(bool useFlashing)
+    {
+        if (useFlashing)
+        {
+            FlashingHighlighter flashing = HighlighterFactory.CreateHighlighter<FlashingHighlighter>(HighlighterType.Flashing);
+
+            flashing.Frequency = UserSettings.Frequency;
+            this.SelectionManager.Highlighter = flashing;
+            flashing.transform.SetParent(HighlighterContainer.transform);
+        }
+        else
+        {
+            FrameHighlighter frame = HighlighterFactory.CreateHighlighter<FrameHighlighter>(HighlighterType.Frame);
+            this.SelectionManager.Highlighter = frame;
+            frame.FrameColor = UserSettings.HighlighterColor;
+            frame.transform.SetParent(HighlighterContainer.transform);
+        }
+    }
+    private void ConfigureHighlighter(HighlighterType type)
     {
         //example for flashing 
         FlashingHighlighter flashing = HighlighterFactory.CreateHighlighter<FlashingHighlighter>(type);
@@ -81,7 +114,7 @@ public class ConnectomeScene : MonoBehaviour
         flashing.Frequency = UserSettings.Frequency;
         //flashing.FlashingColors = 
 
-        sm.Highlighter = flashing;
+        this.SelectionManager.Highlighter = flashing;
 
         //move highlighter to scene
         flashing.transform.SetParent(HighlighterContainer.transform);
@@ -90,8 +123,8 @@ public class ConnectomeScene : MonoBehaviour
     private void ConfigureDeviceInterperter(ClickRefreshInterperter ClickRefreshInterperter)
     {
         ClickRefreshInterperter.Interval = (long) UserSettings.Duration*1000;
-        ClickRefreshInterperter.ClickThreshhold = UserSettings.PassThreshold;
-        ClickRefreshInterperter.RefreshThreshhold = UserSettings.RefreshRate;
+        ClickRefreshInterperter.ClickThreshhold = UserSettings.PassThreshold/100;//These values in the window are percents
+        ClickRefreshInterperter.RefreshThreshhold = UserSettings.RefreshRate/100;
     }
 
     #endregion
@@ -102,6 +135,11 @@ public class ConnectomeScene : MonoBehaviour
         ValidateType(ref SelectionManager);
         ValidateType(ref EmotivDeviceManager);
         ValidateType(ref KeyboardManager);
+
+        if(ConnectomeCanvas == null)
+        {
+            Debug.LogWarning("A canvas must be attached before building", this);
+        }
 
         if(ApplyUserSettings == false)
         {

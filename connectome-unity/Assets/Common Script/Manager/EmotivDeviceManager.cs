@@ -13,6 +13,8 @@ public class EmotivDeviceManager : MonoBehaviour
     #region Singleton
     public static EmotivDeviceManager Instance { get { return currentInstance;  } }
 
+    public bool AutoSetup;
+
     private static EmotivDeviceManager currentInstance;
     #endregion
     #region Public Inspector Attributes 
@@ -52,9 +54,17 @@ public class EmotivDeviceManager : MonoBehaviour
             Intepreter.Setup(DevicePlugin, ReaderPlugin);
         }
 
-        ReaderPlugin.Start(); 
+        ReaderPlugin.StartReading(); 
 
         StartCoroutine(InterpetationProcess()); 
+    }
+
+    private void Start()
+    {
+        if(AutoSetup)
+        {
+            Setup(); 
+        }
     }
 
     /// <summary>
@@ -62,9 +72,9 @@ public class EmotivDeviceManager : MonoBehaviour
     /// </summary>
     void OnApplicationQuit()
     {
-        if (ReaderPlugin != null)
+        if (ReaderPlugin.IsReading)
         {
-            ReaderPlugin.Stop();
+            ReaderPlugin.StopReading();
         }
     }
     #endregion

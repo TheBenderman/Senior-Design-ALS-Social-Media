@@ -1,4 +1,5 @@
 ﻿using Connectome.Unity.Keyboard;
+using Connectome.Unity.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,6 +47,22 @@ public class UserSettingsWindow : MonoBehaviour {
             //Initialization
         }
     }
+
+    public void PreviewBackground(Image canvasBackground)
+    {
+        canvasBackground.color = BackgroundColor.color;
+    }
+
+    public void PreviewFrame(FrameHighlighter frame)
+    {
+        frame.FrameColor = HighlighterColor.color;
+    }
+
+    public void PreviewFlashing(FlashingHighlighter flashing)
+    {
+        flashing.FlashingColors[0] = BackgroundColor.color;
+        flashing.FlashingColors[1] = FlashingColor.color;
+    }
     
 	// Use this for initialization
 	void Start () {
@@ -80,7 +97,6 @@ public class UserSettingsWindow : MonoBehaviour {
         UpdateCurrentKeyboard();
         LoadColors();
         SetSelectedColor(BackgroundColor);
-        UpdateColorSelection(BackgroundColor.color);
     }
     
     public void ToggleFrequencySetting()
@@ -123,7 +139,7 @@ public class UserSettingsWindow : MonoBehaviour {
 
     private void SetFreqValue()
     {
-        UserSettings.RefreshRate = RefreshSlider.value;
+        UserSettings.Frequency = (int)FreqSlider.value;
     }
     #endregion
     #region Public Methods

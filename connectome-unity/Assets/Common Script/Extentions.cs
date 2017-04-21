@@ -14,4 +14,10 @@ public static class Extentions{
     {
         t.text = t.text.Substring(0, t.text.Length - 1);
     }
+
+
+    public static void SetButtonText(this Button t, string text)
+    {
+        t.GetComponentInChildren<Text>().text = text;
+    }
 }

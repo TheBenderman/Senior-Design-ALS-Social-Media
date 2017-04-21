@@ -21,6 +21,10 @@ namespace Connectome.Unity.Keyboard
         /// </summary>
         [HideInInspector]
         public KeyboardTemplate KeyboardGameObject;
+        /// <summary>
+        /// The value for the rect transform of the generated keyboard 
+        /// </summary>
+        public const float RECT_TOP = -51.8f;
 
         #endregion
         #region Private Attributes
@@ -44,10 +48,10 @@ namespace Connectome.Unity.Keyboard
         public void SetKeyboard(string keyboardtype)
         {
             //Change to making the keyboard appear?
-            KeyboardGameObject = (Instantiate(Resources.Load(keyboardtype), this.transform) as GameObject).GetComponent<KeyboardTemplate>();
+            KeyboardGameObject = (Instantiate(Resources.Load("Keyboards/" + keyboardtype), this.transform) as GameObject).GetComponent<KeyboardTemplate>();
             KeyboardGameObject.name = keyboardtype;
             //Do this here in case we have apps with different character limits, so just this value has to change to change the keyboards.
-            KeyboardGameObject.InputField.characterLimit = TextLimit;
+            //TODO for now KeyboardGameObject.InputField.characterLimit = TextLimit;
         }
 
         public void RemoveKeyboard()
@@ -59,8 +63,8 @@ namespace Connectome.Unity.Keyboard
         public static void GetInputFromKeyboard(Action<string> onSubmit)
         {
             Instance.KeyboardGameObject.OnPop += () => Instance.KeyboardGameObject.transform.SetParent(Instance.transform);
-            
-            Instance.KeyboardGameObject.AddSubmitAction(onSubmit);
+
+            Instance.KeyboardGameObject.OnSubmit += onSubmit; 
             DisplayManager.AlignDisplay(Instance.KeyboardGameObject); 
             SelectionManager.Instance.Push(Instance.KeyboardGameObject);
         }

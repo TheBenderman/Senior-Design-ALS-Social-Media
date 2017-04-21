@@ -132,7 +132,7 @@ namespace Connectome.Unity.Demo
             deviceHolder.Device.OnDisconnectAttempted += (suc, s) => Debug.Log("OnDisconnectAttempted: " + s);
             reader.ExceptionHandler += (e) => {Debug.Log("Exp"); throw e; };
 
-            reader.Start();
+            reader.StartReading();
             StartCoroutine(SliderUpdate());
         }
         #endregion
@@ -177,7 +177,7 @@ namespace Connectome.Unity.Demo
             //TODO KLD PLEASE! 
             if (reader != null)
             {
-                reader.Stop(); 
+                reader.StopReading(); 
             }
         }
         #endregion

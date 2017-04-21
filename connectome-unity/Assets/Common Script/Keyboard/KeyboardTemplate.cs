@@ -7,43 +7,42 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace Connectome.Unity.Keyboard
 {
-    public abstract class KeyboardTemplate : SelectionMenuContainer
+    public abstract class KeyboardTemplate : SelectionMenu
     {
-        private Action<string> OnSubmit;
         /// <summary>
-        /// The text field used to display/hold the text.
+        /// Invoked when Keyboard submits text. 
         /// </summary>
-        public InputField InputField;
-        public string SubmissionText { get { return InputField.text; } }
-        public virtual void AddSubmitAction(Action<string> submitAction)
-        {
-            OnSubmit += submitAction;
-        }
-        public virtual void Submit()
-        {
-            OnSubmit(SubmissionText);
-        }
+        public event Action<string> OnSubmit;
+        
+        /// <summary>
+        /// Gets text that will be submitted 
+        /// </summary>
+        public abstract string SubmissionText { get; }
 
+        /// <summary>
+        /// Submits keyboard 
+        /// </summary>
+        public abstract void Submit();
+       
         /// <summary>
         /// reset Text field and enable game object when pushed by SelectionManager. 
         /// </summary>
         public override void Pushed()
         {
-            base.Pushed();
+            //base.Pushed();
             
             ///resize
             RectTransform Rect = GetComponent<RectTransform>();
             Rect.anchorMax = new Vector2(1, 1);
             Rect.anchorMin = new Vector2(0f, 0f);
-            Rect.sizeDelta = new Vector2(0f, 0f);
+             Rect.sizeDelta = new Vector2(0f, 0f);
 
-            Rect.offsetMin = new Vector2(Rect.offsetMin.x, 0);
-            Rect.offsetMax = new Vector2(Rect.offsetMax.x, 0);
-            Rect.offsetMin = new Vector2(Rect.offsetMin.y, 0);
-            Rect.offsetMax = new Vector2(Rect.offsetMax.y, 0);
+            Rect.offsetMin = new Vector2(0, 0);
+            Rect.offsetMax = new Vector2(0, KeyboardManager.RECT_TOP);
+            
+            Rect.localScale = new Vector3(1, 1, 1);
 
             gameObject.SetActive(true);
-            InputField.text = ""; 
         }
 
         /// <summary>
@@ -53,6 +52,14 @@ namespace Connectome.Unity.Keyboard
         {
             base.Popped();
             gameObject.SetActive(false); 
+        }
+
+        protected void InvokeOnSubmit()
+        {
+            if(OnSubmit!= null)
+            {
+                OnSubmit(SubmissionText); 
+            }
         }
     }
 }

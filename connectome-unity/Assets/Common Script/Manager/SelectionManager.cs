@@ -90,14 +90,11 @@ public class SelectionManager : MonoBehaviour
         if (!AllowSelection)
             return;
 
+        Highlighter.DisableHighlight(); 
         ISelectionMenu subMenu =  SelectionStack.Peek().InvokeSelected();
         if(subMenu != null)
         {
             Push(subMenu);
-        }
-        else
-        {
-            //Pop();  TODO yet to inforce 
         }
     }
 
@@ -107,6 +104,7 @@ public class SelectionManager : MonoBehaviour
     /// <param name="Selections"></param>
     public void Push(ISelectionMenu Selections)
     {
+        SelectionStack.Peek().Paused(); 
         SelectionStack.Push(Selections);
         Selections.Pushed();
     }
@@ -129,8 +127,9 @@ public class SelectionManager : MonoBehaviour
         if (SelectionStack.Count > 1)
         {
             ISelectionMenu menu = SelectionStack.Pop();
-            menu.Popped(); 
-            ResetSelection();
+            menu.Popped();
+            SelectionStack.Peek().Resumed(); 
+            ResetInterval();
         }
         else
         {
@@ -149,12 +148,6 @@ public class SelectionManager : MonoBehaviour
         CurrentWait = 0;
     }
 
-    public void ResetSelection()
-    {
-        Highlighter.DisableHighlight();
-        SelectionStack.Peek().ResetSelection();
-        ResetInterval(); 
-    }
     #endregion
     #region Unity Methods
     /// <summary>

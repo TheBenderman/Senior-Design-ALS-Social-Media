@@ -6,7 +6,8 @@ using UnityEngine;
 public enum KeyboardType
 {
     PhraseKeyboard,
-    QWERTYKeyboard
+    QWERTYKeyboard,
+    GridKeyboard
 }
 public static class UserSettings
 {
@@ -51,7 +52,7 @@ public static class UserSettings
     /// <summary>
     /// Attribute for the Flashing Setting
     /// </summary>
-    public static bool UseFlashingButtons { get { return PlayerPrefs.GetInt("UseFlashing", 1) == 0; } set { PlayerPrefs.SetInt("UserFlashing", value ? 0 : 1); } }
+    public static bool UseFlashingButtons { get { return PlayerPrefs.GetInt("UseFlashing", 1) == 0; } set { PlayerPrefs.SetInt("UseFlashing", value ? 0 : 1); } }
 
     /// <summary>
     /// Attribute for Current Keyboard
