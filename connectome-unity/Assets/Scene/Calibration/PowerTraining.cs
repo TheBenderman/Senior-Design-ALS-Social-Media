@@ -63,7 +63,7 @@ public class PowerTraining : BaseTrainingScreen {
 
         if (currentPoint >= ect.Length || (slider.value == slider.maxValue && started))
         {
-            reader.Stop();
+            reader.StopReading();
             passedTest = false;
             setButtonText("Complete!");
             lastPower = 0;
@@ -86,7 +86,7 @@ public class PowerTraining : BaseTrainingScreen {
     {
 
         yield return new WaitForSeconds(slider.maxValue);
-        reader.Start();
+        reader.StartReading();
         passedTest = true;
         started = true;
 

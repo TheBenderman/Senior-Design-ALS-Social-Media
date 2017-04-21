@@ -36,7 +36,7 @@ namespace Connectome.KLD.Test
         private bool IsBreak;
 
         [Header("Overriding")]
-        public bool OverideDurations;
+        public bool ShouldOverideDurations;
         public int RecordDuration;
         public int RestDuration;
 
@@ -68,7 +68,7 @@ namespace Connectome.KLD.Test
                 int record = TestingSet.RecordDuration;
                 int rest = TestingSet.RestDuration; 
 
-                if(OverideDurations)
+                if(ShouldOverideDurations)
                 {
                     record = RecordDuration;
                     rest = RestDuration; 

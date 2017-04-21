@@ -26,7 +26,7 @@ namespace Connectome.Emotiv.Implementation
             this.reader = reader; 
             timer = new Timer(1000 * second);
 
-            timer.Elapsed += (o, e) => reader.Stop(); 
+            timer.Elapsed += (o, e) => reader.StopReading(); 
         }
         #endregion
         #region IEmotivReader Public Properies 
@@ -88,18 +88,6 @@ namespace Connectome.Emotiv.Implementation
             }
         }
 
-        public event Action<EmotivCommandType?, EmotivCommandType> OnCommandChange
-        {
-            add
-            {
-                reader.OnCommandChange += value;
-            }
-            remove
-            {
-                reader.OnCommandChange -= value;
-            }
-        }
-
         public event Action<Exception> ExceptionHandler
         {
             add
@@ -114,15 +102,15 @@ namespace Connectome.Emotiv.Implementation
 
         #endregion
         #region IEmotivReader Public Methods
-        public void Start()
+        public void StartReading()
         {
             timer.Enabled = true;
-            reader.Start();
+            reader.StartReading();
         }
 
-        public void Stop()
+        public void StopReading()
         {
-            reader.Stop();
+            reader.StopReading();
             timer.Stop(); 
         }
 
@@ -131,15 +119,5 @@ namespace Connectome.Emotiv.Implementation
             reader.PlugDevice(Device); 
         }
         #endregion
-        #region IDispose Public Method
-        /// <summary>
-        /// Dispose thread
-        /// </summary>
-        public void Dispose()
-        {
-            reader.Dispose();
-            timer.Dispose();
-        }
-        #endregion 
     }
 }

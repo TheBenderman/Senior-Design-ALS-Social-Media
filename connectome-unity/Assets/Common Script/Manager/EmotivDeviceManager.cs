@@ -54,7 +54,7 @@ public class EmotivDeviceManager : MonoBehaviour
             Intepreter.Setup(DevicePlugin, ReaderPlugin);
         }
 
-        ReaderPlugin.Start(); 
+        ReaderPlugin.StartReading(); 
 
         StartCoroutine(InterpetationProcess()); 
     }
@@ -74,7 +74,7 @@ public class EmotivDeviceManager : MonoBehaviour
     {
         if (ReaderPlugin.IsReading)
         {
-            ReaderPlugin.Stop();
+            ReaderPlugin.StopReading();
         }
     }
     #endregion

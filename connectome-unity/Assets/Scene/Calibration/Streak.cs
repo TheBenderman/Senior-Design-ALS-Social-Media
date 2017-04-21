@@ -48,7 +48,7 @@ public class Streak : BaseTrainingScreen
 
     private void OnApplicationQuit()
     {
-        reader.Stop();
+        reader.StopReading();
     }
 	
 	// Update is called once per frame
@@ -80,7 +80,7 @@ public class Streak : BaseTrainingScreen
     IEnumerator phases()
     {
         yield return new WaitForSeconds(slider.maxValue);
-        reader.Start();
+        reader.StartReading();
         run = true;
         setButtonText("Push");
         slider.value = 0;
@@ -131,7 +131,7 @@ public class Streak : BaseTrainingScreen
         }
         else
         {
-            reader.Stop();
+            reader.StopReading();
             intervals.Add(getCurrentTime());
             displayResults();
             run = false;

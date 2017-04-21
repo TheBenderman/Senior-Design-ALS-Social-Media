@@ -50,17 +50,6 @@ namespace Connectome.Unity.Template
             }
         }
 
-        public override event Action<EmotivCommandType?, EmotivCommandType> OnCommandChange
-        {
-            add
-            {
-                Content.OnCommandChange += value;
-            }
-            remove
-            {
-                Content.OnCommandChange -= value;
-            }
-        }
         public override event Action<EmotivReadArgs> OnRead
         {
             add
@@ -102,16 +91,16 @@ namespace Connectome.Unity.Template
             Content.PlugDevice(Device);
         }
 
-        public override void Start()
+        public override void StartReading()
         {
-            Content.Start();
+            Content.StartReading();
         }
 
-        public override void Stop()
+        public override void StopReading()
         {
             if (Content != null)
             {
-                Content.Stop();
+                Content.StopReading();
             }
         }
         #endregion

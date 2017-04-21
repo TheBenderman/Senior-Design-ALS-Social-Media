@@ -10,7 +10,7 @@ namespace Connectome.Emotiv.Template
     /// <summary>
     /// Basic device reader that read a state every millisecond. 
     /// </summary>
-    public abstract class EmotivReader : IEmotivReader, IDisposable
+    public abstract class EmotivReader : IEmotivReader
     {
         #region Private Attributes 
         /// <summary>
@@ -154,11 +154,6 @@ namespace Connectome.Emotiv.Template
         public event Action<EmotivReadArgs> OnRead;
 
         /// <summary>
-        /// Invoked when command type changes 
-        /// </summary>
-        public event Action<EmotivCommandType?, EmotivCommandType> OnCommandChange;
-
-        /// <summary>
         /// Invoked when Start is called 
         /// </summary>
         public event Action OnStart;
@@ -177,7 +172,7 @@ namespace Connectome.Emotiv.Template
         /// <summary>
         /// Starts a thread calling Read from device. 
         /// </summary>
-        public void Start()
+        public void StartReading()
         {
             if(!Device.IsConnected)
                 TryConnecting(Device);
@@ -191,7 +186,7 @@ namespace Connectome.Emotiv.Template
         /// <summary>
         /// Stops reading 
         /// </summary>
-        public void Stop()
+        public void StopReading()
         {
             KeepReading = false;
 
@@ -207,7 +202,7 @@ namespace Connectome.Emotiv.Template
         {
             if(IsReading)
             {
-                Stop();
+                StopReading();
                 //wait until thread is dead. 
                 ReadingThread.Join();
             }
@@ -215,28 +210,15 @@ namespace Connectome.Emotiv.Template
             if (Device != null)
             {
                 OnStop += (e) =>  { TryDisconnecting(this.Device, "Unable to disconnect previous device: "); }; 
-                Stop();
+                StopReading();
             }
 
             //old device is disconnected and reading is off 
 
             this.Device = Device;
 
-            Start();
+            StartReading();
         }
         #endregion
-       
-        #region IDispose Public Method
-        /// <summary>
-        /// Dispose thread
-        /// </summary>
-        public void Dispose()
-        {
-           if(ReadingThread.IsAlive)
-            {
-                ReadingThread.Abort(); 
-            }
-        }
-        #endregion 
     }
 }

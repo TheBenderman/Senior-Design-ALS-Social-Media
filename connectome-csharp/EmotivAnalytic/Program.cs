@@ -27,7 +27,7 @@ namespace EmotivAnalytic
                 Debug.WriteLine(e.State);
             };
            
-            reader.Start();
+            reader.StartReading();
    
             while (reader.IsReading)
             {

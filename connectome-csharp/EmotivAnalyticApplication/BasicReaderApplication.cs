@@ -64,7 +64,7 @@ namespace EmotivAnalyticApplication
             reader.OnRead += (e) => list.Add(e.State);
 
             ToggleButton("Reading...",false);
-            reader.Start();
+            reader.StartReading();
 
             //TODO learn threading with UI
             while (reader.IsReading) ;
