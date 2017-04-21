@@ -214,24 +214,25 @@ namespace Connectome.KLD.Test
             FileStream fstream = File.Create(filePath);
             StreamWriter writer = new StreamWriter(fstream);
 
-            writer.WriteLine("Test,Target,Time,Command,Power");
+            writer.WriteLine("Test,Target,Command,Time,Power");
             for (int t = 0; t < LastTestingSet.Sessions.Length; t++)
             {
-               
-                for (int s = 0; s < States[t].Count; s++)
+                if (States[t].Count > 0)
                 {
-                    writer.WriteLine("{0},{1},{2},{3},{4}", (t+1), LastTestingSet.Sessions[t].ToString(), States[t][s].Time, States[t][s].Command.ToString(), States[t][s].Power);
+                    long initTime = States[t][0].Time;
+                    for (int s = 0; s < States[t].Count; s++)
+                    {
+                        writer.WriteLine("{0},{1},{2},{3},{4}", (t + 1), LastTestingSet.Sessions[t].ToString(), States[t][s].Command.ToString(), States[t][s].Time - initTime, States[t][s].Power);
+                    }
                 }
+                writer.WriteLine(",,,,");
             }
 
             writer.Flush(); 
             writer.Close(); 
 
-
             Debug.Log("Exported");
         }
-
-
        
     }//end class 
 
