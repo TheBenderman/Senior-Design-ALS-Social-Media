@@ -12,18 +12,15 @@ namespace Connectome.Unity.Menu
     public interface ISelectionMenu
     {
         event Action OnPush;
-        event Action OnPop; 
+        event Action OnPop;
+        event Action OnPause;
+        event Action OnResume; 
 
         /// <summary>
         /// Invokes current pointed selection 
         /// </summary>
         /// <returns>Next sub menu, or null to pop</returns>
         ISelectionMenu InvokeSelected();
-
-        /// <summary>
-        /// Resets selection pointer
-        /// </summary>
-        void ResetSelection();
 
         /// <summary>
         /// Moves pointer to next selection 
@@ -39,6 +36,16 @@ namespace Connectome.Unity.Menu
         /// <summary>
         /// Called after menu is pushed
         /// </summary>
-        void Pushed(); 
+        void Pushed();
+
+        /// <summary>
+        /// Invoked when another menu is pushed on top if this.
+        /// </summary>
+        void Paused();
+
+        /// <summary>
+        /// Invoked when another menu pops into this. 
+        /// </summary>
+        void Resumed();
     }
 }

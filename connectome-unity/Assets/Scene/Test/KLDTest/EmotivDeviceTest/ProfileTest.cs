@@ -35,6 +35,11 @@ namespace Connectome.KLD.Test
         /// </summary>
         private bool IsBreak;
 
+        [Header("Overriding")]
+        public bool OverideDurations;
+        public int RecordDuration;
+        public int RestDuration;
+
         [Header("Object Refrences")]
         public Text Title;
         public EmotivReaderPlugin Reader;
@@ -60,7 +65,16 @@ namespace Connectome.KLD.Test
                 Reader.OnRead -= ListenToState;
                 Reader.OnRead += ListenToState;
 
-                StartCoroutine(StartReading(TestingSet));
+                int record = TestingSet.RecordDuration;
+                int rest = TestingSet.RestDuration; 
+
+                if(OverideDurations)
+                {
+                    record = RecordDuration;
+                    rest = RestDuration; 
+                }
+
+                StartCoroutine(StartReading(TestingSet.Sessions, record, rest));
             }
             catch (Exception e)
             {
@@ -87,18 +101,18 @@ namespace Connectome.KLD.Test
             }
         }
 
-        IEnumerator StartReading(TestingSet TestingSet)
+        IEnumerator StartReading(EmotivCommandType[] Sessions, int RecordDuration, int RestDuration)
         {
-            while (SessionIndex < TestingSet.Sessions.Length)
+            while (SessionIndex < Sessions.Length)
             {
-                Title.text = "Break: next Target " + TestingSet.Sessions[SessionIndex];
+                Title.text = "Break: next Target " + Sessions[SessionIndex];
 
-                yield return new WaitForSeconds(TestingSet.RestDuration);
+                yield return new WaitForSeconds(RestDuration);
 
                 IsBreak = false;
-                Title.text = "Do " + TestingSet.Sessions[SessionIndex];
+                Title.text = "Do " + Sessions[SessionIndex];
 
-                yield return new WaitForSeconds(TestingSet.RecordDuration);
+                yield return new WaitForSeconds(RecordDuration);
                 IsBreak = true;
                 SessionIndex++;
             }
@@ -107,7 +121,7 @@ namespace Connectome.KLD.Test
                 List<EmotivCommandType> uniqueList = new List<EmotivCommandType>();
                 Dictionary<EmotivCommandType, Metrix> Metrix = new Dictionary<EmotivCommandType, Test.Metrix>();
 
-                foreach (EmotivCommandType c in TestingSet.Sessions)
+                foreach (EmotivCommandType c in Sessions)
                 {
                     if (!uniqueList.Contains(c))
                     {
@@ -124,13 +138,13 @@ namespace Connectome.KLD.Test
                     {
                         for (int j = 0; j < States[i].Count; j++)
                         {
-                            Metrix met = Metrix[TestingSet.Sessions[i]];
+                            Metrix met = Metrix[Sessions[i]];
 
                             //count 
                             met.size++; 
 
                             //correct 
-                            if (TestingSet.Sessions[i] == States[i][j].Command)
+                            if (Sessions[i] == States[i][j].Command)
                             {
                                 met.TP++; 
                             }
@@ -198,15 +212,15 @@ namespace Connectome.KLD.Test
             //Show exporting window 
             Debug.Log("Exporting");
             FileStream fstream = File.Create(filePath);
-            StreamWriter writer = new StreamWriter(fstream); 
-            
-          
+            StreamWriter writer = new StreamWriter(fstream);
+
+            writer.WriteLine("Test,Target,Time,Command,Power");
             for (int t = 0; t < LastTestingSet.Sessions.Length; t++)
             {
-                writer.WriteLine("Test #{0},Target:,{1}", t, LastTestingSet.Sessions[t].ToString());
+               
                 for (int s = 0; s < States[t].Count; s++)
                 {
-                    writer.WriteLine("{0},{1},{2}", States[t][s].Time, States[t][s].Command.ToString(), States[t][s].Power);
+                    writer.WriteLine("{0},{1},{2},{3},{4}", (t+1), LastTestingSet.Sessions[t].ToString(), States[t][s].Time, States[t][s].Command.ToString(), States[t][s].Power);
                 }
             }
 

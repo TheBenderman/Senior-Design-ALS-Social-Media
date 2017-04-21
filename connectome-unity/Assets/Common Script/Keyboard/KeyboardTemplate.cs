@@ -7,23 +7,23 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace Connectome.Unity.Keyboard
 {
-    public abstract class KeyboardTemplate : SelectionMenuContainer
+    public abstract class KeyboardTemplate : SelectionMenu
     {
-        private Action<string> OnSubmit;
         /// <summary>
-        /// The text field used to display/hold the text.
+        /// Invoked when Keyboard submits text. 
         /// </summary>
-        public InputField InputField;
-        public string SubmissionText { get { return InputField.text; } }
-        public virtual void AddSubmitAction(Action<string> submitAction)
-        {
-            OnSubmit += submitAction;
-        }
-        public virtual void Submit()
-        {
-            OnSubmit(SubmissionText);
-        }
+        public event Action<string> OnSubmit;
+        
+        /// <summary>
+        /// Gets text that will be submitted 
+        /// </summary>
+        public abstract string SubmissionText { get; }
 
+        /// <summary>
+        /// Submits keyboard 
+        /// </summary>
+        public abstract void Submit();
+       
         /// <summary>
         /// reset Text field and enable game object when pushed by SelectionManager. 
         /// </summary>
@@ -43,7 +43,6 @@ namespace Connectome.Unity.Keyboard
             Rect.localScale = new Vector3(1, 1, 1);
 
             gameObject.SetActive(true);
-            InputField.text = ""; 
         }
 
         /// <summary>
@@ -53,6 +52,14 @@ namespace Connectome.Unity.Keyboard
         {
             base.Popped();
             gameObject.SetActive(false); 
+        }
+
+        protected void InvokeOnSubmit()
+        {
+            if(OnSubmit!= null)
+            {
+                OnSubmit(SubmissionText); 
+            }
         }
     }
 }

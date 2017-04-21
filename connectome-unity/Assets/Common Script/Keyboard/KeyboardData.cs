@@ -11,7 +11,7 @@ using Connectome.Unity.UI;
 namespace Connectome.Unity.Keyboard
 {
     //TODO this is slipt into two: Part of it is now KeyboardManager. Have this extend ConnectomeKeyboard 
-    public class KeyboardData : KeyboardTemplate
+    public class KeyboardData : KeyboardMenuContainer
     {
         /// <summary>
         /// Called when this keyboard is loaded

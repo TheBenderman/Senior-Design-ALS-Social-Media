@@ -51,7 +51,7 @@ namespace Connectome.Unity.Keyboard
             KeyboardGameObject = (Instantiate(Resources.Load("Keyboards/" + keyboardtype), this.transform) as GameObject).GetComponent<KeyboardTemplate>();
             KeyboardGameObject.name = keyboardtype;
             //Do this here in case we have apps with different character limits, so just this value has to change to change the keyboards.
-            KeyboardGameObject.InputField.characterLimit = TextLimit;
+            //TODO for now KeyboardGameObject.InputField.characterLimit = TextLimit;
         }
 
         public void RemoveKeyboard()
@@ -63,8 +63,8 @@ namespace Connectome.Unity.Keyboard
         public static void GetInputFromKeyboard(Action<string> onSubmit)
         {
             Instance.KeyboardGameObject.OnPop += () => Instance.KeyboardGameObject.transform.SetParent(Instance.transform);
-            
-            Instance.KeyboardGameObject.AddSubmitAction(onSubmit);
+
+            Instance.KeyboardGameObject.OnSubmit += onSubmit; 
             DisplayManager.AlignDisplay(Instance.KeyboardGameObject); 
             SelectionManager.Instance.Push(Instance.KeyboardGameObject);
         }

@@ -26,9 +26,23 @@ namespace Connectome.Unity.Menu
             SelectionMenu.Pushed();
         }
 
-        public override void ResetSelection()
+        public override void Paused()
         {
-            SelectionMenu.ResetSelection();
+            SelectionMenu.Paused();
+        }
+
+        public override void Resumed()
+        {
+            SelectionMenu.Resumed();
+        }
+        public override void Dismissed()
+        {
+            SelectionMenu.Dismissed();
+        }
+
+        public override void Displayed()
+        {
+            SelectionMenu.Displayed();
         }
 
         public override void SelectNext(ISelectionHighlighter h)
@@ -43,11 +57,17 @@ namespace Connectome.Unity.Menu
         {
             if(SelectionMenu == null)
             {
-                Debug.LogError("Container contains no menu nor in children.", this);
+                Debug.LogError("Container contains no menu.", this);
+                return; 
+            }
+
+            if(SelectionMenu == this)
+            {
+                SelectionMenu = null;
+                Debug.LogError(name + " menu cannot contain itself", this);
+                return;
             }
         }
         #endregion
-
-
     }
 }

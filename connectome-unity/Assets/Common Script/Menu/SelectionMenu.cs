@@ -22,17 +22,22 @@ namespace Connectome.Unity.Menu
         /// </summary>
         public event Action OnPop;
 
+        /// <summary>
+        /// Invoked after popping into this menu. 
+        /// </summary>
+        public event Action OnResume;
+
+        /// <summary>
+        /// Invoked after pushing a new on top of this. 
+        /// </summary>
+        public event Action OnPause; 
+
         #region ISelectionMenu Abstract
         /// <summary>
-        /// Invokes current pointed selection 
+        /// Invokes currentpointed selection 
         /// </summary>
         /// <returns>Next sub menu, or null to pop</returns>
         public abstract ISelectionMenu InvokeSelected();
-
-        /// <summary>
-        /// Resets selection pointer
-        /// </summary>
-        public abstract void ResetSelection();
 
         /// <summary>
         /// Moves pointer to next selection 
@@ -43,13 +48,13 @@ namespace Connectome.Unity.Menu
         #endregion
         #region ISelectionMenu Virtual
         /// <summary>
-        /// Called after menu is popped
+        /// Called after menu is popped. 
         /// </summary>
         public virtual void Popped()
         {
-            if(OnPush != null)
+            if(OnPop != null)
             {
-                OnPush(); 
+                OnPop(); 
             }
         }
         /// <summary>
@@ -57,9 +62,31 @@ namespace Connectome.Unity.Menu
         /// </summary>
         public virtual void Pushed()
         {
-            if (OnPop != null)
+            if (OnPush != null)
             {
-                OnPop();
+                OnPush();
+            }
+        }
+
+        /// <summary>
+        /// Invoked when menu is resumed.
+        /// </summary>
+        public virtual void Resumed()
+        {
+            if(OnResume != null)
+            {
+                OnResume(); 
+            }
+        }
+
+        /// <summary>
+        /// Invoked when menu is paused.
+        /// </summary>
+        public virtual void Paused()
+        {
+            if(OnPause != null)
+            {
+                OnPause();
             }
         }
         #endregion
