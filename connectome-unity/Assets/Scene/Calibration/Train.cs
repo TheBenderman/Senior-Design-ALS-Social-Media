@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Connectome.Calibration.API.Interfaces;
 using Connectome.Calibration.API.Loggers;
+using Connectome.Unity.UI;
 
 public class Train : BaseTrainingScreen
 {
@@ -100,10 +101,16 @@ public class Train : BaseTrainingScreen
                 {
                     timelineCheckPoints[pos-1][1] = timeline.Latest().Time;
                 }
-                setButtonText(ect[pos].ToString());
+                
                 incrementSlider = false;
                 slider.value = slider.minValue;
+                setButtonText("3");
                 yield return new WaitForSeconds(1);
+                setButtonText("2");
+                yield return new WaitForSeconds(1);
+                setButtonText("1");
+                yield return new WaitForSeconds(1);
+                setButtonText(ect[pos].ToString());
                 timelineCheckPoints[pos][0] = timeline.Latest().Time;
                 incrementSlider = true;
                 
@@ -133,6 +140,7 @@ public class Train : BaseTrainingScreen
         int percent;
         int[] neutralHolder = new int[results.Length/2];
         int counter = 0;
+        ssvepOff();
         resultText.text = "Accuracy Results";
 
         for (int i = 0; i < results.Length; i++)
@@ -237,7 +245,9 @@ public class Train : BaseTrainingScreen
         complete = false;
 
         reader = new BasicEmotivReader(device, false);
+        Application.runInBackground = true;
 
+        ssvepOn();
         createTestArray();
 
         //Creates the timeline and timeline checkpoints

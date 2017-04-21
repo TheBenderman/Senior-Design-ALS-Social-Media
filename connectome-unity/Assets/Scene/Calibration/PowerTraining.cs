@@ -64,6 +64,7 @@ public class PowerTraining : BaseTrainingScreen {
         if (currentPoint >= ect.Length || (slider.value == slider.maxValue && started))
         {
             reader.Stop();
+            ssvepOff();
             passedTest = false;
             setButtonText("Complete!");
             lastPower = 0;
@@ -158,6 +159,8 @@ public class PowerTraining : BaseTrainingScreen {
         complete = false;
 
         slider.maxValue = Start_Screen.sliderLength;
+        Application.runInBackground = true;
+        ssvepOn();
 
         reader = new BasicEmotivReader(device, false);
 
