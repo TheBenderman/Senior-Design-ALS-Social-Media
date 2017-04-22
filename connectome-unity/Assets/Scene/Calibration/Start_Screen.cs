@@ -12,6 +12,8 @@ public class Start_Screen : MonoBehaviour {
     public InputField usernameInputField;
     public InputField passwordInputField;
     public InputField profileNameInputField;
+    public Toggle ssvepToggle;
+    public static System.Boolean ssvepIsOn;
     public static string username;
     public static string password;
     public static string profile;
@@ -30,6 +32,7 @@ public class Start_Screen : MonoBehaviour {
         sliderLength = slider.value;
         deviceValue = deviceDropdown.value;
         setupDevice(deviceValue);
+        ssvepIsOn = ssvepToggle.isOn;
 		
 	}
 

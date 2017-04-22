@@ -17,6 +17,10 @@ public abstract class BaseTrainingScreen : MonoBehaviour {
     public Button button;
     public Button backButton;
 
+    public SelectionHighlighter highlighter;
+    public Button flashingButton;
+    public Button neutralButton;
+
     public GameObject mainMenu;
     public GameObject currentPanel;
 
@@ -56,6 +60,27 @@ public abstract class BaseTrainingScreen : MonoBehaviour {
     protected void setButtonText(String text)
     {
         button.transform.GetChild(0).GetComponent<Text>().text = text;
+    }
+
+    public void ssvepOff()
+    {
+            neutralButton.gameObject.SetActive(false);
+            highlighter.gameObject.SetActive(false);
+            flashingButton.gameObject.SetActive(false);
+    }
+
+    public void ssvepOn()
+    {
+        if (Start_Screen.ssvepIsOn)
+        {
+            neutralButton.gameObject.SetActive(true);
+            flashingButton.gameObject.SetActive(true);
+            highlighter.gameObject.SetActive(true);
+        }
+        else
+        {
+            ssvepOff();
+        }
     }
 
     public abstract void reset();

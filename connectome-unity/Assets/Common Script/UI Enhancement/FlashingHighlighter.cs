@@ -40,7 +40,11 @@ namespace Connectome.Unity.UI
         {
             FlashIndex = 0;
             ImageComponent = GetComponent<Image>();
+    
+        }
 
+        private void OnEnable()
+        {
             StartCoroutine(flick());
         }
 
@@ -80,7 +84,7 @@ namespace Connectome.Unity.UI
         }
         #endregion
 
-        bool disable; 
+        public bool disable; 
 
         protected virtual void OnFlick()
         {
