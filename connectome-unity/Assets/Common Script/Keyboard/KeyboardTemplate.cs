@@ -29,16 +29,16 @@ namespace Connectome.Unity.Keyboard
         /// </summary>
         public override void Pushed()
         {
-            //base.Pushed();
-            
+            base.Pushed();
+
             ///resize
             RectTransform Rect = GetComponent<RectTransform>();
             Rect.anchorMax = new Vector2(1, 1);
             Rect.anchorMin = new Vector2(0f, 0f);
-             Rect.sizeDelta = new Vector2(0f, 0f);
+            Rect.sizeDelta = new Vector2(0f, 0f);
 
             Rect.offsetMin = new Vector2(0, 0);
-            Rect.offsetMax = new Vector2(0, KeyboardManager.RECT_TOP);
+            Rect.offsetMax = new Vector2(0, 0);
             
             Rect.localScale = new Vector3(1, 1, 1);
 
