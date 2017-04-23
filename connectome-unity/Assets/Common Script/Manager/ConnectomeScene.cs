@@ -57,11 +57,7 @@ public class ConnectomeScene : MonoBehaviour
         if (ApplyUserSettings)
         {
             //adjust as proper
-            ConfigureLayout();
-            ConfigureSelectionManager(SelectionManager);
-            ConfigureHighlighter(UserSettings.UseFlashingButtons);
-
-            ConfigureDeviceInterperter(ClickRefreshInterperter); 
+            MainConfig();
         }
         ///Start selecting 
         SelectionManager.AllowSelection = true; 
@@ -75,7 +71,22 @@ public class ConnectomeScene : MonoBehaviour
         ConfigureSelectionManager(SelectionManager);
         ConfigureDeviceInterperter(ClickRefreshInterperter);
         ConfigureHighlighter(UserSettings.UseFlashingButtons);
-	ConfigureEmotivLogin(); 
+	    //ConfigureEmotivLogin(); 
+    }
+
+    public void PreviewHighlighter(bool enableSSVEP)
+    {
+        ReturnHighlighter();
+        ConfigureHighlighter(enableSSVEP);
+    }
+
+    /// <summary>
+    /// Moves the current highlighter back to the Highlighter Container
+    /// </summary>
+    public void ReturnHighlighter()
+    {
+        SelectionManager.Highlighter.DisableHighlight();
+        SelectionManager.Highlighter.transform.SetParent(HighlighterContainer.transform);
     }
     
     private void ConfigureLayout()

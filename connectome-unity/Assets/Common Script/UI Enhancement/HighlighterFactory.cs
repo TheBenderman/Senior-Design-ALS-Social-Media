@@ -34,7 +34,7 @@ namespace Connectome.Unity.UI
         {
             if (!Instence.InstantiatedHighlighters[(int)t]) 
                 Instence.InstantiatedHighlighters[(int)t] = Instantiate((T)Instence.Highlighters[(int)t]);
-            return (T)Instence.Highlighters[(int)t];
+            return (T)Instence.InstantiatedHighlighters[(int)t];
         }
 
         /// <summary>
