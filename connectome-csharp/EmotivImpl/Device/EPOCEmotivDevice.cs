@@ -141,16 +141,24 @@ namespace Connectome.Emotiv.Implementation
         {
             try
             {
-                EdkDll.IEE_EngineDisconnect();
-                EdkDll.IEE_EmoStateFree(eState);
-                EdkDll.IEE_EmoEngineEventFree(eEvent);
+                if (IsConnected)
+                {
+                    EdkDll.IEE_EngineDisconnect();
+                    EdkDll.IEE_EmoStateFree(eState);
+                    EdkDll.IEE_EmoEngineEventFree(eEvent);
+                }
+                else
+                {
+                    msg = "Device is not connected"; 
+                    return true;
+                }
             }
             catch(Exception e)
             {
                 msg = e.ToString();
                 return false; 
             }
-            msg = string.Empty; 
+            msg = "success";
             return true; 
         }
 

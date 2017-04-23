@@ -189,8 +189,11 @@ namespace Connectome.Emotiv.Template
         public void StopReading()
         {
             KeepReading = false;
-
-            ReadingThread.Join(); 
+            if (ReadingThread.IsAlive)
+            {
+                ReadingThread.Join(1000);
+                ReadingThread.Abort();
+            }
         }
 
 
