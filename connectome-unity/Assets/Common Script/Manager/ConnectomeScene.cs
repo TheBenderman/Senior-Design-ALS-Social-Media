@@ -56,10 +56,12 @@ public class ConnectomeScene : MonoBehaviour
         ///Configure layout 
         if (ApplyUserSettings)
         {
-            MainConfig();
-            
-            //ConfigureHighlighter(SelectionManager, UserConfig.HighlighterType )  HighlighterType is set based on profile type. 
-            //ConfigureHighlighter(UserSettings.UseFlashingButtons);//Change to setting highlighter?
+            //adjust as proper
+            ConfigureLayout();
+            ConfigureSelectionManager(SelectionManager);
+            ConfigureHighlighter(UserSettings.UseFlashingButtons);
+
+            ConfigureDeviceInterperter(ClickRefreshInterperter); 
         }
         ///Start selecting 
         SelectionManager.AllowSelection = true; 
@@ -72,8 +74,8 @@ public class ConnectomeScene : MonoBehaviour
         ConfigureLayout();
         ConfigureSelectionManager(SelectionManager);
         ConfigureDeviceInterperter(ClickRefreshInterperter);
-
-        ConfigureEmotivLogin(); 
+        ConfigureHighlighter(UserSettings.UseFlashingButtons);
+	ConfigureEmotivLogin(); 
     }
     
     private void ConfigureLayout()

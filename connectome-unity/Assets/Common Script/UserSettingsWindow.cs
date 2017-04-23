@@ -57,12 +57,6 @@ public class UserSettingsWindow : MonoBehaviour {
     {
         frame.FrameColor = HighlighterColor.color;
     }
-
-    public void PreviewFlashing(FlashingHighlighter flashing)
-    {
-        flashing.FlashingColors[0] = BackgroundColor.color;
-        flashing.FlashingColors[1] = FlashingColor.color;
-    }
     
 	// Use this for initialization
 	void Start () {
