@@ -127,6 +127,7 @@ public class SelectionManager : MonoBehaviour
     {
         if (SelectionStack.Count > 1)
         {
+            Highlighter.DisableHighlight();
             ISelectionMenu menu = SelectionStack.Pop();
             menu.Popped();
             SelectionStack.Peek().Resumed(); 
