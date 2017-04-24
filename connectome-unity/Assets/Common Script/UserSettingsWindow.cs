@@ -41,6 +41,10 @@ public class UserSettingsWindow : MonoBehaviour {
         try
         {
             SelectedColorToEdit.color = newColor;
+            if(SelectedColorToEdit == HighlighterColor)
+            {
+                ((FrameHighlighter)SelectionManager.Instance.Highlighter).FrameColor = newColor;
+            }
         }
         catch (NullReferenceException)
         {
@@ -58,10 +62,13 @@ public class UserSettingsWindow : MonoBehaviour {
         frame.FrameColor = HighlighterColor.color;
     }
 
-    public void PreviewFlashing(FlashingHighlighter flashing)
+    /// <summary>
+    /// Calls the config highlighter in ConnectomeScene
+    /// </summary>
+    /// <param name="scene"></param>
+    public void PreviewFlashing(ConnectomeScene scene)
     {
-        flashing.FlashingColors[0] = BackgroundColor.color;
-        flashing.FlashingColors[1] = FlashingColor.color;
+        scene.PreviewHighlighter(FlashingToggle.isOn);
     }
     
 	// Use this for initialization
@@ -87,7 +94,7 @@ public class UserSettingsWindow : MonoBehaviour {
         KeyboardDrop.RefreshShownValue();
         //Set flashing settings
         FlashingToggle.isOn = UserSettings.UseFlashingButtons;
-        ToggleFrequencySetting();
+        OnSSVEPToggleClicked();
         //Set text values
         SetPassThresholdTextValue();
         SetDurationTextValue();
@@ -99,10 +106,13 @@ public class UserSettingsWindow : MonoBehaviour {
         SetSelectedColor(BackgroundColor);
     }
     
-    public void ToggleFrequencySetting()
+    public void OnSSVEPToggleClicked()
     {
         FreqSlider.interactable = FlashingToggle.isOn;
         FreqText.interactable = FlashingToggle.isOn;
+        FlashingColor.GetComponent<Button>().interactable = FlashingToggle.isOn;
+        HighlighterColor.GetComponent<Button>().interactable = !FlashingToggle.isOn;
+        SetSelectedColor(BackgroundColor);
     }
 
     public void SaveProfile()

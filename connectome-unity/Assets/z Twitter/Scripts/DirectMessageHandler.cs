@@ -27,6 +27,7 @@ public class DirectMessageHandler : TwitterObjects {
     public Button BackToUsersDM;
     public Text DMTitle;
     public List<GameObject> messageObjects;
+	public Text DMStatus;
 
     private List<DirectMessage> directMessages;
 	private User currentUser;
@@ -212,4 +213,26 @@ public class DirectMessageHandler : TwitterObjects {
 
         setDMPage(currentDMPage);
     }
+
+	public void Message(string msg)
+	{
+		try
+		{
+			authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.createDM(currentUser.ScreenName, msg));
+			DMStatus.text = "Messaged!";
+		}
+		catch (Exception e)
+		{
+
+			DMStatus.text = "Failed to tweet: Connection error. Fix your internet";
+			Debug.Log("Failed to tweet " + e);
+		}
+
+		messageUser ();
+	}
+
+	public void MessageUser()
+	{
+		KeyboardManager.GetInputFromKeyboard(Message);
+	}
 }

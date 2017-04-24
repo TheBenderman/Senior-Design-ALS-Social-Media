@@ -11,17 +11,20 @@ public enum KeyboardType
 }
 public static class UserSettings
 {
+    public static string Username { get { return GetLoginInfo("username");  } }
+    public static string Password { get { return GetLoginInfo("password"); } }
+    public static string Profile { get { return GetLoginInfo("profile"); } }
     #region Login
     /// <summary>
     /// Set the username, password, and profile in
     /// the PlayerPrefs
     /// </summary>
     /// <param name="userInfo"></param>
-    public static void SetLogin(LoginInfo userInfo)
+    public static void SetLogin(string username, string password, string profile)
     {
-        PlayerPrefs.SetString("username", userInfo.Username);
-        PlayerPrefs.SetString("password", userInfo.Password);
-        PlayerPrefs.SetString("profile", userInfo.Profile);
+        PlayerPrefs.SetString("username", username);
+        PlayerPrefs.SetString("password", password);
+        PlayerPrefs.SetString("profile", profile);
     }
 
     /// <summary>

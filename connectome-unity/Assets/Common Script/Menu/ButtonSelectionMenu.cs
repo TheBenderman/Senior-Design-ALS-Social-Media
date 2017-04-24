@@ -70,9 +70,16 @@ namespace Connectome.Unity.Menu
         }
         public override void Pushed()
         {
-            base.Pushed(); 
-            
+            base.Pushed();
+            ResetSelection(); 
         }
+
+        public override void Resumed()
+        {
+            base.Resumed();
+            ResetSelection();
+        }
+
         #endregion
         #region Virtual Methods
         /// <summary>

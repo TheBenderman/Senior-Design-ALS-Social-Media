@@ -17,10 +17,11 @@ namespace Connectome.Unity.UI
         private static HighlighterFactory Instence;
 
         public SelectionHighlighter[] Highlighters;
-
+        public SelectionHighlighter[] InstantiatedHighlighters;
         public void Start()
         {
             Instence = this;
+            if (InstantiatedHighlighters.Length == 0) InstantiatedHighlighters = new SelectionHighlighter[Highlighters.Length];
         }
 
         /// <summary>
@@ -31,7 +32,9 @@ namespace Connectome.Unity.UI
         /// <returns></returns>
         public static T CreateHighlighter<T>(HighlighterType t) where T : SelectionHighlighter
         {
-            return Instantiate((T)Instence.Highlighters[(int)t]);
+            if (!Instence.InstantiatedHighlighters[(int)t]) 
+                Instence.InstantiatedHighlighters[(int)t] = Instantiate((T)Instence.Highlighters[(int)t]);
+            return (T)Instence.InstantiatedHighlighters[(int)t];
         }
 
         /// <summary>

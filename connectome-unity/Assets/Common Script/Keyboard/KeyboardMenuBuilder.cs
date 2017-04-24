@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// KeyboardMenuBuilder is used when The keyboard has a feature for toggling between multiple JSON layouts
+/// </summary>
 public class KeyboardMenuBuilder : MenuBuilder {
 
     public KeyboardData keyboard;
@@ -13,6 +15,6 @@ public class KeyboardMenuBuilder : MenuBuilder {
         {
             keyboard = GetComponent<KeyboardData>();
         }
-        keyboard.OnToggle += PopulateButtonText;
+        keyboard.OnToggle += PopulateButtonsFromFile;
     }
 }

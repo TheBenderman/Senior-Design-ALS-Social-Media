@@ -101,12 +101,13 @@ public class SelectionManager : MonoBehaviour
     /// <summary>
     /// Add selection menu to the current stack.
     /// </summary>
-    /// <param name="Selections"></param>
-    public void Push(ISelectionMenu Selections)
+    /// <param name="Selection"></param>
+    public void Push(ISelectionMenu Selection)
     {
         SelectionStack.Peek().Paused(); 
-        SelectionStack.Push(Selections);
-        Selections.Pushed();
+        SelectionStack.Push(Selection);
+        Selection.Pushed();
+        ResetInterval();
     }
 
     /// <summary>
@@ -126,6 +127,7 @@ public class SelectionManager : MonoBehaviour
     {
         if (SelectionStack.Count > 1)
         {
+            Highlighter.DisableHighlight();
             ISelectionMenu menu = SelectionStack.Pop();
             menu.Popped();
             SelectionStack.Peek().Resumed(); 
@@ -187,7 +189,8 @@ public class SelectionManager : MonoBehaviour
     {
         SelectionStack = new Stack<ISelectionMenu>();
 
-        Push(MainMenu);
+        SelectionStack.Push(MainMenu);
+        MainMenu.Pushed(); 
     }
     #endregion
     #region Validation
@@ -204,28 +207,9 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     private void ValidateSelectionList()
     {
-        /*if (BaseSelection == null)
-        {
-            Debug.LogError("SelectionList cannot be null");
-        }
-
-        if (BaseSelection.Length == 0)
-        {
-            Debug.LogError("SelectionList cannot be empty");
-        }
-
-        for (int i = 0; i < BaseSelection.Length; i++)
-        {
-            if (BaseSelection[i] == null)
-            {
-                Debug.LogError("BaseSelection element cannot be null. Check index " + i);
-            }
-        }*/
-
-
         if (MainMenu == null)
         {
-           
+            Debug.LogError("Main Menu has not been set!");
         }
 
     }

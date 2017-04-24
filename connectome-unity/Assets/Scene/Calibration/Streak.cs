@@ -155,6 +155,7 @@ public class Streak : BaseTrainingScreen
 
     void displayResults()
     {
+        ssvepOff();
         LoggerInterface logger = new CsvLogger("Streak.csv");
         logger.add(Start_Screen.profile);
         resultTitleText.text = "Results";
@@ -204,6 +205,7 @@ public class Streak : BaseTrainingScreen
 
     void setup()
     {
+        Application.runInBackground = true;
         slider.maxValue = Start_Screen.sliderLength;
         streakCounter = 0;
         highscore = 0;
@@ -211,6 +213,7 @@ public class Streak : BaseTrainingScreen
         setButtonText("Starting");
         run = false;
         reader = new BasicEmotivReader(device, false);
+        ssvepOn();
 
         reader.OnRead += (e) => counter(e.State);
         activate();
