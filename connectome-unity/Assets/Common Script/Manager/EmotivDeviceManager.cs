@@ -67,7 +67,7 @@ public class EmotivDeviceManager : MonoBehaviour
     /// </summary>
     void OnApplicationQuit()
     {
-        if (ReaderPlugin.IsReading)
+        if (ReaderPlugin != null && ReaderPlugin.IsReading)
         {
             ReaderPlugin.StopReading();
         }
