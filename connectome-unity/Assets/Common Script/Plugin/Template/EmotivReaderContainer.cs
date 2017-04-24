@@ -34,7 +34,7 @@ namespace Connectome.Unity.Template
         {
             get
             {
-                return Content.IsReading;
+                return (Content != null && Content.IsReading);
             }
         }
 

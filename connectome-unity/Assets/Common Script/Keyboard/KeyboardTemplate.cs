@@ -38,7 +38,7 @@ namespace Connectome.Unity.Keyboard
             Rect.sizeDelta = new Vector2(0f, 0f);
 
             Rect.offsetMin = new Vector2(0, 0);
-            Rect.offsetMax = new Vector2(0, KeyboardManager.RECT_TOP);
+            Rect.offsetMax = new Vector2(0, 0);
             
             Rect.localScale = new Vector3(1, 1, 1);
 
