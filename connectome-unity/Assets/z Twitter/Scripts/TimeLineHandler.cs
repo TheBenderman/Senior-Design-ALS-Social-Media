@@ -125,11 +125,18 @@ public class TimeLineHandler : TwitterObjects
                                                                       authHandler.Interactor.getHomeTimelineNavigatable()
                                                                           .getNumOlderObjects()) + ") older >";
 
-        lastTweetButton.enabled =
-            authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().hasNewerObject());
-        nextTweetButton.enabled =
-            authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().hasOlderObject());
-		imagesButton.enabled = tweet.Entities != null && tweet.Entities.Media != null && tweet.Entities.Media.Length > 0;
+        
+		Boolean lastButtonEnabled = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().hasNewerObject());
+		lastTweetButton.enabled = lastButtonEnabled;
+		lastTweetButton.interactable = lastButtonEnabled;
+
+		Boolean nextButtonEnabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable ().hasOlderObject ());
+		nextTweetButton.enabled = nextButtonEnabled;
+		nextTweetButton.interactable = nextButtonEnabled;
+        
+		Boolean imageButtonEnabled = tweet.Entities != null && tweet.Entities.Media != null && tweet.Entities.Media.Length > 0;
+		imagesButton.enabled = imageButtonEnabled;
+		imagesButton.interactable = imageButtonEnabled;
 
         // Populate the profile picture for the user, requires a separate thread to run.
         StartCoroutine(setProfilePic(tweet.User.ProfileImageUrl));
@@ -209,8 +216,13 @@ public class TimeLineHandler : TwitterObjects
     {
 		StartCoroutine(setUserImage(imageURLs[currentImageIndex]));
 
-		nextImageButton.enabled = currentImageIndex < imageURLs.Count - 1;
-		lastImageButton.enabled = currentImageIndex > 0;
+		Boolean nextButtonEnabled = currentImageIndex < imageURLs.Count - 1;
+		nextImageButton.enabled = nextButtonEnabled;
+		nextImageButton.interactable = nextButtonEnabled;
+
+		Boolean lastButtonEnabled = currentImageIndex > 0;
+		lastImageButton.enabled = lastButtonEnabled;
+		lastImageButton.interactable = lastButtonEnabled;
     }
 
 	public void nextImage()

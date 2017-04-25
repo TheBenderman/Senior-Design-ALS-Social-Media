@@ -70,8 +70,13 @@ public class DirectMessageHandler : TwitterObjects {
         LastDMUser.GetComponentInChildren<Text>().text = "< (" + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getDmUsersNavigatable().getNumNewerObjects()) + ") newer";
         NextDMUser.GetComponentInChildren<Text>().text = "(" + authHandler.makeTwitterAPICall(() => authHandler.Interactor.getDmUsersNavigatable().getNumOlderObjects()) + ") older >";
 
-        LastDMUser.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getDmUsersNavigatable().hasNewerObject());
-		NextDMUser.enabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getDmUsersNavigatable().hasOlderObject());
+		Boolean lastButtonEnabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getDmUsersNavigatable ().hasNewerObject ());
+		LastDMUser.enabled = lastButtonEnabled;;
+		LastDMUser.interactable = lastButtonEnabled;
+
+		Boolean nextButtonEnabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getDmUsersNavigatable().hasOlderObject());
+		NextDMUser.enabled = nextButtonEnabled;
+		NextDMUser.interactable = nextButtonEnabled;
 	}
 
 	public IEnumerator setDMUserProfilePic(string url)
