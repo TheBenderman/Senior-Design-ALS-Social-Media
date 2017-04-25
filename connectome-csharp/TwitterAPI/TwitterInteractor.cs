@@ -63,7 +63,7 @@ namespace Connectome.Twitter.API
 
         public void replyToTweet(long id, String tweet)
         {
-            authenticator.getTokens().Statuses.Update(in_reply_to_status_id: id, status: tweet);
+            authenticator.getTokens().Statuses.Update(new { in_reply_to_status_id = id, status = tweet});
         }
 
         public void retweet(long tweetid)

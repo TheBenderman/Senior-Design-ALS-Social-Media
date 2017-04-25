@@ -41,7 +41,8 @@ public class TweetReplyHandler : TwitterObjects {
 
 		try
 		{
-			authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.User.Id.Value, msg));
+			Debug.Log("Current tweet id: " + currentStatus.Id);
+			authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.Id, msg));
 			timelineHandler.timelineErrorText.text = "Replied to user!";
 		}
 		catch (Exception e)

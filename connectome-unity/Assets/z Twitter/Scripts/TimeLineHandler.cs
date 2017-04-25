@@ -35,6 +35,7 @@ public class TimeLineHandler : TwitterObjects
     private Status currentTweet = null;
     public Text TitleView;
     public AuthenticationHandler authHandler;
+	public ConversationHandler convoHandler;
 
     #endregion
 
@@ -268,5 +269,44 @@ public class TimeLineHandler : TwitterObjects
 	public void messageUser()
 	{
 		KeyboardManager.GetInputFromKeyboard (Message);
+	}
+
+	public void ReplyImage(string msg)
+	{
+		Status currentStatus;
+		if (TitleView.text.Equals (timelineTitle))
+		{
+			currentStatus = getCurrentTweet ();
+		} else
+		{
+			currentStatus = convoHandler.conversationtimelineStatuses [convoHandler.currentTweet];
+		}
+
+		try
+		{
+			authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.Id, msg));
+			timelineErrorText.text = "Replied to user!";
+		}
+		catch (Exception e)
+		{
+			if (e.Message.Contains("Status is a duplicate"))
+			{
+				timelineErrorText.text = "Failed to tweet: Duplicate status!";
+			}
+			else
+			{
+				timelineErrorText.text = "Failed to tweet: Connection error. Fix your internet";
+			}
+
+			Debug.Log("Failed to tweet " + e);
+		}
+
+
+	}
+
+	// This function brings the user to a screen that allows them to reply to a tweet.
+	public void replyToImage()
+	{
+		KeyboardManager.GetInputFromKeyboard(ReplyImage);
 	}
 }
