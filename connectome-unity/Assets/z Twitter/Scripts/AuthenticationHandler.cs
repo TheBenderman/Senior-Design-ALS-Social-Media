@@ -35,13 +35,9 @@ public class AuthenticationHandler : TwitterObjects
 		string accesstoken = PlayerPrefs.GetString("Access Token");
 		string accessSecret = PlayerPrefs.GetString("Access Secret");
 
-		Debug.Log ("AT" + accesstoken);
-		Debug.Log ("AS" + accessSecret);
-
 		// If the access token and access secret have been set before, then load them back into the API
 		if (Remember && !string.IsNullOrEmpty(accesstoken) && !string.IsNullOrEmpty(accessSecret))
 		{
-			Debug.Log ("I'm inside initializeAuth");
 			// Set the tokens to the previously received tokens
 			makeTwitterAPICallNoReturnVal(() => Authenticator.setTokens(accesstoken, accessSecret));
 			Interactor = new TwitterInteractor (Authenticator);
@@ -50,10 +46,6 @@ public class AuthenticationHandler : TwitterObjects
 		    Interactor.getHomeTimelineNavigatable().OnExp = exception =>
 		    {
                 Debug.Log(exception.Message.ToString());
-                /*Interactor.getHomeTimelineNavigatable().endThread();
-                Interactor.getHomeTimelineNavigatable().resetCurrentObject();
-		        Interactor.getHomeTimelineNavigatable().startThread();
-				*/
 		        //Some error message here
 		    };
 
@@ -61,12 +53,6 @@ public class AuthenticationHandler : TwitterObjects
 		    Interactor.getDmUsersNavigatable().OnExp = exception =>
 		    {
                 Debug.Log(exception.Message.ToString());
-                
-				/*Interactor.getDmUsersNavigatable().endThread();
-                Interactor.getDmUsersNavigatable().resetCurrentObject();
-                Interactor.getDmUsersNavigatable().startThread();
-				*/
-
                 //Some error message here
 		    };
 
@@ -98,7 +84,6 @@ public class AuthenticationHandler : TwitterObjects
 			// Save the access token so they do not have to authenticate themselves again.
 			PlayerPrefs.SetString("Access Token", accessToken);
 			PlayerPrefs.SetString("Access Secret", accessSecret);
-			Debug.Log ("Saved");
 
 			if (Interactor == null)
 				Interactor = new TwitterInteractor (Authenticator);
@@ -163,7 +148,6 @@ public class AuthenticationHandler : TwitterObjects
 	{
 		try
 		{
-			Debug.Log("Calling Function");
 			return apiFunction();
 		}
 		catch (Exception te)

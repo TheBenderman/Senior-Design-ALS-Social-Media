@@ -55,37 +55,16 @@ public class TimeLineHandler : TwitterObjects
     {
         try
         {
-			lastTweetButton.onClick.AddListener(() => {
-				timelineErrorText.text = "";
-			});
-			homeButton.onClick.AddListener(() => {
-				timelineErrorText.text = "";
-			});
-			/*favoriteButton.onClick.AddListener(() => {
-				timelineErrorText.text = "";
-			});*/
-			retweetButton.onClick.AddListener(() => {
-				timelineErrorText.text = "";
-			});
-			imagesButton.onClick.AddListener(() => {
-				timelineErrorText.text = "";
-			});
-			privateMessageButton.onClick.AddListener(() => {
-				timelineErrorText.text = "";
-			});
-			nextTweetButton.onClick.AddListener(() => {
-				timelineErrorText.text = "";
-			});
+			addErrorFieldListeners();
 
             // Set all objects to be invisible except those related to the timeline.
             setActiveObject(homeTimeLineObjectsString);
-            if (authHandler.Interactor == null)
-            {
-                Debug.Log("IT'S BADD!");
-            }
 
+			// Reset the current home time line tweet that is selected
             authHandler.Interactor.getHomeTimelineNavigatable().resetCurrentObject();
-            currentTweet = authHandler.makeTwitterAPICall(
+           	
+			// Get the next tweet on the home timeline
+			currentTweet = authHandler.makeTwitterAPICall(
                     () => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
             if (currentTweet != null)
                 setTweet(currentTweet);
@@ -99,6 +78,29 @@ public class TimeLineHandler : TwitterObjects
             Debug.Log(e.Message);
         }
     }
+		
+	public void addErrorFieldListeners()
+	{
+		// Whenever these buttons are clicked, clear the text of the error field
+		lastTweetButton.onClick.AddListener(() => {
+			timelineErrorText.text = "";
+		});
+		homeButton.onClick.AddListener(() => {
+			timelineErrorText.text = "";
+		});
+		retweetButton.onClick.AddListener(() => {
+			timelineErrorText.text = "";
+		});
+		imagesButton.onClick.AddListener(() => {
+			timelineErrorText.text = "";
+		});
+		privateMessageButton.onClick.AddListener(() => {
+			timelineErrorText.text = "";
+		});
+		nextTweetButton.onClick.AddListener(() => {
+			timelineErrorText.text = "";
+		});
+	}
 
     // This function sets the current tweet for the user.
     public void setTweet(Status tweet)
@@ -113,28 +115,34 @@ public class TimeLineHandler : TwitterObjects
 			bodyText.text = tweet.Text;
 		}
 
+		// Set the time stamp to be text such as "2 seconds ago"
         timeStamp.text = Utilities.ElapsedTime(tweet.CreatedAt.DateTime);
 
+		// Populate the last tweet button with the number of newer tweets
         lastTweetButton.GetComponentInChildren<Text>().text = "< (" +
                                                               authHandler.makeTwitterAPICall(
                                                                   () =>
                                                                       authHandler.Interactor.getHomeTimelineNavigatable()
                                                                           .getNumNewerObjects()) + ") newer";
-        nextTweetButton.GetComponentInChildren<Text>().text = "(" +
+        // Populate the next tweet button with the number of older tweets
+		nextTweetButton.GetComponentInChildren<Text>().text = "(" +
                                                               authHandler.makeTwitterAPICall(
                                                                   () =>
                                                                       authHandler.Interactor.getHomeTimelineNavigatable()
                                                                           .getNumOlderObjects()) + ") older >";
 
         
+		// Determine if the last tweet button should be disabled
 		Boolean lastButtonEnabled = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().hasNewerObject());
 		lastTweetButton.enabled = lastButtonEnabled;
 		lastTweetButton.interactable = lastButtonEnabled;
 
+		// Determine if the next tweet button should be disabled
 		Boolean nextButtonEnabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable ().hasOlderObject ());
 		nextTweetButton.enabled = nextButtonEnabled;
 		nextTweetButton.interactable = nextButtonEnabled;
         
+		// If there are no images in the tweet, disable the button
 		Boolean imageButtonEnabled = tweet.Entities != null && tweet.Entities.Media != null && tweet.Entities.Media.Length > 0;
 		imagesButton.enabled = imageButtonEnabled;
 		imagesButton.interactable = imageButtonEnabled;
@@ -185,53 +193,60 @@ public class TimeLineHandler : TwitterObjects
         return this.currentTweet;
     }
 
+	// Handle the twitter page to display the images for the current post
     public void populateImages()
     {
-        Status currentTweet = getCurrentTweet();
-		MediaEntity [] currentTweetMedia = currentTweet.Entities.Media;
+        Status currentTweet = getCurrentTweet(); // get the current tweet
+		MediaEntity [] currentTweetMedia = currentTweet.Entities.Media; // get all of the images for the current tweet
 
         imageURLs = new List<string>();
 
 		if (currentTweetMedia == null || currentTweetMedia.Length == 0) {
-			Debug.Log ("Uh oh. Shouldn't be here.");
-			return;
+			throw new Exception ("Uh oh. Shouldn't be here.");
 		}
         
+		// For each of the images, get the urls
 		foreach (MediaEntity media in currentTweetMedia) {
 			imageURLs.Add (media.MediaUrl);
 		}
 
-		currentImageIndex = 0;
+		currentImageIndex = 0; // get the first image for the tweet
 
 		setCurrentImage();
         setActiveObject("ImageObjects");
     }
 
+	// Go back from the images menu to the twitter timeline
 	public void imagesBackToCurrentTweet()
 	{
 		Destroy (userImage.sprite);
 		setActiveObject (homeTimeLineObjectsString);
 	}
 
+	// Set the current image being displayed
     public void setCurrentImage()
     {
 		StartCoroutine(setUserImage(imageURLs[currentImageIndex]));
 
+		// Enable the next images button to go to the next image
 		Boolean nextButtonEnabled = currentImageIndex < imageURLs.Count - 1;
 		nextImageButton.enabled = nextButtonEnabled;
 		nextImageButton.interactable = nextButtonEnabled;
 
+		// Enable the next images button to go back to previous images
 		Boolean lastButtonEnabled = currentImageIndex > 0;
 		lastImageButton.enabled = lastButtonEnabled;
 		lastImageButton.interactable = lastButtonEnabled;
     }
 
+	// Go to the next image
 	public void nextImage()
 	{
 		currentImageIndex++;
 		setCurrentImage ();
 	}
 
+	// Go to the last image
 	public void lastImage()
 	{
 		currentImageIndex--;
@@ -248,12 +263,13 @@ public class TimeLineHandler : TwitterObjects
             new Vector2(0, 0));
     }
 
+	// Contact the twitter api to send a message to the user
 	public void Message(string msg)
 	{
 		int attempts = 10;
 		while (attempts-- > 0) {
 			try {
-				authHandler.makeTwitterAPICallNoReturnVal (() => authHandler.Interactor.createDM (currentTweet.User.ScreenName, msg));
+				authHandler.makeTwitterAPICallNoReturnVal (() => authHandler.Interactor.createDM (currentTweet.User.ScreenName, msg)); // send the message to the user
 				timelineErrorText.text = "Messaged!";
 				attempts = 0;
 			} catch (Exception e) {
@@ -266,14 +282,17 @@ public class TimeLineHandler : TwitterObjects
 		}
 	}
 
+	// Pop up the on screen keyboard to message a user
 	public void messageUser()
 	{
 		KeyboardManager.GetInputFromKeyboard (Message);
 	}
 
+	// Contact the twitter api to send the tweet reply for an image
 	public void ReplyImage(string msg)
 	{
 		Status currentStatus;
+		// Determine if we are on the conversation page or the home timeline
 		if (TitleView.text.Equals (timelineTitle))
 		{
 			currentStatus = getCurrentTweet ();
