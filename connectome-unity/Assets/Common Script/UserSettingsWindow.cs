@@ -159,14 +159,12 @@ public class UserSettingsWindow : MonoBehaviour {
     {
         UserSettings.BackgroundColor = BackgroundColor.color;
         UserSettings.HighlighterColor = HighlighterColor.color;
-        UserSettings.FlashingColor = FlashingColor.color;
     }
 
     public void LoadColors()
     {
         BackgroundColor.color = UserSettings.BackgroundColor;
         HighlighterColor.color = UserSettings.HighlighterColor;
-        FlashingColor.color = UserSettings.FlashingColor;
     }
     public void SetDurationTextValue()
     {
