@@ -40,7 +40,6 @@ namespace Connectome.Unity.UI
         {
             FlashIndex = 0;
             ImageComponent = GetComponent<Image>();
-    
         }
 
         private void OnEnable()
@@ -94,17 +93,18 @@ namespace Connectome.Unity.UI
 
         public override void EnableHighlight()
         {
+            base.EnableHighlight(); 
             disable = false; 
         }
 
         public override void DisableHighlight()
         {
+            base.DisableHighlight();
             disable = true;
-            //base.DisableHighlight();
-            if(ImageComponent!= null)
+            if (ImageComponent != null)
+            {
                 ImageComponent.color = new Color(0, 0, 0, 0);
-
-
+            }
         }
     }
 

@@ -195,7 +195,7 @@ namespace Connectome.KLD.Test
 
         public void ExportCollectedData()
         {
-            string filePath = ""; 
+            string filePath = "data.csv"; 
             #if UNITY_EDITOR
             filePath = UnityEditor.EditorUtility.SaveFilePanel("File Destination", "", "data", "csv");
             #endif
