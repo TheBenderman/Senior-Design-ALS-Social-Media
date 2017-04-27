@@ -28,9 +28,12 @@ public class TweetReplyHandler : TwitterObjects {
 	public string composeTweetObjectsString = "composeTweetObjects";
 	#endregion
 
+	// Function to contact the twitter api to reply to a tweet
 	public void ReplyTweet(string msg)
 	{
 		Status currentStatus;
+
+		// Determine if we are on the conversations page or the home timeline
 		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle))
         {
 			currentStatus = timelineHandler.getCurrentTweet ();
@@ -41,7 +44,8 @@ public class TweetReplyHandler : TwitterObjects {
 
 		try
 		{
-			authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.User.Id.Value, msg));
+			Debug.Log("Current tweet id: " + currentStatus.Id);
+			authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.Id, msg));
 			timelineHandler.timelineErrorText.text = "Replied to user!";
 		}
 		catch (Exception e)
@@ -57,8 +61,6 @@ public class TweetReplyHandler : TwitterObjects {
 
 			Debug.Log("Failed to tweet " + e);
 		}
-		
-
 	}
 
 	// This function brings the user to a screen that allows them to reply to a tweet.
@@ -85,6 +87,7 @@ public class TweetReplyHandler : TwitterObjects {
 		KeyboardManager.GetInputFromKeyboard(ReplyTweet);
 	}
 
+	// Don't think this is used anymore
 	public void cancelTweetReplyButton()
 	{
 		setActiveObject(timelineHandler.homeTimeLineObjectsString);
@@ -100,14 +103,11 @@ public class TweetReplyHandler : TwitterObjects {
 			new Vector2(0, 0));
 	}
 		
-	/// <summary>
-	/// Appemts 10 time to tweet a message 
-	/// </summary>
-	/// <param name="msg"></param>
+	// Contacts the twitter api to tweet a message
 	public void Tweet(string msg)
 	{
 		int attempts = 10;
-		while (attempts-- > 0)
+		while (attempts-- > 0) // try to tweet 10 times
 		{
 			try
 			{
@@ -134,6 +134,7 @@ public class TweetReplyHandler : TwitterObjects {
 
 	}
 
+	// Pull up the on screen keyboard to tweet
 	public void TweetFromKeyboard()
 	{
 		KeyboardManager.GetInputFromKeyboard(Tweet);
