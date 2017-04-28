@@ -73,8 +73,9 @@ namespace Connectome.Unity.Plugin
             }
 
             //Click
-            if (targetRate >= UserSettings.PassThreshold)
+			if (targetRate >= ClickThreshhold)
             {
+				Timeline = new Timeline<IEmotivState>();
                 if (OnClick != null)
                     OnClick.Invoke();
             }
