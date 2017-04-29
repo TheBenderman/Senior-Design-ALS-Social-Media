@@ -4,21 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// DeviceManager managers a device and a reader by making sure they run, and display proper notifications when any stops working. 
+/// It also controls Interprepter that recieve a data sample read from device by reader. 
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public abstract class DeviceManager<T> : MonoBehaviour 
 {
-    
+    #region Inspecter Attributes 
     /// <summary>
     /// Allows DeviceManager to auto start 
     /// </summary>
     public bool AutoSetup;
-
+    #endregion
+    #region Private Attributes 
     /// <summary>
-    /// Holds initialized device 
+    /// Holds device 
     /// </summary>
     private IConnectomeDevice<T> Device;
     
     /// <summary>
-    /// Holds initlized reader  
+    /// Holds reader  
     /// </summary>
     private IConnectomeReader<T> Reader;
 
@@ -27,11 +33,14 @@ public abstract class DeviceManager<T> : MonoBehaviour
     /// </summary>
     private DataSampler<T> Sampler;
 
-    private DataInterpreter<T>[] Interpeters; 
-
-    #region Unity Methods 
     /// <summary>
-    /// Sets up Device, Reader and interpeters then start interpreter coroutine 
+    /// Holds interpreters to be invoked
+    /// </summary>
+    private DataInterpreter<T>[] Interpeters;
+    #endregion
+    #region Virtual Methods 
+    /// <summary>
+    /// Sets up Device, Reader, and Sampler then start interpreters coroutine 
     /// </summary>
     public virtual void Setup()
     {
@@ -46,7 +55,11 @@ public abstract class DeviceManager<T> : MonoBehaviour
 
         StartCoroutine(InterpetationProcess());
     }
-
+    #endregion
+    #region Unity Methods 
+    /// <summary>
+    /// Auto runs Manager if  AutoSetup is checked  
+    /// </summary>
     private void Start()
     {
         if (AutoSetup)
@@ -56,7 +69,7 @@ public abstract class DeviceManager<T> : MonoBehaviour
     }
 
     /// <summary>
-    /// Insures readers is disabled
+    /// Insures reader is disabled
     /// </summary>
     void OnApplicationQuit()
     {
@@ -68,7 +81,7 @@ public abstract class DeviceManager<T> : MonoBehaviour
     #endregion
     #region Coroutine 
     /// <summary>
-    /// Coroutine that Interpret every intepreter
+    /// Coroutine that Interpret every intepreter with an allocated sample. 
     /// </summary>
     /// <returns></returns>
     IEnumerator InterpetationProcess()
@@ -85,15 +98,32 @@ public abstract class DeviceManager<T> : MonoBehaviour
         }
     }
     #endregion
-
     #region Abstarct Methods 
+    /// <summary>
+    /// Gets a Device 
+    /// </summary>
+    /// <returns>An initilized device</returns>
     protected abstract IConnectomeDevice<T> GetDevice();
+    /// <summary>
+    /// Gets a Reader 
+    /// </summary>
+    /// <returns>An initilized reader</returns>
     protected abstract IConnectomeReader<T> GetReader();
+    /// <summary>
+    /// Gets a DataSampler 
+    /// </summary>
+    /// <returns>An initilized DataSampler</returns>
     protected abstract DataSampler<T> GetSampler();
+    /// <summary>
+    /// Gets Interpreters  
+    /// </summary>
+    /// <returns>Initilized set fo interpreters</returns>
     protected abstract DataInterpreter<T>[] GetInterpreters();
     #endregion
-
     #region Validate 
+    /// <summary>
+    /// Checks of AutoSetup is enabled. 
+    /// </summary>
     private void OnValidate()
     {
         if(AutoSetup)
