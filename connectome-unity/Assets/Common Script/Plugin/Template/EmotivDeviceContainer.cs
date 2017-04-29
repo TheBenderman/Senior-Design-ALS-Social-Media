@@ -82,7 +82,7 @@ namespace Connectome.Unity.Template
 
         public override IEmotivState Read(long time)
         {
-            return Content.Read(time);
+             return Content.Read(time);
         }
         #endregion
         #region EmotivDevicePlugin Override

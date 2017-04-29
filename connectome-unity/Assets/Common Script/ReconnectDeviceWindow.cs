@@ -48,7 +48,7 @@ public class ReconnectDeviceWindow: MonoBehaviour
 	public bool Connect() 
 	{ 
 		//string err;
-		EmotivDeviceManager.Instance.DevicePlugin.Connect ();
+		//EmotivDeviceManager.Instance.DevicePlugin.Connect (); jess... -KLD
         return true;  //TODO fix this -KLD
 	}
 

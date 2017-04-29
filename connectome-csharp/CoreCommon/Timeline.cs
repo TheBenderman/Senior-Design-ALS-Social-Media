@@ -12,7 +12,7 @@ namespace Connectome.Core.Common
     /// Where to begin if time has no beginig...
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Timeline<T> : ITimeline<T> where T : class, ITime
+    public class Timeline<T> : ITimeline<T> where T : ITime
     {
         #region Private Attributes
         /// <summary>
@@ -85,7 +85,7 @@ namespace Connectome.Core.Common
         {
             if(E.Length == 0)
             {
-                return null;
+                return default(T);
             }
             T min = E[0];
             for (int i = 0; i < Length; i++)
@@ -100,7 +100,7 @@ namespace Connectome.Core.Common
         {
             if (E.Length == 0)
             {
-                return null;
+                return default(T);
             }
 
             T max = E[0]; 

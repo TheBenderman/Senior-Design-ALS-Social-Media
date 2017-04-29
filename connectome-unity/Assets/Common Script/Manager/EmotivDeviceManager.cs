@@ -1,23 +1,19 @@
-﻿using Connectome.Unity.Expection;
+﻿using Connectome.Emotiv.Interface;
+using Connectome.Unity.Expection;
 using Connectome.Unity.Template;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Connectome.Core.Interface;
 
 /// <summary>
 /// Holds Device, and Reader as well as running interpetation. 
 /// </summary>
-public class EmotivDeviceManager : MonoBehaviour
+public class EmotivDeviceManager : DeviceManager<IEmotivState>
 {
-    #region Singleton
-    public static EmotivDeviceManager Instance { get { return currentInstance;  } }
-
-    public bool AutoSetup;
-
-    private static EmotivDeviceManager currentInstance;
-    #endregion
     #region Public Inspector Attributes 
+    [Header("Emotiv Requirements")]
     /// <summary>
     /// Hold Device
     /// </summary>
@@ -27,67 +23,39 @@ public class EmotivDeviceManager : MonoBehaviour
     /// </summary>
     public EmotivReaderPlugin ReaderPlugin;
 
+    [Header("Data Process Requirements")]
     /// <summary>
-    /// Hold Interpreters.
+    /// Holds Samplers with creates samples to interpret
     /// </summary>
-    public EmotivInterpreterPlugin[] Interpreters;
+    public EmotivSampler Sampler;
+
+    /// <summary>
+    /// Holds data sample interpreters 
+    /// </summary>
+    public EmotivInterpreter[] Interpreters;  
+
     #endregion
-    #region Unity Methods 
-    /// <summary>
-    /// Sets up Device, Reader and interpeters then start interpreter coroutine 
-    /// </summary>
-    public void Setup()
+    #region DeviceManager Overrides
+    protected override IConnectomeDevice<IEmotivState> GetDevice()
     {
         DevicePlugin.Setup();
+        return DevicePlugin; 
+    }
 
+    protected override IConnectomeReader<IEmotivState> GetReader()
+    {
         ReaderPlugin.SetUp(DevicePlugin);
-
-        currentInstance = this; 
-      
-        foreach (var Intepreter in Interpreters)
-        {
-            Intepreter.Setup(DevicePlugin, ReaderPlugin);
-        }
-
-        ReaderPlugin.StartReading(); 
-
-        StartCoroutine(InterpetationProcess()); 
+        return ReaderPlugin; 
     }
 
-    private void Start()
+    protected override DataSampler<IEmotivState> GetSampler()
     {
-        if(AutoSetup)
-        {
-            Setup(); 
-        }
+        return Sampler; 
     }
 
-    /// <summary>
-    /// Insures readers is disabled
-    /// </summary>
-    void OnApplicationQuit()
+    protected override DataInterpreter<IEmotivState>[] GetInterpreters()
     {
-        if (ReaderPlugin != null && ReaderPlugin.IsReading)
-        {
-            ReaderPlugin.StopReading();
-        }
-    }
-    #endregion
-    #region Coroutine 
-    /// <summary>
-    /// Coroutine that Interpret every intepreter
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator InterpetationProcess()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(0); 
-            foreach (var Intepreter in Interpreters)
-            {
-                Intepreter.Interpret();
-            }
-        }
+        return Interpreters; 
     }
     #endregion
     #region Validation 
