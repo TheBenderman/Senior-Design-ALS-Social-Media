@@ -1,5 +1,4 @@
 ﻿using Connectome.Emotiv.Enum;
-using Connectome.Emotiv.Event;
 using Connectome.Emotiv.Interface;
 using Connectome.Unity.Template;
 using System;
@@ -82,7 +81,7 @@ namespace Connectome.KLD.Test
             }
         }
 
-        private void ListenToState(EmotivReadArgs e)
+        private void ListenToState(IEmotivState e)
         {
             try
             {
@@ -93,7 +92,7 @@ namespace Connectome.KLD.Test
 
                 //Debug.Log(e.State);
 
-                States[SessionIndex].Add(e.State);
+                States[SessionIndex].Add(e);
             }
             catch (Exception x)
             {

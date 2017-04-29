@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{222C9344-8CFB-4157-AF2F-6A340A0B373C}</ProjectGuid>
+    <ProjectGuid>{23DA381C-FC2A-4E63-8925-39B81F46953D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Connectome.Core.Common</RootNamespace>
@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoreInterface\CoreInterface.csproj">
-      <Project>{0892C23C-2CBE-4590-BBF2-F0979B360F1A}</Project>
+      <Project>{A0585961-6F2F-48B2-993F-1044B0A50160}</Project>
       <Name>CoreInterface</Name>
     </ProjectReference>
   </ItemGroup>

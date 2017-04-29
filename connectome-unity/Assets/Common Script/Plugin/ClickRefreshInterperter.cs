@@ -89,7 +89,7 @@ namespace Connectome.Unity.Plugin
         public override void Setup(IEmotivDevice Device, IEmotivReader Reader)
         {
             Timeline = new Timeline<IEmotivState>();
-            Reader.OnRead += e => Timeline.Register(e.State);
+            Reader.OnRead += e => Timeline.Register(e);
         }
         #endregion
         #region Abstract Methods

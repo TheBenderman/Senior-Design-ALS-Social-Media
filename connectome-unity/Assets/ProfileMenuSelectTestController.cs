@@ -78,16 +78,16 @@ public class ProfileMenuSelectTestController : MonoBehaviour
     /// <summary>
     /// Auto generation for the win. 
     /// </summary>
-    /// <param name="obj"></param>
-    private void ReaderOnRead(Connectome.Emotiv.Event.EmotivReadArgs obj)
+    /// <param name="state"></param>
+    private void ReaderOnRead(IEmotivState state)
     {
         if (IsRecording)
         {
             if (initTime == -1)
             {
-                initTime = obj.State.Time; 
+                initTime = state.Time; 
             }
-            StatesCSV.Add(string.Format("{0},{1},{2},{3}", LabeledFlashingHighligter.HighlightedName, obj.State.Command, obj.State.Time - initTime, obj.State.Power));
+            StatesCSV.Add(string.Format("{0},{1},{2},{3}", LabeledFlashingHighligter.HighlightedName, state.Command, state.Time - initTime, state.Power));
         }
     }
 

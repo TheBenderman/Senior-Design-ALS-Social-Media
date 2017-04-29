@@ -260,7 +260,7 @@ public class Train : BaseTrainingScreen
         }
 
         //Starts reading from the device
-        reader.OnRead += (e) => timeline.Register(e.State);
+        reader.OnRead += (e) => timeline.Register(e);
         reader.StartReading();
         incrementSlider = true;
         accuracyLogger = new CsvLogger("Accuracy.csv");

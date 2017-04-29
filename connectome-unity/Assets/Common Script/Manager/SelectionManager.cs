@@ -217,3 +217,15 @@ public class SelectionManager : MonoBehaviour
 }
 
 
+public class EventPP : SelectionMenuContainer
+{
+   public UnityEvent OnPushEvent; 
+
+    public override void Pushed()
+    {
+        base.Pushed();
+        OnPushEvent.Invoke(); 
+    }
+}
+
+

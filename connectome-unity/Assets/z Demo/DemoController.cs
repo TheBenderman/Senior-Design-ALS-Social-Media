@@ -110,7 +110,7 @@ namespace Connectome.Unity.Demo
 
             reader.OnRead += (e) =>
             {
-                if (e.State.Command == EmotivCommandType.NULL)
+                if (e.Command == EmotivCommandType.NULL)
                 {
                     return;
                 }
@@ -122,7 +122,7 @@ namespace Connectome.Unity.Demo
                 }
                 else
                 {
-                    ValuesRead[IntervalOffset = (IntervalOffset + 1 % Interval) % Interval] = e.State;
+                    ValuesRead[IntervalOffset = (IntervalOffset + 1 % Interval) % Interval] = e;
                 }
             };
 

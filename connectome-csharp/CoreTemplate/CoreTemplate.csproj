@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{219FD18E-DBD6-4BED-B337-F77753A86770}</ProjectGuid>
+    <ProjectGuid>{C5B83627-FF2B-4426-9472-3E770A70F6BE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Connectome.Core.Template</RootNamespace>
@@ -40,13 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Processor.cs" />
-    <Compile Include="Processee.cs" />
+    <Compile Include="ConnectomeDevice.cs" />
+    <Compile Include="ConnectomeReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoreInterface\CoreInterface.csproj">
-      <Project>{0892C23C-2CBE-4590-BBF2-F0979B360F1A}</Project>
+      <Project>{A0585961-6F2F-48B2-993F-1044B0A50160}</Project>
       <Name>CoreInterface</Name>
     </ProjectReference>
   </ItemGroup>

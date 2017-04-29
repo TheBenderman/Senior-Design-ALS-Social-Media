@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Connectome.Core.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Connectome.Core.Interface
+namespace Connectome.Core.Common
 {
     /// <summary>
     /// Epic data structore 
@@ -12,7 +13,7 @@ namespace Connectome.Core.Interface
     public interface ITimeline<T> : IEnumerable<T> where T : ITime
     {
         #region Property
-        long Duration { get; }
+        long Length { get; }
         #endregion
         #region Indexer
         T this[long time] {get;}

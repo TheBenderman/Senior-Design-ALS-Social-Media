@@ -7,7 +7,7 @@
     <ProjectGuid>{3EB803C1-9090-4A1C-A0E6-B1BC9471BAAA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EmotivCommon</RootNamespace>
+    <RootNamespace>Connectome.Emotiv.Common</RootNamespace>
     <AssemblyName>EmotivCommon</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -43,17 +43,19 @@
     <Compile Include="EmotivDeviceConnector.cs" />
     <Compile Include="EmotivState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Timeline.cs" />
-    <Compile Include="TimelineCurser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmotivWrapperInterface\EmotivInterface.csproj">
+    <ProjectReference Include="..\CoreInterface\CoreInterface.csproj">
+      <Project>{a0585961-6f2f-48b2-993f-1044b0a50160}</Project>
+      <Name>CoreInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EmotivEnum\EmotivEnum.csproj">
+      <Project>{8CFD3B5B-6279-4059-9FBA-B31C4472F312}</Project>
+      <Name>EmotivEnum</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EmotivInterface\EmotivInterface.csproj">
       <Project>{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}</Project>
       <Name>EmotivInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EmotivWrapper\EmotivTemplate.csproj">
-      <Project>{5B12BF1C-BD1F-4431-B2AD-617346EA198E}</Project>
-      <Name>EmotivTemplate</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

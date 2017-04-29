@@ -1,5 +1,4 @@
 ﻿using Connectome.Emotiv.Interface;
-using Connectome.Emotiv.Template;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +19,7 @@ namespace Connectome.Emotiv.Common
         public EmotivDeviceConnector(IEmotivDevice device)
         {
             Device = device;
+           
             ConnectingThread = new Thread(device.Connect); 
         }
 

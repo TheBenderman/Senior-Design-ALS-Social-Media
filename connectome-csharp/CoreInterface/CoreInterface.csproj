@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0892C23C-2CBE-4590-BBF2-F0979B360F1A}</ProjectGuid>
+    <ProjectGuid>{A0585961-6F2F-48B2-993F-1044B0A50160}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Connectome.Core.Interface</RootNamespace>
@@ -20,7 +20,7 @@
     <OutputPath>..\..\connectome-unity\Assets\Library\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -40,8 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IProcessable.cs" />
-    <Compile Include="IExecutable.cs" />
+    <Compile Include="IConnectomeDevice.cs" />
+    <Compile Include="IConnectomeReader.cs" />
     <Compile Include="ITime.cs" />
     <Compile Include="ITimeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

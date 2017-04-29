@@ -1,4 +1,5 @@
-﻿using Connectome.Emotiv.Implementation;
+﻿using Connectome.Core.Interface;
+using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Interface;
 using System.Diagnostics;
 
@@ -17,14 +18,14 @@ namespace EmotivAnalytic
             //float thresh = .5f;
             //EmotivCommandType targetCmd = EmotivCommandType.NEUTRAL; 
 
-            IEmotivReader readerPlug = new BasicEmotivReader(device);
+            IConnectomeReader<IEmotivState> readerPlug = new BasicEmotivReader(device);
 
             int waitTimeSecond = 5;
-            IEmotivReader reader = new TimedEmotivReader(readerPlug, waitTimeSecond);
+            IConnectomeReader<IEmotivState> reader = new TimedEmotivReader(readerPlug, waitTimeSecond);
 
-            reader.OnRead += (e) =>
+            reader.OnRead += (state) =>
             {
-                Debug.WriteLine(e.State);
+                Debug.WriteLine(state);
             };
            
             reader.StartReading();

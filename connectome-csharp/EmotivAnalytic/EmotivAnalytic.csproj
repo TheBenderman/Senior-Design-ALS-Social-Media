@@ -49,20 +49,28 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CoreInterface\CoreInterface.csproj">
+      <Project>{A0585961-6F2F-48B2-993F-1044B0A50160}</Project>
+      <Name>CoreInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CoreTemplate\CoreTemplate.csproj">
+      <Project>{C5B83627-FF2B-4426-9472-3E770A70F6BE}</Project>
+      <Name>CoreTemplate</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetEmotivSDK\DotNetEmotivSDK.csproj">
       <Project>{d3337309-9682-425e-8edc-2ecfacf79565}</Project>
       <Name>DotNetEmotivSDK</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EmotivImpl\EmotivImplementation.csproj">
-      <Project>{86f68af7-f66c-47ba-931b-6fd5d5c89de2}</Project>
+    <ProjectReference Include="..\EmotivImplementation\EmotivImplementation.csproj">
+      <Project>{86F68AF7-F66C-47BA-931B-6FD5D5C89DE2}</Project>
       <Name>EmotivImplementation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EmotivWrapperInterface\EmotivInterface.csproj">
+    <ProjectReference Include="..\EmotivInterface\EmotivInterface.csproj">
       <Project>{0CD4AE1F-9D98-4B82-A533-9A91ED2E77DB}</Project>
       <Name>EmotivInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EmotivWrapper\EmotivTemplate.csproj">
-      <Project>{5b12bf1c-bd1f-4431-b2ad-617346ea198e}</Project>
+    <ProjectReference Include="..\EmotivTemplate\EmotivTemplate.csproj">
+      <Project>{5B12BF1C-BD1F-4431-B2AD-617346EA198E}</Project>
       <Name>EmotivTemplate</Name>
     </ProjectReference>
   </ItemGroup>

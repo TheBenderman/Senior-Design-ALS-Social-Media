@@ -164,7 +164,7 @@ public class PowerTraining : BaseTrainingScreen {
 
         reader = new BasicEmotivReader(device, false);
 
-        reader.OnRead += (e) => powerChecker(e.State);
+        reader.OnRead += (e) => powerChecker(e);
 
         activate();
     }

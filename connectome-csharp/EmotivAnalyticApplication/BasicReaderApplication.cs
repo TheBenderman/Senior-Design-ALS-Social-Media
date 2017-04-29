@@ -1,4 +1,5 @@
-﻿using Connectome.Emotiv.Enum;
+﻿using Connectome.Core.Interface;
+using Connectome.Emotiv.Enum;
 using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Interface;
 using System;
@@ -54,14 +55,14 @@ namespace EmotivAnalyticApplication
             ReadButton.Enabled = enable; 
         }
 
-        private void StartCollecting(IEmotivReader readerPlug, int seconds)
+        private void StartCollecting(IConnectomeReader<IEmotivState> readerPlug, int seconds)
         {
             //collect date for time 
             list  = new List<IEmotivState>();
 
             IEmotivReader reader = new TimedEmotivReader(readerPlug, seconds); 
 
-            reader.OnRead += (e) => list.Add(e.State);
+            reader.OnRead += (state) => list.Add(state);
 
             ToggleButton("Reading...",false);
             reader.StartReading();

@@ -215,7 +215,7 @@ public class Streak : BaseTrainingScreen
         reader = new BasicEmotivReader(device, false);
         ssvepOn();
 
-        reader.OnRead += (e) => counter(e.State);
+        reader.OnRead += (e) => counter(e);
         activate();
     }
 
