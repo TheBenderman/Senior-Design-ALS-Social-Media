@@ -64,7 +64,7 @@ public class CommandRateEmotivInterpreter : EmotivInterpreter
             ReachThreshholdSlider.value = ReachRate;
         }
         float Rate = ((float)sample.Where(s => s.Command == TargetCommand).Count()) / sample.Count();
-        Debug.Log(sample.Count());
+        
         if (sample.Count() < MaxSampleSizeScaler)
         {
             Rate *= ((float)sample.Count()) / MaxSampleSizeScaler;

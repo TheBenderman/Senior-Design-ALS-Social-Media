@@ -44,9 +44,33 @@ public class KeyboardMenuContainer : KeyboardTemplate
 
     public override void Pushed()
     {
-        base.Pushed();
         Menu.Pushed(); 
         InputField.text = ""; 
+    }
+
+    public override void Popped()
+    {
+        Menu.Popped(); 
+    }
+
+    public override void Paused()
+    {
+        Menu.Paused(); 
+    }
+
+    public override void Resumed()
+    { 
+        Menu.Resumed(); 
+    }
+
+    public override void Dismissed()
+    {
+        Menu.Dismissed();
+    }
+
+    public override void Displayed()
+    {
+        Menu.Displayed();
     }
     #endregion
     #region Validate 

@@ -32,9 +32,17 @@ namespace Connectome.Unity.Plugin
         {
             if (DeviceInstance == null)
             { 
-                 DeviceInstance = new EPOCEmotivDevice(Username, Password, Profile);
+                DeviceInstance = new EPOCEmotivDevice(Username, Password, Profile);
+
+                DeviceInstance.OnConnectAttempted += DebugStatus; 
             }
             return DeviceInstance;
+        }
+        #endregion
+        #region Private Functions 
+        private void DebugStatus(bool suc, string msg)
+        {
+            Debug.Log("EPOC Connection Status: " + suc + ". Reason: " + msg);
         }
         #endregion
     }
