@@ -44,12 +44,14 @@ public class KeyboardMenuContainer : KeyboardTemplate
 
     public override void Pushed()
     {
+        base.Pushed(); 
         Menu.Pushed(); 
         InputField.text = ""; 
     }
 
     public override void Popped()
     {
+        base.Popped(); 
         Menu.Popped(); 
     }
 

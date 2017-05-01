@@ -53,7 +53,6 @@ namespace Connectome.Unity.UI
 
             //go to position 
             transform.SetParent(dad);
-            GetRect().position = go.transform.position;
         }
 
         /// <summary>
