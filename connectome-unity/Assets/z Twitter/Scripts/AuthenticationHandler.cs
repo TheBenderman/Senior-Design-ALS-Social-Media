@@ -135,13 +135,7 @@ public class AuthenticationHandler : TwitterObjects
 			PlayerPrefs.SetString("Access Token", "");
 			PlayerPrefs.SetString("Access Secret", "");
 
-			if (e.Message.Contains ("Status is a duplicate")) {
-				connectomeErrorText.text = "Failed to tweet: Duplicate status!";
-			} else {
-				connectomeErrorText.text = "Something went wrong with your authorization. Please authorize this application for Twitter again.";
-			}
-
-			navigateToTwitterAuthPage();
+			checkErrorCodes (e);
 		}
 	}
 
@@ -158,16 +152,45 @@ public class AuthenticationHandler : TwitterObjects
 			PlayerPrefs.SetString("Access Token", "");
 			PlayerPrefs.SetString("Access Secret", "");
 
-			if (e.Message.Contains ("Status is a duplicate")) {
-				connectomeErrorText.text = "Failed to tweet: Duplicate status!";
-			} else {
-				connectomeErrorText.text = "Something went wrong with your authorization. Please authorize this application for Twitter again.";
-			}
-
-			navigateToTwitterAuthPage();
+			checkErrorCodes (e);
 		}
 
 		return default(T);
+	}
+
+	private void checkErrorCodes(Exception e)
+	{
+		if (e.Message.Contains ("Status is a duplicate")) {
+			connectomeErrorText.text = "Failed to tweet: Duplicate status!";
+			return;
+		} else if (e.Message.Contains ("Could not authenticate you")) {
+			connectomeErrorText.text = "Unable to authenticate you. Please try to log in again.";
+		} else if (e.Message.Contains ("User has been suspended")) {
+			connectomeErrorText.text = "Your account has been temporarily suspended. Please try again later.";
+		} else if (e.Message.Contains ("Rate limit exceeded.")) {
+			connectomeErrorText.text = "Sorry! We are experiencing heavy traffic. Please try again in a bit.";
+			return;
+		} else if (e.Message.Contains ("Invalid or expired token")) {
+			connectomeErrorText.text = "Your session timed out. Please log back in.";
+		} else if (e.Message.Contains ("Unable to verify your credentials")) {
+			connectomeErrorText.text = "Invalid credentials. Please try again.";
+		} else if (e.Message.Contains ("Over capacity")) {
+			connectomeErrorText.text = "Twitter is temporarily over capacity. Please try again later.";
+		} else if (e.Message.Contains ("You are unable to follow more people at this time")) {
+			connectomeErrorText.text = "Sorry you can't follow this person at this time.";
+			return;
+		} else if (e.Message.Contains ("User is over daily status update limit")) {
+			connectomeErrorText.text = "Sorry you have posted too many times today. Please try again tomorrow.";
+			return;
+		} else if (e.Message.Contains ("The text of your direct message is over the max character limit")) {
+			connectomeErrorText.text = "Your message is too long! Please try a shorter status.";
+			return;
+		}
+		else {
+			connectomeErrorText.text = "Something went wrong with your authorization. Please authorize this application for Twitter again.";
+		}
+
+		navigateToTwitterAuthPage();
 	}
 
 }
