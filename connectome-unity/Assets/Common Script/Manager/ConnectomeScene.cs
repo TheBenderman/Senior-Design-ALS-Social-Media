@@ -3,6 +3,7 @@ using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Interface;
 using Connectome.Unity.Expection;
 using Connectome.Unity.Keyboard;
+using Connectome.Unity.Manager;
 using Connectome.Unity.Plugin;
 using Connectome.Unity.UI;
 using System;
@@ -47,6 +48,7 @@ public class ConnectomeScene : MonoBehaviour
         }
         catch (NullEmotivDeviceException)
         {
+            LoginPanel.OnDismiss -= Start;
             LoginPanel.OnDismiss += Start; 
             DisplayManager.Display(LoginPanel); 
             return; 
@@ -56,7 +58,6 @@ public class ConnectomeScene : MonoBehaviour
         ///Configure layout 
         if (ApplyUserSettings)
         {
-            //adjust as proper
             MainConfig();
         }
         ///Start selecting 

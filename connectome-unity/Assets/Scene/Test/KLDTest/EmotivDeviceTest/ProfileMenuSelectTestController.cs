@@ -2,7 +2,6 @@
 using Connectome.Unity.Template;
 using System.Collections;
 using System.Collections.Generic;
-using Connectome.Unity.EmotivStateExtensions;
 using Connectome.Unity.UI;
 using UnityEngine.Events;
 
