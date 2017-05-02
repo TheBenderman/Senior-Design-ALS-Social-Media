@@ -27,6 +27,13 @@ public class CommandRateEmotivInterpreter : EmotivInterpreter
     /// </summary>
     public EmotivCommandType TargetCommand;
 
+    [Header("Temporary")]
+    public bool Reduction;
+    [Header("Read-Only")]
+    /// <summary>
+    /// Holds and keeps track of maximum sample size. 
+    /// </summary>
+    public int MaxSampleSizeScaler = 40; //TODO temporarly 
     [Header("Events")]
     /// <summary>
     /// Invoked when analized data reach ReachRate. 
@@ -47,10 +54,6 @@ public class CommandRateEmotivInterpreter : EmotivInterpreter
     public Slider ReachThreshholdSlider;
     #endregion
     #region Private Attributes 
-    /// <summary>
-    /// Holds and keeps track of maximum sample size. 
-    /// </summary>
-    private int MaxSampleSizeScaler = 40;
     #endregion
     #region DataInterpreter Override  
     /// <summary>
@@ -63,9 +66,10 @@ public class CommandRateEmotivInterpreter : EmotivInterpreter
         {
             ReachThreshholdSlider.value = ReachRate;
         }
+
         float Rate = ((float)sample.Where(s => s.Command == TargetCommand).Count()) / sample.Count();
         
-        if (sample.Count() < MaxSampleSizeScaler)
+        if (Reduction && (sample.Count() < MaxSampleSizeScaler))
         {
             Rate *= ((float)sample.Count()) / MaxSampleSizeScaler;
         }
