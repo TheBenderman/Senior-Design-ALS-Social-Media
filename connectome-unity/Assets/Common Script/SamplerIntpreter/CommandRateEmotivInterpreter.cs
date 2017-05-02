@@ -103,7 +103,7 @@ public class CommandRateEmotivInterpreter : EmotivInterpreter
     /// <summary>
     /// Updates ReachRate on it's Slider within the scene. 
     /// </summary>
-    private void OnValidate()
+    public void OnValidate()
     {
         if (ReachThreshholdSlider != null)
         {

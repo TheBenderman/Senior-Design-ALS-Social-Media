@@ -13,6 +13,7 @@ public enum BatteryLevel
 {
     LOW,
     MEDIUM,
+    HIGH,
     FULL
 }
 

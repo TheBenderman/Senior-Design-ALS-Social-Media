@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 namespace Connectome.Unity.UI
 {
+    /// <summary>
+    /// Displays Device's states as Images 
+    /// </summary>
     public class DeviceStatusbar : MonoBehaviour
     {
         [Header("Target Components")]
@@ -12,25 +15,41 @@ namespace Connectome.Unity.UI
         public Image BatteryImage;
         public Image InputRateImage;
 
+        [Header("Status Sprites (Ascending Order)")]
         public Sprite[] WirelessSprites;
         public Sprite[] BatterySprites;
         public Sprite[] InputRateSprites;
 
+        /// <summary>
+        /// Updates wireless signal strength sprite 
+        /// </summary>
+        /// <param name="wirelessLevel"></param>
         public void UpdateWirelessSignalStrength(WirelessSignalStrengthLevel wirelessLevel)
         {
             WirelessImage.sprite = WirelessSprites[(int)wirelessLevel];
         }
 
+        /// <summary>
+        /// Updates battery level strength sprite 
+        /// </summary>
+        /// <param name="batteryLevel"></param>
         public void UpdateBatteryLevel(BatteryLevel batteryLevel)
         {
             BatteryImage.sprite = BatterySprites[(int)batteryLevel];
         }
 
+        /// <summary>
+        /// Updates input level strength sprite 
+        /// </summary>
+        /// <param name="inputLevel"></param>
         public void UpdateInputRate(InputRateLevel inputLevel)
         {
             InputRateImage.sprite = InputRateSprites[(int)inputLevel];
         }
 
+        /// <summary>
+        /// Validates image components and sprites. 
+        /// </summary>
         private void OnValidate()
         {
             if (WirelessImage == null)
