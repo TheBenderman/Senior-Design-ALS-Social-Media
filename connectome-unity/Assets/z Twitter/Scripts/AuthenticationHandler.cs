@@ -15,7 +15,6 @@ public class AuthenticationHandler : TwitterObjects
 	public GameObject loginObjects;
 	public Text authenticationURL;
 	public Text userMessage;
-	public Text errorMessage;
 	public InputField userInput;
 	public Button submitButton;
 	public string loginPage = "loginObjects";
@@ -72,7 +71,7 @@ public class AuthenticationHandler : TwitterObjects
 		// make sure the user has entered a pin code
 		if (string.IsNullOrEmpty(pinCode))
 		{
-			errorMessage.text = "Please input a value for the pin code!";
+			connectomeErrorText.text = "Please input a value for the pin code!";
 			return;
 		}
 
@@ -92,7 +91,7 @@ public class AuthenticationHandler : TwitterObjects
 		}
 		else
 		{
-			errorMessage.text = "Please input a value for the pin code!";
+			connectomeErrorText.text = "Please input a value for the pin code!";
 		}
 	}
 
@@ -131,12 +130,16 @@ public class AuthenticationHandler : TwitterObjects
 		{
 			apiFunction();
 		}
-		catch (Exception)
+		catch (Exception e)
 		{
 			PlayerPrefs.SetString("Access Token", "");
 			PlayerPrefs.SetString("Access Secret", "");
 
-			errorMessage.text = "Something went wrong with your authorization. Please authorize this application for Twitter again.";
+			if (e.Message.Contains ("Status is a duplicate")) {
+				connectomeErrorText.text = "Failed to tweet: Duplicate status!";
+			} else {
+				connectomeErrorText.text = "Something went wrong with your authorization. Please authorize this application for Twitter again.";
+			}
 
 			navigateToTwitterAuthPage();
 		}
@@ -150,14 +153,16 @@ public class AuthenticationHandler : TwitterObjects
 		{
 			return apiFunction();
 		}
-		catch (Exception te)
+		catch (Exception e)
 		{
 			PlayerPrefs.SetString("Access Token", "");
 			PlayerPrefs.SetString("Access Secret", "");
 
-			errorMessage.text = "Something went wrong with your authorization. Please authorize this application for Twitter again.";
-
-			Debug.Log (te.ToString ());
+			if (e.Message.Contains ("Status is a duplicate")) {
+				connectomeErrorText.text = "Failed to tweet: Duplicate status!";
+			} else {
+				connectomeErrorText.text = "Something went wrong with your authorization. Please authorize this application for Twitter again.";
+			}
 
 			navigateToTwitterAuthPage();
 		}
