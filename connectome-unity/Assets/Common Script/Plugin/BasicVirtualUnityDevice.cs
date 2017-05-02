@@ -52,6 +52,22 @@ namespace Connectome.Unity.Plugin
                 return true;
             }
         }
+
+        public override int BatteryLevel
+        {
+            get
+            {
+                return 100; 
+            }
+        }
+
+        public override int WirelessSignalStrength
+        {
+            get
+            {
+                return 2; 
+            }
+        }
         #endregion
         #region IEmotivDevice Events
 

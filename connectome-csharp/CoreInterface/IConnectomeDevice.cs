@@ -5,10 +5,27 @@ using System.Text;
 
 namespace Connectome.Core.Interface
 {
+    /// <summary>
+    /// Represent a device that can connect, and generate a state of data
+    /// </summary>
+    /// <typeparam name="T">Data type tobe read</typeparam>
     public interface IConnectomeDevice<T>
     {
         #region Get Properties 
+        /// <summary>
+        /// Indecates whether a decive is connected. 
+        /// </summary>
         bool IsConnected { get; }
+
+        /// <summary>
+        /// Indecates battery level 
+        /// </summary>
+        int BatteryLevel { get; }
+
+        /// <summary>
+        /// Indecates Wireless signal strength 
+        /// </summary>
+        int WirelessSignalStrength { get; }
         #endregion
         #region Events 
         /// <summary>

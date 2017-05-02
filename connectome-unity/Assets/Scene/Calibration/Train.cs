@@ -24,7 +24,6 @@ public class Train : BaseTrainingScreen
     private long[][] timelineCheckPoints;
     private Boolean incrementSlider;
     private Boolean secondTime = false;
-    private Boolean complete;
     private LoggerInterface accuracyLogger;
     private LoggerInterface accuracyFalsePositiveLogger;
 
@@ -127,9 +126,8 @@ public class Train : BaseTrainingScreen
                 int[][] data = analyzeData();
                 setAccuracyResultText(data[0], data[1]);
                 collectData = false;
-                complete = true;
 
-            }  
+            }
         }
 
     }
@@ -242,7 +240,6 @@ public class Train : BaseTrainingScreen
     void setup()
     {
         slider.maxValue = Start_Screen.sliderLength;
-        complete = false;
 
         reader = new BasicEmotivReader(device, false);
         Application.runInBackground = true;

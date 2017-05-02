@@ -14,31 +14,50 @@ namespace Connectome.Emotiv.Implementation
     public class EPOCEmotivDevice : EmotivDevice
     {
         #region Private Attributes 
+        /// <summary>
+        /// Holds buffered emotiv event id 
+        /// </summary>
         private IntPtr eEvent;
+
+        /// <summary>
+        /// Holds emotiv device connection state 
+        /// </summary>
         private IntPtr eState;
 
+        /// <summary>
+        /// Holds emotiv account username 
+        /// </summary>
         private string username;
+        
+        /// <summary>
+        /// Holds emotiv account password 
+        /// </summary>
         private string password;
+
+        /// <summary>
+        /// Holds emotiv account profile which contains a trained profile. 
+        /// </summary>
         private string profileName;
         #endregion
         #region Constructors
-        public EPOCEmotivDevice()
-        {
-            this.username = string.Empty;
-            this.password = string.Empty;
-            this.profileName = string.Empty;
-        }
-
+        /// <summary>
+        /// Creates a device with the appropriate login credentials.   
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="profileName"></param>
         public EPOCEmotivDevice(string username, string password, string profileName)
         {
-           this.username =  username;
-           this.password =  password;
-           this.profileName = profileName;
+            this.username = username;
+            this.password = password;
+            this.profileName = profileName;
         }
         #endregion
         #region Overrides
         protected override bool ConnectionSetUp(out string errorMessage)
         {
+            UpdateBatteryLevel();
+            UpdateWirelessSigmalStrength(); 
             string userName = this.username;
             string password = this.password;
             string profileName = this.profileName;
@@ -52,7 +71,7 @@ namespace Connectome.Emotiv.Implementation
 
             if (EdkDll.IEE_EngineConnect("Emotiv Systems-5") != EdkDll.EDK_OK)
             {
-               errorMessage = "Emotiv Engine start up failed.";
+                errorMessage = "Emotiv Engine start up failed.";
                 return false;
             }
 
@@ -75,7 +94,7 @@ namespace Connectome.Emotiv.Implementation
 
             if (EmotivCloudClient.EC_GetUserDetail(ref userCloudID) != EmotivCloudClient.EC_OK)
             {
-                errorMessage = "Unable to get user details"; 
+                errorMessage = "Unable to get user details";
                 return false;
             }
 
@@ -113,7 +132,7 @@ namespace Connectome.Emotiv.Implementation
                 //Debug.WriteLine(profileID);
                 if (EmotivCloudClient.EC_LoadUserProfile(userCloudID, (int)engineUserID, profileID, version) == EmotivCloudClient.EC_OK)
                 {
-                   // Debug.WriteLine("Loading finished" + EmotivCloudClient.EC_GetAllProfileName(userCloudID));
+                    // Debug.WriteLine("Loading finished" + EmotivCloudClient.EC_GetAllProfileName(userCloudID));
                 }
                 else
                 {
@@ -134,7 +153,7 @@ namespace Connectome.Emotiv.Implementation
 
             errorMessage = "Profile " + profileName + " was loaded and device connected!";
 
-            return true; 
+            return true;
         }
 
         protected override bool DisconnectionSetUp(out string msg)
@@ -149,23 +168,26 @@ namespace Connectome.Emotiv.Implementation
                 }
                 else
                 {
-                    msg = "Device is not connected"; 
+                    msg = "Device is not connected";
                     return true;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 msg = e.ToString();
-                return false; 
+                return false;
             }
             msg = "success";
-            return true; 
+            return true;
         }
 
         public override IEmotivState AttemptRead(long time)
         {
+            UpdateBatteryLevel();
+            UpdateWirelessSigmalStrength();
+
             int state = EdkDll.IEE_EngineGetNextEvent(eEvent);
-           
+
             if (state == EdkDll.EDK_OK)
             {
                 var eventType = EdkDll.IEE_EmoEngineEventGetType(eEvent);
@@ -178,11 +200,34 @@ namespace Connectome.Emotiv.Implementation
                     EdkDll.IEE_MentalCommandAction_t currentAction = EdkDll.IS_MentalCommandGetCurrentAction(eState);
                     float currentPower = EdkDll.IS_MentalCommandGetCurrentActionPower(eState);
 
-                    return new EmotivState((EmotivCommandType)currentAction, currentPower, time );
+                    return new EmotivState((EmotivCommandType)currentAction, currentPower, time);
                 }
             }
 
             return new EmotivState(EmotivCommandType.NULL, 0f, time);
+        }
+        #endregion
+        #region Private Methods
+        /// <summary>
+        /// Update battery level variables
+        /// </summary>
+        private void UpdateBatteryLevel()
+        {
+            int maxLevel, batteryLevel;
+            EdkDll.IS_GetBatteryChargeLevel(this.eState, out batteryLevel, out maxLevel);
+
+            this.BatteryLevel = batteryLevel;
+
+        }
+
+        /// <summary>
+        /// Update wireless signal strength variable 
+        /// </summary>
+        private void UpdateWirelessSigmalStrength()
+        {
+            EdkDll.IEE_SignalStrength_t s = EdkDll.IS_GetWirelessSignalStatus(this.eState);
+
+            this.WirelessSignalStrength = (int)s; 
         }
         #endregion
     }

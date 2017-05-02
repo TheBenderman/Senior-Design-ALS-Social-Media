@@ -21,7 +21,6 @@ public class PowerTraining : BaseTrainingScreen {
     private Boolean passedTest;
     private Boolean started;
     private Boolean secondRun = false;
-    private Boolean complete;
     private Boolean waitSecond = true;
 
     public Text maxPower;
@@ -156,7 +155,6 @@ public class PowerTraining : BaseTrainingScreen {
         highscore = 0;
         passedTest = false;
         started = false;
-        complete = false;
 
         slider.maxValue = Start_Screen.sliderLength;
         Application.runInBackground = true;

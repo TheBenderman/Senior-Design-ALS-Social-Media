@@ -24,6 +24,22 @@ namespace Connectome.Unity.Template
             }
         }
 
+        public override int BatteryLevel
+        {
+            get
+            {
+                return Content.BatteryLevel;
+            }
+        }
+
+        public override int WirelessSignalStrength
+        {
+            get
+            {
+                return Content.WirelessSignalStrength;
+            }
+        }
+
         public override event Action OnConnectAttempt
         {
             add

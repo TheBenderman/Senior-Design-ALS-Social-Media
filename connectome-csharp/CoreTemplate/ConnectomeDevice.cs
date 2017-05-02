@@ -8,20 +8,12 @@ namespace Connectome.Core.Template
 {
     public abstract class ConnectomeDevice<T>  : IConnectomeDevice<T>
     {
-        #region Private Attributes 
-        /// <summary>
-        /// Hold connection value. 
-        /// </summary>
-        private bool Connected;
-        #endregion
         #region IEmotivDevice Public Attributes
-        public bool IsConnected
-        {
-            get
-            {
-                return Connected;
-            }
-        }
+        public bool IsConnected { protected set; get; }
+
+        public int BatteryLevel { protected set; get; }
+
+        public int WirelessSignalStrength { protected set; get; }
         #endregion
         #region IEmotivDevice Public Methods
         /// <summary>
@@ -37,7 +29,7 @@ namespace Connectome.Core.Template
 
             OnConnectAttempted?.Invoke(suc, msg);
 
-            Connected = suc;
+            IsConnected = suc;
         }
 
         /// <summary>
@@ -52,7 +44,7 @@ namespace Connectome.Core.Template
 
             OnDisconnectAttempted?.Invoke(suc, msg);
 
-            Connected = !suc;
+            IsConnected = !suc;
         }
 
         #endregion

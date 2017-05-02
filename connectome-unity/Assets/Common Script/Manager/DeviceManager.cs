@@ -37,6 +37,11 @@ public abstract class DeviceManager<T> : MonoBehaviour
     /// Holds interpreters to be invoked
     /// </summary>
     private DataInterpreter<T>[] Interpeters;
+
+    /// <summary>
+    /// Counts total states read 
+    /// </summary>
+    private int TotalStatesRead; 
     #endregion
     #region Virtual Methods 
     /// <summary>
@@ -50,6 +55,7 @@ public abstract class DeviceManager<T> : MonoBehaviour
         Interpeters = GetInterpreters(); 
 
         Reader.OnRead += Sampler.Register;
+        Reader.OnRead += (s) => TotalStatesRead++;
 
         Reader.StartReading(); 
 

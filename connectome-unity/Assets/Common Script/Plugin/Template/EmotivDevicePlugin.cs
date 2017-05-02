@@ -13,6 +13,8 @@ namespace Connectome.Unity.Template
     {
         #region IEmotivDevice Abstract
         public abstract bool IsConnected { get; }
+        public abstract int BatteryLevel { get; }
+        public abstract int WirelessSignalStrength { get; }
 
         public abstract event Action OnConnectAttempt;
         public abstract event Action<bool, string> OnConnectAttempted;

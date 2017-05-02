@@ -11,6 +11,9 @@ namespace Connectome.Core.Interface
     /// </summary>
     public interface ITime
     {
+        /// <summary>
+        /// Holds time
+        /// </summary>
         long Time { get; }
     }
 }
