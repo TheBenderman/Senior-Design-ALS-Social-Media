@@ -30,19 +30,33 @@ public class BasicReadings
 			
 				//Leave
 				Emotiv emotiv = new Emotiv();
-				final long initTime = System.currentTimeMillis(); 
 				
 		        final EmotivSession session = new EmotivSession();
 		        final Condition condition = new ReentrantLock().newCondition();
 	
 		        emotiv.addEmotivListener(new EmotivListener() 
 		        {
+		        	long initTime = -1; 
+		        	long previousTime = 0; 
+		        	
 		        	public void receivePacket(Packet packet) 
 		        	{
+		        		if(initTime == -1)
+		        		{
+		        			initTime = packet.GetTimeStamp(); 
+		        		}
+		        		
+		        		long currentTime = packet.GetTimeStamp() - initTime; 
+		        		while(previousTime >= currentTime)
+		        		{
+		        			currentTime++; 
+		        		}
+		        		
 		                EmotivDatum datum = EmotivDatum.fromPacket(packet);
 		                datum.setSession(session);
-		                //System.out.println(datum.toString());
-		                build += (System.currentTimeMillis() - initTime) +","+ datum.toString() + "\n"; 
+		                
+		                build +=  currentTime +","+ datum.toString() + "\n"; 
+		                previousTime = currentTime; 
 		            }
 
 		            public void connectionBroken() 

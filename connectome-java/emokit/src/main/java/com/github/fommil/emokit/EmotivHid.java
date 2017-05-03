@@ -174,9 +174,9 @@ final class EmotivHid implements Closeable {
         	}
         	try
         	{
-        	System.out.print(ii.getProduct_string());
-        	System.out.print(", Vendor Id= " + ii.getVendor_id());
-        	System.out.println(", Product Id= " + ii.getProduct_id());
+	        	System.out.print(ii.getProduct_string());
+	        	System.out.print(", Vendor Id= " + ii.getVendor_id());
+	        	System.out.println(", Product Id= " + ii.getProduct_id());
         	}
         	catch(Exception e)
         	{
@@ -207,7 +207,10 @@ final class EmotivHid implements Closeable {
         	}
         	catch (Exception e)
         	{
-        		dev.close();
+        		if(dev  != null)
+        		{
+        			dev.close(); 
+        		}
         	}
         }
         

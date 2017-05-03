@@ -167,6 +167,9 @@ public final class Packet implements Comparable<Packet> {
         return builder.toString();
     }
 
+    public long GetTimeStamp(){
+    	return timestamp; 
+    }
   
     public int compareTo(Packet o) {
         return (int)(timestamp - o.timestamp);
