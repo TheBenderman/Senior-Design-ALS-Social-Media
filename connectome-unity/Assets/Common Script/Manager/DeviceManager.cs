@@ -100,7 +100,7 @@ namespace Connectome.Unity.Manager
             }
         }
         #endregion
-        #region Coroutine 
+        #region Coroutines 
         /// <summary>
         /// Coroutine that Interpret every intepreter with an allocated sample. 
         /// </summary>
@@ -127,7 +127,7 @@ namespace Connectome.Unity.Manager
         {
             while (true)
             {
-                yield return new WaitForSeconds(0.25f);
+                yield return new WaitForSeconds(0.33f);
                 if (StatusBar != null)
                 {
                     StatusBar.UpdateWirelessSignalStrength(ConvertWirelessStrength(Device.WirelessSignalStrength));
@@ -136,7 +136,6 @@ namespace Connectome.Unity.Manager
                     StatusBar.UpdateInputRate(ConvertInputRateLevel(TotalStatesRead - PreviousInputRate));
                 }
                     PreviousInputRate = TotalStatesRead;
-                
             }
         }
 

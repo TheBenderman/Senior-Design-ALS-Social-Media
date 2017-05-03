@@ -88,7 +88,7 @@ namespace Connectome.Unity.Manager
         /// <returns></returns>
         protected override BatteryLevel ConvertBatteryLevel(int batteryLevel)
         {
-            //TODO not sure what value is recieved from emotiv
+            //TODO out of hand. the value will always be -1 
             if (batteryLevel <= 33)
             {
                 return BatteryLevel.LOW;
@@ -110,20 +110,12 @@ namespace Connectome.Unity.Manager
         /// <returns></returns>
         protected override InputRateLevel ConvertInputRateLevel(int inputRate)
         {
-            //Debug.Log(inputRate)
-            //Not sure whats the stable input rate 
-            if (inputRate <= 2)
-            {
-                return InputRateLevel.UNUSABLE;
-            }
-            else if (inputRate <= 5)
-            {
-                return InputRateLevel.BAD;
-            }
-            else
+            if (inputRate >= 2)
             {
                 return InputRateLevel.GOOD;
             }
+
+            return (InputRateLevel) inputRate; 
         }
         #endregion
         #region Validation 
