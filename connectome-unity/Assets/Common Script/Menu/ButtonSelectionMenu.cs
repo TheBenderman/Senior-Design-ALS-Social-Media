@@ -32,7 +32,7 @@ namespace Connectome.Unity.Menu
         /// <returns>A SelectionMenu within invoked button if exist</returns>
         public override ISelectionMenu InvokeSelected()
         {
-            if(Pointer == -1)
+            if(Pointer == -1 || Pointer >= Selection.Length)
             {
                 return null; 
             }

@@ -11,21 +11,20 @@ namespace Connectome.Unity.UI {
 
 		public override void Highlight(GameObject go) 
 		{
-			Highlighter.Highlight(go);
-			// Highlight the parent of the current object.
 			ParentHighlighter.Highlight (go.transform.parent.gameObject);
+			Highlighter.Highlight(go);
 		}
 
 		public override void EnableHighlight() 
 		{
-			Highlighter.EnableHighlight();
 			ParentHighlighter.EnableHighlight ();
+			Highlighter.EnableHighlight();
 		}
 
 		public override void DisableHighlight() 
 		{
-			Highlighter.DisableHighlight();
 			ParentHighlighter.DisableHighlight ();
+			Highlighter.DisableHighlight();
 		}
 
 		private void OnValidate()
