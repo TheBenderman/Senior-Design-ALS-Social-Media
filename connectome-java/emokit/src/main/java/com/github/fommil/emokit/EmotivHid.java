@@ -168,26 +168,47 @@ final class EmotivHid implements Closeable {
         
         for(HIDDeviceInfo ii : infos)
         {
+        	if(ii == null)
+        	{
+        		continue; 
+        	}
+        	try
+        	{
+        	System.out.print(ii.getProduct_string());
+        	System.out.print(", Vendor Id= " + ii.getVendor_id());
+        	System.out.println(", Product Id= " + ii.getProduct_id());
+        	}
+        	catch(Exception e)
+        	{
+        		System.out.println("Unable to get device info");
+        	}
+        	System.out.println("Opening device");
         	HIDDevice dev = ii.open(); 
-        	
-        	if(ii.getProduct_string().equals("EEG Signals"))
-			{
-        		if(dev == null)
-        		{
-        			System.out.println("Null");
-        		}
-        		System.out.println(ii.toString());
-        		research = true; 
-        		//byte[] report = new byte[9];
-                //int size = dev.getFeatureReport(report);
-                //byte[] result = Arrays.copyOf(report, size);
-        		 System.out.println(format("Found (%s) %s [%s] with report",
-                         dev.getManufacturerString(),
-                         dev.getProductString(),
-                         dev.getSerialNumberString()));
-                         //Arrays.toString(result)));
-        		return dev; 
-			}
+        	try
+        	{
+	        	if(ii.getProduct_string().equals("EEG Signals"))
+				{
+	        		if(dev == null)
+	        		{
+	        			System.out.println("Null");
+	        		}
+	        		//System.out.println(ii.toString());
+	        		research = true; 
+	        		//byte[] report = new byte[9];
+	                //int size = dev.getFeatureReport(report);
+	                //byte[] result = Arrays.copyOf(report, size);
+	        		 System.out.println(format("Found (%s) %s [%s] with report",
+	                         dev.getManufacturerString(),
+	                         dev.getProductString(),
+	                         dev.getSerialNumberString()));
+	                         //Arrays.toString(result)));
+	        		return dev; 
+				}
+        	}
+        	catch (Exception e)
+        	{
+        		dev.close();
+        	}
         }
         
         /*List<HIDDeviceInfo> infos = findDevices(VENDOR_ID, PRODUCT_ID);
@@ -220,7 +241,7 @@ final class EmotivHid implements Closeable {
             }
         }
         */
-        throw new HIDDeviceNotFoundException("Send all this information to https://github.com/fommil/emokit-java/issues and let us know if you have the 'research' or 'consumer' product.");
+        throw new HIDDeviceNotFoundException("I suck");
    
     }
 
