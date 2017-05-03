@@ -30,7 +30,6 @@ public class TimeLineHandler : TwitterObjects
     public string timelineTitle = "Timeline";
     public string convoTitle = "Conversation";
     public string homeTimeLineObjectsString = "homeTimeLineObjects";
-	public Text timelineErrorText;
 
     private Status currentTweet = null;
     public Text TitleView;
@@ -54,9 +53,7 @@ public class TimeLineHandler : TwitterObjects
     public void addHomeTimeLine()
     {
         try
-        {
-			addErrorFieldListeners();
-
+		{
             // Set all objects to be invisible except those related to the timeline.
             setActiveObject(homeTimeLineObjectsString);
 
@@ -78,29 +75,6 @@ public class TimeLineHandler : TwitterObjects
             Debug.Log(e.Message);
         }
     }
-		
-	public void addErrorFieldListeners()
-	{
-		// Whenever these buttons are clicked, clear the text of the error field
-		lastTweetButton.onClick.AddListener(() => {
-			timelineErrorText.text = "";
-		});
-		homeButton.onClick.AddListener(() => {
-			timelineErrorText.text = "";
-		});
-		retweetButton.onClick.AddListener(() => {
-			timelineErrorText.text = "";
-		});
-		imagesButton.onClick.AddListener(() => {
-			timelineErrorText.text = "";
-		});
-		privateMessageButton.onClick.AddListener(() => {
-			timelineErrorText.text = "";
-		});
-		nextTweetButton.onClick.AddListener(() => {
-			timelineErrorText.text = "";
-		});
-	}
 
     // This function sets the current tweet for the user.
     public void setTweet(Status tweet)
@@ -270,11 +244,11 @@ public class TimeLineHandler : TwitterObjects
 		while (attempts-- > 0) {
 			try {
 				authHandler.makeTwitterAPICallNoReturnVal (() => authHandler.Interactor.createDM (currentTweet.User.ScreenName, msg)); // send the message to the user
-				timelineErrorText.text = "Messaged!";
+				connectomeErrorText.text = "Messaged!";
 				attempts = 0;
 			} catch (Exception e) {
 				if (attempts == 0) {
-					timelineErrorText.text = "Failed to message: Connection error. Please check your internet.";
+					connectomeErrorText.text = "Failed to message: Connection error. Please check your internet.";
 						
 					Debug.Log ("Failed to message " + e);
 				}
@@ -300,27 +274,9 @@ public class TimeLineHandler : TwitterObjects
 		{
 			currentStatus = convoHandler.conversationtimelineStatuses [convoHandler.currentTweet];
 		}
-
-		try
-		{
-			authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.Id, msg));
-			timelineErrorText.text = "Replied to user!";
-		}
-		catch (Exception e)
-		{
-			if (e.Message.Contains("Status is a duplicate"))
-			{
-				timelineErrorText.text = "Failed to tweet: Duplicate status!";
-			}
-			else
-			{
-				timelineErrorText.text = "Failed to tweet: Connection error. Fix your internet";
-			}
-
-			Debug.Log("Failed to tweet " + e);
-		}
-
-
+			
+		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.Id, msg));
+		connectomeErrorText.text = "Replied to user!";
 	}
 
 	// This function brings the user to a screen that allows them to reply to a tweet.

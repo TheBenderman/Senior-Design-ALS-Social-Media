@@ -27,7 +27,6 @@ public class DirectMessageHandler : TwitterObjects {
     public Button BackToUsersDM;
     public Text DMTitle;
     public List<GameObject> messageObjects;
-	public Text DMStatus;
 
     private List<DirectMessage> directMessages;
 	private User currentUser;
@@ -241,17 +240,8 @@ public class DirectMessageHandler : TwitterObjects {
 	// Function to contact the twitter api to message a user.
 	public void Message(string msg)
 	{
-		try
-		{
-			authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.createDM(currentUser.ScreenName, msg));
-			DMStatus.text = "Messaged!";
-		}
-		catch (Exception e)
-		{
-
-			DMStatus.text = "Failed to tweet: Connection error. Fix your internet";
-			Debug.Log("Failed to tweet " + e);
-		}
+		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.createDM(currentUser.ScreenName, msg));
+		connectomeErrorText.text = "Messaged!";
 
 		messageUser ();
 	}

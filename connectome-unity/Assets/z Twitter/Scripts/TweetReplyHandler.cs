@@ -16,7 +16,6 @@ public class TweetReplyHandler : TwitterObjects {
 
 	#region Twitter Compose Tweet Members
 	public GameObject composeTweetObjects;
-	public Text TweetStatusText;
 	public Text tweetTitle;
 	public Image replyToProfilePic;
 	public Text replyToUsername;
@@ -41,26 +40,10 @@ public class TweetReplyHandler : TwitterObjects {
         {
 			currentStatus = convoHandler.conversationtimelineStatuses [convoHandler.currentTweet];
 		}
-
-		try
-		{
-			Debug.Log("Current tweet id: " + currentStatus.Id);
-			authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.Id, msg));
-			timelineHandler.timelineErrorText.text = "Replied to user!";
-		}
-		catch (Exception e)
-		{
-			if (e.Message.Contains("Status is a duplicate"))
-			{
-				timelineHandler.timelineErrorText.text = "Failed to tweet: Duplicate status!";
-			}
-			else
-			{
-				timelineHandler.timelineErrorText.text = "Failed to tweet: Connection error. Fix your internet";
-			}
-
-			Debug.Log("Failed to tweet " + e);
-		}
+			
+		Debug.Log("Current tweet id: " + currentStatus.Id);
+		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.Id, msg));
+		connectomeErrorText.text = "Replied to user!";
 	}
 
 	// This function brings the user to a screen that allows them to reply to a tweet.
@@ -106,32 +89,8 @@ public class TweetReplyHandler : TwitterObjects {
 	// Contacts the twitter api to tweet a message
 	public void Tweet(string msg)
 	{
-		int attempts = 10;
-		while (attempts-- > 0) // try to tweet 10 times
-		{
-			try
-			{
-				authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.publishTweet(msg));
-				TweetStatusText.text = "Tweeted!";
-				attempts = 0;
-			}
-			catch (Exception e)
-			{
-				if (attempts == 0)
-				{
-					if (e.Message.Contains("Status is a duplicate"))
-					{
-						TweetStatusText.text = "Failed to tweet: Duplicate status!";
-					}
-					else
-					{
-						TweetStatusText.text = "Failed to tweet: Connection error. Fix your internet";
-					}
-					Debug.Log("Failed to tweet " + e);
-				}
-			}
-		}
-
+		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.publishTweet(msg));
+		connectomeErrorText.text = "Tweeted!";
 	}
 
 	// Pull up the on screen keyboard to tweet
