@@ -56,8 +56,6 @@ namespace Connectome.Emotiv.Implementation
         #region Overrides
         protected override bool ConnectionSetUp(out string errorMessage)
         {
-            UpdateBatteryLevel();
-            UpdateWirelessSigmalStrength(); 
             string userName = this.username;
             string password = this.password;
             string profileName = this.profileName;
@@ -77,6 +75,9 @@ namespace Connectome.Emotiv.Implementation
 
             eEvent = EdkDll.IEE_EmoEngineEventCreate();
             eState = EdkDll.IEE_EmoStateCreate();
+
+            UpdateBatteryLevel();
+            UpdateWirelessSigmalStrength();
 
             if (EmotivCloudClient.EC_Connect() != EmotivCloudClient.EC_OK)
             {
@@ -217,7 +218,6 @@ namespace Connectome.Emotiv.Implementation
             EdkDll.IS_GetBatteryChargeLevel(this.eState, out batteryLevel, out maxLevel);
 
             this.BatteryLevel = batteryLevel;
-
         }
 
         /// <summary>

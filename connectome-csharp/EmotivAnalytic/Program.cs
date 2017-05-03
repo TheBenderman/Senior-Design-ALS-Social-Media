@@ -1,6 +1,7 @@
 ﻿using Connectome.Core.Interface;
 using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Interface;
+using System;
 using System.Diagnostics;
 
 namespace EmotivAnalytic
@@ -12,11 +13,7 @@ namespace EmotivAnalytic
         /// </summary>
         static void Main(string[] args)
         {
-            IEmotivDevice device = new RandomEmotivDevice(.2f, 1f);
-
-            //int interval = 500; //ms 
-            //float thresh = .5f;
-            //EmotivCommandType targetCmd = EmotivCommandType.NEUTRAL; 
+            IEmotivDevice device = new EPOCEmotivDevice("emotiv123", "Emotivbci123", "KLD_Blink");
 
             IConnectomeReader<IEmotivState> readerPlug = new BasicEmotivReader(device);
 
@@ -32,7 +29,7 @@ namespace EmotivAnalytic
    
             while (reader.IsReading)
             {
-               //timelineProc.Process(null);
+                Console.WriteLine(device.BatteryLevel); 
             }
            
             Debug.WriteLine("[END]");

@@ -190,7 +190,10 @@ namespace Connectome.Core.Template
             if (ReadingThread.IsAlive)
             {
                 ReadingThread.Join(1000);
-                ReadingThread.Abort();
+                if (ReadingThread.IsAlive)
+                {
+                    ReadingThread.Abort();
+                }
             }
         }
 
