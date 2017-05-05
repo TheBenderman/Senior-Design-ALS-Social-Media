@@ -200,22 +200,39 @@ namespace Connectome.KLD.Test
                 //std? i failed stat 
 
                 Dictionary<EmotivCommandType, float> difference = new Dictionary<EmotivCommandType, float>();
+                Dictionary<EmotivCommandType, float> averages = new Dictionary<EmotivCommandType, float>();
+
                 string diffBuild = "";
-                float totalD = 0; 
+                float totalD = 0;
+
+                float MinPushRateOnPush = 1.01f;
+                float MaxPushRateOnNeutral = -0.01f; 
 
                 foreach (EmotivCommandType uc in uniqueList)
                 {
-                    difference.Add(uc, 0); 
+                    difference.Add(uc, 0);
+                    averages.Add(uc, 0); 
 
                     float averageAvg = 0;
 
                     foreach (float avg in Metrix[uc].Rates)
                     {
-                        averageAvg += avg; 
+                        averageAvg += avg;
+
+                        if (uc == EmotivCommandType.PUSH)
+                        {
+                            MinPushRateOnPush = Math.Min(MinPushRateOnPush, avg);
+                        }
+                        else if (uc == EmotivCommandType.NEUTRAL)
+                        {
+                            MaxPushRateOnNeutral = Math.Max(MaxPushRateOnNeutral, (1-avg));
+                        }
                     }
 
                     averageAvg /= Metrix[uc].Rates.Count;
-                   
+
+                    averages[uc] = averageAvg; 
+
                     foreach (float avg in Metrix[uc].Rates)
                     {
                         difference[uc] += Math.Abs(averageAvg - avg); 
@@ -225,10 +242,14 @@ namespace Connectome.KLD.Test
 
                     totalD = difference[uc]; 
 
-                    diffBuild += "C["+uc.ToString()+"]: " + difference[uc] + "\n"; 
+                    diffBuild += "C["+uc.ToString()+"]: " + difference[uc].ToString("0.00") + "\n"; 
                 }
-                   
-                Title.text = textToDisplay + diffBuild + "Average C:" + totalD/ uniqueList.Count; 
+
+               float validity = MinPushRateOnPush - MaxPushRateOnNeutral;
+
+                Title.text = textToDisplay + diffBuild
+                        + "Average C:" + (totalD / uniqueList.Count).ToString("0.00")
+                         + "\nGap: " + validity.ToString("0.00"); 
 
                 if (OnFinished != null)
                 {

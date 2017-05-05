@@ -70,6 +70,9 @@ public class ProfileMenuSelectTestController : MonoBehaviour
                 SelectionManager.Deactivate();
             }
         }
+
+        LabeledFlashingHighligter.EnableHighlight();
+        SelectionManager.ResetInterval(); 
         StartCoroutine(RecordingFor(time)); 
     }
 
@@ -80,10 +83,12 @@ public class ProfileMenuSelectTestController : MonoBehaviour
 
         IsRecording = true;
         yield return new WaitForSeconds(seconds);
+
+        LabeledFlashingHighligter.DisableHighlight();
+        SelectionManager.Deactivate(); 
+
+        Reader.OnRead -= ReaderOnRead;
         IsRecording = false;
-
-        OnFinish.Invoke();
-
 
         //Group data based on Tag 
         List<List<IEmotivState>> list = new List<List<IEmotivState>>();
@@ -97,6 +102,8 @@ public class ProfileMenuSelectTestController : MonoBehaviour
         float MaxNonTargetRate = -0.01f; 
 
         string previous = null;
+
+        States.Add(new TaggedEmotivState() { Tag = "Terminator" }); 
 
         foreach (var state in States)
         {
@@ -118,7 +125,6 @@ public class ProfileMenuSelectTestController : MonoBehaviour
                     }
                     else
                     {
-
                         NonTargetRates.Add(rate);
                         if (MaxNonTargetRate < rate)
                         {
@@ -134,6 +140,10 @@ public class ProfileMenuSelectTestController : MonoBehaviour
                 }
 
                 previous = state.Tag;
+                if (previous == "Terminator")
+                {
+                    continue; 
+                }
                 list.Add(new List<IEmotivState>());
             }
 
@@ -148,8 +158,16 @@ public class ProfileMenuSelectTestController : MonoBehaviour
         Dictionary<string, float> difference = new Dictionary<string, float>();
         Dictionary<string, float> average = new Dictionary<string, float>();
 
+        float MaxNonTarget = -0.01f;
+        float MinTarget = 1.01f; 
+
         string diffBuild = "";
         float totalD = 0;
+
+        foreach (var k in TargettingState.Keys)
+        {
+            //Debug.Log(k);
+        }
 
         foreach (string uc in unique)
         {
@@ -157,9 +175,20 @@ public class ProfileMenuSelectTestController : MonoBehaviour
 
             float averageAvg = 0;
 
+            Debug.Log(uc); 
+
             foreach (float avg in TargettingState[uc])
             {
                 averageAvg += avg;
+
+                if(uc == "Target")
+                {
+                    MinTarget = Math.Min(MinTarget, avg); 
+                }
+                else
+                {
+                    MaxNonTarget = Math.Max(MaxNonTarget, avg);
+                }
             }
 
 
@@ -176,17 +205,23 @@ public class ProfileMenuSelectTestController : MonoBehaviour
 
             totalD = difference[uc];
 
-            diffBuild += "\n C[" + uc.ToString() + "]: " + difference[uc].ToString("0.00") + "\n";
+            diffBuild += "C[" + uc.ToString() + "]: " + difference[uc].ToString("0.00") + "\n";
         }
 
+        Debug.Log("Min: " + MinTarget);
+        Debug.Log("Max: " + MaxNonTarget);
+
         //fk this sucks
-        float estRefresh = average["NonTarget"] + ((average["Target"] - average["NonTarget"]) * .25f);
+        float estRefresh = MaxNonTarget + ((MinTarget - MaxNonTarget) * .25f);
 
-        DisplayText.text = "Avg Target: " + average["Target"].ToString("0.00") + "\nAvg NonTarget: " +  average["NonTarget"].ToString("0.00") +  diffBuild + " Estemated RefreshRate" + estRefresh.ToString("0.00"); 
-
+        DisplayText.text = "Avg Target: " + average["Target"].ToString("0.00") + "\nAvg NonTarget: " +  average["NonTarget"].ToString("0.00") + "\n" 
+                            +  diffBuild  //has coonsistency 
+                            + " Estemated RefreshRate: " + estRefresh.ToString("0.00") + "\n Estimated Click: " + MinTarget.ToString("0.00");
 
 
         //calculate average for each session. 
+        OnFinish.Invoke();
+        LabeledFlashingHighligter.DisableHighlight();
 
     }
 
