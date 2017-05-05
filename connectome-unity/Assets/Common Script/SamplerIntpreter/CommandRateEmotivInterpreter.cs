@@ -27,13 +27,6 @@ public class CommandRateEmotivInterpreter : EmotivInterpreter
     /// </summary>
     public EmotivCommandType TargetCommand;
 
-    [Header("Temporary")]
-    public bool Reduction;
-    [Header("Read-Only")]
-    /// <summary>
-    /// Holds and keeps track of maximum sample size. 
-    /// </summary>
-    public int MaxSampleSizeScaler = 40; //TODO temporarly 
     [Header("Events")]
     /// <summary>
     /// Invoked when analized data reach ReachRate. 
@@ -53,62 +46,54 @@ public class CommandRateEmotivInterpreter : EmotivInterpreter
     /// </summary>
     public Slider ReachThreshholdSlider;
     #endregion
-    #region Private Attributes 
-    #endregion
     #region DataInterpreter Override  
     /// <summary>
     /// Interprets sample based on ratio of command type apperance in sample relative to sample size. 
     /// </summary>
     /// <param name="sample">Collection of EmotivStates</param>
-    public override void Interpeter(IEnumerable<IEmotivState> sample)
+    public override void Interpeter(float rate)
     {
-        if (ReachThreshholdSlider != null)
-        {
-            ReachThreshholdSlider.value = ReachRate;
-        }
+        UpdateSliders(rate); 
 
-        float Rate = ((float)sample.Where(s => s.Command == TargetCommand).Count()) / sample.Count();
-        
-        if (Reduction && (sample.Count() < MaxSampleSizeScaler))
-        {
-            Rate *= ((float)sample.Count()) / MaxSampleSizeScaler;
-        }
-        else
-        {
-            MaxSampleSizeScaler = sample.Count(); 
-        }
-
-        if (ActivitySlider != null)
-        {
-            ActivitySlider.value = Rate;
-        }
-        if (OnReached != null && ReachRate <= Rate) ///sry
+        if (OnReached != null && rate >= ReachRate)
         {
             OnReached.Invoke(); 
         }
     }
     #endregion
-    #region Private Methods 
+    #region Public Methods 
+    /// <summary>
+    /// Updates UI sliders to reflect avtivity rate and threshhold. 
+    /// </summary>
+    /// <param name="rate"></param>
+    public void UpdateSliders(float rate = 0)
+    {
+        if (ReachThreshholdSlider != null)
+        {
+            ReachThreshholdSlider.value = ReachRate;
+        }
+
+        if (ActivitySlider != null)
+        {
+            ActivitySlider.value = rate;
+        }
+    }
+    #endregion
+    #region Private Unity Methods 
     /// <summary>
     /// Updates ReachRate on it's Slider when running scene. 
     /// </summary>
     private void Start()
     {
-        if (ReachThreshholdSlider != null)
-        {
-            ReachThreshholdSlider.value = ReachRate;
-        }
+        UpdateSliders();
     }
 
     /// <summary>
     /// Updates ReachRate on it's Slider within the scene. 
     /// </summary>
-    public void OnValidate()
+    private void OnValidate()
     {
-        if (ReachThreshholdSlider != null)
-        {
-            ReachThreshholdSlider.value = ReachRate;
-        }
+        UpdateSliders(); 
     }
     #endregion
 }

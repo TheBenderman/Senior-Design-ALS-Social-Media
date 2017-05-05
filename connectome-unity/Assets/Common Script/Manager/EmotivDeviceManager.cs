@@ -12,7 +12,7 @@ namespace Connectome.Unity.Manager
     /// <summary>
     /// Holds Device, and Reader as well as running interpetation. 
     /// </summary>
-    public class EmotivDeviceManager : DeviceManager<IEmotivState>
+    public class EmotivDeviceManager : DeviceManager<IEmotivState, EmotivCalculatorConfiguration>
     {
         #region Public Inspector Attributes 
         [Header("Emotiv Requirements")]
@@ -20,6 +20,7 @@ namespace Connectome.Unity.Manager
         /// Hold Device
         /// </summary>
         public EmotivDevicePlugin DevicePlugin;
+
         /// <summary>
         /// Holds Redaer 
         /// </summary>
@@ -32,10 +33,19 @@ namespace Connectome.Unity.Manager
         public EmotivSampler Sampler;
 
         /// <summary>
+        /// Holds data calculator
+        /// </summary>
+        public EmotivRateCalculator EmotivCalculator;
+
+        /// <summary>
+        /// Holds calculator configuration 
+        /// </summary>
+        public EmotivCalculatorConfiguration EmotivCalculatorConfiguration; 
+
+        /// <summary>
         /// Holds data sample interpreters 
         /// </summary>
         public EmotivInterpreter[] Interpreters;
-
         #endregion
         #region DeviceManager Overrides
         protected override IConnectomeDevice<IEmotivState> GetDevice()
@@ -60,6 +70,15 @@ namespace Connectome.Unity.Manager
             return Interpreters;
         }
 
+        protected override DataRateCalculator<IEmotivState, EmotivCalculatorConfiguration> GetRateCalculator()
+        {
+            return EmotivCalculator; 
+        }
+
+        protected override EmotivCalculatorConfiguration GetCalculatorConfiguration()
+        {
+            return EmotivCalculatorConfiguration;
+        }
         /// <summary>
         /// Convert wireless signal strength based on Epoc Emotv device way 
         /// </summary>

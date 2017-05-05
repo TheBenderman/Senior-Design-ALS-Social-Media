@@ -13,7 +13,7 @@ namespace Connectome.Unity.Manager
     /// It also controls Interprepter that recieve a data sample read from device by reader. 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class DeviceManager<T> : MonoBehaviour
+    public abstract class DeviceManager<T, C> : MonoBehaviour
     {
         #region Inspecter Attributes 
         /// <summary>
@@ -25,6 +25,17 @@ namespace Connectome.Unity.Manager
         /// Holds StatudBar which displays InputRate, BatteryLevel, and WirelessSignal. 
         /// </summary>
         public DeviceStatusbar StatusBar;
+
+        /// <summary>
+        /// Holds Rate calculator which  algorithm for rateing sampled data. 
+        /// </summary>
+        public DataRateCalculator<T, C> DataRateCalculator;
+
+        [HideInInspector]
+        /// <summary>
+        /// Holds calculator configuration 
+        /// </summary>
+        public C CalculatorConfiguration; 
         #endregion
         #region Private Attributes 
         /// <summary>
@@ -67,6 +78,9 @@ namespace Connectome.Unity.Manager
             Reader = GetReader();
             Sampler = GetSampler();
             Interpeters = GetInterpreters();
+
+            DataRateCalculator = GetRateCalculator();
+            CalculatorConfiguration = GetCalculatorConfiguration(); 
 
             Reader.OnRead += Sampler.Register;
             Reader.OnRead += (s) => TotalStatesRead++;
@@ -112,9 +126,11 @@ namespace Connectome.Unity.Manager
                 yield return new WaitForSeconds(0); ///needed to execute otherwise it'll be stuck. 
                 IEnumerable<T> Sample = Sampler.GetSample();
 
+                float Rate = DataRateCalculator.Calculate(Sample, CalculatorConfiguration); 
+
                 foreach (var interpeter in Interpeters)
                 {
-                    interpeter.Interpeter(Sample);
+                    interpeter.Interpeter(Rate);
                 }
             }
         }
@@ -138,7 +154,6 @@ namespace Connectome.Unity.Manager
                     PreviousInputRate = TotalStatesRead;
             }
         }
-
         #endregion
         #region Abstarct Methods 
         /// <summary>
@@ -146,6 +161,7 @@ namespace Connectome.Unity.Manager
         /// </summary>
         /// <returns>An initilized device</returns>
         protected abstract IConnectomeDevice<T> GetDevice();
+
         /// <summary>
         /// Gets a Reader 
         /// </summary>
@@ -156,11 +172,24 @@ namespace Connectome.Unity.Manager
         /// </summary>
         /// <returns>An initilized DataSampler</returns>
         protected abstract DataSampler<T> GetSampler();
+
         /// <summary>
         /// Gets Interpreters  
         /// </summary>
         /// <returns>Initilized set fo interpreters</returns>
         protected abstract DataInterpreter<T>[] GetInterpreters();
+
+        /// <summary>
+        /// Gets RateCalculator
+        /// </summary>
+        /// <returns></returns>
+        protected abstract DataRateCalculator<T, C> GetRateCalculator();
+
+        /// <summary>
+        /// Gets Rate Calculator Configuration 
+        /// </summary>
+        /// <returns></returns>
+        protected abstract C GetCalculatorConfiguration();
 
         /// <summary>
         /// Defines how to covert Device's wireless signal  

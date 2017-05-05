@@ -22,6 +22,7 @@ public class ClickRefreshSampleController : MonoBehaviour
     public IntervalEmotivSampler Sampler;
     public CommandRateEmotivInterpreter ClickInterpreter;
     public CommandRateEmotivInterpreter RefreshInterpreter;
+    public CommandTypeCalculator CommandTypeCalculator; 
 
     private void Start()
     {
@@ -36,10 +37,11 @@ public class ClickRefreshSampleController : MonoBehaviour
 
     private void OnValidate()
     {
-
-        UpdateWrapped(); 
-        ClickInterpreter.OnValidate();
-        RefreshInterpreter.OnValidate(); 
+        if(gameObject.activeSelf)
+        {
+            Debug.LogWarning("CRSController will take over adjusting assigned compoment values.");
+            UpdateWrapped();
+        }
     }
 
     /// <summary>
@@ -49,11 +51,13 @@ public class ClickRefreshSampleController : MonoBehaviour
     {
         Sampler.Interval = Interval;
 
-        ClickInterpreter.ReachRate = ClickRate;
-        ClickInterpreter.Reduction = ApplyReduction;
-
+        ClickInterpreter.ReachRate = ClickRate;      
         RefreshInterpreter.ReachRate = RefreshRate;
-        RefreshInterpreter.Reduction = ApplyReduction;
+
+        ClickInterpreter.UpdateSliders();
+        RefreshInterpreter.UpdateSliders();
+
+        CommandTypeCalculator.Reduction = ApplyReduction;
     }
 
 }

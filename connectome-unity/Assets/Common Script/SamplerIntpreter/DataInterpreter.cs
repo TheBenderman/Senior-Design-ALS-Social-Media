@@ -10,9 +10,9 @@ public abstract class DataInterpreter<T> : MonoBehaviour
 {
     #region Public Abstract Methods
     /// <summary>
-    /// Interpert sample of data
+    /// Interpert rate of calculated data
     /// </summary>
     /// <param name="sample"></param>
-    public abstract void Interpeter(IEnumerable<T> sample);
+    public abstract void Interpeter(float rate);
     #endregion
 }

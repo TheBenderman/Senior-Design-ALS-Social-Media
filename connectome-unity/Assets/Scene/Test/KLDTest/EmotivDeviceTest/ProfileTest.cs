@@ -1,23 +1,25 @@
 ﻿using Connectome.Emotiv.Enum;
 using Connectome.Emotiv.Interface;
+using Connectome.Unity.Manager;
 using Connectome.Unity.Template;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Connectome.KLD.Test
 {
-
+    //worst than clorox in the eyes 
     public class ProfileTest : MonoBehaviour
     {
         /// <summary>
         /// Used for exporting
         /// </summary>
-        private TestingSet LastTestingSet; 
+        private EmotivCommandType[] LastTestingSessions; 
         
         /// <summary>
         /// Holds states red 
@@ -38,20 +40,35 @@ namespace Connectome.KLD.Test
         public bool ShouldOverideDurations;
         public int RecordDuration;
         public int RestDuration;
+        public EmotivCommandType[] TestSessions; 
 
         [Header("Object Refrences")]
         public Text Title;
-        public EmotivReaderPlugin Reader;
+        public EmotivDeviceManager DeviceManager;
+        public EmotivRateCalculator Calculator;
+        public EmotivCalculatorConfiguration Config; 
 
         public UnityEvent OnFinished;
 
         public void StartRecording(TestingSet TestingSet)
         {
-            LastTestingSet = TestingSet; 
+            int record = TestingSet.RecordDuration;
+            int rest = TestingSet.RestDuration;
+            EmotivCommandType[] sessions = TestingSet.Sessions;
+
+            if (ShouldOverideDurations)
+            {
+                record = RecordDuration;
+                rest = RestDuration;
+                sessions = TestSessions;
+            }
+
+            LastTestingSessions = sessions; 
+
             try
             {
                 Title.text = "";
-                States = new List<IEmotivState>[TestingSet.Sessions.Length];
+                States = new List<IEmotivState>[sessions.Length];
 
                 for (int i = 0; i < States.Length; i++)
                 {
@@ -61,19 +78,12 @@ namespace Connectome.KLD.Test
                 IsBreak = true;
                 SessionIndex = 0;
 
-                Reader.OnRead -= ListenToState;
-                Reader.OnRead += ListenToState;
+                DeviceManager.ReaderPlugin.OnRead -= ListenToState;
+                DeviceManager.ReaderPlugin.OnRead += ListenToState;
 
-                int record = TestingSet.RecordDuration;
-                int rest = TestingSet.RestDuration; 
+                
 
-                if(ShouldOverideDurations)
-                {
-                    record = RecordDuration;
-                    rest = RestDuration; 
-                }
-
-                StartCoroutine(StartReading(TestingSet.Sessions, record, rest));
+                StartCoroutine(StartReading(sessions, record, rest));
             }
             catch (Exception e)
             {
@@ -118,79 +128,118 @@ namespace Connectome.KLD.Test
             try
             {
                 List<EmotivCommandType> uniqueList = new List<EmotivCommandType>();
-                Dictionary<EmotivCommandType, Metrix> Metrix = new Dictionary<EmotivCommandType, Test.Metrix>();
+
+                Dictionary<EmotivCommandType, Metrix> Metrix = new Dictionary<EmotivCommandType, Metrix>();
+
+                //Dictionary<EmotivCommandType, List<float>> TypeAvergaeAccuracy = new Dictionary<EmotivCommandType, List<float>>();
 
                 foreach (EmotivCommandType c in Sessions)
                 {
                     if (!uniqueList.Contains(c))
                     {
                         uniqueList.Add(c);
-                        Metrix.Add(c, new Metrix()); 
+                        Metrix.Add(c, new Metrix());
+                        //TypeAvergaeAccuracy.Add(c,new List<float>());
                     }
                 }
 
-                foreach (EmotivCommandType target in uniqueList)
+                for (int i = 0; i < Sessions.Length; i++)
                 {
-                   
+                    int TP = 0;
+                    int size = 0;
 
-                    for (int i = 0; i < States.Length; i++)
+                    Metrix met = Metrix[Sessions[i]];
+
+                    for (int j = 0; j < States[i].Count; j++)
                     {
-                        for (int j = 0; j < States[i].Count; j++)
+                        //count 
+                        size++;
+
+                        //correct 
+                        if (Sessions[i] == States[i][j].Command)
                         {
-                            Metrix met = Metrix[Sessions[i]];
+                            TP++;
+                        }
 
-                            //count 
-                            met.size++; 
+                        if (States[i][j].Command == EmotivCommandType.PUSH)
+                        {
 
-                            //correct 
-                            if (Sessions[i] == States[i][j].Command)
+                            if (States[i][j].Power > met.max)
                             {
-                                met.TP++; 
+                                met.max = States[i][j].Power;
+                            }
+                            if (States[i][j].Power < met.min)
+                            {
+                                met.min = States[i][j].Power;
                             }
 
-
-                            if (States[i][j].Command == EmotivCommandType.PUSH)
-                            {
-
-                                if (States[i][j].Power > met.max)
-                                {
-                                    met.max = States[i][j].Power;
-                                }
-                                if (States[i][j].Power < met.min)
-                                {
-                                    met.min = States[i][j].Power;
-                                }
-
-                                met.totalPower += States[i][j].Power;
-                            }
-
-
-                            
+                            met.totalPower += States[i][j].Power;
                         }
                     }
+                    met.TP += TP;
+                    met.size += size;
 
-                    //Displaying result 
-                    string textToDisplay = "";
+                    Config.TargetCommand = Sessions[i]; 
+                    met.Rates.Add(Calculator.Calculate(States[i], Config));
 
-                   
-                    foreach(var d in Metrix)
-                    {
-                        textToDisplay += "Total " + d.Key.ToString() + " = " + (((float)d.Value.TP) / d.Value.size).ToString("0.00") +
-                                    "\n Max = " + d.Value.max.ToString("0.00") +
-                                    " Min = " + d.Value.min.ToString("0.00") +
-                                    " Avg = " + (d.Value.totalPower / d.Value.size).ToString("0.00") + "\n";                
-                    }
-                   
-                    Title.text = textToDisplay; 
+                    //TypeAvergaeAccuracy[Sessions[i]].Add(((float)TP) / size);
                 }
 
-                OnFinished.Invoke();
+                //printing results 
+                //Displaying result 
+                string textToDisplay = "";
+                   
+                foreach(var d in Metrix)
+                {
+                    textToDisplay += "Total " + d.Key.ToString() + " = " + (((float)d.Value.TP) / d.Value.size).ToString("0.00") +
+                                "\n Max = " + d.Value.max.ToString("0.00") +
+                                " Min = " + d.Value.min.ToString("0.00") +
+                                " Avg = " + (d.Value.totalPower / d.Value.size).ToString("0.00") + "\n";                
+                }
+
+                //std? i failed stat 
+
+                Dictionary<EmotivCommandType, float> difference = new Dictionary<EmotivCommandType, float>();
+                string diffBuild = "";
+                float totalD = 0; 
+
+                foreach (EmotivCommandType uc in uniqueList)
+                {
+                    difference.Add(uc, 0); 
+
+                    float averageAvg = 0;
+
+                    foreach (float avg in Metrix[uc].Rates)
+                    {
+                        averageAvg += avg; 
+                    }
+
+                    averageAvg /= Metrix[uc].Rates.Count;
+                   
+                    foreach (float avg in Metrix[uc].Rates)
+                    {
+                        difference[uc] += Math.Abs(averageAvg - avg); 
+                    }
+
+                    difference[uc] /= Metrix[uc].Rates.Count;
+
+                    totalD = difference[uc]; 
+
+                    diffBuild += "C["+uc.ToString()+"]: " + difference[uc] + "\n"; 
+                }
+                   
+                Title.text = textToDisplay + diffBuild + "Average C:" + totalD/ uniqueList.Count; 
+
+                if (OnFinished != null)
+                {
+                    OnFinished.Invoke();
+                }
             }
             catch (Exception e)
             {
                 Debug.Log(e);
             }
-        }
+        }//end func 
 
         public void ExportCollectedData()
         {
@@ -216,14 +265,14 @@ namespace Connectome.KLD.Test
             StreamWriter writer = new StreamWriter(fstream);
 
             writer.WriteLine("Test,Target,Command,Time,Power");
-            for (int t = 0; t < LastTestingSet.Sessions.Length; t++)
+            for (int t = 0; t < LastTestingSessions.Length; t++)
             {
                 if (States[t].Count > 0)
                 {
                     long initTime = States[t][0].Time;
                     for (int s = 0; s < States[t].Count; s++)
                     {
-                        writer.WriteLine("{0},{1},{2},{3},{4}", (t + 1), LastTestingSet.Sessions[t].ToString(), States[t][s].Command.ToString(), States[t][s].Time - initTime, States[t][s].Power);
+                        writer.WriteLine("{0},{1},{2},{3},{4}", (t + 1), LastTestingSessions[t].ToString(), States[t][s].Command.ToString(), States[t][s].Time - initTime, States[t][s].Power);
                     }
                 }
                 writer.WriteLine(",,,,");
@@ -234,7 +283,15 @@ namespace Connectome.KLD.Test
 
             Debug.Log("Exported");
         }
-       
+
+
+        private void OnValidate()
+        {
+            if(DeviceManager == null)
+            {
+                // DeviceManager = EmotivDeviceManager.Instance; //rip singleton 
+            }
+        }
     }//end class 
 
     public class Metrix
@@ -244,8 +301,7 @@ namespace Connectome.KLD.Test
         public float totalPower = 0f;
         public int TP = 0;
         public int size = 0;
+        public List<float> Rates = new List<float>(); 
     }
-
-   
 }//end namespace
 
