@@ -34,6 +34,15 @@ public class CommandRateEmotivInterpreter : EmotivInterpreter
     public UnityEvent OnReached;
 
     [Header("Optional")]
+    /// <summary>
+    /// Updates Sliders to the given values. 
+    /// </summary>
+    public bool AutoUpdateIndicators;
+    /// <summary>
+    /// Scales slider to display reach rate at 1.0
+    /// </summary>
+    public bool ScaleSlider;
+
     [Tooltip("Updates slider value to calculated rate")]
     /// <summary>
     /// Used to display analized rate 
@@ -44,7 +53,7 @@ public class CommandRateEmotivInterpreter : EmotivInterpreter
     /// <summary>
     /// Used to display ReachRate
     /// </summary>
-    public Slider ReachThreshholdSlider;
+    public Slider IndicatorSlider;
     #endregion
     #region DataInterpreter Override  
     /// <summary>
@@ -53,11 +62,11 @@ public class CommandRateEmotivInterpreter : EmotivInterpreter
     /// <param name="sample">Collection of EmotivStates</param>
     public override void Interpeter(float rate)
     {
-        UpdateSliders(rate); 
+        UpdateSliders(rate);
 
         if (OnReached != null && rate >= ReachRate)
         {
-            OnReached.Invoke(); 
+            OnReached.Invoke();
         }
     }
     #endregion
@@ -66,20 +75,23 @@ public class CommandRateEmotivInterpreter : EmotivInterpreter
     /// Updates UI sliders to reflect avtivity rate and threshhold. 
     /// </summary>
     /// <param name="rate"></param>
-    public void UpdateSliders(float rate = 0)
+    public virtual void UpdateSliders(float rate = 0)
     {
-        if (ReachThreshholdSlider != null)
-        {
-            ReachThreshholdSlider.value = ReachRate;
-        }
-
         if (ActivitySlider != null)
         {
-            ActivitySlider.value = rate;
+            ActivitySlider.value = ScaleSlider ? rate / ReachRate : rate;
+        }
+
+        if (AutoUpdateIndicators)
+        {
+            if (IndicatorSlider != null)
+            {
+                IndicatorSlider.value = ScaleSlider ? 1 : ReachRate;
+            }
         }
     }
     #endregion
-    #region Private Unity Methods 
+    #region Unity Methods 
     /// <summary>
     /// Updates ReachRate on it's Slider when running scene. 
     /// </summary>
@@ -87,13 +99,18 @@ public class CommandRateEmotivInterpreter : EmotivInterpreter
     {
         UpdateSliders();
     }
-
+    #endregion
+    #region Validate 
     /// <summary>
     /// Updates ReachRate on it's Slider within the scene. 
     /// </summary>
     private void OnValidate()
     {
-        UpdateSliders(); 
+        if (gameObject.activeSelf)
+        {
+            UpdateSliders();
+        }
     }
     #endregion
+
 }
