@@ -53,7 +53,7 @@ namespace Connectome.Unity.Menu
                 Debug.Log(Pointer);
                 if(Pointer == -1)
                 {
-                    DisplayManager.Instance.Notification.Release(); 
+                    DisplayManager.ReleaseNotification(); 
                 }
 
                 Pointer++;
@@ -78,7 +78,7 @@ namespace Connectome.Unity.Menu
         {
             base.Pushed();
 
-            DisplayManager.Instance.Notification.Hold(); 
+            DisplayManager.HoldNotification(); 
             DisplayManager.PushNotification("Rest");
 
             ResetSelection(); 

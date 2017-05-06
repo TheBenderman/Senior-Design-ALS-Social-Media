@@ -58,22 +58,53 @@ namespace Connectome.Unity.UI
 
         public static void AlignDisplay(DisplayObject disObj)
         {
-            //move under DisplayManager 
-            disObj.transform.SetParent(Instance.transform);
-
+            if (Instance != null)
+            {
+                //move under DisplayManager 
+                disObj.transform.SetParent(Instance.transform);
+            }
+          
             //Display 
             Display(disObj);
         }
 
         public static void PushNotification(string msg, int duration = DEFAULT_DURATION)
         {
+            if (Instance == null || Instance.Notification == null)
+            {
+                return;
+            }
             Instance.Notification.PushNotification(msg, duration); 
         }
 
         public static void PushNotification(string msg)
         {
+            if (Instance == null || Instance.Notification == null)
+            {
+                return;
+            }
             Instance.Notification.PushNotification(msg, DEFAULT_DURATION);
         }
+
+        public static void HoldNotification()
+        {
+            if (Instance == null || Instance.Notification == null)
+            {
+                return;
+            }
+            Instance.Notification.Hold(); 
+        }
+
+        public static void ReleaseNotification()
+        {
+            if(Instance == null || Instance.Notification == null)
+            {
+                return; 
+            }
+
+            Instance.Notification.Release();
+        }
+
         #endregion
     }
 }
