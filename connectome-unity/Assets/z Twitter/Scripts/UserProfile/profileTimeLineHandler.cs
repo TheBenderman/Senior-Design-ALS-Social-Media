@@ -31,24 +31,18 @@ public class profileTimeLineHandler : TwitterObjects {
 	public AuthenticationHandler authHandler;
 
 	public void showUserTimeLine() {
-		try {
-			// Set all objects to be invisible except those related to the timeline.
-			setActiveObject("profileUserTimeline");
-			Debug.Log("Made obj visible");
-			//Debug.Log();
-			// Get the tweets for the user.
-			usertimelineStatuses = authHandler.makeTwitterAPICall( () => authHandler.Interactor.getLoggedInUserTimeline());
-			currentTweet = 0;
-			setTweet(currentTweet);
-			TitleView.text = userTimeLineTitle;
-			Debug.Log(usertimelineStatuses.Count);
-			// Populate the profile picture for the user, requires a separate thread to run.
-			StartCoroutine(setProfilePic(usertimelineStatuses[currentTweet].User.ProfileImageUrl));
-		}
-		catch (Exception e) {
-			Debug.Log ("Something went wrong with showing user timeline!");
-			Debug.Log (e);
-		}
+		// Set all objects to be invisible except those related to the timeline.
+		setActiveObject("profileUserTimeline");
+		Debug.Log("Made obj visible");
+		//Debug.Log();
+		// Get the tweets for the user.
+		usertimelineStatuses = authHandler.makeTwitterAPICall( () => authHandler.Interactor.getLoggedInUserTimeline());
+		currentTweet = 0;
+		setTweet(currentTweet);
+		TitleView.text = userTimeLineTitle;
+		Debug.Log(usertimelineStatuses.Count);
+		// Populate the profile picture for the user, requires a separate thread to run.
+		StartCoroutine(setProfilePic(usertimelineStatuses[currentTweet].User.ProfileImageUrl));
 	}
 
 	// This function sets the current tweet for the user.

@@ -6,6 +6,7 @@ using System.IO;
 using UnityEngine.Events;
 using Connectome.Emotiv.Interface;
 using Connectome.Emotiv.Implementation;
+using Fabric.Crashlytics;
 
 namespace Connectome.Unity.Demo
 {
@@ -90,6 +91,7 @@ namespace Connectome.Unity.Demo
             catch (Exception e)
             {
                 title.text = e.ToString();
+				Crashlytics.RecordCustomException ("Device Connection Exception", "thrown exception", e.StackTrace);
             }
         }
 

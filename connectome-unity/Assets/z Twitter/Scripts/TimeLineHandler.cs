@@ -8,6 +8,7 @@ using Connectome.Twitter.API;
 using System;
 using System.Text.RegularExpressions;
 using Connectome.Unity.Keyboard;
+using Fabric.Crashlytics;
 
 public class TimeLineHandler : TwitterObjects
 {
@@ -52,28 +53,26 @@ public class TimeLineHandler : TwitterObjects
     // This function populates the user homepage.
     public void addHomeTimeLine()
     {
-        try
+        // Set all objects to be invisible except those related to the timeline.
+        setActiveObject(homeTimeLineObjectsString);
+
+		// Reset the current home time line tweet that is selected
+        authHandler.Interactor.getHomeTimelineNavigatable().resetCurrentObject();
+       	
+		// Get the next tweet on the home timeline
+		currentTweet = authHandler.makeTwitterAPICall(
+                () => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
+        if (currentTweet != null)
+            setTweet(currentTweet);
+        else
 		{
-            // Set all objects to be invisible except those related to the timeline.
-            setActiveObject(homeTimeLineObjectsString);
+			connectomeErrorText.text = "Something is wrong with twitter right now. Please try again later.";
 
-			// Reset the current home time line tweet that is selected
-            authHandler.Interactor.getHomeTimelineNavigatable().resetCurrentObject();
-           	
-			// Get the next tweet on the home timeline
-			currentTweet = authHandler.makeTwitterAPICall(
-                    () => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
-            if (currentTweet != null)
-                setTweet(currentTweet);
-            else
-                throw new Exception("No first tweet.");
+			// Pop the selection menu
+			setActiveObject("homeObjects");
+		}
 
-            TitleView.text = timelineTitle;
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.Message);
-        }
+        TitleView.text = timelineTitle;
     }
 
     // This function sets the current tweet for the user.
@@ -240,19 +239,14 @@ public class TimeLineHandler : TwitterObjects
 	// Contact the twitter api to send a message to the user
 	public void Message(string msg)
 	{
-		int attempts = 10;
-		while (attempts-- > 0) {
-			try {
-				authHandler.makeTwitterAPICallNoReturnVal (() => authHandler.Interactor.createDM (currentTweet.User.ScreenName, msg)); // send the message to the user
-				connectomeErrorText.text = "Messaged!";
-				attempts = 0;
-			} catch (Exception e) {
-				if (attempts == 0) {
-					connectomeErrorText.text = "Failed to message: Connection error. Please check your internet.";
-						
-					Debug.Log ("Failed to message " + e);
-				}
-			}
+		try {
+			authHandler.makeTwitterAPICallNoReturnVal (() => authHandler.Interactor.createDM (currentTweet.User.ScreenName, msg)); // send the message to the user
+			connectomeErrorText.text = "Messaged!";
+		} catch (Exception e) {
+			connectomeErrorText.text = "Failed to message: Connection error. Please check your internet.";
+				
+			Debug.Log ("Failed to message " + e);
+			Crashlytics.RecordCustomException ("Twitter Exception", "thrown exception", e.StackTrace);
 		}
 	}
 

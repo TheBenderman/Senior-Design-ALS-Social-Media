@@ -7,6 +7,7 @@ using Connectome.Twitter.API;
 using CoreTweet;
 using System;
 using System.Threading;
+using Fabric.Crashlytics;
 
 public class AuthenticationHandler : TwitterObjects
 {
@@ -46,6 +47,11 @@ public class AuthenticationHandler : TwitterObjects
 		    {
                 Debug.Log(exception.Message.ToString());
 		        //Some error message here
+
+				Crashlytics.RecordCustomException("Twitter Exception", "thrown exception", exception.StackTrace);
+
+				connectomeErrorText.text = "Something went wrong with your twitter implementation.";
+				navigateToTwitterHome ();
 		    };
 
             // Recover from errors having to do with exceptions in dm users thread
@@ -53,6 +59,11 @@ public class AuthenticationHandler : TwitterObjects
 		    {
                 Debug.Log(exception.Message.ToString());
                 //Some error message here
+
+				Crashlytics.RecordCustomException("Twitter Exception", "thrown exception", exception.StackTrace);
+
+				connectomeErrorText.text = "Something went wrong with your twitter implementation.";
+				navigateToTwitterHome ();
 		    };
 
 			navigateToTwitterHome ();
@@ -160,6 +171,8 @@ public class AuthenticationHandler : TwitterObjects
 
 	private void checkErrorCodes(Exception e)
 	{
+		Crashlytics.RecordCustomException("Twitter Exception", "thrown exception", e.StackTrace);
+
 		if (e.Message.Contains ("Status is a duplicate")) {
 			connectomeErrorText.text = "Failed to tweet: Duplicate status!";
 			return;

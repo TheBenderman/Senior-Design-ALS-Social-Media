@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Fabric.Crashlytics;
 
 /// <summary>
 /// Validates a connectome scene for having required elements to operate. 
@@ -46,11 +47,13 @@ public class ConnectomeScene : MonoBehaviour
         {
             EmotivDeviceManager.Setup();
         }
-        catch (NullEmotivDeviceException)
+        catch (NullEmotivDeviceException e)
         {
             LoginPanel.OnDismiss -= Start;
             LoginPanel.OnDismiss += Start; 
             DisplayManager.Display(LoginPanel); 
+
+			Crashlytics.RecordCustomException ("Emotiv Exception", "thrown exception", e.StackTrace);
             return; 
         }
 

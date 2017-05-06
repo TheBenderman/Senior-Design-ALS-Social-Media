@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using CoreTweet;
 using System;
 using Connectome.Unity.Keyboard;
+using Fabric.Crashlytics;
 
 public class DirectMessageHandler : TwitterObjects {
 	#region DM Members
@@ -150,9 +151,10 @@ public class DirectMessageHandler : TwitterObjects {
                 {
                     GameObject.Destroy(messageObject);
                 }
-                catch(Exception)
+                catch(Exception e)
                 {
 					Debug.Log ("Error destroying object: " + messageObject.name);
+					Crashlytics.RecordCustomException ("Twitter Exception", "thrown exception", e.StackTrace);
                 }
             }
 

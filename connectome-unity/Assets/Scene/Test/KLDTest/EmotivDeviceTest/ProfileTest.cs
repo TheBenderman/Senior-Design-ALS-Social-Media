@@ -10,6 +10,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Fabric.Crashlytics;
 
 namespace Connectome.KLD.Test
 {
@@ -88,6 +89,7 @@ namespace Connectome.KLD.Test
             catch (Exception e)
             {
                 Debug.Log(e);
+				Crashlytics.RecordCustomException ("Profile Exception", "thrown exception", e.StackTrace);
             }
         }
 
@@ -107,6 +109,7 @@ namespace Connectome.KLD.Test
             catch (Exception x)
             {
                 Debug.Log(x);
+				Crashlytics.RecordCustomException ("Profile Exception", "thrown exception", x.StackTrace);
             }
         }
 
@@ -259,6 +262,7 @@ namespace Connectome.KLD.Test
             catch (Exception e)
             {
                 Debug.Log(e);
+				Crashlytics.RecordCustomException ("Profile Exception", "thrown exception", e.StackTrace);
             }
         }//end func 
 
