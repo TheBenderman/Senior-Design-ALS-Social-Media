@@ -50,6 +50,12 @@ namespace Connectome.Unity.Menu
         {
             do
             {
+                Debug.Log(Pointer);
+                if(Pointer == -1)
+                {
+                    DisplayManager.Instance.Notification.Release(); 
+                }
+
                 Pointer++;
                 if (ShouldReset())
                 {
@@ -71,6 +77,10 @@ namespace Connectome.Unity.Menu
         public override void Pushed()
         {
             base.Pushed();
+
+            DisplayManager.Instance.Notification.Hold(); 
+            DisplayManager.PushNotification("Rest");
+
             ResetSelection(); 
         }
 
@@ -91,7 +101,7 @@ namespace Connectome.Unity.Menu
             return Pointer >= Selection.Length;
         }
         #endregion
-
+        #region Validate
         private void OnValidate()
         {
             ///Check if Selection is set 
@@ -122,5 +132,6 @@ namespace Connectome.Unity.Menu
                 Debug.LogError("All " + name +"'s selection are not interactable", this);
             }
         }
+        #endregion
     }
 }

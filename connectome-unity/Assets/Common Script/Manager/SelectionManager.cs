@@ -72,16 +72,9 @@ public class SelectionManager : MonoBehaviour
     {
         Highlighter.EnableHighlight(); 
         SelectionStack.Peek().SelectNext(Highlighter); 
+
     }
 
-    /// <summary>
-    /// Hilights to previous selection 
-    /// </summary>
-    public void Previous()
-    {
-       // SelectedIndex = (SelectedIndex - 1 + SelectionStack.Peek().Length) % SelectionStack.Peek().Length;
-       //ChangeSelection(SelectedIndex);
-    }
     /// <summary>
     /// Clicks the currently selected elements. A submenu is pushed if the invoked elements contains one. 
     /// </summary>
@@ -215,17 +208,4 @@ public class SelectionManager : MonoBehaviour
     }
     #endregion
 }
-
-
-public class EventPP : SelectionMenuContainer
-{
-   public UnityEvent OnPushEvent; 
-
-    public override void Pushed()
-    {
-        base.Pushed();
-        OnPushEvent.Invoke(); 
-    }
-}
-
 

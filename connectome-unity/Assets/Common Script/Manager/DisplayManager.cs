@@ -19,6 +19,9 @@ namespace Connectome.Unity.UI
     /// </summary>
     public class DisplayManager : MonoBehaviour
     {
+        #region Private Attributes
+        private const int DEFAULT_DURATION = 5;   
+        #endregion
         #region Singleton 
         private static DisplayManager instance;
 
@@ -30,6 +33,12 @@ namespace Connectome.Unity.UI
             }
         }
         #endregion
+        #region Inspecter Attributse
+        /// <summary>
+        /// Notification component to display notifications 
+        /// </summary>
+        public Notification Notification;
+        #endregion
         #region Unity Built-in
         void Awake()
         {
@@ -39,7 +48,12 @@ namespace Connectome.Unity.UI
         #region Public Static Methods 
         public static void Display(DisplayObject disObj)
         {
-            disObj.Displayed(); 
+            disObj.Displayed();
+        }
+
+        public static void Dismiss(DisplayObject disObj)
+        {
+            disObj.Dismissed();
         }
 
         public static void AlignDisplay(DisplayObject disObj)
@@ -48,7 +62,17 @@ namespace Connectome.Unity.UI
             disObj.transform.SetParent(Instance.transform);
 
             //Display 
-            Display(disObj); 
+            Display(disObj);
+        }
+
+        public static void PushNotification(string msg, int duration = DEFAULT_DURATION)
+        {
+            Instance.Notification.PushNotification(msg, duration); 
+        }
+
+        public static void PushNotification(string msg)
+        {
+            Instance.Notification.PushNotification(msg, DEFAULT_DURATION);
         }
         #endregion
     }
