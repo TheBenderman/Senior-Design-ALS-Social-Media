@@ -78,12 +78,6 @@ public class ConnectomeScene : MonoBehaviour
 	    //ConfigureEmotivLogin(); 
     }
 
-    public void PreviewHighlighter(bool enableSSVEP)
-    {
-        ReturnHighlighter();
-        ConfigureHighlighter(enableSSVEP);
-    }
-
     /// <summary>
     /// Moves the current highlighter back to the Highlighter Container
     /// </summary>
@@ -119,7 +113,7 @@ public class ConnectomeScene : MonoBehaviour
         {
             FrameHighlighter frame = HighlighterFactory.CreateHighlighter<FrameHighlighter>(HighlighterType.Frame);
             this.SelectionManager.Highlighter = frame;
-            frame.FrameColor = UserSettings.HighlighterColor;
+            frame.FrameColor = UserSettings.FrameColor;
             frame.transform.SetParent(HighlighterContainer.transform);
         }
     }

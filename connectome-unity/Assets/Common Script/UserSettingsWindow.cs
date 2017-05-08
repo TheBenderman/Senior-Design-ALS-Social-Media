@@ -51,25 +51,6 @@ public class UserSettingsWindow : MonoBehaviour {
             //Initialization
         }
     }
-
-    public void PreviewBackground(Image canvasBackground)
-    {
-        canvasBackground.color = BackgroundColor.color;
-    }
-
-    public void PreviewFrame(FrameHighlighter frame)
-    {
-        frame.FrameColor = FrameColor.color;
-    }
-
-    /// <summary>
-    /// Calls the config highlighter in ConnectomeScene
-    /// </summary>
-    /// <param name="scene"></param>
-    public void PreviewFlashing(ConnectomeScene scene)
-    {
-        scene.PreviewHighlighter(FlashingToggle.isOn);
-    }
     
 	// Use this for initialization
 	void Start () {

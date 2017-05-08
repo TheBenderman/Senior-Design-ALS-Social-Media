@@ -26,7 +26,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1007425936955756
 GameObject:
   m_ObjectHideFlags: 1
@@ -1792,7 +1792,7 @@ GameObject:
   - component: {fileID: 114717215324034654}
   - component: {fileID: 114078992976883524}
   m_Layer: 5
-  m_Name: FlashingColor
+  m_Name: ParentFrameColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1909,7 +1909,7 @@ GameObject:
   - component: {fileID: 222659715743426816}
   - component: {fileID: 114658180174746564}
   m_Layer: 5
-  m_Name: FlashingColorText
+  m_Name: ParentFrameColorText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2531,7 +2531,7 @@ GameObject:
   - component: {fileID: 222633910059666562}
   - component: {fileID: 114945798508806668}
   m_Layer: 5
-  m_Name: HighlighterColorText
+  m_Name: FrameColorText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2786,7 +2786,7 @@ GameObject:
   - component: {fileID: 114857499908864576}
   - component: {fileID: 114911186669664692}
   m_Layer: 5
-  m_Name: HighlighterColor
+  m_Name: FrameColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6405,8 +6405,8 @@ MonoBehaviour:
   FreqSlider: {fileID: 114735788195319060}
   FreqText: {fileID: 114339138651397970}
   BackgroundColor: {fileID: 114686142545897184}
-  HighlighterColor: {fileID: 114857499908864576}
-  FlashingColor: {fileID: 114717215324034654}
+  FrameColor: {fileID: 0}
+  ParentFrameColor: {fileID: 0}
 --- !u!114 &114596394149652328
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6858,7 +6858,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Flashing Light:'
+  m_Text: 'Parent Frame:'
 --- !u!114 &114661243569041722
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8448,17 +8448,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 114596233654794668}
-        m_MethodName: PreviewBackground
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
     m_TypeName: ColorChangedEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
 --- !u!114 &114897856424433678
@@ -8790,7 +8779,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Highlighter:'
+  m_Text: 'Frame:'
 --- !u!114 &114949556398175556
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -11421,7 +11410,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.2857143, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11492,8 +11481,8 @@ RectTransform:
   m_Father: {fileID: 224474747684812250}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.2857143, y: 0}
-  m_AnchorMax: {x: 0.2857143, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -12225,9 +12214,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -25, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224674576088368278
 RectTransform:
@@ -12333,7 +12322,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 8}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -12764,7 +12753,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 217, y: -62}
+  m_AnchoredPosition: {x: 217, y: -66}
   m_SizeDelta: {x: 290, y: 405}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224861284716806450
@@ -12820,7 +12809,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 80, y: 80}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224870161118472070
