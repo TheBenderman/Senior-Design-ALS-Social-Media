@@ -109,14 +109,20 @@ public static class UserSettings
         get { return new Color(PlayerPrefs.GetFloat("BGR", 1), PlayerPrefs.GetFloat("BGG", 1), PlayerPrefs.GetFloat("BGB", 1), 1); }
         set { PlayerPrefs.SetFloat("BGR", value.r); PlayerPrefs.SetFloat("BGG", value.g); PlayerPrefs.SetFloat("BGB", value.b); }
     }
-    public static Color HighlighterColor
+    public static Color FrameColor
     {
         get { return new Color(PlayerPrefs.GetFloat("HR", 1), PlayerPrefs.GetFloat("HG", 1), PlayerPrefs.GetFloat("HB", 1), 1); }
         set { PlayerPrefs.SetFloat("HR", value.r); PlayerPrefs.SetFloat("HG", value.g); PlayerPrefs.SetFloat("HB", value.b); }
     }
-        #endregion
+
+    public static Color ParentFrameColor
+    {
+        get { return new Color(PlayerPrefs.GetFloat("PHR", 1), PlayerPrefs.GetFloat("PHG", 1), PlayerPrefs.GetFloat("PHB", 1), 1); }
+        set { PlayerPrefs.SetFloat("PHR", value.r); PlayerPrefs.SetFloat("PHG", value.g); PlayerPrefs.SetFloat("PHB", value.b); }
+    }
+    #endregion
 
     #region Social
-        #endregion
-    }
+    #endregion
+}
 

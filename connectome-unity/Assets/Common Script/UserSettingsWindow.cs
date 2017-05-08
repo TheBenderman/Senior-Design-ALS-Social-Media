@@ -26,8 +26,8 @@ public class UserSettingsWindow : MonoBehaviour {
     public InputField FreqText;
 
     public Image BackgroundColor;
-    public Image HighlighterColor;
-    public Image FlashingColor;
+    public Image FrameColor;
+    public Image ParentFrameColor;
 
     private Image SelectedColorToEdit;
 
@@ -41,7 +41,7 @@ public class UserSettingsWindow : MonoBehaviour {
         try
         {
             SelectedColorToEdit.color = newColor;
-            if(SelectedColorToEdit == HighlighterColor)
+            if(SelectedColorToEdit == FrameColor)
             {
                 ((FrameHighlighter)SelectionManager.Instance.Highlighter).FrameColor = newColor;
             }
@@ -59,7 +59,7 @@ public class UserSettingsWindow : MonoBehaviour {
 
     public void PreviewFrame(FrameHighlighter frame)
     {
-        frame.FrameColor = HighlighterColor.color;
+        frame.FrameColor = FrameColor.color;
     }
 
     /// <summary>
@@ -110,8 +110,8 @@ public class UserSettingsWindow : MonoBehaviour {
     {
         FreqSlider.interactable = FlashingToggle.isOn;
         FreqText.interactable = FlashingToggle.isOn;
-        FlashingColor.GetComponent<Button>().interactable = FlashingToggle.isOn;
-        HighlighterColor.GetComponent<Button>().interactable = !FlashingToggle.isOn;
+        ParentFrameColor.GetComponent<Button>().interactable = !FlashingToggle.isOn;
+        FrameColor.GetComponent<Button>().interactable = !FlashingToggle.isOn;
         SetSelectedColor(BackgroundColor);
     }
 
@@ -158,13 +158,16 @@ public class UserSettingsWindow : MonoBehaviour {
     public void SaveColors()
     {
         UserSettings.BackgroundColor = BackgroundColor.color;
-        UserSettings.HighlighterColor = HighlighterColor.color;
+        UserSettings.FrameColor = FrameColor.color;
+        UserSettings.ParentFrameColor = ParentFrameColor.color;
     }
 
     public void LoadColors()
     {
         BackgroundColor.color = UserSettings.BackgroundColor;
-        HighlighterColor.color = UserSettings.HighlighterColor;
+        FrameColor.color = UserSettings.FrameColor;
+        ParentFrameColor.color = UserSettings.ParentFrameColor;
+
     }
     public void SetDurationTextValue()
     {
