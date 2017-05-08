@@ -62,7 +62,7 @@ namespace Connectome.Unity.UI
                 {
                     Debug.LogError("WirelessSprites contains no spries", this);
                 }
-                else
+                else if (WirelessImage != null)
                 {
                     WirelessImage.sprite = WirelessSprites[0];
                 }
@@ -78,7 +78,7 @@ namespace Connectome.Unity.UI
                 {
                     Debug.LogError("BatterySprites contains no spries", this);
                 }
-                else
+                else if (BatteryImage != null)
                 {
                     BatteryImage.sprite = BatterySprites[0];
                 }
@@ -86,15 +86,15 @@ namespace Connectome.Unity.UI
 
             if (InputRateImage == null)
             {
-                Debug.LogError("Missing WirelessImage components", this);
+                Debug.LogError("Missing InputRateSprites components", this);
             }
             else
             {
                 if (InputRateSprites == null || InputRateSprites.Length == 0)
                 {
-                    Debug.LogError("BatterySprites contains no spries", this);
+                    Debug.LogError("InputRateSprites contains no spries", this);
                 }
-                else
+                else if(InputRateImage != null)
                 {
                     InputRateImage.sprite = InputRateSprites[0];
                 }

@@ -97,7 +97,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 43fedc25834d0bb40985012943ca521c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e41d7fb5d3e33824596434e9c1e06207, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -120,18 +120,18 @@ MonoBehaviour:
   BatteryImage: {fileID: 114211090296937504}
   InputRateImage: {fileID: 114158719803957152}
   WirelessSprites:
-  - {fileID: 21300000, guid: 4b779fc65af5fdb4d9db20e436e3d114, type: 3}
-  - {fileID: 21300000, guid: a788278ffe2f70d4c9a4f6717e1e41b3, type: 3}
-  - {fileID: 21300000, guid: 4d0a6eca866a592488c5db3ca80fb5de, type: 3}
+  - {fileID: 21300000, guid: 0fe6050fa04409b408c4067fa7b0ebb9, type: 3}
+  - {fileID: 21300000, guid: 0fe6050fa04409b408c4067fa7b0ebb9, type: 3}
+  - {fileID: 21300000, guid: 5048385a3a1a6024e8806908ffe470af, type: 3}
   BatterySprites:
   - {fileID: 21300000, guid: b351014eb739a75429543a81fcbc54a2, type: 3}
-  - {fileID: 21300000, guid: ef20a1ee94f8d5e44920eeb2e269677d, type: 3}
-  - {fileID: 21300000, guid: 908c3face14515b4792e361db5152893, type: 3}
-  - {fileID: 21300000, guid: 1a1de948a57fb3d4b9733241a1bcae31, type: 3}
+  - {fileID: 21300000, guid: b07c5474cfa0f924794643bc1e9e0ef2, type: 3}
+  - {fileID: 21300000, guid: b2f8b064e4a6e0d489ec563ec33d060f, type: 3}
+  - {fileID: 21300000, guid: 9ef06f5224b93124aa6fc07f698474d8, type: 3}
   InputRateSprites:
-  - {fileID: 21300000, guid: 43fedc25834d0bb40985012943ca521c, type: 3}
-  - {fileID: 21300000, guid: 3dce36ef3e225c648934b9f80957c4bf, type: 3}
-  - {fileID: 21300000, guid: c235a30f8cf55ec458d4ee4e041b5ccf, type: 3}
+  - {fileID: 21300000, guid: e41d7fb5d3e33824596434e9c1e06207, type: 3}
+  - {fileID: 21300000, guid: aad40fef083bc6d48b39c9072f7fc230, type: 3}
+  - {fileID: 21300000, guid: c0a9264422cc13740868a894382dae50, type: 3}
 --- !u!114 &114211090296937504
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -178,7 +178,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 4b779fc65af5fdb4d9db20e436e3d114, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0fe6050fa04409b408c4067fa7b0ebb9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -240,7 +240,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 220.1, y: 0}
+  m_AnchoredPosition: {x: 200, y: 0}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224802088642110318

@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 8
+  serializedVersion: 7
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -25,7 +25,6 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -38,11 +37,11 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311995, g: 0.38074034, b: 0.35872716, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 7
   m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
@@ -54,7 +53,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
-    serializedVersion: 8
+    serializedVersion: 4
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -67,27 +66,13 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
+    m_DirectLightInLightProbes: 1
     m_FinalGather: 0
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
-    m_MixedBakeMode: 1
-    m_BakeBackend: 0
-    m_PVRSampling: 1
-    m_PVRDirectSampleCount: 32
-    m_PVRSampleCount: 500
-    m_PVRBounces: 2
-    m_PVRFiltering: 0
-    m_PVRFilteringMode: 1
-    m_PVRCulling: 1
-    m_PVRFilteringGaussRadiusDirect: 1
-    m_PVRFilteringGaussRadiusIndirect: 5
-    m_PVRFilteringGaussRadiusAO: 2
-    m_PVRFilteringAtrousColorSigma: 1
-    m_PVRFilteringAtrousNormalSigma: 1
-    m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_ShadowMaskMode: 2
+  m_RuntimeCPUUsage: 25
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -104,8 +89,6 @@ NavMeshSettings:
     minRegionArea: 2
     manualCellSize: 0
     cellSize: 0.16666667
-    manualTileSize: 0
-    tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &2989037
@@ -859,7 +842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 503a0f5f142815349be95743528d8a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectionMenu: {fileID: 569967861}
+  SelectionMenu: {fileID: 0}
 --- !u!1 &113718199
 GameObject:
   m_ObjectHideFlags: 0
@@ -3099,7 +3082,7 @@ Canvas:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 292246965}
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
@@ -3108,7 +3091,6 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -11651,7 +11633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 503a0f5f142815349be95743528d8a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectionMenu: {fileID: 396781916}
+  SelectionMenu: {fileID: 0}
 --- !u!1 &961572689
 GameObject:
   m_ObjectHideFlags: 0
@@ -12202,8 +12184,6 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
-  m_AllowMSAA: 1
-  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -13753,8 +13733,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 276, y: -41.95}
-  m_SizeDelta: {x: 125.8, y: 31.9}
+  m_AnchoredPosition: {x: -133.4, y: -0.0000076294}
+  m_SizeDelta: {x: 100, y: 31.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1065658407
 MonoBehaviour:
@@ -14922,7 +14902,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 503a0f5f142815349be95743528d8a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectionMenu: {fileID: 491514310}
+  SelectionMenu: {fileID: 0}
 --- !u!1 &1177592138
 GameObject:
   m_ObjectHideFlags: 0
@@ -16753,7 +16733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 503a0f5f142815349be95743528d8a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectionMenu: {fileID: 1283749154}
+  SelectionMenu: {fileID: 0}
 --- !u!1 &1319033213
 GameObject:
   m_ObjectHideFlags: 0
@@ -17199,7 +17179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 503a0f5f142815349be95743528d8a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectionMenu: {fileID: 1468020452}
+  SelectionMenu: {fileID: 0}
 --- !u!1 &1340133317
 GameObject:
   m_ObjectHideFlags: 0
@@ -17987,7 +17967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 503a0f5f142815349be95743528d8a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectionMenu: {fileID: 1279087806}
+  SelectionMenu: {fileID: 0}
 --- !u!1 &1392149485
 GameObject:
   m_ObjectHideFlags: 0
@@ -18231,7 +18211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AllowSelection: 0
   Highlighter: {fileID: 986928284}
-  MainMenu: {fileID: 168866780}
+  MainMenu: {fileID: 0}
   WaitInterval: 7
 --- !u!1 &1417705422
 GameObject:
@@ -18378,7 +18358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 503a0f5f142815349be95743528d8a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectionMenu: {fileID: 961572691}
+  SelectionMenu: {fileID: 0}
 --- !u!1 &1426643642
 GameObject:
   m_ObjectHideFlags: 0
@@ -18653,7 +18633,7 @@ Prefab:
     - target: {fileID: 224726830090176492, guid: d18ff9b5cc383b74d8129cc84e833b63,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 220.1
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 224726830090176492, guid: d18ff9b5cc383b74d8129cc84e833b63,
         type: 2}
@@ -18700,6 +18680,12 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114177145061041260, guid: d18ff9b5cc383b74d8129cc84e833b63,
+        type: 2}
+      propertyPath: BatterySprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 847e810be2c59384a8825043ce2a4774,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d18ff9b5cc383b74d8129cc84e833b63, type: 2}
   m_IsPrefabParent: 0
@@ -18837,7 +18823,7 @@ RectTransform:
   m_GameObject: {fileID: 1441701102}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9999998, y: 0.9999998, z: 0.9999998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1766619945}
   m_Father: {fileID: 150463773}
@@ -18845,8 +18831,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -191, y: -0.8999634}
-  m_SizeDelta: {x: 125.8, y: 31.9}
+  m_AnchoredPosition: {x: -239.4, y: -0.8999634}
+  m_SizeDelta: {x: 100, y: 31.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1441701104
 MonoBehaviour:
@@ -20962,8 +20948,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -326.1, y: -0.9}
-  m_SizeDelta: {x: 125.8, y: 31.9}
+  m_AnchoredPosition: {x: -343.8, y: -0.9}
+  m_SizeDelta: {x: 100, y: 31.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1631010203
 MonoBehaviour:
@@ -24002,7 +23988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 503a0f5f142815349be95743528d8a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectionMenu: {fileID: 396781916}
+  SelectionMenu: {fileID: 0}
 --- !u!1 &1935075433
 GameObject:
   m_ObjectHideFlags: 0
@@ -25402,7 +25388,7 @@ Canvas:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2036484445}
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
@@ -25411,7 +25397,6 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
