@@ -4,14 +4,58 @@ using UnityEngine;
 using Connectome.Unity.Menu;
 using UnityEngine.UI;
 using CoreTweet;
-using Connectome.Twitter.API;
 using System;
+using Connectome.Twitter.API;
 using System.Text.RegularExpressions;
 using Connectome.Unity.Keyboard;
 using Fabric.Crashlytics;
 
 public class TimeLineHandler : TwitterObjects
 {
+    #region timelineOverviewObjects
+    public GameObject homeTimelineOverviewObjects;
+    private Status firstTweetObject;
+    private Status secondTweetObject;
+    private Status thirdTweetObject;
+    private Status fourthTweetObject;
+
+    public Image firstTweetProfilePic;
+    public Image secondTweetProfilePic;
+    public Image thirdTweetProfilePic;
+    public Image fourthTweetProfilePic;
+
+    public Text firstTweetRealName;
+    public Text secondTweetRealName;
+    public Text thirdTweetRealName;
+    public Text fourthTweetRealName;
+
+    public Text firstTweetTwitterHandle;
+    public Text secondTweetTwitterHandle;
+    public Text thirdTweetTwitterHandle;
+    public Text fourthTweetTwitterHandle;
+
+    public Text firstTweetBodyText;
+    public Text secondTweetBodyText;
+    public Text thirdTweetBodyText;
+    public Text fourthTweetBodyText;
+
+    public Text firstTweetTimeStamp;
+    public Text secondTweetTimeStamp;
+    public Text thirdTweetTimeStamp;
+    public Text fourthTweetTimeStamp;
+
+    public Image firstTweetImage;
+    public Image secondTweetImage;
+    public Image thirdTweetImage;
+    public Image fourthTweetImage;
+
+    public Button overviewNextTweetButton;
+    public Button overviewPreviousTweetButton;
+    public Button overviewSelectTweetButton;
+    public Button overviewBackButton;
+    public Button selectTweetBackButton;
+    #endregion
+
     #region Twitter Home Timeline Members
 
     public GameObject homeTimeLineObjects;
@@ -20,14 +64,12 @@ public class TimeLineHandler : TwitterObjects
     public Text twitterHandle;
     public Text timeStamp;
     public Text bodyText;
-    public Button lastTweetButton;
     public Button homeButton;
     public Button favoriteButton;
     public Button retweetButton;
     public Button replyButton;
     public Button imagesButton;
     public Button privateMessageButton;
-    public Button nextTweetButton;
     public string timelineTitle = "Timeline";
     public string convoTitle = "Conversation";
     public string homeTimeLineObjectsString = "homeTimeLineObjects";
@@ -46,7 +88,7 @@ public class TimeLineHandler : TwitterObjects
     public Button replyImageButton;
     public Button nextImageButton;
     public Image userImage;
-    private List<String> imageURLs;
+    private List<string> imageURLs;
     private int currentImageIndex;
     #endregion
 
@@ -54,25 +96,229 @@ public class TimeLineHandler : TwitterObjects
     public void addHomeTimeLine()
     {
         // Set all objects to be invisible except those related to the timeline.
-        setActiveObject(homeTimeLineObjectsString);
-
+        setActiveObject("homeTimelineOverviewObjects");
 		// Reset the current home time line tweet that is selected
         authHandler.Interactor.getHomeTimelineNavigatable().resetCurrentObject();
        	
-		// Get the next tweet on the home timeline
-		currentTweet = authHandler.makeTwitterAPICall(
-                () => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
-        if (currentTweet != null)
-            setTweet(currentTweet);
-        else
-		{
-			connectomeErrorText.text = "Something is wrong with twitter right now. Please try again later.";
-
-			// Pop the selection menu
-			setActiveObject("homeObjects");
-		}
+        setNextFourTweets();
 
         TitleView.text = timelineTitle;
+    }
+
+    public void selectTweetBack()
+    {
+        // hide back button, show tweet navigation buttons
+    }
+
+    public void selectTweet()
+    {
+        // hide tweet navigation buttons, hide select tweet back button
+    }
+
+    public void setPreviousFourTweets()
+    {
+        var tempFirstObj = authHandler.makeTwitterAPICall(
+                () => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
+        if (tempFirstObj == null)
+            return;
+
+        clearOverviewObjects();
+
+        var tempSecondObj = authHandler.makeTwitterAPICall(
+                () => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
+        if (tempSecondObj == null)
+        {
+            fourthTweetObject = thirdTweetObject;
+            thirdTweetObject = secondTweetObject;
+            secondTweetObject = firstTweetObject;
+            firstTweetObject = tempFirstObj;
+
+            setOverViewObjects();
+            return;
+        }
+
+        var tempThirdObj = authHandler.makeTwitterAPICall(
+                () => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
+        if (tempThirdObj == null)
+        {
+            fourthTweetObject = secondTweetObject;
+            thirdTweetObject = firstTweetObject;
+            secondTweetObject = tempSecondObj;
+            firstTweetObject = tempFirstObj;
+
+            setOverViewObjects();
+            return;
+        }
+        
+        var tempFourthObj = authHandler.makeTwitterAPICall(
+                () => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
+        if (tempFourthObj == null)
+        {
+            fourthTweetObject = firstTweetObject;
+            thirdTweetObject = tempThirdObj;
+            secondTweetObject = tempSecondObj;
+            firstTweetObject = tempFirstObj;
+
+            setOverViewObjects();
+            return;
+        }
+        else
+        {
+            fourthTweetObject = tempFourthObj;
+            thirdTweetObject = tempThirdObj;
+            secondTweetObject = tempSecondObj;
+            firstTweetObject = tempFirstObj;
+
+            setOverViewObjects();
+            return;
+        }
+    }
+
+    public void setNextFourTweets()
+    {
+        clearOverviewObjects();
+
+        firstTweetObject = authHandler.makeTwitterAPICall(
+                () => authHandler.Interactor.getHomeTimelineNavigatable().getOlderObject());
+        secondTweetObject = authHandler.makeTwitterAPICall(
+                () => authHandler.Interactor.getHomeTimelineNavigatable().getOlderObject());
+        thirdTweetObject = authHandler.makeTwitterAPICall(
+                () => authHandler.Interactor.getHomeTimelineNavigatable().getOlderObject());
+        fourthTweetObject = authHandler.makeTwitterAPICall(
+                () => authHandler.Interactor.getHomeTimelineNavigatable().getOlderObject());
+
+        setOverViewObjects();
+    }
+
+    public void setOverViewObjects()
+    {
+        if (firstTweetObject != null)
+        {
+            StartCoroutine(setImage(firstTweetProfilePic, firstTweetObject.User.ProfileImageUrl));
+            firstTweetRealName.text = firstTweetObject.User.Name;
+            firstTweetTwitterHandle.text = "@" + firstTweetObject.User.ScreenName;
+            firstTweetBodyText.text = firstTweetObject.Text;
+            firstTweetTimeStamp.text = Utilities.ElapsedTime(firstTweetObject.CreatedAt.Date);
+
+            if (firstTweetObject.Entities != null && firstTweetObject.Entities.Media != null && firstTweetObject.Entities.Media.Length > 0)
+            {
+                StartCoroutine(setImage(firstTweetImage, firstTweetObject.Entities.Media[0].MediaUrl));
+            }
+        }
+
+        if (secondTweetObject != null)
+        {
+            StartCoroutine(setImage(secondTweetProfilePic, secondTweetObject.User.ProfileImageUrl));
+            secondTweetRealName.text = secondTweetObject.User.Name;
+            secondTweetTwitterHandle.text = "@" + secondTweetObject.User.ScreenName;
+            secondTweetBodyText.text = secondTweetObject.Text;
+            secondTweetTimeStamp.text = Utilities.ElapsedTime(secondTweetObject.CreatedAt.Date);
+
+            if (secondTweetObject.Entities != null && secondTweetObject.Entities.Media != null && secondTweetObject.Entities.Media.Length > 0)
+            {
+                StartCoroutine(setImage(secondTweetImage, secondTweetObject.Entities.Media[0].MediaUrl));
+            }
+        }
+
+        if (thirdTweetObject != null)
+        {
+            StartCoroutine(setImage(secondTweetProfilePic, thirdTweetObject.User.ProfileImageUrl));
+            thirdTweetRealName.text = thirdTweetObject.User.Name;
+            thirdTweetTwitterHandle.text = "@" + thirdTweetObject.User.ScreenName;
+            thirdTweetBodyText.text = thirdTweetObject.Text;
+            thirdTweetTimeStamp.text = Utilities.ElapsedTime(thirdTweetObject.CreatedAt.Date);
+
+            if (thirdTweetObject.Entities != null && thirdTweetObject.Entities.Media != null && thirdTweetObject.Entities.Media.Length > 0)
+            {
+                StartCoroutine(setImage(thirdTweetImage, thirdTweetObject.Entities.Media[0].MediaUrl));
+            }
+        }
+
+        if (fourthTweetObject != null)
+        {
+            StartCoroutine(setImage(fourthTweetProfilePic, fourthTweetObject.User.ProfileImageUrl));
+            fourthTweetRealName.text = fourthTweetObject.User.Name;
+            fourthTweetTwitterHandle.text = "@" + fourthTweetObject.User.ScreenName;
+            fourthTweetBodyText.text = fourthTweetObject.Text;
+            fourthTweetTimeStamp.text = Utilities.ElapsedTime(fourthTweetObject.CreatedAt.Date);
+
+            if (fourthTweetObject.Entities != null && fourthTweetObject.Entities.Media != null && fourthTweetObject.Entities.Media.Length > 0)
+            {
+                StartCoroutine(setImage(fourthTweetImage, fourthTweetObject.Entities.Media[0].MediaUrl));
+            }
+        }
+    }
+
+    public void clearOverviewObjects()
+    {
+        firstTweetRealName.text = "";
+        firstTweetTwitterHandle.text = "";
+        firstTweetBodyText.text = "";
+        firstTweetTimeStamp.text = "";
+        firstTweetImage.sprite = null;
+        
+        secondTweetRealName.text = "";
+        secondTweetTwitterHandle.text = "";
+        secondTweetBodyText.text = "";
+        secondTweetTimeStamp.text = "";
+        secondTweetImage.sprite = null;
+
+        thirdTweetRealName.text = "";
+        thirdTweetTwitterHandle.text = "";
+        thirdTweetBodyText.text = "";
+        thirdTweetTimeStamp.text = "";
+        thirdTweetImage.sprite = null;
+
+        fourthTweetRealName.text = "";
+        fourthTweetTwitterHandle.text = "";
+        fourthTweetBodyText.text = "";
+        fourthTweetTimeStamp.text = "";
+        fourthTweetImage.sprite = null;
+    }
+
+    public IEnumerator setImage(Image image, string url)
+    {
+        WWW www = new WWW(url);
+        yield return www;
+        image.sprite = Sprite.Create(
+            www.texture,
+            new Rect(0, 0, www.texture.width, www.texture.height),
+            new Vector2(0, 0));
+    }
+
+    public void selectFirstTweetObject()
+    {
+        setActiveObject(homeTimeLineObjectsString);
+        currentTweet = firstTweetObject;
+        setTweet(currentTweet);
+    }
+
+    public void selectSecondTweetObject()
+    {
+        setActiveObject(homeTimeLineObjectsString);
+        currentTweet = secondTweetObject;
+        setTweet(currentTweet);
+    }
+
+    public void selectThirdTweetObject()
+    {
+        setActiveObject(homeTimeLineObjectsString);
+        currentTweet = thirdTweetObject;
+        setTweet(currentTweet);
+    }
+
+    public void selectFourthTweetObject()
+    {
+        setActiveObject(homeTimeLineObjectsString);
+        currentTweet = fourthTweetObject;
+        setTweet(currentTweet);
+    }
+
+    public void backToTweetOverViewScreen()
+    {
+        setActiveObject("homeTimelineOverviewObjects");
+        
+        // Hide select tweet back button, show tweet navigation buttons
     }
 
     // This function sets the current tweet for the user.
@@ -90,30 +336,6 @@ public class TimeLineHandler : TwitterObjects
 
 		// Set the time stamp to be text such as "2 seconds ago"
         timeStamp.text = Utilities.ElapsedTime(tweet.CreatedAt.DateTime);
-
-		// Populate the last tweet button with the number of newer tweets
-        lastTweetButton.GetComponentInChildren<Text>().text = "< (" +
-                                                              authHandler.makeTwitterAPICall(
-                                                                  () =>
-                                                                      authHandler.Interactor.getHomeTimelineNavigatable()
-                                                                          .getNumNewerObjects()) + ") newer";
-        // Populate the next tweet button with the number of older tweets
-		nextTweetButton.GetComponentInChildren<Text>().text = "(" +
-                                                              authHandler.makeTwitterAPICall(
-                                                                  () =>
-                                                                      authHandler.Interactor.getHomeTimelineNavigatable()
-                                                                          .getNumOlderObjects()) + ") older >";
-
-        
-		// Determine if the last tweet button should be disabled
-		Boolean lastButtonEnabled = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().hasNewerObject());
-		lastTweetButton.enabled = lastButtonEnabled;
-		lastTweetButton.interactable = lastButtonEnabled;
-
-		// Determine if the next tweet button should be disabled
-		Boolean nextButtonEnabled = authHandler.makeTwitterAPICall (() => authHandler.Interactor.getHomeTimelineNavigatable ().hasOlderObject ());
-		nextTweetButton.enabled = nextButtonEnabled;
-		nextTweetButton.interactable = nextButtonEnabled;
         
 		// If there are no images in the tweet, disable the button
 		Boolean imageButtonEnabled = tweet.Entities != null && tweet.Entities.Media != null && tweet.Entities.Media.Length > 0;
@@ -133,34 +355,6 @@ public class TimeLineHandler : TwitterObjects
             new Rect(0, 0, www.texture.width, www.texture.height),
             new Vector2(0, 0));
     }
-
-    // This function populates the timeline ui with the next tweet in the list.
-    public void nextTweet()
-    {
-        // Skip this onclick if the scene is on the Timeline
-        if (!TitleView.text.Equals(timelineTitle))
-            return;
-
-        currentTweet = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getOlderObject());
-        if (currentTweet != null)
-            setTweet(currentTweet);
-        else
-            throw new Exception("No next tweet.");
-    }
-
-    // This function populates the timeline ui with the last tweet in the list.
-    public void previousTweet()
-    {
-        if (!TitleView.text.Equals(timelineTitle))
-            return;
-
-        currentTweet = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getHomeTimelineNavigatable().getNewerObject());
-        if (currentTweet != null)
-            setTweet(currentTweet);
-        else
-            throw new Exception("No previous tweet.");
-    }
-
     public Status getCurrentTweet()
     {
         return this.currentTweet;

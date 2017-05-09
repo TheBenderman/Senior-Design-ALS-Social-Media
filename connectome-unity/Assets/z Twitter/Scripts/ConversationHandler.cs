@@ -53,8 +53,6 @@ public class ConversationHandler : TwitterObjects {
 			seeConversation.gameObject.SetActive (false);
 			setTweet(currentTweetConvo);
 			timelineHandler.TitleView.text = timelineHandler.convoTitle;
-			timelineHandler.lastTweetButton.GetComponentInChildren<Text>().text = "<";
-			timelineHandler.nextTweetButton.GetComponentInChildren<Text>().text = ">";
 		}
 		else
 		{
