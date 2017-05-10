@@ -5,7 +5,7 @@
 			"panelname":"Row1",
 			"paneldata":[
 				{
-					"panelname":"Group1",
+					"panelname":"Row1Group1",
 					"paneldata":[
 						{"buttonname":"A"},
 						{"buttonname":"C"},
@@ -14,7 +14,7 @@
 					]
 				},
 				{
-					"panelname":"Group2",
+					"panelname":"Row1Group2",
 					"paneldata":[
 						{"buttonname":"F"},
 						{"buttonname":"L"},
@@ -30,7 +30,7 @@
 			"panelname":"Row2",
 			"paneldata":[
 				{
-					"panelname":"Group1",
+					"panelname":"Row2Group1",
 					"paneldata":[
 						{"buttonname":"B"},
 						{"buttonname":"H"},
@@ -39,7 +39,7 @@
 					]
 				},
 				{
-					"panelname":"Group2",
+					"panelname":"Row2Group2",
 					"paneldata":[
 						{"buttonname":"D"},
 						{"buttonname":"E"},
@@ -55,7 +55,7 @@
 			"panelname":"Row3",
 			"paneldata":[
 				{
-					"panelname":"Group1",
+					"panelname":"Row3Group1",
 					"paneldata":[
 						{"buttonname":"G"},
 						{"buttonname":"I"},
@@ -65,7 +65,7 @@
 					]
 				},
 				{
-					"panelname":"Group2",
+					"panelname":"Row3Group2",
 					"paneldata":[
 						{"buttonname":"K"},
 						{"buttonname":"O"},
