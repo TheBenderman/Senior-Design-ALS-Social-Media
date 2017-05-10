@@ -111,7 +111,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1097274726600876
 GameObject:
   m_ObjectHideFlags: 1
@@ -379,7 +379,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1227289976857462
 GameObject:
   m_ObjectHideFlags: 1
@@ -673,7 +673,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1475329502084604
 GameObject:
   m_ObjectHideFlags: 1
@@ -1779,7 +1779,7 @@ MonoBehaviour:
   AutoSetup: 1
   StatusBar: {fileID: 0}
   CalculatorConfiguration: {fileID: 114849387534325080}
-  DevicePlugin: {fileID: 114224308874660964}
+  DevicePlugin: {fileID: 114186385342381572}
   ReaderPlugin: {fileID: 114717585735713238}
   Sampler: {fileID: 114472219884252230}
   EmotivCalculator: {fileID: 114873283753465178}
@@ -1863,8 +1863,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: 556e697479456e67696e652e4576656e74732e556e6974794576656e742c20556e697479456e67696e652c2056657273696f6e3d302e302e302e302c2043756c747572653d6e65757472616c2c205075626c69634b6579546f6b656e3d6e756c6c
-  AutoUpdateIndicators: 0
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  AutoUpdateIndicators: 1
   ScaleSlider: 0
   ActivitySlider: {fileID: 0}
   IndicatorSlider: {fileID: 0}
@@ -2178,9 +2179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7705470619bc764fb2c9c79ba262269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Username: 656d6f746976313233
-  Password: 456d6f746976626369313233
-  Profile: 53535645505f70726f66696c65
+  Username: emotiv123
+  Password: Emotivbci123
+  Profile: KLD_Blink
 --- !u!114 &114197534433237012
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3478,7 +3479,8 @@ MonoBehaviour:
   OnReached:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: 556e697479456e67696e652e4576656e74732e556e6974794576656e742c20556e697479456e67696e652c2056657273696f6e3d302e302e302e302c2043756c747572653d6e65757472616c2c205075626c69634b6579546f6b656e3d6e756c6c
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   AutoUpdateIndicators: 0
   ScaleSlider: 0
   ActivitySlider: {fileID: 0}
@@ -3487,7 +3489,8 @@ MonoBehaviour:
   OnRefresh:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: 556e697479456e67696e652e4576656e74732e556e6974794576656e742c20556e697479456e67696e652c2056657273696f6e3d302e302e302e302c2043756c747572653d6e65757472616c2c205075626c69634b6579546f6b656e3d6e756c6c
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   RefreshIndicator: {fileID: 0}
 --- !u!114 &114654990833318510
 MonoBehaviour:
@@ -3675,7 +3678,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: 556e697479456e67696e652e4576656e74732e556e6974794576656e742c20556e697479456e67696e652c2056657273696f6e3d302e302e302e302c2043756c747572653d6e65757472616c2c205075626c69634b6579546f6b656e3d6e756c6c
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   OnRefresh:
     m_PersistentCalls:
       m_Calls:
@@ -3690,7 +3694,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: 556e697479456e67696e652e4576656e74732e556e6974794576656e742c20556e697479456e67696e652c2056657273696f6e3d302e302e302e302c2043756c747572653d6e65757472616c2c205075626c69634b6579546f6b656e3d6e756c6c
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   Sampler: {fileID: 114472219884252230}
   ClickInterpreter: {fileID: 114042440167844094}
   RefreshInterpreter: {fileID: 114790237214806192}
@@ -3943,8 +3948,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: 556e697479456e67696e652e4576656e74732e556e6974794576656e742c20556e697479456e67696e652c2056657273696f6e3d302e302e302e302c2043756c747572653d6e65757472616c2c205075626c69634b6579546f6b656e3d6e756c6c
-  AutoUpdateIndicators: 0
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  AutoUpdateIndicators: 1
   ScaleSlider: 0
   ActivitySlider: {fileID: 0}
   IndicatorSlider: {fileID: 0}
@@ -4115,7 +4121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetCommand: 2
-  MinSampleSize: 4500
+  MinSampleSize: 8
 --- !u!114 &114863806886747780
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4160,7 +4166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e3632ec04860264692d4aad014c6d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Reduction: 0
+  Reduction: 1
   DefaultConfig: {fileID: 114849387534325080}
 --- !u!114 &114873638004084890
 MonoBehaviour:
