@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TestingSet : MonoBehaviour
 {
-    public EmotivCommandType[] Sessions;
+    public EmotivCommandType[] Prompts;
 
     public int RecordDuration;
 

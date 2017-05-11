@@ -38,10 +38,11 @@ namespace Connectome.KLD.Test
         private bool IsBreak;
 
         [Header("Overriding")]
-        public bool ShouldOverideDurations;
+        public bool OverideDurations;
         public int RecordDuration;
         public int RestDuration;
-        public EmotivCommandType[] TestSessions; 
+        public bool OveridePrompts;
+        public EmotivCommandType[] Prompts; 
 
         [Header("Object Refrences")]
         public Text Title;
@@ -55,21 +56,23 @@ namespace Connectome.KLD.Test
         {
             int record = TestingSet.RecordDuration;
             int rest = TestingSet.RestDuration;
-            EmotivCommandType[] sessions = TestingSet.Sessions;
+            EmotivCommandType[] prompts = TestingSet.Prompts;
 
-            if (ShouldOverideDurations)
+            if (OverideDurations)
             {
                 record = RecordDuration;
                 rest = RestDuration;
-                sessions = TestSessions;
             }
-
-            LastTestingSessions = sessions; 
+            if (OveridePrompts)
+            {
+                prompts = Prompts;
+            }
+            LastTestingSessions = prompts; 
 
             try
             {
                 Title.text = "";
-                States = new List<IEmotivState>[sessions.Length];
+                States = new List<IEmotivState>[prompts.Length];
 
                 for (int i = 0; i < States.Length; i++)
                 {
@@ -84,7 +87,7 @@ namespace Connectome.KLD.Test
 
                 
 
-                StartCoroutine(StartReading(sessions, record, rest));
+                StartCoroutine(StartReading(prompts, record, rest));
             }
             catch (Exception e)
             {
@@ -97,8 +100,6 @@ namespace Connectome.KLD.Test
         {
             try
             {
-
-
                 if (IsBreak)
                     return;
 
@@ -192,35 +193,87 @@ namespace Connectome.KLD.Test
                 //Displaying result 
                 string textToDisplay = "";
                    
-                foreach(var d in Metrix)
+                /* useless shit
+                 * foreach(var d in Metrix)
                 {
                     textToDisplay += "Total " + d.Key.ToString() + " = " + (((float)d.Value.TP) / d.Value.size).ToString("0.00") +
                                 "\n Max = " + d.Value.max.ToString("0.00") +
                                 " Min = " + d.Value.min.ToString("0.00") +
                                 " Avg = " + (d.Value.totalPower / d.Value.size).ToString("0.00") + "\n";                
-                }
+                }*/
 
                 //std? i failed stat 
 
-                Dictionary<EmotivCommandType, float> difference = new Dictionary<EmotivCommandType, float>();
+                Dictionary<EmotivCommandType, float> variance = new Dictionary<EmotivCommandType, float>();
+                Dictionary<EmotivCommandType, List<float>> AllowedVariance = new Dictionary<EmotivCommandType, List<float>>();
+
                 Dictionary<EmotivCommandType, float> averages = new Dictionary<EmotivCommandType, float>();
 
-                string diffBuild = "";
-                float totalD = 0;
+                float allTotalVariance = 0;
+                float ValidTotalVariance = 0;
+
+                float OverlayLimit = .20f;
+
+                Dictionary<EmotivCommandType, int> OutliersCount = new Dictionary<EmotivCommandType, int>();
+
+                int totalOutliers = 0; 
 
                 float MinPushRateOnPush = 1.01f;
-                float MaxPushRateOnNeutral = -0.01f; 
+                float MaxPushRateOnNeutral = -0.01f;
+
+                float AllMinPushRateOnPush = 1.01f;
+                float AllMaxPushRateOnNeutral = -0.01f;
+
 
                 foreach (EmotivCommandType uc in uniqueList)
                 {
-                    difference.Add(uc, 0);
+                    variance.Add(uc, 0);
+                    AllowedVariance.Add(uc, new List<float>());
+                    OutliersCount.Add(uc, 0); 
                     averages.Add(uc, 0); 
 
+                    //calculate average
                     float averageAvg = 0;
 
                     foreach (float avg in Metrix[uc].Rates)
                     {
                         averageAvg += avg;
+                    }
+
+                    averageAvg /= Metrix[uc].Rates.Count;
+
+                    averages[uc] = averageAvg;
+
+
+                    textToDisplay += uc.ToString() + " ("+ averageAvg.ToString("0.00") + "): ";
+ 
+                    //calculate variance 
+                    foreach (float avg in Metrix[uc].Rates)
+                    {
+                        textToDisplay += avg.ToString("0.00");
+
+                        if (uc == EmotivCommandType.PUSH)
+                        {
+                            AllMinPushRateOnPush = Math.Min(AllMinPushRateOnPush, avg);
+                        }
+                        else if (uc == EmotivCommandType.NEUTRAL)
+                        {
+                            AllMaxPushRateOnNeutral = Math.Max(AllMaxPushRateOnNeutral, (1 - avg));
+                        }
+
+                        variance[uc] += Math.Abs(averageAvg - avg);
+
+                        if (Math.Abs(avg - averageAvg) >= OverlayLimit)
+                        {
+                            textToDisplay += "*,";
+                            OutliersCount[uc]++;
+                            totalOutliers++;  //terribale 
+                            continue;
+                        }
+
+                        textToDisplay += ",";
+
+                        AllowedVariance[uc].Add(Math.Abs(averageAvg - avg)); 
 
                         if (uc == EmotivCommandType.PUSH)
                         {
@@ -228,31 +281,37 @@ namespace Connectome.KLD.Test
                         }
                         else if (uc == EmotivCommandType.NEUTRAL)
                         {
-                            MaxPushRateOnNeutral = Math.Max(MaxPushRateOnNeutral, (1-avg));
+                            MaxPushRateOnNeutral = Math.Max(MaxPushRateOnNeutral, (1 - avg));
                         }
                     }
 
-                    averageAvg /= Metrix[uc].Rates.Count;
+                    textToDisplay += "lul";
 
-                    averages[uc] = averageAvg; 
+                    textToDisplay = textToDisplay.Replace(",lul", "\n"); // lul
 
-                    foreach (float avg in Metrix[uc].Rates)
-                    {
-                        difference[uc] += Math.Abs(averageAvg - avg); 
-                    }
+                    //variance[uc] /= Metrix[uc].Rates.Count;
 
-                    difference[uc] /= Metrix[uc].Rates.Count;
+                    allTotalVariance += variance[uc];
 
-                    totalD = difference[uc]; 
+                    ValidTotalVariance += AllowedVariance[uc].Sum(); 
 
-                    diffBuild += "C["+uc.ToString()+"]: " + difference[uc].ToString("0.00") + "\n"; 
+                    //all 
+                    textToDisplay += "All - MinFP: " + AllMinPushRateOnPush.ToString("0.00") + ", MaxFP: " + AllMaxPushRateOnNeutral.ToString("0.00")
+                                        + ", V[" + uc.ToString() + "]: " + variance[uc].ToString("0.00") + "\n"; 
+                    // valid (exclude outliers) 
+                    textToDisplay += "Valid - MinFP: " + MinPushRateOnPush.ToString("0.00") + ", MaxFP: " + MaxPushRateOnNeutral.ToString("0.00")
+                                       + ", V[" + uc.ToString() + "]: " + AllowedVariance[uc].Sum().ToString("0.00") + " Out: "  + OutliersCount[uc] +  "\n\n";
+                   
                 }
 
-               float validity = MinPushRateOnPush - MaxPushRateOnNeutral;
+                float AllValidity = AllMinPushRateOnPush - AllMaxPushRateOnNeutral;
+                float valifValidity = MinPushRateOnPush - MaxPushRateOnNeutral;
 
-                Title.text = textToDisplay + diffBuild
-                        + "Average C:" + (totalD / uniqueList.Count).ToString("0.00")
-                         + "\nGap: " + validity.ToString("0.00"); 
+                Title.text = textToDisplay
+                        + "All - Average V:" + (allTotalVariance / uniqueList.Count).ToString("0.00") 
+                        + ", Gap: " + AllValidity.ToString("0.00") + "\n"
+                        + "Valid - Average V:" + (ValidTotalVariance / uniqueList.Count).ToString("0.00")
+                        + ", Gap: " + valifValidity.ToString("0.00") + " Total Out: "  + totalOutliers + "\n"; 
 
                 if (OnFinished != null)
                 {

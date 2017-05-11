@@ -151,7 +151,8 @@ namespace Connectome.Unity.Manager
 
                     StatusBar.UpdateInputRate(ConvertInputRateLevel(TotalStatesRead - PreviousInputRate));
                 }
-                    PreviousInputRate = TotalStatesRead;
+                Debug.Log("InputRate:" + (TotalStatesRead - PreviousInputRate));
+                PreviousInputRate = TotalStatesRead;
             }
         }
         #endregion

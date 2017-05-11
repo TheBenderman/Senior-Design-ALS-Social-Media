@@ -182,10 +182,27 @@ namespace Connectome.Emotiv.Implementation
             return true;
         }
 
+        public int[] ContactQuality; 
+
         public override IEmotivState AttemptRead(long time)
         {
             UpdateBatteryLevel();
             UpdateWirelessSigmalStrength();
+
+            //EdkDll.IEE_EEG_ContactQuality_t[] Quality;
+
+            //EdkDll.IS_GetContactQualityFromAllChannels(this.eState, out Quality);
+
+            //ContactQuality = new int[Quality.Length];
+
+            /*for (int i = 0; i < Quality.Length; i++)
+            {
+                //ContactQuality[i] = (int)Quality[i];
+
+                //Debug.Write(Quality[i]+ ", ");
+            }*/
+
+            //Debug.WriteLine("");
 
             int state = EdkDll.IEE_EngineGetNextEvent(eEvent);
 
@@ -196,6 +213,16 @@ namespace Connectome.Emotiv.Implementation
                 //Debug.WriteLine(engineUserID);
                 if (eventType == EdkDll.IEE_Event_t.IEE_EmoStateUpdated)
                 {
+                   /* for (int i = 0; i < Quality.Length; i++)
+                    {
+                        //ContactQuality[i] = (int)Quality[i];
+
+                        Debug.Write((int)Quality[i] + ", ");
+                    }
+
+                    Debug.WriteLine("");*/
+
+
                     int newState = EdkDll.IEE_EmoEngineEventGetEmoState(eEvent, eState);
                     var act = EdkDll.IS_GetWirelessSignalStatus(eState);
                     EdkDll.IEE_MentalCommandAction_t currentAction = EdkDll.IS_MentalCommandGetCurrentAction(eState);

@@ -4517,7 +4517,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputField: {fileID: 114072599049448034}
   Menu: {fileID: 114427183516548772}
-  IsCaps: 0
+  IsCaps: 1
 --- !u!114 &114337674061210500
 MonoBehaviour:
   m_ObjectHideFlags: 1

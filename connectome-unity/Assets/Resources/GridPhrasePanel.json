@@ -14,8 +14,8 @@
 			"paneldata":[
 				{"buttonname":"You "},
 				{"buttonname":"Me "},
-        { "buttonname": "My " },
-        {"buttonname": "The "}
+				{ "buttonname": "My " },
+				{"buttonname": "The "}
 			]
 		},
 		{
@@ -23,8 +23,8 @@
 			"paneldata":[
 				{"buttonname":"He "},
 				{"buttonname":"She "},
-        { "buttonname": "Am " },
-        {"buttonname": "To "}
+				{ "buttonname": "Yes " },
+				{"buttonname": "To "}
 			]
 		},
 		{	
@@ -32,8 +32,8 @@
 			"paneldata":[
 				{"buttonname":"For "},
 				{"buttonname":"With "},
-        { "buttonname": "Too " },
-        {"buttonname": "Am "}
+				{ "buttonname": "Too " },
+				{"buttonname": "No "}
 			]
 		}
 ]}

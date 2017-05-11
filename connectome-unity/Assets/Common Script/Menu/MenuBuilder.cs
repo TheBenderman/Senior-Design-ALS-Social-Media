@@ -49,12 +49,14 @@ public class MenuBuilder : MonoBehaviour {
             {
                 string name = button.Obj.GetString("buttonname");
                 children[j].SetButtonText(name);
+                children[j].gameObject.name = name;
                 //Debug.Log(name);
                 j++;
             }
             else
             {
                 //The button at index j at this point is the one containing the children
+                children[j].gameObject.name = button.Obj.GetString("panelname");
                 j = PopulateButton(children, button.Obj.GetArray("paneldata"), j + 1);
             }
         }

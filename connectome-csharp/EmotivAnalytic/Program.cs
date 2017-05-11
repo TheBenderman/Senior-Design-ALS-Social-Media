@@ -17,22 +17,29 @@ namespace EmotivAnalytic
 
             IConnectomeReader<IEmotivState> readerPlug = new BasicEmotivReader(device);
 
-            int waitTimeSecond = 5;
+            int waitTimeSecond = 40;
             IConnectomeReader<IEmotivState> reader = new TimedEmotivReader(readerPlug, waitTimeSecond);
 
+            int p = -1; 
             reader.OnRead += (state) =>
             {
-                Debug.WriteLine(state);
+                if (device.WirelessSignalStrength != p)
+                {
+                    p = device.WirelessSignalStrength; 
+                    //Debug.WriteLine(p);
+                }
             };
            
             reader.StartReading();
    
             while (reader.IsReading)
             {
-                Console.WriteLine(device.BatteryLevel); 
+               
+                //Debug.WriteLine(device.BatteryLevel);
             }
-           
-            Debug.WriteLine("[END]");
+
+            Console.ReadLine();
+            Console.WriteLine("[END]");
         }
 
     }//end class 
