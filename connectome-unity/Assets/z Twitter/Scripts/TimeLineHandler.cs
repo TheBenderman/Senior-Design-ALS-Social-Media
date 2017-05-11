@@ -95,9 +95,7 @@ public class TimeLineHandler : TwitterObjects
     // This function populates the user homepage.
     public void addHomeTimeLine()
     {
-        // Set all objects to be invisible except those related to the timeline.
-        setActiveObject("homeTimelineOverviewObjects");
-		// Reset the current home time line tweet that is selected
+        // Reset the current home time line tweet that is selected
         authHandler.Interactor.getHomeTimelineNavigatable().resetCurrentObject();
        	
         setNextFourTweets();
@@ -222,7 +220,7 @@ public class TimeLineHandler : TwitterObjects
 
         if (thirdTweetObject != null)
         {
-            StartCoroutine(setImage(secondTweetProfilePic, thirdTweetObject.User.ProfileImageUrl));
+            StartCoroutine(setImage(thirdTweetProfilePic, thirdTweetObject.User.ProfileImageUrl));
             thirdTweetRealName.text = thirdTweetObject.User.Name;
             thirdTweetTwitterHandle.text = "@" + thirdTweetObject.User.ScreenName;
             thirdTweetBodyText.text = thirdTweetObject.Text;
@@ -288,38 +286,28 @@ public class TimeLineHandler : TwitterObjects
 
     public void selectFirstTweetObject()
     {
-        setActiveObject(homeTimeLineObjectsString);
         currentTweet = firstTweetObject;
         setTweet(currentTweet);
     }
 
     public void selectSecondTweetObject()
     {
-        setActiveObject(homeTimeLineObjectsString);
         currentTweet = secondTweetObject;
         setTweet(currentTweet);
     }
 
     public void selectThirdTweetObject()
     {
-        setActiveObject(homeTimeLineObjectsString);
         currentTweet = thirdTweetObject;
         setTweet(currentTweet);
     }
 
     public void selectFourthTweetObject()
     {
-        setActiveObject(homeTimeLineObjectsString);
         currentTweet = fourthTweetObject;
         setTweet(currentTweet);
     }
 
-    public void backToTweetOverViewScreen()
-    {
-        setActiveObject("homeTimelineOverviewObjects");
-        
-        // Hide select tweet back button, show tweet navigation buttons
-    }
 
     // This function sets the current tweet for the user.
     public void setTweet(Status tweet)
@@ -380,14 +368,12 @@ public class TimeLineHandler : TwitterObjects
 		currentImageIndex = 0; // get the first image for the tweet
 
 		setCurrentImage();
-        setActiveObject("ImageObjects");
     }
 
 	// Go back from the images menu to the twitter timeline
 	public void imagesBackToCurrentTweet()
 	{
 		Destroy (userImage.sprite);
-		setActiveObject (homeTimeLineObjectsString);
 	}
 
 	// Set the current image being displayed
