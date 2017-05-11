@@ -50,7 +50,6 @@ namespace Connectome.Unity.Menu
         {
             do
             {
-                Debug.Log(Pointer);
                 if(Pointer == -1)
                 {
                     DisplayManager.ReleaseNotification(); 

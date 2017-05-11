@@ -175,7 +175,7 @@ public class ProfileMenuSelectTestController : MonoBehaviour
 
             float averageAvg = 0;
 
-            Debug.Log(uc); 
+            //Debug.Log(uc); 
 
             foreach (float avg in TargettingState[uc])
             {
@@ -208,16 +208,18 @@ public class ProfileMenuSelectTestController : MonoBehaviour
             diffBuild += "C[" + uc.ToString() + "]: " + difference[uc].ToString("0.00") + "\n";
         }
 
-        Debug.Log("Min: " + MinTarget);
-        Debug.Log("Max: " + MaxNonTarget);
+        //Debug.Log("Min: " + MinTarget);
+        //Debug.Log("Max: " + MaxNonTarget);
 
         //fk this sucks
-        float estRefresh = MaxNonTarget + ((MinTarget - MaxNonTarget) * .25f);
+        //float estRefresh = MaxNonTarget + ((MinTarget - MaxNonTarget) * .25f);
 
-        DisplayText.text = "Avg Target: " + average["Target"].ToString("0.00") + "\nAvg NonTarget: " +  average["NonTarget"].ToString("0.00") + "\n" 
+        /*DisplayText.text = "Avg Target: " + average["Target"].ToString("0.00") + "\nAvg NonTarget: " +  average["NonTarget"].ToString("0.00") + "\n" 
                             +  diffBuild  //has coonsistency 
                             + " Estemated RefreshRate: " + estRefresh.ToString("0.00") + "\n Estimated Click: " + MinTarget.ToString("0.00");
+        */
 
+        DisplayText.text = "Task 2 is completed! (▼・ᴥ・▼)"; 
 
         //calculate average for each session. 
         OnFinish.Invoke();
@@ -259,36 +261,100 @@ public class ProfileMenuSelectTestController : MonoBehaviour
             Debug.Log("bye");
             return;
         }
-        else if (!filePath.EndsWith(".csv"))
+        /*else if (!filePath.EndsWith(".csv"))
         {
             Debug.Log("illegal");
             return;
+        }*/
+
+        if (filePath.Contains("."))
+        {
+            filePath = filePath.Substring(0, filePath.LastIndexOf("."));
         }
 
-        Debug.Log("Exporting");
-        FileStream fstream = File.Create(filePath);
-        StreamWriter writer = new StreamWriter(fstream);
-        string previousLine = States[0].Tag; 
-
+        Debug.Log("Exporting Raw");
+        FileStream fstreamRaw = File.Create(filePath +" - Raw.csv");
+        StreamWriter writerRaw = new StreamWriter(fstreamRaw);
         ///csv header
-        writer.WriteLine("Location,Command,Time,Power");
+        writerRaw.WriteLine("Location,Command,Time,Power");
 
+        List<float> powers =  new List<float>(); 
+
+        List <float>[] Rates = new List<float>[2];
+
+        Rates[0] = new List<float>();
+        Rates[1] = new List<float>(); 
+
+        string previousLine = States[0].Tag; 
         foreach (var state in States)
         {
             ///add empty line for each set a states records for each highlighed 
             if(previousLine != state.Tag)
             {
                 previousLine = state.Tag; 
-                writer.WriteLine(",,,,");     
+                writerRaw.WriteLine(",,,,");  
+                
+                
+               if(previousLine == "Option 2")
+               {
+                    Rates[0].Add(powers.Average()); 
+               } 
+               else
+               {
+                    Rates[1].Add(powers.Average());
+               }
+
+                powers = new List<float>(); 
             }
 
-            writer.WriteLine(string.Format("{0},{1},{2},{3}", state.Tag, state.EmotivState.Command, state.EmotivState.Time - initTime, state.EmotivState.Power)); 
+            if (state.Tag != "Terminator")
+            {
+                if(state.EmotivState == null)
+                {
+                    Debug.Log("NULL");
+                }
+                powers.Add(state.EmotivState.Power);
+
+                writerRaw.WriteLine(string.Format("{0},{1},{2},{3}", state.Tag, state.EmotivState.Command, state.EmotivState.Time - initTime, state.EmotivState.Power));
+            }
         }
 
-        writer.Flush();
-        writer.Close();
+        writerRaw.Flush();
+        writerRaw.Close();
 
-        Debug.Log("Exported");
+        Debug.Log("Exported Raw");
+        Debug.Log("Exporting Summary");
+
+
+        FileStream fstreamSummary = File.Create(filePath + " - Summary.csv");
+        StreamWriter writerSummary = new StreamWriter(fstreamSummary);
+
+        for (int i = 0; i < Rates.Length; i++)
+        {
+            if(i==0)
+            {
+                writerSummary.Write("Tragets"); 
+            }
+            else
+            {
+                writerSummary.Write("NonTragets");
+            }
+
+
+            writerSummary.Write("(" + Rates[i].Average().ToString("0.00") + "),"); 
+
+            foreach (var item in Rates[i])
+            {
+                writerSummary.Write(item.ToString("0.00") + ",");
+            }
+            writerSummary.WriteLine(); 
+        }
+
+        writerSummary.Flush();
+        writerSummary.Close();
+        Debug.Log("Exported Summary");
+
+
     }
 }
 

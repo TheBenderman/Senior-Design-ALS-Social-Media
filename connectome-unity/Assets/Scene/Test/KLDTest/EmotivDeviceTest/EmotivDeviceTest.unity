@@ -822,7 +822,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: Task 2
 --- !u!222 &372680906
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -844,8 +844,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 18.25, y: 45}
-  m_SizeDelta: {x: 563.5, y: 328}
+  m_AnchoredPosition: {x: 0, y: 45}
+  m_SizeDelta: {x: 560, y: 325}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &436107003
 GameObject:
@@ -1742,7 +1742,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &880860061
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1778,7 +1778,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ForceOverride: 1
-  Duration: 45
+  Duration: 7
   EnableSelectionManager: 1
   SelectionManager: {fileID: 2030024109}
   DisplayText: {fileID: 372680905}
@@ -3431,7 +3431,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1521138624
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4584,7 +4584,7 @@ MonoBehaviour:
   AllowSelection: 0
   Highlighter: {fileID: 720108586}
   MainMenu: {fileID: 987928126}
-  WaitInterval: 7
+  WaitInterval: 2
 --- !u!1 &2139655879
 GameObject:
   m_ObjectHideFlags: 0
@@ -4708,6 +4708,17 @@ MonoBehaviour:
       - m_Target: {fileID: 1844347700}
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 372680905}
+        m_MethodName: set_text
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
