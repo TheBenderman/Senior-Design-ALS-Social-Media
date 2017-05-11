@@ -52,6 +52,22 @@ namespace Connectome.Unity.Plugin
                 return true;
             }
         }
+
+        public override int BatteryLevel
+        {
+            get
+            {
+                return 100; 
+            }
+        }
+
+        public override int WirelessSignalStrength
+        {
+            get
+            {
+                return 2; 
+            }
+        }
         #endregion
         #region IEmotivDevice Events
 
@@ -63,23 +79,22 @@ namespace Connectome.Unity.Plugin
         #endregion
         #region IEmotivDevice Public Methods
 
-        public override bool Connect(out string msg)
+        public override void Connect()
         {
             if (OnConnectAttempt != null)
                 OnConnectAttempt();
 
             bool suc = true;
-            msg = "success";
+            string msg = "success";
 
             if (OnConnectAttempted != null)
             {
                 OnConnectAttempted(suc, msg);
             }
 
-            return suc;
         }
 
-        public override bool Disconnect(out string msg)
+        public override void Disconnect()
         {
             if (OnDisconnectAttempt != null)
                 OnDisconnectAttempt();
@@ -89,21 +104,14 @@ namespace Connectome.Unity.Plugin
 
             suc = true;
 
-            msg = "success";
+            string msg = "success";
             if (OnDisconnectAttempted != null)
             {
                 OnDisconnectAttempted(suc, msg);
             }
-
-            return suc;
         }
 
-        public void Disconnect()
-        {
-            string msg = null;
-            this.Disconnect(out msg);
-        }
-
+      
         /// <summary>
         /// Reads when either target is forced or force counter is greater than 1. 
         /// </summary>

@@ -17,15 +17,5 @@ namespace Connectome.Unity.KLD.Extentions
             Debug.Log(msg); 
         } 
 
-        /// <summary>
-        /// Attaches a traker to a reader
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <param name="tracker"></param>
-        public static void Attach(this IEmotivReader reader, IEmotivReaderTracker tracker)
-        {
-            reader.OnRead += e => tracker.Track(e); 
-        }
-
     }
 }

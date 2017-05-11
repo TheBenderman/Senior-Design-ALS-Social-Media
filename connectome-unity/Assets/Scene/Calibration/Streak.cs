@@ -7,6 +7,9 @@ using Connectome.Emotiv.Interface;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Connectome.Calibration.API;
+using Connectome.Calibration.API.Interfaces;
+using Connectome.Calibration.API.Loggers;
 
 public class Streak : BaseTrainingScreen
 {
@@ -21,42 +24,44 @@ public class Streak : BaseTrainingScreen
     private long startTime;
     private long endTime;
     private Boolean run;
+    private Boolean secondRun = false;
 
-    private ArrayList intervals = new ArrayList();
+    private ArrayList intervals;
 
     // Use this for initialization
     void Start () {
 
-        slider.maxValue = Start_Screen.sliderLength;
-        streakCounter = 0;
-        highscore = 0;
-        run = true;
-        
         //Creates the device
         deviceSetup(Start_Screen.deviceValue);
+        setup();
 
-        reader = new BasicEmotivReader(device, false);
+    }
 
-        reader.OnRead += (e) => counter(e.State);
-        reader.Start();
-
+    private void OnEnable()
+    {
+        if (secondRun)
+        {
+            deviceSetup(Start_Screen.deviceValue);
+            setup();
+        }
     }
 
     private void OnApplicationQuit()
     {
-        reader.Stop();
+        reader.StopReading();
     }
 	
 	// Update is called once per frame
 	void Update () {
 
+        incrementSlider();
+
         if (run)
         {
-            incrementSlider();
             resultText.text = resultsInSeconds(getCurrentTime());
             updateHighscore();
 
-            if(getCurrentTime()>1)
+            if (getCurrentTime() > 1)
             {
                 highlightButton();
             }
@@ -65,6 +70,20 @@ public class Streak : BaseTrainingScreen
                 dehighlightButton();
             }
         }
+    }
+
+    void activate()
+    {
+        StartCoroutine(phases());
+    }
+
+    IEnumerator phases()
+    {
+        yield return new WaitForSeconds(slider.maxValue);
+        reader.StartReading();
+        run = true;
+        setButtonText("Push");
+        slider.value = 0;
     }
 
     void counter(IEmotivState e)
@@ -106,13 +125,13 @@ public class Streak : BaseTrainingScreen
 
     void incrementSlider()
     {
-        if (slider.value != slider.maxValue)
+        if (slider.value != slider.maxValue || run == false)
         {
             slider.value += Time.deltaTime;
         }
         else
         {
-            reader.Stop();
+            reader.StopReading();
             intervals.Add(getCurrentTime());
             displayResults();
             run = false;
@@ -136,8 +155,14 @@ public class Streak : BaseTrainingScreen
 
     void displayResults()
     {
+        ssvepOff();
+        LoggerInterface logger = new CsvLogger("Streak.csv");
+        logger.add(Start_Screen.profile);
         resultTitleText.text = "Results";
         averageStreakText.text = "Average: " + resultsInSeconds(getAverageStreak());
+        logger.add(resultsInSeconds(highscore));
+        logger.add(resultsInSeconds(getAverageStreak()));
+        logger.write();
     }
 
     long getAverageStreak()
@@ -162,9 +187,37 @@ public class Streak : BaseTrainingScreen
         updateButtonColor(Color.white);
     }
 
+
     public override void reset()
     {
-        throw new NotImplementedException();
+        dehighlightButton();
+        resultTitleText.text = "";
+        averageStreakText.text = "";
+        highscoreText.text = "0";
+        slider.value = 0;
+        reader = null;
+        device = null;
+        intervals = null;
+        secondRun = true;
+        mainMenu.SetActive(true);
+        currentPanel.SetActive(false);
     }
+
+    void setup()
+    {
+        Application.runInBackground = true;
+        slider.maxValue = Start_Screen.sliderLength;
+        streakCounter = 0;
+        highscore = 0;
+        intervals = new ArrayList();
+        setButtonText("Starting");
+        run = false;
+        reader = new BasicEmotivReader(device, false);
+        ssvepOn();
+
+        reader.OnRead += (e) => counter(e);
+        activate();
+    }
+
 }
 

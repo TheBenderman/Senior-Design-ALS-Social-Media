@@ -7,10 +7,14 @@ using System.Collections;
 
 namespace Connectome.Core.Common
 {
-    public class Timeline<T> : ITimeline<T> where T : class, ITime
+    //TODO Unit Test thsi! -KLD
+    /// <summary>
+    /// Where to begin if time has no beginig...
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class Timeline<T> : ITimeline<T> where T : ITime
     {
-        #region Private Fields
-
+        #region Private Attributes
         /// <summary>
         /// Elements
         /// </summary>
@@ -21,21 +25,34 @@ namespace Connectome.Core.Common
         /// </summary>
         private int P;
 
+        /// <summary>
+        /// Holds Max Possible size for the array 
+        /// <see cref="E"/>
+        /// </summary>
+        private int MaxSize; 
+
         private object Locker; 
 
         #endregion
         #region Constructors
         public Timeline()
         {
-            Locker = new object(); 
+            Locker = new object();
+            MaxSize = int.MaxValue; 
             E = new T[0];
             P = -1; 
         }
 
-        public Timeline(ITimeline<T> tl) : this()
+        /// <summary>
+        /// Sets max size for the data structore. Newest element will replace oldest when full. 
+        /// </summary>
+        /// <param name="MaxSize"></param>
+        public Timeline(int MaxSize) : this()
         {
-            //TODO o somethng
+            this.MaxSize = MaxSize;
         }
+
+       
         #endregion
         #region ITimeline Indexer
         public T this[long time]
@@ -55,11 +72,11 @@ namespace Connectome.Core.Common
         }
         #endregion
         #region ITimeline Properties
-        public long Duration
+        public long Length
         {
             get
             {
-                return E.Length; 
+                return Math.Min(E.Length,P); 
             }
         }
         #endregion
@@ -68,10 +85,10 @@ namespace Connectome.Core.Common
         {
             if(E.Length == 0)
             {
-                return null;
+                return default(T);
             }
             T min = E[0];
-            for (int i = 0; i < P; i++)
+            for (int i = 0; i < Length; i++)
             {
                 if (E[i].Time < min.Time)
                     min = E[i];
@@ -83,11 +100,11 @@ namespace Connectome.Core.Common
         {
             if (E.Length == 0)
             {
-                return null;
+                return default(T);
             }
 
             T max = E[0]; 
-            for (int i = 0; i < P; i++)
+            for (int i = 0; i < Length; i++)
             {
                 if (E[i].Time > max.Time)
                     max = E[i]; 
@@ -104,7 +121,7 @@ namespace Connectome.Core.Common
         {
             List<T> dickbutt = new List<T>();
 
-            for (int i = 0; i < P; i++)
+            for (int i = 0; i < Length; i++)
             {
                 if(E[i].Time >= begin && E[i].Time < end)
                 {
@@ -132,7 +149,7 @@ namespace Connectome.Core.Common
         {
             lock (Locker)
             {
-                for (int i = 0; i < P; i++)
+                for (int i = 0; i < Length; i++)
                 {
                     if(E[i].Time == t.Time)
                     {
@@ -143,24 +160,11 @@ namespace Connectome.Core.Common
            
                 InsureSpace();
 
-                E[P+1] = t;
+                E[(P+1) % MaxSize] = t;
                 P++; 
             }
         }
         #endregion
-
-        private void InsureSpace()
-        {
-            if(P+1 == E.Length)
-            {
-                T[] newList = new T[(E.Length + 1) * 2];
-
-                E.CopyTo(newList, 0);
-
-                E = newList;
-            }
-        }
-
         #region IEnumerator
         public IEnumerator<T> GetEnumerator()
         {
@@ -175,6 +179,19 @@ namespace Connectome.Core.Common
             for (int i = 0; i < P; i++)
             {
                 yield return E[i];
+            }
+        }
+        #endregion
+        #region Private Method
+        private void InsureSpace()
+        {
+            if(P+1 == E.Length && P+1 != MaxSize)
+            {
+                T[] newList = new T[(E.Length + 1) * 2];
+
+                E.CopyTo(newList, 0);
+
+                E = newList;
             }
         }
         #endregion

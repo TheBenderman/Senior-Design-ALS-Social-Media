@@ -6,6 +6,7 @@ using System.IO;
 using UnityEngine.Events;
 using Connectome.Emotiv.Interface;
 using Connectome.Emotiv.Implementation;
+using Fabric.Crashlytics;
 
 namespace Connectome.Unity.Demo
 {
@@ -70,8 +71,12 @@ namespace Connectome.Unity.Demo
                     Device = new EPOCEmotivDevice(Username.text, Password.text, Profile.text);
                 }
 
-                string error;
-                bool suc = Device.Connect(out error);
+                string error = "";
+                bool suc = true;
+
+                Device.OnConnectAttempted += (b, m) => { error = m; suc = b;  };
+
+                Device.Connect();
 
                 if (suc)
                 {
@@ -86,6 +91,7 @@ namespace Connectome.Unity.Demo
             catch (Exception e)
             {
                 title.text = e.ToString();
+				Crashlytics.RecordCustomException ("Device Connection Exception", "thrown exception", e.StackTrace);
             }
         }
 

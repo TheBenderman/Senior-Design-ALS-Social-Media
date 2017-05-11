@@ -4,6 +4,7 @@ using UnityEngine;
 using CoreTweet;
 using UnityEngine.UI;
 using System;
+using Connectome.Unity.Keyboard;
 
 public class TweetReplyHandler : TwitterObjects {
 
@@ -15,7 +16,6 @@ public class TweetReplyHandler : TwitterObjects {
 
 	#region Twitter Compose Tweet Members
 	public GameObject composeTweetObjects;
-	public Text TweetStatusText;
 	public Text tweetTitle;
 	public Image replyToProfilePic;
 	public Text replyToUsername;
@@ -27,16 +27,34 @@ public class TweetReplyHandler : TwitterObjects {
 	public string composeTweetObjectsString = "composeTweetObjects";
 	#endregion
 
+	// Function to contact the twitter api to reply to a tweet
+	public void ReplyTweet(string msg)
+	{
+		Status currentStatus;
+
+		// Determine if we are on the conversations page or the home timeline
+		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle))
+        {
+			currentStatus = timelineHandler.getCurrentTweet ();
+		} else
+        {
+			currentStatus = convoHandler.conversationtimelineStatuses [convoHandler.currentTweet];
+		}
+			
+		Debug.Log("Current tweet id: " + currentStatus.Id);
+		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.Id, msg));
+		connectomeErrorText.text = "Replied to user!";
+	}
 
 	// This function brings the user to a screen that allows them to reply to a tweet.
 	public void replyToTweet()
 	{
 		// Make all objects except those related to replying to a tweet to be hidden.
-		setActiveObject(composeTweetObjectsString);
+		/*setActiveObject(composeTweetObjectsString);
 
 		Status currentStatus;
 		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle)) {
-			currentStatus = timelineHandler.hometimelineStatuses [timelineHandler.getCurrentTweet ()];
+			currentStatus = timelineHandler.getCurrentTweet ();
 		} else {
 			currentStatus = convoHandler.conversationtimelineStatuses [convoHandler.currentTweet];
 		}
@@ -48,8 +66,11 @@ public class TweetReplyHandler : TwitterObjects {
 		replyToText.text = currentStatus.Text;
 		replyToUsername.text = currentStatus.User.ScreenName;
 		tweetText.text = "@" + currentStatus.User.ScreenName + " ";
+		*/
+		KeyboardManager.GetInputFromKeyboard(ReplyTweet);
 	}
 
+	// Don't think this is used anymore
 	public void cancelTweetReplyButton()
 	{
 		setActiveObject(timelineHandler.homeTimeLineObjectsString);
@@ -65,42 +86,16 @@ public class TweetReplyHandler : TwitterObjects {
 			new Vector2(0, 0));
 	}
 		
-	/// <summary>
-	/// Appemts 10 time to tweet a message 
-	/// </summary>
-	/// <param name="msg"></param>
+	// Contacts the twitter api to tweet a message
 	public void Tweet(string msg)
 	{
-		int attempts = 10;
-		while (attempts-- > 0)
-		{
-			try
-			{
-				authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.publishTweet(msg));
-				TweetStatusText.text = "Tweeted!";
-				attempts = 0;
-			}
-			catch (Exception e)
-			{
-				if (attempts == 0)
-				{
-					if (e.Message.Contains("Status is a duplicate"))
-					{
-						TweetStatusText.text = "Failed to tweet: Duplicate status!";
-					}
-					else
-					{
-						TweetStatusText.text = "Failed to tweet: Connection error. Fix your internet";
-					}
-					Debug.Log("Failed to tweet " + e);
-				}
-			}
-		}
-
+		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.publishTweet(msg));
+		connectomeErrorText.text = "Tweeted!";
 	}
 
+	// Pull up the on screen keyboard to tweet
 	public void TweetFromKeyboard()
 	{
-		DisplayManager.GetInputFromKeyboard(Tweet);
+		KeyboardManager.GetInputFromKeyboard(Tweet);
 	}
 }

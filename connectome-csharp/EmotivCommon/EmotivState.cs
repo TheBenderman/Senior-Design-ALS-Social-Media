@@ -1,6 +1,7 @@
 ﻿
 using Connectome.Emotiv.Interface;
 using Connectome.Emotiv.Enum;
+using Connectome.Core.Interface;
 
 namespace Connectome.Emotiv.Common
 {

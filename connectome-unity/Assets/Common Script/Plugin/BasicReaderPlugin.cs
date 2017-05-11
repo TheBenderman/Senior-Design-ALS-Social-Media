@@ -5,6 +5,7 @@ using UnityEngine;
 using Connectome.Emotiv.Interface;
 using System;
 using Connectome.Unity.Template;
+using Connectome.Core.Interface;
 
 namespace Connectome.Unity.Plugin
 {

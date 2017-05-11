@@ -110,7 +110,7 @@ namespace Connectome.Unity.Demo
 
             reader.OnRead += (e) =>
             {
-                if (e.State.Command == EmotivCommandType.NULL)
+                if (e.Command == EmotivCommandType.NULL)
                 {
                     return;
                 }
@@ -122,7 +122,7 @@ namespace Connectome.Unity.Demo
                 }
                 else
                 {
-                    ValuesRead[IntervalOffset = (IntervalOffset + 1 % Interval) % Interval] = e.State;
+                    ValuesRead[IntervalOffset = (IntervalOffset + 1 % Interval) % Interval] = e;
                 }
             };
 
@@ -132,7 +132,7 @@ namespace Connectome.Unity.Demo
             deviceHolder.Device.OnDisconnectAttempted += (suc, s) => Debug.Log("OnDisconnectAttempted: " + s);
             reader.ExceptionHandler += (e) => {Debug.Log("Exp"); throw e; };
 
-            reader.Start();
+            reader.StartReading();
             StartCoroutine(SliderUpdate());
         }
         #endregion
@@ -177,7 +177,7 @@ namespace Connectome.Unity.Demo
             //TODO KLD PLEASE! 
             if (reader != null)
             {
-                reader.Stop(); 
+                reader.StopReading(); 
             }
         }
         #endregion

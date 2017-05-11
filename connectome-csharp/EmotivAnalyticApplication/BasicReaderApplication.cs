@@ -1,4 +1,5 @@
-﻿using Connectome.Emotiv.Enum;
+﻿using Connectome.Core.Interface;
+using Connectome.Emotiv.Enum;
 using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Interface;
 using System;
@@ -54,17 +55,17 @@ namespace EmotivAnalyticApplication
             ReadButton.Enabled = enable; 
         }
 
-        private void StartCollecting(IEmotivReader readerPlug, int seconds)
+        private void StartCollecting(IConnectomeReader<IEmotivState> readerPlug, int seconds)
         {
             //collect date for time 
             list  = new List<IEmotivState>();
 
             IEmotivReader reader = new TimedEmotivReader(readerPlug, seconds); 
 
-            reader.OnRead += (e) => list.Add(e.State);
+            reader.OnRead += (state) => list.Add(state);
 
             ToggleButton("Reading...",false);
-            reader.Start();
+            reader.StartReading();
 
             //TODO learn threading with UI
             while (reader.IsReading) ;
@@ -127,8 +128,14 @@ namespace EmotivAnalyticApplication
 
             ConnectionLabel.Text = "Connecting..."; 
             device =  new EPOCEmotivDevice(user, pass, profile);
-            string error; 
-            if (device.Connect(out error))
+
+            bool connected = true;
+            string error = "" ;
+
+            device.OnConnectAttempted += (c, em) => { connected = c; error = em;  };
+            device.Connect();
+
+            if (connected)
             {
                 ConnectionLabel.Text = "Device connected"; 
             }

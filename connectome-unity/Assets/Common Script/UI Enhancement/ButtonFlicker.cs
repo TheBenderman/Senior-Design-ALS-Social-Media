@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Connectome.Unity.UI;
 
 
-namespace Connectome.Unity.Menu
+namespace Connectome.Unity.UI
 {
     /// <summary>
     /// Makes a selection flash different colors.
@@ -31,11 +32,7 @@ namespace Connectome.Unity.Menu
         /// Holds current color index. 
         /// </summary>
         private int FlickIndex;
-        /// <summary>
-        /// Checks if we called the coroutine yet.
-        /// </summary>
-        private bool FlickActivated = false;
-
+    
         private Button CurrentButton;
         private Color DefaultColor; 
 

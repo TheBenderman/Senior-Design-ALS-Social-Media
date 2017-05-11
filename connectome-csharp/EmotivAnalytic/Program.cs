@@ -1,5 +1,7 @@
-﻿using Connectome.Emotiv.Implementation;
+﻿using Connectome.Core.Interface;
+using Connectome.Emotiv.Implementation;
 using Connectome.Emotiv.Interface;
+using System;
 using System.Diagnostics;
 
 namespace EmotivAnalytic
@@ -11,30 +13,33 @@ namespace EmotivAnalytic
         /// </summary>
         static void Main(string[] args)
         {
-            IEmotivDevice device = new RandomEmotivDevice(.2f, 1f);
+            IEmotivDevice device = new EPOCEmotivDevice("emotiv123", "Emotivbci123", "KLD_Blink");
 
-            //int interval = 500; //ms 
-            //float thresh = .5f;
-            //EmotivCommandType targetCmd = EmotivCommandType.NEUTRAL; 
+            IConnectomeReader<IEmotivState> readerPlug = new BasicEmotivReader(device);
 
-            IEmotivReader readerPlug = new BasicEmotivReader(device);
+            int waitTimeSecond = 40;
+            IConnectomeReader<IEmotivState> reader = new TimedEmotivReader(readerPlug, waitTimeSecond);
 
-            int waitTimeSecond = 5;
-            IEmotivReader reader = new TimedEmotivReader(readerPlug, waitTimeSecond);
-
-            reader.OnRead += (e) =>
+            int p = -1; 
+            reader.OnRead += (state) =>
             {
-                Debug.WriteLine(e.State);
+                if (device.WirelessSignalStrength != p)
+                {
+                    p = device.WirelessSignalStrength; 
+                    //Debug.WriteLine(p);
+                }
             };
            
-            reader.Start();
+            reader.StartReading();
    
             while (reader.IsReading)
             {
-               //timelineProc.Process(null);
+               
+                //Debug.WriteLine(device.BatteryLevel);
             }
-           
-            Debug.WriteLine("[END]");
+
+            Console.ReadLine();
+            Console.WriteLine("[END]");
         }
 
     }//end class 

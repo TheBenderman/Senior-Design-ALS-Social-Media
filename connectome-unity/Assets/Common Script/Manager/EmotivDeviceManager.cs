@@ -1,135 +1,187 @@
-﻿using Connectome.Unity.Template;
+﻿using Connectome.Emotiv.Interface;
+using Connectome.Unity.Expection;
+using Connectome.Unity.Template;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Connectome.Core.Interface;
 
-/// <summary>
-/// Holds Device, and Reader as well as running interpetation. 
-/// </summary>
-public class EmotivDeviceManager : MonoBehaviour
+namespace Connectome.Unity.Manager
 {
-    #region Singleton
-    public static EmotivDeviceManager Instance { get { return currentInstance;  } }
-
-    private static EmotivDeviceManager currentInstance;
-    #endregion
-    #region Public Inspector Attributes 
     /// <summary>
-    /// Hold Device
+    /// Holds Device, and Reader as well as running interpetation. 
     /// </summary>
-    public EmotivDevicePlugin DevicePlugin;
-    /// <summary>
-    /// Holds Redaer 
-    /// </summary>
-    public EmotivReaderPlugin ReaderPlugin;
-
-    /// <summary>
-    /// Rate to interpert interpreters.
-    /// </summary>
-    public float InterpretRate;
-
-    /// <summary>
-    /// Hold Interpreters.
-    /// </summary>
-    public EmotivInterpreterPlugin[] Interpreters;
-    #endregion
-    #region Unity Methods 
-    /// <summary>
-    /// Sets up Device, Reader and interpeters then start interpreter coroutine 
-    /// </summary>
-    void Start()
+    public class EmotivDeviceManager : DeviceManager<IEmotivState, EmotivCalculatorConfiguration>
     {
-        DevicePlugin.Setup(); 
-        ReaderPlugin.SetUp(DevicePlugin); 
+        #region Public Inspector Attributes 
+        [Header("Emotiv Requirements")]
+        /// <summary>
+        /// Hold Device
+        /// </summary>
+        public EmotivDevicePlugin DevicePlugin;
 
-        if(currentInstance != null)
+        /// <summary>
+        /// Holds Redaer 
+        /// </summary>
+        public EmotivReaderPlugin ReaderPlugin;
+
+        [Header("Data Process Requirements")]
+        /// <summary>
+        /// Holds Samplers with creates samples to interpret
+        /// </summary>
+        public EmotivSampler Sampler;
+
+        /// <summary>
+        /// Holds data calculator
+        /// </summary>
+        public EmotivRateCalculator EmotivCalculator;
+
+        /// <summary>
+        /// Holds calculator configuration 
+        /// </summary>
+        public EmotivCalculatorConfiguration EmotivCalculatorConfiguration; 
+
+        /// <summary>
+        /// Holds data sample interpreters 
+        /// </summary>
+        public EmotivInterpreter[] Interpreters;
+        #endregion
+        #region DeviceManager Overrides
+        protected override IConnectomeDevice<IEmotivState> GetDevice()
         {
-            Debug.LogWarningFormat("There are more than one existence of EmotivDeviceManager. Prev: {0} New: {1}", currentInstance.name, this.name);
+            DevicePlugin.Setup();
+            return DevicePlugin;
         }
-        currentInstance = this; 
-      
-        foreach (var Intepreter in Interpreters)
+
+        protected override IConnectomeReader<IEmotivState> GetReader()
         {
-            Intepreter.Setup(DevicePlugin, ReaderPlugin);
+            ReaderPlugin.SetUp(DevicePlugin);
+            return ReaderPlugin;
         }
 
-        ReaderPlugin.Start(); 
-
-        StartCoroutine(InterpetationProcess()); 
-    }
-
-    /// <summary>
-    /// Insures readers is disabled
-    /// </summary>
-    void OnApplicationQuit()
-    {
-        if (ReaderPlugin != null)
+        protected override DataSampler<IEmotivState> GetSampler()
         {
-            ReaderPlugin.Stop();
+            return Sampler;
         }
-    }
-    #endregion
-    #region Coroutine 
-    /// <summary>
-    /// Coroutine that Interpret every intepreter
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator InterpetationProcess()
-    {
-        while (true)
+
+        protected override DataInterpreter<IEmotivState>[] GetInterpreters()
         {
-            yield return new WaitForSeconds(InterpretRate); 
-            foreach (var Intepreter in Interpreters)
+            return Interpreters;
+        }
+
+        protected override DataRateCalculator<IEmotivState, EmotivCalculatorConfiguration> GetRateCalculator()
+        {
+            return EmotivCalculator; 
+        }
+
+        protected override EmotivCalculatorConfiguration GetCalculatorConfiguration()
+        {
+            return EmotivCalculatorConfiguration;
+        }
+        /// <summary>
+        /// Convert wireless signal strength based on Epoc Emotv device way 
+        /// </summary>
+        /// <param name="wirelessSignal"></param>
+        /// <returns></returns>
+        protected override WirelessSignalStrengthLevel ConvertWirelessStrength(int wirelessSignal)
+        {
+            return (WirelessSignalStrengthLevel)wirelessSignal;
+            /* ### Dummy way 
+            switch (wirelessSignal)
             {
-                Intepreter.Interpret();
+                case 0:
+                    return WirelessSignalStrengthLevel.NO_SIGNAL;
+                case 1:
+                    return WirelessSignalStrengthLevel.BAD_SIGNAL;
+                case 2:
+                    return WirelessSignalStrengthLevel.GOOD_SIGNAL;
+            }
+            */
+        }
+
+        /// <summary>
+        /// Convert battery level based on Epoc Emotv device way 
+        /// </summary>
+        /// <param name="batteryLevel"></param>
+        /// <returns></returns>
+        protected override BatteryLevel ConvertBatteryLevel(int batteryLevel)
+        {
+            //TODO out of hand. the value will always be -1 
+            if (batteryLevel <= 33)
+            {
+                return BatteryLevel.LOW;
+            }
+            else if (batteryLevel <= 66)
+            {
+                return BatteryLevel.MEDIUM;
+            }
+            else
+            {
+                return BatteryLevel.FULL;
             }
         }
-    }
-    #endregion
-    #region Validation 
-    /// <summary>
-    /// Validate required component 
-    /// </summary>
-    private void OnValidate()
-    {
-        ValidateDevice();
-        ValidateReader();
-        ValidateInterpreters();
-    }
 
-    /// <summary>
-    ///  warns when device is null 
-    /// </summary>
-    private void ValidateDevice()
-    {
-        if (DevicePlugin == null)
+        /// <summary>
+        /// Convert input rate level based on Epoc Emotv device way 
+        /// </summary>
+        /// <param name="inputRate"></param>
+        /// <returns></returns>
+        protected override InputRateLevel ConvertInputRateLevel(int inputRate)
         {
-            Debug.LogWarning("Device is null");
-        }
-    }
+            if (inputRate >= 2)
+            {
+                return InputRateLevel.GOOD;
+            }
 
-    /// <summary>
-    ///  warns when reader is null 
-    /// </summary>
-    private void ValidateReader()
-    {
-        if (ReaderPlugin == null)
-        {
-            Debug.LogWarning("Reader is null");
+            return (InputRateLevel) inputRate; 
         }
-    }
+        #endregion
+        #region Validation 
+        /// <summary>
+        /// Validate required component 
+        /// </summary>
+        private void OnValidate()
+        {
+            ValidateDevice();
+            ValidateReader();
+            ValidateInterpreters();
+        }
 
-    /// <summary>
-    ///  insure no interpreter in null
-    /// </summary>
-    private void ValidateInterpreters()
-    {
-        for (int i = 0; i < Interpreters.Length; i++)
+        /// <summary>
+        ///  warns when device is null 
+        /// </summary>
+        private void ValidateDevice()
         {
-            if(Interpreters[i] == null)
-                Debug.LogError("Interpreter at index " + i + " is null");
+            if (DevicePlugin == null)
+            {
+                Debug.LogWarning("Device is null", this);
+            }
         }
+
+        /// <summary>
+        ///  warns when reader is null 
+        /// </summary>
+        private void ValidateReader()
+        {
+            if (ReaderPlugin == null)
+            {
+                Debug.LogWarning("Reader is null", this);
+            }
+        }
+
+        /// <summary>
+        ///  insure no interpreter in null
+        /// </summary>
+        private void ValidateInterpreters()
+        {
+            for (int i = 0; i < Interpreters.Length; i++)
+            {
+                if (Interpreters[i] == null)
+                    Debug.LogError("Interpreter at index " + i + " is null");
+            }
+        }
+        #endregion
     }
-    #endregion
 }
 

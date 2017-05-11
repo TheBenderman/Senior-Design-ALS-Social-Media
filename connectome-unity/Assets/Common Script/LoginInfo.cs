@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿
 
-public class LoginInfo : MonoBehaviour {
-    private string UserName = "";
-    private string UserProfile = "";
-
-    public string Login { get { return UserName; } }
-    public string Profile { get { return UserProfile; } }
+//if this is only used once, we should covert it to 3 parameter 
+public class LoginInfo
+{
+    public string Username = "";
+    public string Password = ""; 
+    public string Profile = "";
 }

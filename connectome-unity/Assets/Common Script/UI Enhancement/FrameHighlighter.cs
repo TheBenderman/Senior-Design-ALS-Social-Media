@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Connectome.Unity.Menu
+namespace Connectome.Unity.UI
 {
     /// <summary>
     /// A frame-like highlighter  

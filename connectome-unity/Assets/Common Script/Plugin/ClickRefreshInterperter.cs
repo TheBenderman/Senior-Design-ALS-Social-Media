@@ -27,7 +27,7 @@ namespace Connectome.Unity.Plugin
 
         [Header("Threshholds")]
         public float RefreshThreshhold;
-        //public float ClickThreshhold;Value is in UserSettings
+        public float ClickThreshhold;
 
         [Header("Events")]
         public UnityEvent OnRefresh;
@@ -73,8 +73,9 @@ namespace Connectome.Unity.Plugin
             }
 
             //Click
-            if (targetRate >= UserSettings.PassThreshold)
+			if (targetRate >= ClickThreshhold)
             {
+				Timeline = new Timeline<IEmotivState>();
                 if (OnClick != null)
                     OnClick.Invoke();
             }
@@ -88,7 +89,7 @@ namespace Connectome.Unity.Plugin
         public override void Setup(IEmotivDevice Device, IEmotivReader Reader)
         {
             Timeline = new Timeline<IEmotivState>();
-            Reader.OnRead += e => Timeline.Register(e.State);
+            Reader.OnRead += e => Timeline.Register(e);
         }
         #endregion
         #region Abstract Methods

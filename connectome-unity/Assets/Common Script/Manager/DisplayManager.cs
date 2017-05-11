@@ -11,96 +11,101 @@ using Connectome.Unity.Keyboard;
 using UnityEngine.Events;
 using Connectome.Unity.Menu;
 
-/// <summary>
-/// Pops up windows such as a Virtual Device. 
-/// </summary>
-public class DisplayManager : MonoBehaviour
+
+namespace Connectome.Unity.UI
 {
-    #region Singleton 
-    private static DisplayManager instance;
-		
-    public static DisplayManager Instance
-    {
-        get
-        {
-            return instance; 
-        }
-    }
-    #endregion
-    #region 
-    public SelectionManager SelectionManager; 
-    #endregion
-
-    #region Unity Built-in
-    void Awake()
-    {
-        instance = this; 
-    }
-    #endregion
-    #region Popup BasicVirtualUnityDevice
     /// <summary>
-    /// Holds Virtual Device prefab
+    /// Pops up windows such as a Virtual Device. 
     /// </summary>
-    public BasicVirtualUnityDevice VirtualUnityDevicePrefab;
-    public UserSettingsWindow SettingsWindow;
-    private UserSettingsWindow CurrentSettingsWindow;
-    /// <summary>
-    /// Current popped device. 
-    /// </summary>
-    private BasicVirtualUnityDevice AvailableDevice; 
-
-    public static BasicVirtualUnityDevice PopUpVirtualUnityDevice()
+    public class DisplayManager : MonoBehaviour
     {
-        if(Instance.AvailableDevice != null)
+        #region Private Attributes
+        private const int DEFAULT_DURATION = 5;   
+        #endregion
+        #region Singleton 
+        private static DisplayManager instance;
+
+        public static DisplayManager Instance
         {
-            return Instance.AvailableDevice; 
+            get
+            {
+                return instance;
+            }
         }
-        BasicVirtualUnityDevice pop = Instantiate(Instance.VirtualUnityDevicePrefab);
-        Instance.AvailableDevice = pop;
-        // Closing out of the device triggers an event to reconnect back to it.
-        pop.OnDisconnectAttempted += (suc, msg) => { ReconnectDevice(); Instance.AvailableDevice = null; }; 
-
-        pop.transform.SetParent(Instance.transform.parent);
-        pop.transform.localPosition = new Vector2(0,0); 
-        return pop; 
-    }
-    public void DisplayUserWindow()
-    {
-        if (Instance.CurrentSettingsWindow != null)
+        #endregion
+        #region Inspecter Attributse
+        /// <summary>
+        /// Notification component to display notifications 
+        /// </summary>
+        public Notification Notification;
+        #endregion
+        #region Unity Built-in
+        void Awake()
         {
-            return;
+            instance = this;
         }
-        UserSettingsWindow pop = Instantiate(Instance.SettingsWindow);
-        Instance.CurrentSettingsWindow = pop;
-        pop.transform.SetParent(Instance.transform.parent);
-        pop.transform.localPosition = new Vector2(0, 0);
+        #endregion
+        #region Public Static Methods 
+        public static void Display(DisplayObject disObj)
+        {
+            disObj.Displayed();
+        }
+
+        public static void Dismiss(DisplayObject disObj)
+        {
+            disObj.Dismissed();
+        }
+
+        public static void AlignDisplay(DisplayObject disObj)
+        {
+            if (Instance != null)
+            {
+                //move under DisplayManager 
+                disObj.transform.SetParent(Instance.transform);
+            }
+          
+            //Display 
+            Display(disObj);
+        }
+
+        public static void PushNotification(string msg, int duration = DEFAULT_DURATION)
+        {
+            if (Instance == null || Instance.Notification == null)
+            {
+                return;
+            }
+            Instance.Notification.PushNotification(msg, duration); 
+        }
+
+        public static void PushNotification(string msg)
+        {
+            if (Instance == null || Instance.Notification == null)
+            {
+                return;
+            }
+            Instance.Notification.PushNotification(msg, DEFAULT_DURATION);
+        }
+
+        public static void HoldNotification()
+        {
+            if (Instance == null || Instance.Notification == null)
+            {
+                return;
+            }
+            Instance.Notification.Hold(); 
+        }
+
+        public static void ReleaseNotification()
+        {
+            if(Instance == null || Instance.Notification == null)
+            {
+                return; 
+            }
+
+            Instance.Notification.Release();
+        }
+
+        #endregion
     }
-    #endregion
-    #region Popup ReconnectDeviceWindow
-    /// <summary>
-    /// Holds Virtual Device prefab
-    /// </summary>
-    public ReconnectDeviceWindow ReconnectDeviceWindowPrefab;
-
-	public static ReconnectDeviceWindow ReconnectDevice(GameObject config = null)
-	{
-		ReconnectDeviceWindow recon = Instantiate(Instance.ReconnectDeviceWindowPrefab);
-		recon.transform.SetParent(Instance.transform.parent);
-		recon.transform.localPosition = new Vector2(0,0); 
-		return recon; 
-	}
-    #endregion
-
-    #region KeyboardManager
-
-    public KeyboardManager KeyboardManager;
-
-    public static void GetInputFromKeyboard(Action<string> onSubmit)
-    {
-        Instance.KeyboardManager.SubmitAction = onSubmit;
-        Instance.KeyboardManager.Show();
-        Instance.SelectionManager.Push(Instance.KeyboardManager.KeyboardGameObject.GetComponent<ButtonSelectionMenu>()); 
-    }
-    #endregion
 }
 

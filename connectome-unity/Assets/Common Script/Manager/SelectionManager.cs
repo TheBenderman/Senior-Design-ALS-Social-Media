@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Connectome.Unity.UI;
 
 /// <summary>
 /// Allows highlighting a selection of game objects and surfing* between them.
@@ -19,7 +20,12 @@ public class SelectionManager : MonoBehaviour
     public static SelectionManager Instance;
     #endregion
     #region Inspector Attrinutes
+
+    /// <summary>
+    /// Allows selection manager to select. 
+    /// </summary>
     public bool AllowSelection;
+
     /// <summary>
     /// Contains all of the selections the user has gone through in this scene.
     /// </summary>
@@ -27,14 +33,14 @@ public class SelectionManager : MonoBehaviour
 
     public SelectionHighlighter Highlighter;
 
-    public SelectionMenu MainMenu; 
+    public SelectionMenu MainMenu;
 
     /// <summary>
     /// The time, in seconds, to wait before the selection changes.
     /// This variable is in UserSettings now
     /// </summary>
-    //[Range(0.0f, 10.0f)]
-    //public int WaitInterval = 2;
+    [Range(0.0f, 10.0f)]
+    public float WaitInterval;
     #endregion
     #region Private Attributes
 
@@ -66,16 +72,9 @@ public class SelectionManager : MonoBehaviour
     {
         Highlighter.EnableHighlight(); 
         SelectionStack.Peek().SelectNext(Highlighter); 
+
     }
 
-    /// <summary>
-    /// Hilights to previous selection 
-    /// </summary>
-    public void Previous()
-    {
-       // SelectedIndex = (SelectedIndex - 1 + SelectionStack.Peek().Length) % SelectionStack.Peek().Length;
-       //ChangeSelection(SelectedIndex);
-    }
     /// <summary>
     /// Clicks the currently selected elements. A submenu is pushed if the invoked elements contains one. 
     /// </summary>
@@ -84,25 +83,24 @@ public class SelectionManager : MonoBehaviour
         if (!AllowSelection)
             return;
 
+        Highlighter.DisableHighlight(); 
         ISelectionMenu subMenu =  SelectionStack.Peek().InvokeSelected();
         if(subMenu != null)
         {
             Push(subMenu);
-        }
-        else
-        {
-            //Pop();  TODO yet to inforce 
         }
     }
 
     /// <summary>
     /// Add selection menu to the current stack.
     /// </summary>
-    /// <param name="Selections"></param>
-    public void Push(ISelectionMenu Selections)
+    /// <param name="Selection"></param>
+    public void Push(ISelectionMenu Selection)
     {
-        SelectionStack.Push(Selections);
-        Selections.OnPush();
+        SelectionStack.Peek().Paused(); 
+        SelectionStack.Push(Selection);
+        Selection.Pushed();
+        ResetInterval();
     }
 
     /// <summary>
@@ -122,9 +120,11 @@ public class SelectionManager : MonoBehaviour
     {
         if (SelectionStack.Count > 1)
         {
+            Highlighter.DisableHighlight();
             ISelectionMenu menu = SelectionStack.Pop();
-            menu.OnPop(); 
-            ResetSelection();
+            menu.Popped();
+            SelectionStack.Peek().Resumed(); 
+            ResetInterval();
         }
         else
         {
@@ -143,12 +143,6 @@ public class SelectionManager : MonoBehaviour
         CurrentWait = 0;
     }
 
-    public void ResetSelection()
-    {
-        Highlighter.DisableHighlight();
-        SelectionStack.Peek().ResetSelection();
-        ResetInterval(); 
-    }
     #endregion
     #region Unity Methods
     /// <summary>
@@ -165,7 +159,7 @@ public class SelectionManager : MonoBehaviour
 
         CurrentWait += Time.deltaTime;
 
-        if (CurrentWait >= UserSettings.Duration)
+        if (CurrentWait >= WaitInterval)
         {
             Next();
             ResetInterval();
@@ -179,15 +173,17 @@ public class SelectionManager : MonoBehaviour
     {
         Instance = this;
     }
+
     /// <summary>
-    /// Built-in Start method.
     /// Used to initialize stack and push the base selection to it.
+    /// Called by ConnectomeScene
     /// </summary>
-    private void Start()
+    public void Start()
     {
         SelectionStack = new Stack<ISelectionMenu>();
 
-        Push(MainMenu);
+        SelectionStack.Push(MainMenu);
+        MainMenu.Pushed(); 
     }
     #endregion
     #region Validation
@@ -204,32 +200,12 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     private void ValidateSelectionList()
     {
-        /*if (BaseSelection == null)
-        {
-            Debug.LogError("SelectionList cannot be null");
-        }
-
-        if (BaseSelection.Length == 0)
-        {
-            Debug.LogError("SelectionList cannot be empty");
-        }
-
-        for (int i = 0; i < BaseSelection.Length; i++)
-        {
-            if (BaseSelection[i] == null)
-            {
-                Debug.LogError("BaseSelection element cannot be null. Check index " + i);
-            }
-        }*/
-
-
         if (MainMenu == null)
         {
-           
+            Debug.LogError("Main Menu has not been set!");
         }
 
     }
     #endregion
 }
-
 

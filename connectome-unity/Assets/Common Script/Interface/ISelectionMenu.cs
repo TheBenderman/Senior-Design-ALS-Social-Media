@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Connectome.Unity.UI;
+using System;
 
 namespace Connectome.Unity.Menu
 {
@@ -9,16 +11,16 @@ namespace Connectome.Unity.Menu
     /// </summary>
     public interface ISelectionMenu
     {
+        event Action OnPush;
+        event Action OnPop;
+        event Action OnPause;
+        event Action OnResume; 
+
         /// <summary>
         /// Invokes current pointed selection 
         /// </summary>
         /// <returns>Next sub menu, or null to pop</returns>
         ISelectionMenu InvokeSelected();
-
-        /// <summary>
-        /// Resets selection pointer
-        /// </summary>
-        void ResetSelection();
 
         /// <summary>
         /// Moves pointer to next selection 
@@ -29,11 +31,21 @@ namespace Connectome.Unity.Menu
         /// <summary>
         /// Called after menu is popped
         /// </summary>
-        void OnPop();
+        void Popped();
 
         /// <summary>
         /// Called after menu is pushed
         /// </summary>
-        void OnPush(); 
+        void Pushed();
+
+        /// <summary>
+        /// Invoked when another menu is pushed on top if this.
+        /// </summary>
+        void Paused();
+
+        /// <summary>
+        /// Invoked when another menu pops into this. 
+        /// </summary>
+        void Resumed();
     }
 }

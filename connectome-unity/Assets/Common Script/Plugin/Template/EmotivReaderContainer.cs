@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Connectome.Emotiv.Enum;
-using Connectome.Emotiv.Event;
 using System;
+using Connectome.Core.Interface;
 
 namespace Connectome.Unity.Template
 {
@@ -17,7 +17,7 @@ namespace Connectome.Unity.Template
         public IEmotivReader Content;
         #endregion
         #region IEmotivReader Override
-        public override IEmotivDevice Device
+        public override IConnectomeDevice<IEmotivState> Device
         {
             get
             {
@@ -34,7 +34,7 @@ namespace Connectome.Unity.Template
         {
             get
             {
-                return Content.IsReading;
+                return (Content != null && Content.IsReading);
             }
         }
 
@@ -50,18 +50,7 @@ namespace Connectome.Unity.Template
             }
         }
 
-        public override event Action<EmotivCommandType?, EmotivCommandType> OnCommandChange
-        {
-            add
-            {
-                Content.OnCommandChange += value;
-            }
-            remove
-            {
-                Content.OnCommandChange -= value;
-            }
-        }
-        public override event Action<EmotivReadArgs> OnRead
+        public override event Action<IEmotivState> OnRead
         {
             add
             {
@@ -97,21 +86,21 @@ namespace Connectome.Unity.Template
             }
         }
 
-        public override void PlugDevice(IEmotivDevice Device)
+        public override void PlugDevice(IConnectomeDevice<IEmotivState> Device)
         {
             Content.PlugDevice(Device);
         }
 
-        public override void Start()
+        public override void StartReading()
         {
-            Content.Start();
+            Content.StartReading();
         }
 
-        public override void Stop()
+        public override void StopReading()
         {
             if (Content != null)
             {
-                Content.Stop();
+                Content.StopReading();
             }
         }
         #endregion

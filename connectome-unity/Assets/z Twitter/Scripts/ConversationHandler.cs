@@ -29,6 +29,7 @@ public class ConversationHandler : TwitterObjects {
 	public Button seeConversation;
 	#endregion
 
+	// Navigate to the conversation between the two users of the current tweet
 	public void navigateToConversation()
 	{
 		populateConversation();
@@ -36,17 +37,19 @@ public class ConversationHandler : TwitterObjects {
 		setActiveObject(timelineHandler.homeTimeLineObjectsString);
 	}
 
+	// Populate the unity conversation objects.
 	public void populateConversation()
 	{
-		Status currentStatus = timelineHandler.hometimelineStatuses[timelineHandler.getCurrentTweet()];
-		Debug.Log("ID FOR THIS TWEET: " + currentStatus.Id.ToString());
+		Status currentStatus = timelineHandler.getCurrentTweet ();
+
 		List<Status> convo = authHandler.makeTwitterAPICall(
 			() => authHandler.Interactor.getConversation(currentStatus.User.ScreenName, currentStatus.Id.ToString())
 		);
+
 		if (convo.Count > 0)
 		{
 			conversationtimelineStatuses = convo;
-			currentTweetConvo = 0;
+			currentTweetConvo = 0; // set the current conversation message to the first one
 			seeConversation.gameObject.SetActive (false);
 			setTweet(currentTweetConvo);
 			timelineHandler.TitleView.text = timelineHandler.convoTitle;

@@ -51,18 +51,6 @@
       <Project>{d3337309-9682-425e-8edc-2ecfacf79565}</Project>
       <Name>DotNetEmotivSDK</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EmotivImpl\EmotivImplementation.csproj">
-      <Project>{86f68af7-f66c-47ba-931b-6fd5d5c89de2}</Project>
-      <Name>EmotivImplementation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EmotivWrapperInterface\EmotivInterface.csproj">
-      <Project>{0cd4ae1f-9d98-4b82-a533-9a91ed2e77db}</Project>
-      <Name>EmotivInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EmotivWrapper\EmotivTemplate.csproj">
-      <Project>{5b12bf1c-bd1f-4431-b2ad-617346ea198e}</Project>
-      <Name>EmotivTemplate</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

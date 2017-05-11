@@ -24,6 +24,22 @@ namespace Connectome.Unity.Template
             }
         }
 
+        public override int BatteryLevel
+        {
+            get
+            {
+                return Content.BatteryLevel;
+            }
+        }
+
+        public override int WirelessSignalStrength
+        {
+            get
+            {
+                return Content.WirelessSignalStrength;
+            }
+        }
+
         public override event Action OnConnectAttempt
         {
             add
@@ -70,19 +86,19 @@ namespace Connectome.Unity.Template
             }
         }
 
-        public override bool Connect(out string msg)
+        public override void Connect()
         {
-            return Content.Connect(out msg);
+            Content.Connect();
         }
 
-        public override bool Disconnect(out string msg)
+        public override void Disconnect()
         {
-            return Content.Disconnect(out msg);
+            Content.Disconnect();
         }
 
         public override IEmotivState Read(long time)
         {
-            return Content.Read(time);
+             return Content.Read(time);
         }
         #endregion
         #region EmotivDevicePlugin Override

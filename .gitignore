@@ -84,3 +84,24 @@ connectome-unity/sysinfo.txt
 connectome-unity/*.apk
 connectome-unity/*.unitypackage
 #Unity END 
+
+
+#Java maven 
+
+connectome-java/emokit/*.class
+connectome-java/emokit/*.log
+connectome-java/emokit/.jar
+connectome-java/emokit/.war
+connectome-java/emokit/.ear
+connectome-java/emokit/src/main/scala/Scratch.scala
+connectome-java/emokit/src/main/java/Scratch.java
+connectome-java/emokit/dist/*
+connectome-java/emokit/target/
+connectome-java/emokit/lib_managed/
+connectome-java/emokit/src_managed/
+connectome-java/emokit/project/boot/
+connectome-java/emokit/project/plugins/project/
+connectome-java/emokit/.scala_dependencies
+connectome-java/emokit/*.iml
+connectome-java/emokit/nbactions.xml
+connectome-java/emokit/zoku/

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Connectome.Unity.Keyboard;
+using Connectome.Unity.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +24,33 @@ public class UserSettingsWindow : MonoBehaviour {
     public Toggle FlashingToggle;
     public Slider FreqSlider;
     public InputField FreqText;
+
+    public Image BackgroundColor;
+    public Image FrameColor;
+    public Image ParentFrameColor;
+
+    private Image SelectedColorToEdit;
+
+    public void SetSelectedColor(Image CurrentSelection)
+    {
+        SelectedColorToEdit = CurrentSelection;
+    }
+
+    public void UpdateColorSelection(Color newColor)
+    {
+        try
+        {
+            SelectedColorToEdit.color = newColor;
+            if(SelectedColorToEdit == FrameColor)
+            {
+                ((FrameHighlighter)SelectionManager.Instance.Highlighter).FrameColor = newColor;
+            }
+        }
+        catch (NullReferenceException)
+        {
+            //Initialization
+        }
+    }
     
 	// Use this for initialization
 	void Start () {
@@ -31,7 +60,7 @@ public class UserSettingsWindow : MonoBehaviour {
             KeyboardDrop.options.Add(new Dropdown.OptionData() { text = type.ToString() });
         }
         LoadProfile();
-	}
+    }
 
     public void LoadProfile()
     {
@@ -46,19 +75,25 @@ public class UserSettingsWindow : MonoBehaviour {
         KeyboardDrop.RefreshShownValue();
         //Set flashing settings
         FlashingToggle.isOn = UserSettings.UseFlashingButtons;
-        ToggleFrequencySetting();
+        OnSSVEPToggleClicked();
         //Set text values
         SetPassThresholdTextValue();
         SetDurationTextValue();
         SetTargetPowerTextValue();
         SetRefreshRateTextValue();
         SetFreqTextValue();
+        UpdateCurrentKeyboard();
+        LoadColors();
+        SetSelectedColor(BackgroundColor);
     }
     
-    public void ToggleFrequencySetting()
+    public void OnSSVEPToggleClicked()
     {
         FreqSlider.interactable = FlashingToggle.isOn;
         FreqText.interactable = FlashingToggle.isOn;
+        ParentFrameColor.GetComponent<Button>().interactable = !FlashingToggle.isOn;
+        FrameColor.GetComponent<Button>().interactable = !FlashingToggle.isOn;
+        SetSelectedColor(BackgroundColor);
     }
 
     public void SaveProfile()
@@ -70,6 +105,7 @@ public class UserSettingsWindow : MonoBehaviour {
         SetFlashingOption();
         SetFreqValue();
         SetRefreshRateValue();
+        SaveColors();
     }
     #region Private Methods
     private void SetTargetPowerValue()
@@ -94,11 +130,26 @@ public class UserSettingsWindow : MonoBehaviour {
 
     private void SetFreqValue()
     {
-        UserSettings.RefreshRate = RefreshSlider.value;
+        UserSettings.Frequency = (int)FreqSlider.value;
     }
     #endregion
     #region Public Methods
 
+
+    public void SaveColors()
+    {
+        UserSettings.BackgroundColor = BackgroundColor.color;
+        UserSettings.FrameColor = FrameColor.color;
+        UserSettings.ParentFrameColor = ParentFrameColor.color;
+    }
+
+    public void LoadColors()
+    {
+        BackgroundColor.color = UserSettings.BackgroundColor;
+        FrameColor.color = UserSettings.FrameColor;
+        ParentFrameColor.color = UserSettings.ParentFrameColor;
+
+    }
     public void SetDurationTextValue()
     {
         DurationText.text = DurationSlider.value.ToString();
@@ -162,6 +213,15 @@ public class UserSettingsWindow : MonoBehaviour {
     public void SetFreqSliderValue()
     {
         FreqSlider.value = float.Parse(FreqText.text);
+    }
+
+    public void UpdateCurrentKeyboard()
+    {
+        if (!KeyboardManager.Instance.KeyboardGameObject.name.Equals(((KeyboardType)KeyboardDrop.value).ToString()))
+        {
+            KeyboardManager.Instance.RemoveKeyboard();
+            KeyboardManager.Instance.SetKeyboard(UserSettings.CurrentKeyboardName);
+        }
     }
     #endregion
 

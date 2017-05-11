@@ -17,6 +17,7 @@ namespace Connectome.Twitter.API
 		private static TwitterAuthenticator AuthenticatorInstance;
 		private OAuth.OAuthSession Session;
 		private Tokens Tokens; // This is where the OAuth tokens are stored
+        private string screenName;
 		#endregion
 
 		#region Preamble
@@ -54,6 +55,10 @@ namespace Connectome.Twitter.API
 
 			throw new Exception("Unable to get the tokens for user.");
 		}
+
+        public string getLoggedInUserScreenName() {
+            return screenName;
+        }
 
 		// Return the access token that was generated during authentication
 		public string getAccessTokenSecret()
@@ -156,10 +161,13 @@ namespace Connectome.Twitter.API
 		{
 			Tokens = Session.GetTokens(pinCode); // get the oauth tokens for the entered pin code
 
-			if (Tokens != null)
-				return true;
-			else
-				throw new Exception("Unable to get the tokens for user.");
+            if (Tokens != null)
+            {
+                screenName = Tokens.ScreenName.ToString();
+                return true;
+            }
+            else
+                throw new Exception("Unable to get the tokens for user.");
 		}
 		#endregion
 

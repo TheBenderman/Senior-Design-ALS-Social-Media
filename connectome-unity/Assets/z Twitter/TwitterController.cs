@@ -26,10 +26,6 @@ public class TwitterController : TwitterObjects
 	public Button seeConversation;
 	#endregion
 
-	#region Not sure
-	public Text TweetStatusText;
-	#endregion
-
 	public AuthenticationHandler authHandler;
 	public TimeLineHandler timelineHandler;
 	public ConversationHandler convoHandler;
@@ -41,8 +37,36 @@ public class TwitterController : TwitterObjects
 	void Start() 
 	{
 		//makeTwitterAPICallNoReturnVal(() => authHandler.initializeAuthComponent ());
+
+		IEnumerable<UnityEngine.Object> all_Objs = Resources.FindObjectsOfTypeAll(typeof(Button));
+		all_Objs = all_Objs.Where(x => Array.FindIndex(objectsToManage, y => y.Equals(x.name)) > -1);
+
+		foreach (UnityEngine.Object g in all_Objs)
+		{
+			Button gameobj = (Button)g;
+			gameobj.onClick.AddListener (() => {
+				connectomeErrorText.text = "";
+			});
+		}
+
 		authHandler.initializeAuthComponent ();
 	}
+
+    void OnApplicationQuit()
+    {
+		AppDomain.CurrentDomain.ProcessExit += (e, o) => { 
+			authHandler.Interactor.getHomeTimelineNavigatable().stopThread();
+			authHandler.Interactor.getDmUsersNavigatable().stopThread();
+		};
+    }
+
+    void OnDestroy()
+    {
+		AppDomain.CurrentDomain.ProcessExit += (e, o) => { 
+			authHandler.Interactor.getHomeTimelineNavigatable().stopThread();
+			authHandler.Interactor.getDmUsersNavigatable().stopThread();
+		};
+    }
 
 	public void backButton()
 	{

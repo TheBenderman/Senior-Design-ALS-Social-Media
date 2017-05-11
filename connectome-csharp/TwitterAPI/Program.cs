@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreTweet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,10 @@ namespace Connectome.Twitter.API
 			TwitterInteractor interactor = new TwitterInteractor(authenticator);
 			string user_name = interactor.getLoggedInUserScreenName();
             interactor.getLoggedInUserTimeline();
-            interactor.getFollowing("ShayKashMoney");
+            List<User> users =  interactor.getFollowing(interactor.getLoggedInUserScreenName());
+            for (int i = 0; i < users.Count; i++) {
+                Console.Write(users[i].ScreenName);
+            }
             while (true) { };
             return 0;
         }

@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Connectome.Emotiv.Enum;
-using Connectome.Emotiv.Event;
 using Connectome.Emotiv.Interface;
 using UnityEngine;
+using Connectome.Core.Interface;
 
 namespace Connectome.Unity.Template
 {
@@ -14,24 +14,17 @@ namespace Connectome.Unity.Template
     public abstract class EmotivReaderPlugin : MonoBehaviour, IEmotivReader
     {
         #region IEmotivReader Abstract
-        public abstract IEmotivDevice Device { get; set; }
+        public abstract IConnectomeDevice<IEmotivState> Device { get; set; }
         public abstract bool IsReading { get; }
 
         public abstract event Action<Exception> ExceptionHandler;
-        public abstract event Action<EmotivCommandType?, EmotivCommandType> OnCommandChange;
-        public abstract event Action<EmotivReadArgs> OnRead;
+        public abstract event Action<IEmotivState> OnRead;
         public abstract event Action OnStart;
         public abstract event Action<string> OnStop;
 
-        public abstract void PlugDevice(IEmotivDevice Device);
-        public abstract void Start();
-        public abstract void Stop();
-        #endregion
-        #region IDisposable
-        public void Dispose()
-        {
-            Stop();
-        }
+        public abstract void PlugDevice(IConnectomeDevice<IEmotivState> Device);
+        public abstract void StartReading();
+        public abstract void StopReading();
         #endregion
         #region Abstarct
         /// <summary>
