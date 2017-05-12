@@ -3047,7 +3047,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ForceOverride: 1
-  Duration: 7
+  Duration: 40
   EnableSelectionManager: 1
   SelectionManager: {fileID: 2030024109}
   DisplayText: {fileID: 372680905}
@@ -7612,15 +7612,20 @@ Prefab:
       propertyPath: OnReached.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
       value: Clicked
       objectReference: {fileID: 0}
+    - target: {fileID: 114186385342381572, guid: 6a69249784c4cd346a9ea21a1c2722d6,
+        type: 2}
+      propertyPath: Profile
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6a69249784c4cd346a9ea21a1c2722d6, type: 2}
   m_IsPrefabParent: 0
 --- !u!114 &1878648080 stripped
 MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114224308874660964, guid: 6a69249784c4cd346a9ea21a1c2722d6,
+  m_PrefabParentObject: {fileID: 114186385342381572, guid: 6a69249784c4cd346a9ea21a1c2722d6,
     type: 2}
   m_PrefabInternal: {fileID: 1878648079}
-  m_Script: {fileID: 11500000, guid: fc2d84edfd525354da92772615c0e783, type: 3}
+  m_Script: {fileID: 11500000, guid: d7705470619bc764fb2c9c79ba262269, type: 3}
 --- !u!1 &1918052026
 GameObject:
   m_ObjectHideFlags: 0
@@ -8061,7 +8066,7 @@ MonoBehaviour:
   AllowSelection: 0
   Highlighter: {fileID: 720108586}
   MainMenu: {fileID: 205535004}
-  WaitInterval: 2
+  WaitInterval: 7
 --- !u!1 &2039189583
 GameObject:
   m_ObjectHideFlags: 0

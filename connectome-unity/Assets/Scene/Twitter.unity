@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 8
+  serializedVersion: 7
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -25,7 +25,6 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -38,11 +37,11 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311995, g: 0.38074034, b: 0.35872716, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 7
   m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
@@ -54,7 +53,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
-    serializedVersion: 8
+    serializedVersion: 4
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -67,27 +66,13 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
+    m_DirectLightInLightProbes: 1
     m_FinalGather: 0
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
-    m_MixedBakeMode: 1
-    m_BakeBackend: 0
-    m_PVRSampling: 1
-    m_PVRDirectSampleCount: 32
-    m_PVRSampleCount: 500
-    m_PVRBounces: 2
-    m_PVRFiltering: 0
-    m_PVRFilteringMode: 1
-    m_PVRCulling: 1
-    m_PVRFilteringGaussRadiusDirect: 1
-    m_PVRFilteringGaussRadiusIndirect: 5
-    m_PVRFilteringGaussRadiusAO: 2
-    m_PVRFilteringAtrousColorSigma: 1
-    m_PVRFilteringAtrousNormalSigma: 1
-    m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_ShadowMaskMode: 2
+  m_RuntimeCPUUsage: 25
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -104,8 +89,6 @@ NavMeshSettings:
     minRegionArea: 2
     manualCellSize: 0
     cellSize: 0.16666667
-    manualTileSize: 0
-    tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &2989037
@@ -4388,7 +4371,7 @@ Canvas:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 292246965}
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
@@ -4397,7 +4380,6 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -12634,10 +12616,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d338f71d907b62549a65307eafd92526, type: 3}
 --- !u!114 &756339869 stripped
 MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114224308874660964, guid: 6a69249784c4cd346a9ea21a1c2722d6,
+  m_PrefabParentObject: {fileID: 114186385342381572, guid: 6a69249784c4cd346a9ea21a1c2722d6,
     type: 2}
   m_PrefabInternal: {fileID: 756339865}
-  m_Script: {fileID: 11500000, guid: fc2d84edfd525354da92772615c0e783, type: 3}
+  m_Script: {fileID: 11500000, guid: d7705470619bc764fb2c9c79ba262269, type: 3}
 --- !u!114 &756339870 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114472219884252230, guid: 6a69249784c4cd346a9ea21a1c2722d6,
@@ -15379,8 +15361,6 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
-  m_AllowMSAA: 1
-  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -15504,10 +15484,10 @@ MonoBehaviour:
   EmotivDeviceManager: {fileID: 1786741598}
   KeyboardManager: {fileID: 1859680874}
   LoginEPOCDevicePlugin: {fileID: 1297525781}
-  ClickInterpreter: {fileID: 0}
-  RefreshInterpreter: {fileID: 0}
-  Sampler: {fileID: 0}
-  HighlighterFactory: {fileID: 0}
+  ClickInterpreter: {fileID: 756339868}
+  RefreshInterpreter: {fileID: 756339867}
+  Sampler: {fileID: 756339870}
+  HighlighterFactory: {fileID: 1516781622}
   HighlighterContainer: {fileID: 804229801}
   LoginPanel: {fileID: 608644491}
   LabledHighlighter: {fileID: 1986226729}
@@ -21781,6 +21761,7 @@ Transform:
   m_LocalPosition: {x: -650, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1516781621}
   - {fileID: 1986226728}
   m_Father: {fileID: 991877062}
   m_RootOrder: 2
@@ -22794,6 +22775,59 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1516398146}
+--- !u!1001 &1516781620
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1406945301}
+    m_Modifications:
+    - target: {fileID: 4087717403221918, guid: 0b63bae7251b5fb47bc25a63b0c3e58a, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087717403221918, guid: 0b63bae7251b5fb47bc25a63b0c3e58a, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087717403221918, guid: 0b63bae7251b5fb47bc25a63b0c3e58a, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087717403221918, guid: 0b63bae7251b5fb47bc25a63b0c3e58a, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087717403221918, guid: 0b63bae7251b5fb47bc25a63b0c3e58a, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087717403221918, guid: 0b63bae7251b5fb47bc25a63b0c3e58a, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087717403221918, guid: 0b63bae7251b5fb47bc25a63b0c3e58a, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087717403221918, guid: 0b63bae7251b5fb47bc25a63b0c3e58a, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 0b63bae7251b5fb47bc25a63b0c3e58a, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &1516781621 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4087717403221918, guid: 0b63bae7251b5fb47bc25a63b0c3e58a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1516781620}
+--- !u!114 &1516781622 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114731845707521070, guid: 0b63bae7251b5fb47bc25a63b0c3e58a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1516781620}
+  m_Script: {fileID: 11500000, guid: 3631d5b0407012c4b972f248d0364142, type: 3}
 --- !u!1 &1530028255
 GameObject:
   m_ObjectHideFlags: 0
@@ -22931,7 +22965,7 @@ Canvas:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1538303938}
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
@@ -22940,7 +22974,6 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
@@ -28501,7 +28534,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1406945301}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
