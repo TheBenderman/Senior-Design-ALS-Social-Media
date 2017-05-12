@@ -78,7 +78,7 @@ namespace Connectome.Unity.Menu
             base.Pushed();
 
             DisplayManager.HoldNotification(); 
-            DisplayManager.PushNotification("Rest");
+            DisplayManager.PushNotification("Please Wait...");
 
             ResetSelection(); 
         }
