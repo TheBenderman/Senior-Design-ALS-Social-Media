@@ -14,7 +14,7 @@ using Fabric.Crashlytics;
 
 namespace Connectome.KLD.Test
 {
-    //worst than clorox in the eyes 
+    //worst than clorox in the eyes - this sux. 
     public class ProfileTest : MonoBehaviour
     {
         /// <summary>
@@ -118,7 +118,7 @@ namespace Connectome.KLD.Test
         {
             while (SessionIndex < Sessions.Length)
             {
-                Title.text = "Break: next Target " + Sessions[SessionIndex];
+                Title.text = "Break - Target " + Sessions[SessionIndex];
 
                 yield return new WaitForSeconds(RestDuration);
 
@@ -245,13 +245,12 @@ namespace Connectome.KLD.Test
                     averages[uc] = averageAvg;
 
 
-                    textToDisplay += uc.ToString() + " ("+ averageAvg.ToString("0.00") + "): ";
+                    textToDisplay += uc.ToString() + " ("+ averageAvg.ToString("0.00") + "),";
  
                     //calculate variance 
                     foreach (float avg in Metrix[uc].Rates)
                     {
                         textToDisplay += avg.ToString("0.00");
-
                         if (uc == EmotivCommandType.PUSH)
                         {
                             AllMinPushRateOnPush = Math.Min(AllMinPushRateOnPush, avg);
@@ -296,23 +295,28 @@ namespace Connectome.KLD.Test
                     ValidTotalVariance += AllowedVariance[uc].Sum(); 
 
                     //all 
-                    textToDisplay += "All - MinFP: " + AllMinPushRateOnPush.ToString("0.00") + ", MaxFP: " + AllMaxPushRateOnNeutral.ToString("0.00")
+                    /*textToDisplay += "All - MinFP: " + AllMinPushRateOnPush.ToString("0.00") + ", MaxFP: " + AllMaxPushRateOnNeutral.ToString("0.00")
                                         + ", V[" + uc.ToString() + "]: " + variance[uc].ToString("0.00") + "\n"; 
                     // valid (exclude outliers) 
                     textToDisplay += "Valid - MinFP: " + MinPushRateOnPush.ToString("0.00") + ", MaxFP: " + MaxPushRateOnNeutral.ToString("0.00")
                                        + ", V[" + uc.ToString() + "]: " + AllowedVariance[uc].Sum().ToString("0.00") + " Out: "  + OutliersCount[uc] +  "\n\n";
-                   
+                   */
                 }
 
-                float AllValidity = AllMinPushRateOnPush - AllMaxPushRateOnNeutral;
-                float valifValidity = MinPushRateOnPush - MaxPushRateOnNeutral;
+                summary = textToDisplay; 
 
-                Title.text = textToDisplay
+                //float AllValidity = AllMinPushRateOnPush - AllMaxPushRateOnNeutral;
+                //float valifValidity = MinPushRateOnPush - MaxPushRateOnNeutral;
+
+                Title.text = "Task 1 is completed! (=^◡^=)"; 
+                    
+                    
+               /* string summary1 = textToDisplay
                         + "All - Average V:" + (allTotalVariance / uniqueList.Count).ToString("0.00") 
                         + ", Gap: " + AllValidity.ToString("0.00") + "\n"
                         + "Valid - Average V:" + (ValidTotalVariance / uniqueList.Count).ToString("0.00")
                         + ", Gap: " + valifValidity.ToString("0.00") + " Total Out: "  + totalOutliers + "\n"; 
-
+                */
                 if (OnFinished != null)
                 {
                     OnFinished.Invoke();
@@ -324,6 +328,9 @@ namespace Connectome.KLD.Test
 				Crashlytics.RecordCustomException ("Profile Exception", "thrown exception", e.StackTrace);
             }
         }//end func 
+
+
+        string summary = ""; //
 
         public void ExportCollectedData()
         {
@@ -337,18 +344,23 @@ namespace Connectome.KLD.Test
                 Debug.Log("bye");
                 return;
             }
-            else if (!filePath.EndsWith(".csv"))
+            /*else if (!filePath.EndsWith(".csv"))
             {
                 Debug.Log("illegal");
                 return;
+            }*/
+
+            if(filePath.Contains("."))
+            {
+                filePath =  filePath.Substring(0, filePath.LastIndexOf("."));
             }
 
-            //Show exporting window 
-            Debug.Log("Exporting");
-            FileStream fstream = File.Create(filePath);
-            StreamWriter writer = new StreamWriter(fstream);
+            //TODO Show exporting window 
+            Debug.Log("Exporting Raw");
+            FileStream fstreamRaw = File.Create(filePath + " - Raw.csv");
+            StreamWriter writerRaw = new StreamWriter(fstreamRaw);
 
-            writer.WriteLine("Test,Target,Command,Time,Power");
+            writerRaw.WriteLine("Test,Target,Command,Time,Power");
             for (int t = 0; t < LastTestingSessions.Length; t++)
             {
                 if (States[t].Count > 0)
@@ -356,14 +368,39 @@ namespace Connectome.KLD.Test
                     long initTime = States[t][0].Time;
                     for (int s = 0; s < States[t].Count; s++)
                     {
-                        writer.WriteLine("{0},{1},{2},{3},{4}", (t + 1), LastTestingSessions[t].ToString(), States[t][s].Command.ToString(), States[t][s].Time - initTime, States[t][s].Power);
+                        writerRaw.WriteLine("{0},{1},{2},{3},{4}", (t + 1), LastTestingSessions[t].ToString(), States[t][s].Command.ToString(), States[t][s].Time - initTime, States[t][s].Power);
                     }
                 }
-                writer.WriteLine(",,,,");
+                writerRaw.WriteLine(",,,,");
             }
 
-            writer.Flush(); 
-            writer.Close(); 
+            writerRaw.Flush(); 
+            writerRaw.Close(); 
+
+            Debug.Log("Exported Raw");
+
+            //TODO Show exporting window 
+            Debug.Log("Exporting Raw");
+            FileStream fstreamSummary = File.Create(filePath + " - Summary.csv");
+            StreamWriter writerSummary = new StreamWriter(fstreamSummary);
+
+            writerSummary.WriteLine(summary);
+
+            /*for (int t = 0; t < LastTestingSessions.Length; t++)
+            {
+                if (States[t].Count > 0)
+                {
+                    long initTime = States[t][0].Time;
+                    for (int s = 0; s < States[t].Count; s++)
+                    {
+                        writerSummary.WriteLine("{0},{1},{2},{3},{4}", (t + 1), LastTestingSessions[t].ToString(), States[t][s].Command.ToString(), States[t][s].Time - initTime, States[t][s].Power);
+                    }
+                }
+                writerSummary.WriteLine(",,,,");
+            }*/
+
+            writerSummary.Flush();
+            writerSummary.Close();
 
             Debug.Log("Exported");
         }

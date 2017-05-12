@@ -106,19 +106,27 @@ public static class UserSettings
 
     public static Color BackgroundColor
     {
-        get { return new Color(PlayerPrefs.GetFloat("BGR", 1), PlayerPrefs.GetFloat("BGG", 1), PlayerPrefs.GetFloat("BGB", 1), 1); }
+        get { return new Color(PlayerPrefs.GetFloat("BGR", 0.75f), PlayerPrefs.GetFloat("BGG", 0.87f), PlayerPrefs.GetFloat("BGB", 0.93f), 1); }
         set { PlayerPrefs.SetFloat("BGR", value.r); PlayerPrefs.SetFloat("BGG", value.g); PlayerPrefs.SetFloat("BGB", value.b); }
     }
     public static Color FrameColor
     {
-        get { return new Color(PlayerPrefs.GetFloat("HR", 1), PlayerPrefs.GetFloat("HG", 1), PlayerPrefs.GetFloat("HB", 1), 1); }
+        get { return new Color(PlayerPrefs.GetFloat("HR", 0.87f), PlayerPrefs.GetFloat("HG", 0.99f), PlayerPrefs.GetFloat("HB", 0.102f), 0.867f); }
         set { PlayerPrefs.SetFloat("HR", value.r); PlayerPrefs.SetFloat("HG", value.g); PlayerPrefs.SetFloat("HB", value.b); }
     }
 
     public static Color ParentFrameColor
     {
-        get { return new Color(PlayerPrefs.GetFloat("PHR", 1), PlayerPrefs.GetFloat("PHG", 1), PlayerPrefs.GetFloat("PHB", 1), 1); }
+        get { return new Color(PlayerPrefs.GetFloat("PHR", 0.973f), PlayerPrefs.GetFloat("PHG", 0), PlayerPrefs.GetFloat("PHB", 0.059f), 0.867f); }
         set { PlayerPrefs.SetFloat("PHR", value.r); PlayerPrefs.SetFloat("PHG", value.g); PlayerPrefs.SetFloat("PHB", value.b); }
+    }
+
+    /// <summary>
+    /// USE WITH EXTREME CAUTION
+    /// </summary>
+    public static void ResetUserSettings()
+    {
+        PlayerPrefs.DeleteAll();
     }
     #endregion
 

@@ -41,10 +41,6 @@ public class UserSettingsWindow : MonoBehaviour {
         try
         {
             SelectedColorToEdit.color = newColor;
-            if(SelectedColorToEdit == FrameColor)
-            {
-                ((FrameHighlighter)SelectionManager.Instance.Highlighter).FrameColor = newColor;
-            }
         }
         catch (NullReferenceException)
         {
@@ -222,6 +218,15 @@ public class UserSettingsWindow : MonoBehaviour {
             KeyboardManager.Instance.RemoveKeyboard();
             KeyboardManager.Instance.SetKeyboard(UserSettings.CurrentKeyboardName);
         }
+    }
+
+    /// <summary>
+    /// Restores User Settings to their original, default values.
+    /// </summary>
+    public void ResetToDefault()
+    {
+        UserSettings.ResetUserSettings();
+        LoadProfile();
     }
     #endregion
 
