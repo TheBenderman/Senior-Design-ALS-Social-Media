@@ -57,7 +57,11 @@ public class EmotivStateRecorder : MonoBehaviour {
         FileStream fstream = File.Create(filePath);
         StreamWriter writer = new StreamWriter(fstream);
 
-        writer.WriteLine("Test,Target,Command,Time,Power");
+        if(States.Count == 0)
+        {
+            Debug.LogError("Unable to record anything", this);
+            return; 
+        }
 
         long initTime = States[0].Time;
 

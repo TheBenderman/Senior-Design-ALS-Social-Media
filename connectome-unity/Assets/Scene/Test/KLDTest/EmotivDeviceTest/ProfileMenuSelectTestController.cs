@@ -7,11 +7,8 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Linq;
 using System;
-
-#if UNITY_EDITOR
-using UnityEngine;
-#endif
 using System.IO;
+using UnityEngine;
 
 /// <summary>
 /// Please don't read. Not pleasent 
