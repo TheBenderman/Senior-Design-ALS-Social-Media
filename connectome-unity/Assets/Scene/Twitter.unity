@@ -12458,7 +12458,7 @@ Prefab:
         type: 2}
       propertyPath: LoginWindow
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 608644491}
     - target: {fileID: 114024014020766288, guid: 6a69249784c4cd346a9ea21a1c2722d6,
         type: 2}
       propertyPath: StatusBar
