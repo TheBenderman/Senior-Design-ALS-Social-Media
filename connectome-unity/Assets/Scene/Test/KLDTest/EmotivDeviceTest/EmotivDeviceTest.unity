@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311995, g: 0.38074034, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37312055, g: 0.38074076, b: 0.3587269, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -874,7 +874,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000030517578, y: -84.99997}
+  m_AnchoredPosition: {x: -0.000030517578, y: 4}
   m_SizeDelta: {x: 600, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &205535006
@@ -1914,6 +1914,16 @@ Prefab:
         type: 2}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114828766170031816, guid: ef550d720613d21459168d99cf9da728,
+        type: 2}
+      propertyPath: m_Value
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114371980249957996, guid: ef550d720613d21459168d99cf9da728,
+        type: 2}
+      propertyPath: m_Value
+      value: 0.35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ef550d720613d21459168d99cf9da728, type: 2}
@@ -3011,7 +3021,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &880860061
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3047,7 +3057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ForceOverride: 1
-  Duration: 7
+  Duration: 40
   EnableSelectionManager: 1
   SelectionManager: {fileID: 2030024109}
   DisplayText: {fileID: 372680905}
@@ -5522,7 +5532,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1521138624
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5557,9 +5567,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverideDurations: 1
   RecordDuration: 7
-  RestDuration: 3
+  RestDuration: 5
   OveridePrompts: 1
-  Prompts: 0100000002000000
+  Prompts: 0100000002000000020000000100000002000000010000000200000001000000
   Title: {fileID: 1621152198}
   DeviceManager: {fileID: 1995096292}
   Calculator: {fileID: 519416972}
@@ -7612,15 +7622,20 @@ Prefab:
       propertyPath: OnReached.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
       value: Clicked
       objectReference: {fileID: 0}
+    - target: {fileID: 114186385342381572, guid: 6a69249784c4cd346a9ea21a1c2722d6,
+        type: 2}
+      propertyPath: Profile
+      value: SSVEP_profile
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6a69249784c4cd346a9ea21a1c2722d6, type: 2}
   m_IsPrefabParent: 0
 --- !u!114 &1878648080 stripped
 MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114224308874660964, guid: 6a69249784c4cd346a9ea21a1c2722d6,
+  m_PrefabParentObject: {fileID: 114186385342381572, guid: 6a69249784c4cd346a9ea21a1c2722d6,
     type: 2}
   m_PrefabInternal: {fileID: 1878648079}
-  m_Script: {fileID: 11500000, guid: fc2d84edfd525354da92772615c0e783, type: 3}
+  m_Script: {fileID: 11500000, guid: d7705470619bc764fb2c9c79ba262269, type: 3}
 --- !u!1 &1918052026
 GameObject:
   m_ObjectHideFlags: 0
@@ -8061,7 +8076,7 @@ MonoBehaviour:
   AllowSelection: 0
   Highlighter: {fileID: 720108586}
   MainMenu: {fileID: 205535004}
-  WaitInterval: 2
+  WaitInterval: 7
 --- !u!1 &2039189583
 GameObject:
   m_ObjectHideFlags: 0

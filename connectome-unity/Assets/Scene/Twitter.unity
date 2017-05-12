@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311995, g: 0.38074034, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.37312055, g: 0.38074076, b: 0.3587269, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -12496,7 +12496,7 @@ Prefab:
         type: 2}
       propertyPath: DevicePlugin
       value: 
-      objectReference: {fileID: 756339869}
+      objectReference: {fileID: 1248658637}
     - target: {fileID: 114024014020766288, guid: 6a69249784c4cd346a9ea21a1c2722d6,
         type: 2}
       propertyPath: AutoSetup
@@ -12587,6 +12587,11 @@ Prefab:
       propertyPath: OnReached.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 114186385342381572, guid: 6a69249784c4cd346a9ea21a1c2722d6,
+        type: 2}
+      propertyPath: Profile
+      value: SSVEP_profile
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6a69249784c4cd346a9ea21a1c2722d6, type: 2}
   m_IsPrefabParent: 0
@@ -12608,12 +12613,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 756339865}
   m_Script: {fileID: 11500000, guid: d338f71d907b62549a65307eafd92526, type: 3}
---- !u!114 &756339869 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114224308874660964, guid: 6a69249784c4cd346a9ea21a1c2722d6,
-    type: 2}
-  m_PrefabInternal: {fileID: 756339865}
-  m_Script: {fileID: 11500000, guid: fc2d84edfd525354da92772615c0e783, type: 3}
 --- !u!114 &756339870 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114472219884252230, guid: 6a69249784c4cd346a9ea21a1c2722d6,
@@ -18723,6 +18722,12 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1245200926}
   m_Script: {fileID: 11500000, guid: c318782a7199a194583a22d1ae7d67fa, type: 3}
+--- !u!114 &1248658637 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114186385342381572, guid: 6a69249784c4cd346a9ea21a1c2722d6,
+    type: 2}
+  m_PrefabInternal: {fileID: 756339865}
+  m_Script: {fileID: 11500000, guid: d7705470619bc764fb2c9c79ba262269, type: 3}
 --- !u!1 &1251575074
 GameObject:
   m_ObjectHideFlags: 0
