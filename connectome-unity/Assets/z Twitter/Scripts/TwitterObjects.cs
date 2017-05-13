@@ -16,7 +16,6 @@ public class TwitterObjects : MonoBehaviour
 	//Register the HandleLog function on scene start to fire on debug.log events
 	public void OnEnable ()
 	{
-		AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler (CurrentDomain_UnhandledException);
 		Application.logMessageReceived += HandleLog;
 		//Application.logMessageReceivedThreaded += HandleLog;
 	}
@@ -78,12 +77,6 @@ public class TwitterObjects : MonoBehaviour
 
 		byte[] response = client.UploadValues (uri, "POST", keyValue);
 		yield return Encoding.UTF8.GetString (response);
-	}
-
-	public void CurrentDomain_UnhandledException (object sender, UnhandledExceptionEventArgs e)
-	{
-		Debug.Log("In unhandled exception handler.");
-		SendData (sender.ToString (), e.ToString (), "Unknown");
 	}
 
 	public String[] objectsToManage = new String[]

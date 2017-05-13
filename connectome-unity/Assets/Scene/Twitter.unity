@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311995, g: 0.38074034, b: 0.35872716, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731316, g: 0.38074896, b: 0.3587254, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -5421,6 +5421,11 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 46.5
       objectReference: {fileID: 0}
+    - target: {fileID: 224848151584459012, guid: 06140ca3a5c763d4bab21d6a15c9cbc8,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 300
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114959914886210246, guid: 06140ca3a5c763d4bab21d6a15c9cbc8, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 06140ca3a5c763d4bab21d6a15c9cbc8, type: 2}
@@ -7929,6 +7934,7 @@ MonoBehaviour:
   DMTitle: {fileID: 860081166}
   messageObjects: []
   authHandler: {fileID: 1319033215}
+  twitterController: {fileID: 0}
   selectConvoObjectsString: SelectConvObjects
   viewConvObjectsString: ViewConvObjects
 --- !u!1 &444258652
@@ -16343,7 +16349,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1057078392
 Transform:
   m_ObjectHideFlags: 0

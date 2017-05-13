@@ -312,6 +312,14 @@ public class TimeLineHandler : TwitterObjects
     // This function sets the current tweet for the user.
     public void setTweet(Status tweet)
     {
+        if (tweet == null)
+        {
+            connectomeErrorText.text = "Something went wrong! Can't select the current tweet.";
+            homeTimelineOverviewObjects.SetActive(true);
+            homeTimeLineObjects.SetActive(false);
+            return;
+        }
+
         twitterHandle.text = "@" + tweet.User.ScreenName;
         realName.text = tweet.User.Name;
         bodyText.text = tweet.Text;
@@ -357,8 +365,11 @@ public class TimeLineHandler : TwitterObjects
         imageURLs = new List<string>();
 
 		if (currentTweetMedia == null || currentTweetMedia.Length == 0) {
-			throw new Exception ("Uh oh. Shouldn't be here.");
-		}
+            connectomeErrorText.text = "No images to view, something went wrong!";
+            ImageObjects.SetActive(false);
+            homeTimeLineObjects.SetActive(true);
+            return; 
+        }
         
 		// For each of the images, get the urls
 		foreach (MediaEntity media in currentTweetMedia) {
@@ -379,7 +390,13 @@ public class TimeLineHandler : TwitterObjects
 	// Set the current image being displayed
     public void setCurrentImage()
     {
-		StartCoroutine(setUserImage(imageURLs[currentImageIndex]));
+        if (currentImageIndex >= imageURLs.Count || currentImageIndex < 0)
+        {
+            connectomeErrorText.text = "Something went wrong! Keeping you on the previous image.";
+            return;
+        }
+
+        StartCoroutine(setUserImage(imageURLs[currentImageIndex]));
 
 		// Enable the next images button to go to the next image
 		Boolean nextButtonEnabled = currentImageIndex < imageURLs.Count - 1;

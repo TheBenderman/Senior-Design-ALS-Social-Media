@@ -56,7 +56,8 @@ public class ConversationHandler : TwitterObjects {
 		}
 		else
 		{
-			Debug.Log("No Conversation for this post");
+            connectomeErrorText.text = "There are no posts between these two users!";
+            timelineHandler.addHomeTimeLine();
 		}
 	}
 
@@ -94,9 +95,9 @@ public class ConversationHandler : TwitterObjects {
 		}
 		else
 		{
-			// TODO add code to refresh conversation
-			// Conversationtimeline = authHandler.makeTwitterAPICall(authHandler.Interactor.getHomeTimeLine());
-		}
+            connectomeErrorText.text = "There is no next tweet.";
+            return;
+        }
 
 		setTweet(currentTweetConvo);
 	}
@@ -112,6 +113,11 @@ public class ConversationHandler : TwitterObjects {
 		{
 			currentTweetConvo--;
 		}
+		else
+		{
+            connectomeErrorText.text = "There is no previous tweet.";
+            return;
+        }
 
 		setTweet(currentTweetConvo);
 	}

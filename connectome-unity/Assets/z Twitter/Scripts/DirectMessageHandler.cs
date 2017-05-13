@@ -33,7 +33,8 @@ public class DirectMessageHandler : TwitterObjects {
 	private User currentUser;
     private int currentDMPage = 0;
 	public AuthenticationHandler authHandler;
-	public string selectConvoObjectsString = "SelectConvObjects";
+    public TwitterController twitterController;
+    public string selectConvoObjectsString = "SelectConvObjects";
     public string viewConvObjectsString = "ViewConvObjects";
     #endregion
 
@@ -44,15 +45,17 @@ public class DirectMessageHandler : TwitterObjects {
 		authHandler.makeTwitterAPICallNoReturnVal (() => authHandler.Interactor.getDmUsersNavigatable().resetCurrentObject());
 
 		setActiveObject(selectConvoObjectsString);
-		Debug.Log ("Should have made conversation objects visible.");
 
 		// Get the next twitter DM User (newest conversation)
 		currentUser = authHandler.makeTwitterAPICall(() => authHandler.Interactor.getDmUsersNavigatable().getNewerObject());
 		if (currentUser != null)
 			setUser (currentUser);
 		else
-			throw new Exception ("No next user.");
-	}
+		{
+            connectomeErrorText.text = "There are no DMs for you to see! Select a tweet, and hit the message button to start a conversation.";
+            authHandler.navigateToTwitterHome();
+		}
+    }
 
 	// This function sets the current DM user
 	public void setUser(User user)
@@ -106,7 +109,7 @@ public class DirectMessageHandler : TwitterObjects {
 		if (currentUser != null)
 			setUser (currentUser);
 		else
-			throw new Exception ("No next user.");
+            connectomeErrorText.text = "There is no next DM, something went wrong!";
 	}
 
 	// This function populates the DM users page with the next newest user.
@@ -117,7 +120,7 @@ public class DirectMessageHandler : TwitterObjects {
 		if (currentUser != null)
 			setUser (currentUser);
 		else
-			throw new Exception ("No previous user.");
+            connectomeErrorText.text = "There is no previous DM, something went wrong!";
 	}
 
 	// Populate the screen to view the entire conversation with a user.
@@ -208,6 +211,12 @@ public class DirectMessageHandler : TwitterObjects {
                 YPoint += 63; // move the message to the next location for messages
             }
         }
+
+        NewerDMs.enabled = dmPage > 0;
+        NewerDMs.interactable = dmPage > 0;
+
+        OlderDMs.enabled = ((dmPage + 1) * 5) <= directMessages.Count;
+		OlderDMs.interactable = ((dmPage + 1) * 5) <= directMessages.Count;
     }
 
 	// Go back from the conversation page to the dm users page
@@ -224,6 +233,11 @@ public class DirectMessageHandler : TwitterObjects {
         {
             currentDMPage += 1;
         }
+		else
+		{
+            connectomeErrorText.text = "There are no older DMs, something went wrong!";
+            return;
+        }
 
         setDMPage(currentDMPage);
     }
@@ -234,6 +248,11 @@ public class DirectMessageHandler : TwitterObjects {
         if (currentDMPage > 0)
         {
             currentDMPage--;
+        }
+		else
+		{
+            connectomeErrorText.text = "There are no newer DMs, something went wrong!";
+            return;
         }
 
         setDMPage(currentDMPage);

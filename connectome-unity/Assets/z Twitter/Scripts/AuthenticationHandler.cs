@@ -31,6 +31,12 @@ public class AuthenticationHandler : TwitterObjects
 			Authenticator = TwitterAuthenticator.Instance;
 		}
 
+		if (Authenticator == null)
+		{
+            connectomeErrorText.text = "Something went wrong with your twitter authentication. If this persists please contact the development team.";
+            navigateToTwitterAuthPage("Authenticator is null");
+        }
+
 		// See if the accesstoken and access secret have already been entered before
 		string accesstoken = PlayerPrefs.GetString("Access Token");
 		string accessSecret = PlayerPrefs.GetString("Access Secret");
@@ -41,13 +47,17 @@ public class AuthenticationHandler : TwitterObjects
 			// Set the tokens to the previously received tokens
 			makeTwitterAPICallNoReturnVal(() => Authenticator.setTokens(accesstoken, accessSecret));
 			Interactor = new TwitterInteractor (Authenticator);
+			
+			if (Interactor == null)
+			{
+				connectomeErrorText.text = "Something went wrong with your twitter authentication. If this persists please contact the development team.";
+            	navigateToTwitterAuthPage("Interactor is null");
+			}
 
             // Recover from errors having to do with exceptions in home timeline thread
 		    Interactor.getHomeTimelineNavigatable().OnExp = exception =>
 		    {
                 Debug.Log(exception.Message.ToString());
-		        //Some error message here
-
 				Crashlytics.RecordCustomException("Twitter Exception", "thrown exception", exception.StackTrace);
 
 				connectomeErrorText.text = "Something went wrong with your twitter implementation.";
@@ -58,8 +68,6 @@ public class AuthenticationHandler : TwitterObjects
 		    Interactor.getDmUsersNavigatable().OnExp = exception =>
 		    {
                 Debug.Log(exception.Message.ToString());
-                //Some error message here
-
 				Crashlytics.RecordCustomException("Twitter Exception", "thrown exception", exception.StackTrace);
 
 				connectomeErrorText.text = "Something went wrong with your twitter implementation.";
@@ -98,6 +106,12 @@ public class AuthenticationHandler : TwitterObjects
 			if (Interactor == null)
 				Interactor = new TwitterInteractor (Authenticator);
 
+			if (Interactor == null)
+			{
+				connectomeErrorText.text = "Something went wrong with your twitter authentication. If this persists please contact the development team.";
+            	navigateToTwitterAuthPage("Interactor is null");
+			}
+
 			navigateToTwitterHome ();
 		}
 		else
@@ -115,8 +129,13 @@ public class AuthenticationHandler : TwitterObjects
 
 
 	// This function navigates the user back to the user authentication page. Here the user will need to open the link that is copied to their clipboard in a browser, and then enter the PIN code shown.
-	public void navigateToTwitterAuthPage()
+	public void navigateToTwitterAuthPage(string errorCode = null)
 	{
+		if (errorCode != null)
+		{
+            Fabric.Crashlytics.Crashlytics.RecordCustomException("Navigated to Twitter Auth Page", errorCode, "");
+        }
+
 		SelectionManager.Instance.Deactivate();
 
 		setActiveObject(loginPage);

@@ -49,24 +49,6 @@ public class TweetReplyHandler : TwitterObjects {
 	// This function brings the user to a screen that allows them to reply to a tweet.
 	public void replyToTweet()
 	{
-		// Make all objects except those related to replying to a tweet to be hidden.
-		/*setActiveObject(composeTweetObjectsString);
-
-		Status currentStatus;
-		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle)) {
-			currentStatus = timelineHandler.getCurrentTweet ();
-		} else {
-			currentStatus = convoHandler.conversationtimelineStatuses [convoHandler.currentTweet];
-		}
-
-		Debug.Log("Current in reply " + timelineHandler.getCurrentTweet());
-
-		tweetTitle.text = "Reply to " + currentStatus.User.ScreenName;
-		StartCoroutine(setReplyToProfilePic(currentStatus.User.ProfileImageUrl));
-		replyToText.text = currentStatus.Text;
-		replyToUsername.text = currentStatus.User.ScreenName;
-		tweetText.text = "@" + currentStatus.User.ScreenName + " ";
-		*/
 		KeyboardManager.GetInputFromKeyboard(ReplyTweet);
 	}
 
