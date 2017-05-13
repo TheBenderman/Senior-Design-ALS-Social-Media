@@ -134,8 +134,8 @@ public class ConnectomeScene : MonoBehaviour
     private void ConfigureDeviceInterperter()
     {
         Sampler.Interval = (int)  UserSettings.Duration*1000;
-        ClickInterpreter.ReachRate = UserSettings.PassThreshold/100;//These values in the window are percents
-        RefreshInterpreter.ReachRate = UserSettings.RefreshRate/100;
+        ClickInterpreter.ReachRate = UserSettings.PassThreshold;//These values in the window are percents
+        RefreshInterpreter.ReachRate = UserSettings.RefreshRate;
     }
 
     #endregion

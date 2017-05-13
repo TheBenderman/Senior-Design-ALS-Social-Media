@@ -18,7 +18,7 @@ public static class UserSettings
     /// <summary>
     /// The default duration
     /// </summary>
-    public const int DEFAULT_DURATION = 5;
+    public const int DEFAULT_DURATION = 7;
     /// <summary>
     /// The default pass threshold
     /// </summary>

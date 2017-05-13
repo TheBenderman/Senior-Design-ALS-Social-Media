@@ -64,7 +64,7 @@ public class UserSettingsWindow : MonoBehaviour {
         DurationSlider.value = UserSettings.Duration;
         PassThresholdSlider.value = UserSettings.PassThreshold * 100;
         TargetPowerSlider.value = UserSettings.TargetPower;
-        RefreshSlider.value = UserSettings.RefreshRate;
+        RefreshSlider.value = UserSettings.RefreshRate * 100;
         FreqSlider.value = UserSettings.Frequency;
         //Set keyboard settings
         KeyboardDrop.value = UserSettings.CurrentKeyboard;
@@ -121,7 +121,7 @@ public class UserSettingsWindow : MonoBehaviour {
 
     private void SetRefreshRateValue()
     {
-        UserSettings.RefreshRate = RefreshSlider.value;
+        UserSettings.RefreshRate = RefreshSlider.value/100;
     }
 
     private void SetFreqValue()
