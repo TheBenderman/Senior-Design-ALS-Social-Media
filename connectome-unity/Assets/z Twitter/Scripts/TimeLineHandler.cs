@@ -90,6 +90,10 @@ public class TimeLineHandler : TwitterObjects
     public Image userImage;
     private List<string> imageURLs;
     private int currentImageIndex;
+    public Text repliesCount;
+    public Text retweetsCount;
+    public Text favoritesCount;
+    public Text replyToUsername;
     #endregion
 
     // This function populates the user homepage.
@@ -330,7 +334,22 @@ public class TimeLineHandler : TwitterObjects
 			bodyText.text = tweet.Text;
 		}
 
-		// Set the time stamp to be text such as "2 seconds ago"
+        retweetsCount.text = tweet.RetweetCount.Value.ToString();
+        favoritesCount.text = tweet.FavoriteCount.Value.ToString();
+
+        Debug.Log("Reply to screename: " + tweet.InReplyToScreenName);
+        Debug.Log("Reply to status: " + tweet.InReplyToStatusId);
+
+        if (!string.IsNullOrEmpty(tweet.InReplyToScreenName))
+        {
+            replyToUsername.text = "In Reply To @" + tweet.InReplyToScreenName;
+        }
+        else if(tweet.IsRetweeted.Value)
+        {
+            replyToUsername.text = "Retweeted from @" + tweet.RetweetedStatus.User.ScreenName;
+        }
+
+        // Set the time stamp to be text such as "2 seconds ago"
         timeStamp.text = Utilities.ElapsedTime(tweet.CreatedAt.DateTime);
         
 		// If there are no images in the tweet, disable the button
