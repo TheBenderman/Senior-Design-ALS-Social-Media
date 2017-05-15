@@ -305,18 +305,18 @@ namespace Connectome.KLD.Test
 
                 summary = textToDisplay; 
 
-                float AllValidity = AllMinPushRateOnPush - AllMaxPushRateOnNeutral;
-                float valifValidity = MinPushRateOnPush - MaxPushRateOnNeutral;
+                //float AllValidity = AllMinPushRateOnPush - AllMaxPushRateOnNeutral;
+                //float valifValidity = MinPushRateOnPush - MaxPushRateOnNeutral;
 
-                Title.text = "Task 1 has been completed! (=^◡^=)"; 
+                Title.text = "Task 1 is completed! (=^◡^=)"; 
                     
                     
-                string summary1 = textToDisplay
+               /* string summary1 = textToDisplay
                         + "All - Average V:" + (allTotalVariance / uniqueList.Count).ToString("0.00") 
                         + ", Gap: " + AllValidity.ToString("0.00") + "\n"
                         + "Valid - Average V:" + (ValidTotalVariance / uniqueList.Count).ToString("0.00")
                         + ", Gap: " + valifValidity.ToString("0.00") + " Total Out: "  + totalOutliers + "\n"; 
-
+                */
                 if (OnFinished != null)
                 {
                     OnFinished.Invoke();

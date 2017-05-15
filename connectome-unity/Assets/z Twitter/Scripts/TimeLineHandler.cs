@@ -9,6 +9,7 @@ using Connectome.Twitter.API;
 using System.Text.RegularExpressions;
 using Connectome.Unity.Keyboard;
 using Fabric.Crashlytics;
+using Connectome.Unity.UI;
 
 public class TimeLineHandler : TwitterObjects
 {
@@ -90,6 +91,10 @@ public class TimeLineHandler : TwitterObjects
     public Image userImage;
     private List<string> imageURLs;
     private int currentImageIndex;
+    public Text repliesCount;
+    public Text retweetsCount;
+    public Text favoritesCount;
+    public Text replyToUsername;
     #endregion
 
     // This function populates the user homepage.
@@ -312,6 +317,14 @@ public class TimeLineHandler : TwitterObjects
     // This function sets the current tweet for the user.
     public void setTweet(Status tweet)
     {
+        if (tweet == null)
+        {
+            DisplayManager.PushNotification("Something went wrong! Can't select the current tweet.");
+            homeTimelineOverviewObjects.SetActive(true);
+            homeTimeLineObjects.SetActive(false);
+            return;
+        }
+
         twitterHandle.text = "@" + tweet.User.ScreenName;
         realName.text = tweet.User.Name;
         bodyText.text = tweet.Text;
@@ -322,7 +335,22 @@ public class TimeLineHandler : TwitterObjects
 			bodyText.text = tweet.Text;
 		}
 
-		// Set the time stamp to be text such as "2 seconds ago"
+        retweetsCount.text = tweet.RetweetCount.Value.ToString();
+        favoritesCount.text = tweet.FavoriteCount.Value.ToString();
+
+        Debug.Log("Reply to screename: " + tweet.InReplyToScreenName);
+        Debug.Log("Reply to status: " + tweet.InReplyToStatusId);
+
+        if (!string.IsNullOrEmpty(tweet.InReplyToScreenName))
+        {
+            replyToUsername.text = "In Reply To @" + tweet.InReplyToScreenName;
+        }
+        else if(tweet.IsRetweeted.Value)
+        {
+            replyToUsername.text = "Retweeted from @" + tweet.RetweetedStatus.User.ScreenName;
+        }
+
+        // Set the time stamp to be text such as "2 seconds ago"
         timeStamp.text = Utilities.ElapsedTime(tweet.CreatedAt.DateTime);
         
 		// If there are no images in the tweet, disable the button
@@ -357,8 +385,11 @@ public class TimeLineHandler : TwitterObjects
         imageURLs = new List<string>();
 
 		if (currentTweetMedia == null || currentTweetMedia.Length == 0) {
-			throw new Exception ("Uh oh. Shouldn't be here.");
-		}
+            DisplayManager.PushNotification("No images to view, something went wrong!");
+            ImageObjects.SetActive(false);
+            homeTimeLineObjects.SetActive(true);
+            return; 
+        }
         
 		// For each of the images, get the urls
 		foreach (MediaEntity media in currentTweetMedia) {
@@ -379,7 +410,13 @@ public class TimeLineHandler : TwitterObjects
 	// Set the current image being displayed
     public void setCurrentImage()
     {
-		StartCoroutine(setUserImage(imageURLs[currentImageIndex]));
+        if (currentImageIndex >= imageURLs.Count || currentImageIndex < 0)
+        {
+            DisplayManager.PushNotification("Something went wrong! Keeping you on the previous image.");
+            return;
+        }
+
+        StartCoroutine(setUserImage(imageURLs[currentImageIndex]));
 
 		// Enable the next images button to go to the next image
 		Boolean nextButtonEnabled = currentImageIndex < imageURLs.Count - 1;
@@ -421,9 +458,9 @@ public class TimeLineHandler : TwitterObjects
 	{
 		try {
 			authHandler.makeTwitterAPICallNoReturnVal (() => authHandler.Interactor.createDM (currentTweet.User.ScreenName, msg)); // send the message to the user
-			connectomeErrorText.text = "Messaged!";
+			DisplayManager.PushNotification("Messaged!");
 		} catch (Exception e) {
-			connectomeErrorText.text = "Failed to message: Connection error. Please check your internet.";
+			DisplayManager.PushNotification("Failed to message: Connection error. Please check your internet.");
 				
 			Debug.Log ("Failed to message " + e);
 			Crashlytics.RecordCustomException ("Twitter Exception", "thrown exception", e.StackTrace);
@@ -450,7 +487,7 @@ public class TimeLineHandler : TwitterObjects
 		}
 			
 		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.Id, msg));
-		connectomeErrorText.text = "Replied to user!";
+		DisplayManager.PushNotification("Replied to user!");
 	}
 
 	// This function brings the user to a screen that allows them to reply to a tweet.

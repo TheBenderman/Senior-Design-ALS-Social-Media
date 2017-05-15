@@ -26,8 +26,11 @@ public class ConnectomeScene : MonoBehaviour
     public KeyboardManager KeyboardManager;
 
     [Header("Device Interpeter")]
-    public LoginEPOCDevicePlugin LoginEPOCDevicePlugin; 
-    public ClickRefreshInterperter ClickRefreshInterperter; 
+    public LoginEPOCDevicePlugin LoginEPOCDevicePlugin;
+    //public ClickRefreshInterperter ClickRefreshInterperter; 
+    public CommandRateEmotivInterpreter ClickInterpreter;
+    public CommandRateEmotivInterpreter RefreshInterpreter;
+    public IntervalEmotivSampler Sampler; 
 
     [Header("Factories")]
     public HighlighterFactory HighlighterFactory;
@@ -35,6 +38,7 @@ public class ConnectomeScene : MonoBehaviour
     [Header("UI Components")]
     public GameObject HighlighterContainer; 
     public EmotivLoginDisplayPanel LoginPanel;
+    public LabeledHighligter LabledHighlighter; 
 
     [Header("Main Canvas")]
     public Canvas ConnectomeCanvas;
@@ -73,7 +77,7 @@ public class ConnectomeScene : MonoBehaviour
     {
         ConfigureLayout();
         ConfigureSelectionManager(SelectionManager);
-        ConfigureDeviceInterperter(ClickRefreshInterperter);
+        ConfigureDeviceInterperter();
         ConfigureHighlighter(UserSettings.UseFlashingButtons);
 	    //ConfigureEmotivLogin(); 
     }
@@ -104,31 +108,19 @@ public class ConnectomeScene : MonoBehaviour
         if (useFlashing)
         {
             FlashingHighlighter flashing = HighlighterFactory.CreateHighlighter<FlashingHighlighter>(HighlighterType.Flashing);
-
             flashing.Frequency = UserSettings.Frequency;
-            this.SelectionManager.Highlighter = flashing;
+            LabledHighlighter.Highlighter = flashing;
             flashing.transform.SetParent(HighlighterContainer.transform);
         }
         else
         {
             FrameHighlighter frame = HighlighterFactory.CreateHighlighter<FrameHighlighter>(HighlighterType.Frame);
-            this.SelectionManager.Highlighter = frame;
+            LabledHighlighter.Highlighter = frame;
             frame.FrameColor = UserSettings.FrameColor;
             frame.transform.SetParent(HighlighterContainer.transform);
         }
-    }
-    private void ConfigureHighlighter(HighlighterType type)
-    {
-        //example for flashing 
-        FlashingHighlighter flashing = HighlighterFactory.CreateHighlighter<FlashingHighlighter>(type);
 
-        flashing.Frequency = UserSettings.Frequency;
-        //flashing.FlashingColors = 
-
-        this.SelectionManager.Highlighter = flashing;
-
-        //move highlighter to scene
-        flashing.transform.SetParent(HighlighterContainer.transform);
+        this.SelectionManager.Highlighter = LabledHighlighter; 
     }
 
     private void ConfigureEmotivLogin()
@@ -139,11 +131,11 @@ public class ConnectomeScene : MonoBehaviour
 
     }
 
-    private void ConfigureDeviceInterperter(ClickRefreshInterperter ClickRefreshInterperter)
+    private void ConfigureDeviceInterperter()
     {
-        ClickRefreshInterperter.Interval = (long) UserSettings.Duration*1000;
-        ClickRefreshInterperter.ClickThreshhold = UserSettings.PassThreshold/100;//These values in the window are percents
-        ClickRefreshInterperter.RefreshThreshhold = UserSettings.RefreshRate/100;
+        Sampler.Interval = (int)  UserSettings.Duration*1000;
+        ClickInterpreter.ReachRate = UserSettings.PassThreshold;//These values in the window are percents
+        RefreshInterpreter.ReachRate = UserSettings.RefreshRate;
     }
 
     #endregion

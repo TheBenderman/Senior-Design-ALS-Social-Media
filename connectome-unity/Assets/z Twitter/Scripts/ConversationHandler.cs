@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CoreTweet;
 using UnityEngine.UI;
+using Connectome.Unity.UI;
 
 public class ConversationHandler : TwitterObjects {
 
@@ -56,7 +57,8 @@ public class ConversationHandler : TwitterObjects {
 		}
 		else
 		{
-			Debug.Log("No Conversation for this post");
+            DisplayManager.PushNotification("There are no posts between these two users!");
+            timelineHandler.addHomeTimeLine();
 		}
 	}
 
@@ -94,9 +96,9 @@ public class ConversationHandler : TwitterObjects {
 		}
 		else
 		{
-			// TODO add code to refresh conversation
-			// Conversationtimeline = authHandler.makeTwitterAPICall(authHandler.Interactor.getHomeTimeLine());
-		}
+            DisplayManager.PushNotification("There is no next tweet.");
+            return;
+        }
 
 		setTweet(currentTweetConvo);
 	}
@@ -112,6 +114,11 @@ public class ConversationHandler : TwitterObjects {
 		{
 			currentTweetConvo--;
 		}
+		else
+		{
+            DisplayManager.PushNotification("There is no previous tweet.");
+            return;
+        }
 
 		setTweet(currentTweetConvo);
 	}

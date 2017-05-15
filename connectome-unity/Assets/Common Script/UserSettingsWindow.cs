@@ -41,10 +41,6 @@ public class UserSettingsWindow : MonoBehaviour {
         try
         {
             SelectedColorToEdit.color = newColor;
-            if(SelectedColorToEdit == FrameColor)
-            {
-                ((FrameHighlighter)SelectionManager.Instance.Highlighter).FrameColor = newColor;
-            }
         }
         catch (NullReferenceException)
         {
@@ -68,7 +64,7 @@ public class UserSettingsWindow : MonoBehaviour {
         DurationSlider.value = UserSettings.Duration;
         PassThresholdSlider.value = UserSettings.PassThreshold * 100;
         TargetPowerSlider.value = UserSettings.TargetPower;
-        RefreshSlider.value = UserSettings.RefreshRate;
+        RefreshSlider.value = UserSettings.RefreshRate * 100;
         FreqSlider.value = UserSettings.Frequency;
         //Set keyboard settings
         KeyboardDrop.value = UserSettings.CurrentKeyboard;
@@ -125,7 +121,7 @@ public class UserSettingsWindow : MonoBehaviour {
 
     private void SetRefreshRateValue()
     {
-        UserSettings.RefreshRate = RefreshSlider.value;
+        UserSettings.RefreshRate = RefreshSlider.value/100;
     }
 
     private void SetFreqValue()
@@ -222,6 +218,15 @@ public class UserSettingsWindow : MonoBehaviour {
             KeyboardManager.Instance.RemoveKeyboard();
             KeyboardManager.Instance.SetKeyboard(UserSettings.CurrentKeyboardName);
         }
+    }
+
+    /// <summary>
+    /// Restores User Settings to their original, default values.
+    /// </summary>
+    public void ResetToDefault()
+    {
+        UserSettings.ResetUserSettings();
+        LoadProfile();
     }
     #endregion
 

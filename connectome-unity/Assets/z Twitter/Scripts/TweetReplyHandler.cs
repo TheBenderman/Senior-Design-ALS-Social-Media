@@ -5,6 +5,7 @@ using CoreTweet;
 using UnityEngine.UI;
 using System;
 using Connectome.Unity.Keyboard;
+using Connectome.Unity.UI;
 
 public class TweetReplyHandler : TwitterObjects {
 
@@ -43,30 +44,12 @@ public class TweetReplyHandler : TwitterObjects {
 			
 		Debug.Log("Current tweet id: " + currentStatus.Id);
 		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.Id, msg));
-		connectomeErrorText.text = "Replied to user!";
+		DisplayManager.PushNotification("Replied to user!");
 	}
 
 	// This function brings the user to a screen that allows them to reply to a tweet.
 	public void replyToTweet()
 	{
-		// Make all objects except those related to replying to a tweet to be hidden.
-		/*setActiveObject(composeTweetObjectsString);
-
-		Status currentStatus;
-		if (timelineHandler.TitleView.text.Equals (timelineHandler.timelineTitle)) {
-			currentStatus = timelineHandler.getCurrentTweet ();
-		} else {
-			currentStatus = convoHandler.conversationtimelineStatuses [convoHandler.currentTweet];
-		}
-
-		Debug.Log("Current in reply " + timelineHandler.getCurrentTweet());
-
-		tweetTitle.text = "Reply to " + currentStatus.User.ScreenName;
-		StartCoroutine(setReplyToProfilePic(currentStatus.User.ProfileImageUrl));
-		replyToText.text = currentStatus.Text;
-		replyToUsername.text = currentStatus.User.ScreenName;
-		tweetText.text = "@" + currentStatus.User.ScreenName + " ";
-		*/
 		KeyboardManager.GetInputFromKeyboard(ReplyTweet);
 	}
 
@@ -90,7 +73,7 @@ public class TweetReplyHandler : TwitterObjects {
 	public void Tweet(string msg)
 	{
 		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.publishTweet(msg));
-		connectomeErrorText.text = "Tweeted!";
+		DisplayManager.PushNotification("Tweeted!");
 	}
 
 	// Pull up the on screen keyboard to tweet

@@ -50,7 +50,6 @@ namespace Connectome.Unity.Menu
         {
             do
             {
-                Debug.Log(Pointer);
                 if(Pointer == -1)
                 {
                     DisplayManager.ReleaseNotification(); 
@@ -79,7 +78,7 @@ namespace Connectome.Unity.Menu
             base.Pushed();
 
             DisplayManager.HoldNotification(); 
-            DisplayManager.PushNotification("Rest");
+            DisplayManager.PushNotification("Please Wait...");
 
             ResetSelection(); 
         }
