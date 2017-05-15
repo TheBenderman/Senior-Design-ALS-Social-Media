@@ -8,6 +8,7 @@ using CoreTweet;
 using System;
 using System.Threading;
 using Fabric.Crashlytics;
+using Connectome.Unity.UI;
 
 public class AuthenticationHandler : TwitterObjects
 {
@@ -33,7 +34,7 @@ public class AuthenticationHandler : TwitterObjects
 
 		if (Authenticator == null)
 		{
-            connectomeErrorText.text = "Something went wrong with your twitter authentication. If this persists please contact the development team.";
+            DisplayManager.PushNotification("Something went wrong with your twitter authentication. If this persists please contact the development team.");
             navigateToTwitterAuthPage("Authenticator is null");
         }
 
@@ -50,7 +51,7 @@ public class AuthenticationHandler : TwitterObjects
 			
 			if (Interactor == null)
 			{
-				connectomeErrorText.text = "Something went wrong with your twitter authentication. If this persists please contact the development team.";
+                DisplayManager.PushNotification("Something went wrong with your twitter authentication. If this persists please contact the development team.");
             	navigateToTwitterAuthPage("Interactor is null");
 			}
 
@@ -60,8 +61,8 @@ public class AuthenticationHandler : TwitterObjects
                 Debug.Log(exception.Message.ToString());
 				Crashlytics.RecordCustomException("Twitter Exception", "thrown exception", exception.StackTrace);
 
-				connectomeErrorText.text = "Something went wrong with your twitter implementation.";
-				navigateToTwitterHome ();
+                DisplayManager.PushNotification("Something went wrong with your twitter implementation.");
+                navigateToTwitterHome ();
 		    };
 
             // Recover from errors having to do with exceptions in dm users thread
@@ -70,8 +71,8 @@ public class AuthenticationHandler : TwitterObjects
                 Debug.Log(exception.Message.ToString());
 				Crashlytics.RecordCustomException("Twitter Exception", "thrown exception", exception.StackTrace);
 
-				connectomeErrorText.text = "Something went wrong with your twitter implementation.";
-				navigateToTwitterHome ();
+                DisplayManager.PushNotification("Something went wrong with your twitter implementation.");
+                navigateToTwitterHome ();
 		    };
 
 			navigateToTwitterHome ();
@@ -90,8 +91,8 @@ public class AuthenticationHandler : TwitterObjects
 		// make sure the user has entered a pin code
 		if (string.IsNullOrEmpty(pinCode))
 		{
-			connectomeErrorText.text = "Please input a value for the pin code!";
-			return;
+            DisplayManager.PushNotification("Please input a value for the pin code!");
+            return;
 		}
 
 		if (makeTwitterAPICall(() => Authenticator.enterPinCode(pinCode)))
@@ -108,16 +109,16 @@ public class AuthenticationHandler : TwitterObjects
 
 			if (Interactor == null)
 			{
-				connectomeErrorText.text = "Something went wrong with your twitter authentication. If this persists please contact the development team.";
-            	navigateToTwitterAuthPage("Interactor is null");
+                DisplayManager.PushNotification("Something went wrong with your twitter authentication. If this persists please contact the development team.");
+                navigateToTwitterAuthPage("Interactor is null");
 			}
 
 			navigateToTwitterHome ();
 		}
 		else
 		{
-			connectomeErrorText.text = "Please input a value for the pin code!";
-		}
+			DisplayManager.PushNotification("Please input a value for the pin code!");
+        }
 	}
 
 	// This function navigates the user to the twitter home page. From this page, the user can choose whether they wish to navigate to their timeline, their own profile, messages...
@@ -193,33 +194,33 @@ public class AuthenticationHandler : TwitterObjects
 		Crashlytics.RecordCustomException("Twitter Exception", "thrown exception", e.StackTrace);
 
 		if (e.Message.Contains ("Status is a duplicate")) {
-			connectomeErrorText.text = "Failed to tweet: Duplicate status!";
+			DisplayManager.PushNotification("Failed to tweet: Duplicate status!");
 			return;
 		} else if (e.Message.Contains ("Could not authenticate you")) {
-			connectomeErrorText.text = "Unable to authenticate you. Please try to log in again.";
+			DisplayManager.PushNotification("Unable to authenticate you. Please try to log in again.");
 		} else if (e.Message.Contains ("User has been suspended")) {
-			connectomeErrorText.text = "Your account has been temporarily suspended. Please try again later.";
+			DisplayManager.PushNotification("Your account has been temporarily suspended. Please try again later.");
 		} else if (e.Message.Contains ("Rate limit exceeded.")) {
-			connectomeErrorText.text = "Sorry! We are experiencing heavy traffic. Please try again in a bit.";
+			DisplayManager.PushNotification("Sorry! We are experiencing heavy traffic. Please try again in a bit.");
 			return;
 		} else if (e.Message.Contains ("Invalid or expired token")) {
-			connectomeErrorText.text = "Your session timed out. Please log back in.";
+			DisplayManager.PushNotification("Your session timed out. Please log back in.");
 		} else if (e.Message.Contains ("Unable to verify your credentials")) {
-			connectomeErrorText.text = "Invalid credentials. Please try again.";
+			DisplayManager.PushNotification("Invalid credentials. Please try again.");
 		} else if (e.Message.Contains ("Over capacity")) {
-			connectomeErrorText.text = "Twitter is temporarily over capacity. Please try again later.";
+			DisplayManager.PushNotification("Twitter is temporarily over capacity. Please try again later.");
 		} else if (e.Message.Contains ("You are unable to follow more people at this time")) {
-			connectomeErrorText.text = "Sorry you can't follow this person at this time.";
+			DisplayManager.PushNotification("Sorry you can't follow this person at this time.");
 			return;
 		} else if (e.Message.Contains ("User is over daily status update limit")) {
-			connectomeErrorText.text = "Sorry you have posted too many times today. Please try again tomorrow.";
+			DisplayManager.PushNotification("Sorry you have posted too many times today. Please try again tomorrow.");
 			return;
 		} else if (e.Message.Contains ("The text of your direct message is over the max character limit")) {
-			connectomeErrorText.text = "Your message is too long! Please try a shorter status.";
+			DisplayManager.PushNotification("Your message is too long! Please try a shorter status.");
 			return;
 		}
 		else {
-			connectomeErrorText.text = "Something went wrong with your authorization. Please authorize this application for Twitter again.";
+			DisplayManager.PushNotification("Something went wrong with your authorization. Please authorize this application for Twitter again.");
 		}
 
 		navigateToTwitterAuthPage();

@@ -9,6 +9,7 @@ using Connectome.Twitter.API;
 using System.Text.RegularExpressions;
 using Connectome.Unity.Keyboard;
 using Fabric.Crashlytics;
+using Connectome.Unity.UI;
 
 public class TimeLineHandler : TwitterObjects
 {
@@ -318,7 +319,7 @@ public class TimeLineHandler : TwitterObjects
     {
         if (tweet == null)
         {
-            connectomeErrorText.text = "Something went wrong! Can't select the current tweet.";
+            DisplayManager.PushNotification("Something went wrong! Can't select the current tweet.");
             homeTimelineOverviewObjects.SetActive(true);
             homeTimeLineObjects.SetActive(false);
             return;
@@ -384,7 +385,7 @@ public class TimeLineHandler : TwitterObjects
         imageURLs = new List<string>();
 
 		if (currentTweetMedia == null || currentTweetMedia.Length == 0) {
-            connectomeErrorText.text = "No images to view, something went wrong!";
+            DisplayManager.PushNotification("No images to view, something went wrong!");
             ImageObjects.SetActive(false);
             homeTimeLineObjects.SetActive(true);
             return; 
@@ -411,7 +412,7 @@ public class TimeLineHandler : TwitterObjects
     {
         if (currentImageIndex >= imageURLs.Count || currentImageIndex < 0)
         {
-            connectomeErrorText.text = "Something went wrong! Keeping you on the previous image.";
+            DisplayManager.PushNotification("Something went wrong! Keeping you on the previous image.");
             return;
         }
 
@@ -457,9 +458,9 @@ public class TimeLineHandler : TwitterObjects
 	{
 		try {
 			authHandler.makeTwitterAPICallNoReturnVal (() => authHandler.Interactor.createDM (currentTweet.User.ScreenName, msg)); // send the message to the user
-			connectomeErrorText.text = "Messaged!";
+			DisplayManager.PushNotification("Messaged!");
 		} catch (Exception e) {
-			connectomeErrorText.text = "Failed to message: Connection error. Please check your internet.";
+			DisplayManager.PushNotification("Failed to message: Connection error. Please check your internet.");
 				
 			Debug.Log ("Failed to message " + e);
 			Crashlytics.RecordCustomException ("Twitter Exception", "thrown exception", e.StackTrace);
@@ -486,7 +487,7 @@ public class TimeLineHandler : TwitterObjects
 		}
 			
 		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.Id, msg));
-		connectomeErrorText.text = "Replied to user!";
+		DisplayManager.PushNotification("Replied to user!");
 	}
 
 	// This function brings the user to a screen that allows them to reply to a tweet.

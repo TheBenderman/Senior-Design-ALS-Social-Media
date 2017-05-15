@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CoreTweet;
 using UnityEngine.UI;
+using Connectome.Unity.UI;
 
 public class ConversationHandler : TwitterObjects {
 
@@ -56,7 +57,7 @@ public class ConversationHandler : TwitterObjects {
 		}
 		else
 		{
-            connectomeErrorText.text = "There are no posts between these two users!";
+            DisplayManager.PushNotification("There are no posts between these two users!");
             timelineHandler.addHomeTimeLine();
 		}
 	}
@@ -95,7 +96,7 @@ public class ConversationHandler : TwitterObjects {
 		}
 		else
 		{
-            connectomeErrorText.text = "There is no next tweet.";
+            DisplayManager.PushNotification("There is no next tweet.");
             return;
         }
 
@@ -115,7 +116,7 @@ public class ConversationHandler : TwitterObjects {
 		}
 		else
 		{
-            connectomeErrorText.text = "There is no previous tweet.";
+            DisplayManager.PushNotification("There is no previous tweet.");
             return;
         }
 

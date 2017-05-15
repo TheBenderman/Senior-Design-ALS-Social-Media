@@ -7,6 +7,7 @@ using CoreTweet;
 using System;
 using Connectome.Unity.Keyboard;
 using Fabric.Crashlytics;
+using Connectome.Unity.UI;
 
 public class DirectMessageHandler : TwitterObjects {
 	#region DM Members
@@ -52,7 +53,7 @@ public class DirectMessageHandler : TwitterObjects {
 			setUser (currentUser);
 		else
 		{
-            connectomeErrorText.text = "There are no DMs for you to see! Select a tweet, and hit the message button to start a conversation.";
+            DisplayManager.PushNotification( "There are no DMs for you to see! Select a tweet, and hit the message button to start a conversation.");
             authHandler.navigateToTwitterHome();
 		}
     }
@@ -109,7 +110,7 @@ public class DirectMessageHandler : TwitterObjects {
 		if (currentUser != null)
 			setUser (currentUser);
 		else
-            connectomeErrorText.text = "There is no next DM, something went wrong!";
+            DisplayManager.PushNotification("There is no next DM, something went wrong!");
 	}
 
 	// This function populates the DM users page with the next newest user.
@@ -120,7 +121,7 @@ public class DirectMessageHandler : TwitterObjects {
 		if (currentUser != null)
 			setUser (currentUser);
 		else
-            connectomeErrorText.text = "There is no previous DM, something went wrong!";
+            DisplayManager.PushNotification("There is no previous DM, something went wrong!");
 	}
 
 	// Populate the screen to view the entire conversation with a user.
@@ -235,7 +236,7 @@ public class DirectMessageHandler : TwitterObjects {
         }
 		else
 		{
-            connectomeErrorText.text = "There are no older DMs, something went wrong!";
+            DisplayManager.PushNotification("There are no older DMs, something went wrong!");
             return;
         }
 
@@ -251,7 +252,7 @@ public class DirectMessageHandler : TwitterObjects {
         }
 		else
 		{
-            connectomeErrorText.text = "There are no newer DMs, something went wrong!";
+            DisplayManager.PushNotification("There are no newer DMs, something went wrong!");
             return;
         }
 
@@ -262,7 +263,7 @@ public class DirectMessageHandler : TwitterObjects {
 	public void Message(string msg)
 	{
 		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.createDM(currentUser.ScreenName, msg));
-		connectomeErrorText.text = "Messaged!";
+		DisplayManager.PushNotification("Messaged!");
 
 		messageUser ();
 	}

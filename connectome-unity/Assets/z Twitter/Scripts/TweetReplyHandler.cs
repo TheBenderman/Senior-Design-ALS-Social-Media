@@ -5,6 +5,7 @@ using CoreTweet;
 using UnityEngine.UI;
 using System;
 using Connectome.Unity.Keyboard;
+using Connectome.Unity.UI;
 
 public class TweetReplyHandler : TwitterObjects {
 
@@ -43,7 +44,7 @@ public class TweetReplyHandler : TwitterObjects {
 			
 		Debug.Log("Current tweet id: " + currentStatus.Id);
 		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.Id, msg));
-		connectomeErrorText.text = "Replied to user!";
+		DisplayManager.PushNotification("Replied to user!");
 	}
 
 	// This function brings the user to a screen that allows them to reply to a tweet.
@@ -72,7 +73,7 @@ public class TweetReplyHandler : TwitterObjects {
 	public void Tweet(string msg)
 	{
 		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.publishTweet(msg));
-		connectomeErrorText.text = "Tweeted!";
+		DisplayManager.PushNotification("Tweeted!");
 	}
 
 	// Pull up the on screen keyboard to tweet

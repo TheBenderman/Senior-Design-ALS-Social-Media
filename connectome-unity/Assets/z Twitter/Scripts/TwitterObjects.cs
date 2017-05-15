@@ -11,8 +11,6 @@ using Connectome.Twitter.API;
 
 public class TwitterObjects : MonoBehaviour
 {
-	public Text connectomeErrorText;
-
 	//Register the HandleLog function on scene start to fire on debug.log events
 	public void OnEnable ()
 	{
