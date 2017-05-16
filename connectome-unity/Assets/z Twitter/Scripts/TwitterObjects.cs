@@ -57,7 +57,6 @@ public class TwitterObjects : MonoBehaviour
 			// Set the tokens to the previously received tokens
 			Authenticator.setTokens (accesstoken, accessSecret);
 			Interactor = new TwitterInteractor (Authenticator);
-			Debug.Log("have interactor.");
 		}
 
 		Debug.Log ("Logging to google forms.");
@@ -93,20 +92,35 @@ public class TwitterObjects : MonoBehaviour
 
 	public void setActiveObject(String objectName)
 	{
+        Debug.Log("Setting " + objectName + " as active.");
+        IEnumerable<UnityEngine.Object> all_Objs = Resources.FindObjectsOfTypeAll(typeof(GameObject));
+		all_Objs = all_Objs.Where(x => Array.FindIndex(objectsToManage, y => y.Equals(x.name)) > -1);
+
+		foreach (UnityEngine.Object g in all_Objs)
+		{
+			GameObject gameobj = (GameObject)g;
+            Debug.Log(g.name);
+
+            if (gameobj.name.Equals (objectName))
+			{
+				Debug.Log (gameobj.name);
+                gameobj.SetActive(true);	
+            }
+			else
+				gameobj.SetActive(false);
+		}
+	}
+
+	public void hideAllGameObjects()
+	{
 		IEnumerable<UnityEngine.Object> all_Objs = Resources.FindObjectsOfTypeAll(typeof(GameObject));
 		all_Objs = all_Objs.Where(x => Array.FindIndex(objectsToManage, y => y.Equals(x.name)) > -1);
 
 		foreach (UnityEngine.Object g in all_Objs)
 		{
 			GameObject gameobj = (GameObject)g;
-
-			if (gameobj.name.Equals (objectName))
-			{
-				Debug.Log (gameobj.name);
-				gameobj.SetActive (true);
-			}
-			else
-				gameobj.SetActive (false);
+            Debug.Log(gameobj.name);
+            gameobj.SetActive (false);
 		}
 	}
 }
