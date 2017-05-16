@@ -205,7 +205,11 @@ public class TimeLineHandler : TwitterObjects
 
             if (firstTweetObject.Entities != null && firstTweetObject.Entities.Media != null && firstTweetObject.Entities.Media.Length > 0)
             {
-                StartCoroutine(setImage(firstTweetImage, firstTweetObject.Entities.Media[0].MediaUrl));
+                int height = firstTweetObject.Entities.Media[0].Sizes.Small.Height;
+                int width = firstTweetObject.Entities.Media[0].Sizes.Small.Width;
+                int ratio = height/width;
+
+                StartCoroutine(setImage(firstTweetImage, firstTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
             }
         }
 
@@ -219,7 +223,11 @@ public class TimeLineHandler : TwitterObjects
 
             if (secondTweetObject.Entities != null && secondTweetObject.Entities.Media != null && secondTweetObject.Entities.Media.Length > 0)
             {
-                StartCoroutine(setImage(secondTweetImage, secondTweetObject.Entities.Media[0].MediaUrl));
+                int height = secondTweetObject.Entities.Media[0].Sizes.Small.Height;
+                int width = secondTweetObject.Entities.Media[0].Sizes.Small.Width;
+                int ratio = height/width;
+
+                StartCoroutine(setImage(secondTweetImage, secondTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
             }
         }
 
@@ -233,7 +241,11 @@ public class TimeLineHandler : TwitterObjects
 
             if (thirdTweetObject.Entities != null && thirdTweetObject.Entities.Media != null && thirdTweetObject.Entities.Media.Length > 0)
             {
-                StartCoroutine(setImage(thirdTweetImage, thirdTweetObject.Entities.Media[0].MediaUrl));
+                int height = thirdTweetObject.Entities.Media[0].Sizes.Small.Height;
+                int width = thirdTweetObject.Entities.Media[0].Sizes.Small.Width;
+                int ratio = height/width;
+
+                StartCoroutine(setImage(thirdTweetImage, thirdTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
             }
         }
 
@@ -247,7 +259,11 @@ public class TimeLineHandler : TwitterObjects
 
             if (fourthTweetObject.Entities != null && fourthTweetObject.Entities.Media != null && fourthTweetObject.Entities.Media.Length > 0)
             {
-                StartCoroutine(setImage(fourthTweetImage, fourthTweetObject.Entities.Media[0].MediaUrl));
+                int height = fourthTweetObject.Entities.Media[0].Sizes.Small.Height;
+                int width = fourthTweetObject.Entities.Media[0].Sizes.Small.Width;
+                int ratio = height/width;
+
+                StartCoroutine(setImage(fourthTweetImage, fourthTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
             }
         }
     }
@@ -279,14 +295,29 @@ public class TimeLineHandler : TwitterObjects
         fourthTweetImage.sprite = null;
     }
 
-    public IEnumerator setImage(Image image, string url)
+    public IEnumerator setImage(Image image, string url, int height = 0, int width = 0)
     {
-        WWW www = new WWW(url);
-        yield return www;
-        image.sprite = Sprite.Create(
-            www.texture,
-            new Rect(0, 0, www.texture.width, www.texture.height),
-            new Vector2(0, 0));
+        if (height == 0 && width == 0)
+        {
+            WWW www = new WWW(url);
+            yield return www;
+            image.sprite = Sprite.Create(
+                www.texture,
+                new Rect(0, 0, www.texture.width, www.texture.height),
+                new Vector2(0, 0));
+        }
+        else
+        {
+            WWW www = new WWW(url);
+            yield return www;
+
+            image.GetComponent<RectTransform>().sizeDelta = new Vector2 (width, height);
+
+            image.sprite = Sprite.Create(
+                www.texture,
+                new Rect(0, 0, www.texture.width, www.texture.height),
+                new Vector2(0, 0));
+        }
     }
 
     public void selectFirstTweetObject()
