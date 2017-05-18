@@ -12683,12 +12683,12 @@ Prefab:
     - target: {fileID: 224532791018001650, guid: 6a69249784c4cd346a9ea21a1c2722d6,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224846867774693532, guid: 6a69249784c4cd346a9ea21a1c2722d6,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114873283753465178, guid: 6a69249784c4cd346a9ea21a1c2722d6,
         type: 2}
@@ -15260,6 +15260,7 @@ MonoBehaviour:
   - profileObjects
   - ImageObjects
   - homeTimelineOverviewObjects
+  sceneObjects: {fileID: 338397812}
   homeObjectsString: homeObjects
   homeObjects: {fileID: 168866778}
   timelineButton: {fileID: 1381455873}

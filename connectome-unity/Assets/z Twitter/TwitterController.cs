@@ -10,8 +10,8 @@ using UnityEngine.UI;
 
 public class TwitterController : TwitterObjects
 {
-
-	public string homeObjectsString = "homeObjects";
+    public GameObject sceneObjects;
+    public string homeObjectsString = "homeObjects";
 
 	#region Twitter Home Members
 	public GameObject homeObjects;
@@ -36,6 +36,15 @@ public class TwitterController : TwitterObjects
 
 	void Start() 
 	{
+		// Disable all button clicks
+        IEnumerable<Component> all_Objs = sceneObjects.GetComponentsInChildren<Button>(true);
+		foreach (Button b in all_Objs)
+		{
+            Debug.Log("Button: " + b.name);
+            if (!b.name.Equals("submitButton"))
+				b.enabled = false;
+        }
+
 		authHandler.initializeAuthComponent ();
 	}
 
