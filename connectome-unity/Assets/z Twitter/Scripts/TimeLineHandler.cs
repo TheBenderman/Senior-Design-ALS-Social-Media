@@ -197,7 +197,7 @@ public class TimeLineHandler : TwitterObjects
     {
         if (firstTweetObject != null)
         {
-            StartCoroutine(setImage(firstTweetProfilePic, firstTweetObject.User.ProfileImageUrl));
+            StartCoroutine(setImage(firstTweetProfilePic, Utilities.cleanProfileImageURL(firstTweetObject)));
             firstTweetRealName.text = firstTweetObject.User.Name;
             firstTweetTwitterHandle.text = "@" + firstTweetObject.User.ScreenName;
             firstTweetBodyText.text = firstTweetObject.Text;
@@ -215,7 +215,7 @@ public class TimeLineHandler : TwitterObjects
 
         if (secondTweetObject != null)
         {
-            StartCoroutine(setImage(secondTweetProfilePic, secondTweetObject.User.ProfileImageUrl));
+            StartCoroutine(setImage(secondTweetProfilePic, Utilities.cleanProfileImageURL(secondTweetObject)));
             secondTweetRealName.text = secondTweetObject.User.Name;
             secondTweetTwitterHandle.text = "@" + secondTweetObject.User.ScreenName;
             secondTweetBodyText.text = secondTweetObject.Text;
@@ -233,7 +233,7 @@ public class TimeLineHandler : TwitterObjects
 
         if (thirdTweetObject != null)
         {
-            StartCoroutine(setImage(thirdTweetProfilePic, thirdTweetObject.User.ProfileImageUrl));
+            StartCoroutine(setImage(thirdTweetProfilePic, Utilities.cleanProfileImageURL(thirdTweetObject)));
             thirdTweetRealName.text = thirdTweetObject.User.Name;
             thirdTweetTwitterHandle.text = "@" + thirdTweetObject.User.ScreenName;
             thirdTweetBodyText.text = thirdTweetObject.Text;
@@ -251,7 +251,7 @@ public class TimeLineHandler : TwitterObjects
 
         if (fourthTweetObject != null)
         {
-            StartCoroutine(setImage(fourthTweetProfilePic, fourthTweetObject.User.ProfileImageUrl));
+            StartCoroutine(setImage(fourthTweetProfilePic, Utilities.cleanProfileImageURL(fourthTweetObject)));
             fourthTweetRealName.text = fourthTweetObject.User.Name;
             fourthTweetTwitterHandle.text = "@" + fourthTweetObject.User.ScreenName;
             fourthTweetBodyText.text = fourthTweetObject.Text;
@@ -390,7 +390,7 @@ public class TimeLineHandler : TwitterObjects
 		imagesButton.interactable = imageButtonEnabled;
 
         // Populate the profile picture for the user, requires a separate thread to run.
-        StartCoroutine(setProfilePic(tweet.User.ProfileImageUrl));
+        StartCoroutine(setProfilePic(Utilities.cleanProfileImageURL(tweet)));
     }
 
     public IEnumerator setProfilePic(string url)
