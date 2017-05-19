@@ -26,7 +26,11 @@ public static class Utilities
 
     public static String cleanProfileImageURL(Status status)
 	{
-        Debug.Log(status.User.ProfileImageUrlHttps.Replace("_normal", ""));
         return status.User.ProfileImageUrlHttps.Replace("_normal", "");
+    }
+
+	public static String cleanProfileImageURLForUser(User user)
+	{
+        return user.ProfileImageUrlHttps.Replace("_normal", "");
     }
 }

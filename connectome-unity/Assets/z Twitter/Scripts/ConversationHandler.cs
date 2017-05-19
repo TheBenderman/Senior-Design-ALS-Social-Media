@@ -70,7 +70,7 @@ public class ConversationHandler : TwitterObjects {
 		timelineHandler.bodyText.text = conversationtimelineStatuses[index].Text;
 
 		// Populate the profile picture for the user, requires a separate thread to run.
-		StartCoroutine(setReplyToProfilePic(conversationtimelineStatuses[index].User.ProfileImageUrl));
+		StartCoroutine(setReplyToProfilePic(Utilities.cleanProfileImageURL(conversationtimelineStatuses[index])));
 	}
 
 	public IEnumerator setReplyToProfilePic(string url)
