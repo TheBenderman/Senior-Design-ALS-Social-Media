@@ -66,8 +66,6 @@ public class TimeLineHandler : TwitterObjects
     public Text timeStamp;
     public Text bodyText;
     public Button homeButton;
-    public Button favoriteButton;
-    public Button retweetButton;
     public Button replyButton;
     public Button imagesButton;
     public Button privateMessageButton;
@@ -388,6 +386,9 @@ public class TimeLineHandler : TwitterObjects
 		Boolean imageButtonEnabled = tweet.Entities != null && tweet.Entities.Media != null && tweet.Entities.Media.Length > 0;
 		imagesButton.enabled = imageButtonEnabled;
 		imagesButton.interactable = imageButtonEnabled;
+
+        privateMessageButton.enabled = tweet.User.IsFollowRequestSent.Value;
+        privateMessageButton.interactable = tweet.User.IsFollowRequestSent.Value;
 
         // Populate the profile picture for the user, requires a separate thread to run.
         StartCoroutine(setProfilePic(Utilities.cleanProfileImageURL(tweet)));
