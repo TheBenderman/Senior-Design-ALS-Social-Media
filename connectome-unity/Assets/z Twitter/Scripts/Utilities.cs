@@ -1,4 +1,6 @@
 ﻿using System;
+using CoreTweet;
+using UnityEngine;
 
 public static class Utilities
 { 
@@ -21,4 +23,14 @@ public static class Utilities
 			return String.Format("{0} {1} ago", dtEvent.ToShortDateString(), dtEvent.ToShortTimeString());
 		}
 	}
+
+    public static String cleanProfileImageURL(Status status)
+	{
+        return status.User.ProfileImageUrlHttps.Replace("_normal", "");
+    }
+
+	public static String cleanProfileImageURLForUser(User user)
+	{
+        return user.ProfileImageUrlHttps.Replace("_normal", "");
+    }
 }

@@ -9,6 +9,7 @@ using System;
 using System.Threading;
 using Fabric.Crashlytics;
 using Connectome.Unity.UI;
+using System.Net;
 
 public class AuthenticationHandler : TwitterObjects
 {
@@ -29,8 +30,16 @@ public class AuthenticationHandler : TwitterObjects
 	public void initializeAuthComponent()
 	{
 		if (Authenticator == null) {
-			Authenticator = TwitterAuthenticator.Instance;
-		}
+            try
+            {
+                Authenticator = TwitterAuthenticator.Instance;
+            }
+			catch (Exception e)
+			{
+                Debug.Log(e.StackTrace);
+                checkErrorCodes(e);
+            }
+        }
 
 		if (Authenticator == null)
 		{
@@ -47,9 +56,17 @@ public class AuthenticationHandler : TwitterObjects
 		{
 			// Set the tokens to the previously received tokens
 			makeTwitterAPICallNoReturnVal(() => Authenticator.setTokens(accesstoken, accessSecret));
-			Interactor = new TwitterInteractor (Authenticator);
-			
-			if (Interactor == null)
+            try
+            {
+                Interactor = new TwitterInteractor(Authenticator);
+            }
+			catch(Exception e)
+			{
+				Debug.Log(e.StackTrace);
+                checkErrorCodes(e);
+			}
+
+            if (Interactor == null)
 			{
                 DisplayManager.PushNotification("Something went wrong with your twitter authentication. If this persists please contact the development team.");
             	navigateToTwitterAuthPage("Interactor is null");
@@ -126,18 +143,24 @@ public class AuthenticationHandler : TwitterObjects
 	{
 		setActiveObject(homePage);
 		SelectionManager.Instance.Activate();
+		SelectionManager.Instance.AllowSelection = true;
+        SelectionManager.Instance.Highlighter.EnableHighlight();
 	}
 
 
 	// This function navigates the user back to the user authentication page. Here the user will need to open the link that is copied to their clipboard in a browser, and then enter the PIN code shown.
 	public void navigateToTwitterAuthPage(string errorCode = null)
 	{
-		if (errorCode != null)
+        hideAllGameObjects();
+
+        if (errorCode != null)
 		{
             Fabric.Crashlytics.Crashlytics.RecordCustomException("Navigated to Twitter Auth Page", errorCode, "");
         }
 
-		SelectionManager.Instance.Deactivate();
+        SelectionManager.Instance.AllowSelection = false;
+        SelectionManager.Instance.Highlighter.DisableHighlight();
+        SelectionManager.Instance.Deactivate();
 
 		setActiveObject(loginPage);
 
@@ -192,8 +215,9 @@ public class AuthenticationHandler : TwitterObjects
 	private void checkErrorCodes(Exception e)
 	{
 		Crashlytics.RecordCustomException("Twitter Exception", "thrown exception", e.StackTrace);
+        Debug.LogError(e.StackTrace);
 
-		if (e.Message.Contains ("Status is a duplicate")) {
+        if (e.Message.Contains ("Status is a duplicate")) {
 			DisplayManager.PushNotification("Failed to tweet: Duplicate status!");
 			return;
 		} else if (e.Message.Contains ("Could not authenticate you")) {
@@ -220,11 +244,31 @@ public class AuthenticationHandler : TwitterObjects
 			return;
 		}
 		else {
-			DisplayManager.PushNotification("Something went wrong with your authorization. Please authorize this application for Twitter again.");
+			if (e is WebException)
+			{
+                DisplayManager.PushNotification("Something is wrong with your internet connection, please fix it and try again.");
+            }
+            else if (e is TwitterException)
+            {
+                DisplayManager.PushNotification("Something went wrong with your authorization. Please authorize this application for Twitter again.");
+            }
+			else
+            {
+					DisplayManager.PushNotification("An unknown error has occurred. If this persists, please contact the dev team.");
+                	return;
+			}
 		}
 
-		navigateToTwitterAuthPage();
+		navigateToTwitterAuthPage(e.Message.ToString());
 	}
 
+	public void logOut()
+	{
+		PlayerPrefs.SetString("Access Token", "");
+		PlayerPrefs.SetString("Access Secret", "");
+
+        DisplayManager.PushNotification("You have successfully been logged out!");
+        navigateToTwitterAuthPage();
+	}
 }
 #endregion

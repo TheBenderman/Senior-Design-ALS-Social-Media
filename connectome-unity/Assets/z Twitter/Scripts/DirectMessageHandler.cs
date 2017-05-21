@@ -62,8 +62,8 @@ public class DirectMessageHandler : TwitterObjects {
 	public void setUser(User user)
 	{
 		// Populate the user's profile picture
-		StartCoroutine(setDMUserProfilePic(user.ProfileImageUrl));
-		DMUsername.text = user.ScreenName;
+		StartCoroutine(setDMUserProfilePic(Utilities.cleanProfileImageURLForUser(user)));
+		DMUsername.text = "@" + user.ScreenName;
 		DMName.text = user.Name;
  
 		string otherUser = user.ScreenName;

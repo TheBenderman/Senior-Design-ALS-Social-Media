@@ -26,7 +26,7 @@ public class MenuBuilder : MonoBehaviour {
         int i = 0;
         foreach (JSONValue row in obj.GetArray("data"))
         {
-            Button[] children = KeyPanels[i].GetComponentsInChildren<Button>();
+            Button[] children = KeyPanels[i].GetComponentsInChildren<Button>(true);
             PopulateButton(children, row.Obj.GetArray("paneldata"));
             i++;
         }

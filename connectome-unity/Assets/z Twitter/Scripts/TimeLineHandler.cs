@@ -66,8 +66,6 @@ public class TimeLineHandler : TwitterObjects
     public Text timeStamp;
     public Text bodyText;
     public Button homeButton;
-    public Button favoriteButton;
-    public Button retweetButton;
     public Button replyButton;
     public Button imagesButton;
     public Button privateMessageButton;
@@ -197,7 +195,7 @@ public class TimeLineHandler : TwitterObjects
     {
         if (firstTweetObject != null)
         {
-            StartCoroutine(setImage(firstTweetProfilePic, firstTweetObject.User.ProfileImageUrl));
+            StartCoroutine(setImage(firstTweetProfilePic, Utilities.cleanProfileImageURL(firstTweetObject)));
             firstTweetRealName.text = firstTweetObject.User.Name;
             firstTweetTwitterHandle.text = "@" + firstTweetObject.User.ScreenName;
             firstTweetBodyText.text = firstTweetObject.Text;
@@ -205,13 +203,17 @@ public class TimeLineHandler : TwitterObjects
 
             if (firstTweetObject.Entities != null && firstTweetObject.Entities.Media != null && firstTweetObject.Entities.Media.Length > 0)
             {
-                StartCoroutine(setImage(firstTweetImage, firstTweetObject.Entities.Media[0].MediaUrl));
+                int height = firstTweetObject.Entities.Media[0].Sizes.Small.Height;
+                int width = firstTweetObject.Entities.Media[0].Sizes.Small.Width;
+                int ratio = height/width;
+
+                StartCoroutine(setImage(firstTweetImage, firstTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
             }
         }
 
         if (secondTweetObject != null)
         {
-            StartCoroutine(setImage(secondTweetProfilePic, secondTweetObject.User.ProfileImageUrl));
+            StartCoroutine(setImage(secondTweetProfilePic, Utilities.cleanProfileImageURL(secondTweetObject)));
             secondTweetRealName.text = secondTweetObject.User.Name;
             secondTweetTwitterHandle.text = "@" + secondTweetObject.User.ScreenName;
             secondTweetBodyText.text = secondTweetObject.Text;
@@ -219,13 +221,17 @@ public class TimeLineHandler : TwitterObjects
 
             if (secondTweetObject.Entities != null && secondTweetObject.Entities.Media != null && secondTweetObject.Entities.Media.Length > 0)
             {
-                StartCoroutine(setImage(secondTweetImage, secondTweetObject.Entities.Media[0].MediaUrl));
+                int height = secondTweetObject.Entities.Media[0].Sizes.Small.Height;
+                int width = secondTweetObject.Entities.Media[0].Sizes.Small.Width;
+                int ratio = height/width;
+
+                StartCoroutine(setImage(secondTweetImage, secondTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
             }
         }
 
         if (thirdTweetObject != null)
         {
-            StartCoroutine(setImage(thirdTweetProfilePic, thirdTweetObject.User.ProfileImageUrl));
+            StartCoroutine(setImage(thirdTweetProfilePic, Utilities.cleanProfileImageURL(thirdTweetObject)));
             thirdTweetRealName.text = thirdTweetObject.User.Name;
             thirdTweetTwitterHandle.text = "@" + thirdTweetObject.User.ScreenName;
             thirdTweetBodyText.text = thirdTweetObject.Text;
@@ -233,13 +239,17 @@ public class TimeLineHandler : TwitterObjects
 
             if (thirdTweetObject.Entities != null && thirdTweetObject.Entities.Media != null && thirdTweetObject.Entities.Media.Length > 0)
             {
-                StartCoroutine(setImage(thirdTweetImage, thirdTweetObject.Entities.Media[0].MediaUrl));
+                int height = thirdTweetObject.Entities.Media[0].Sizes.Small.Height;
+                int width = thirdTweetObject.Entities.Media[0].Sizes.Small.Width;
+                int ratio = height/width;
+
+                StartCoroutine(setImage(thirdTweetImage, thirdTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
             }
         }
 
         if (fourthTweetObject != null)
         {
-            StartCoroutine(setImage(fourthTweetProfilePic, fourthTweetObject.User.ProfileImageUrl));
+            StartCoroutine(setImage(fourthTweetProfilePic, Utilities.cleanProfileImageURL(fourthTweetObject)));
             fourthTweetRealName.text = fourthTweetObject.User.Name;
             fourthTweetTwitterHandle.text = "@" + fourthTweetObject.User.ScreenName;
             fourthTweetBodyText.text = fourthTweetObject.Text;
@@ -247,7 +257,11 @@ public class TimeLineHandler : TwitterObjects
 
             if (fourthTweetObject.Entities != null && fourthTweetObject.Entities.Media != null && fourthTweetObject.Entities.Media.Length > 0)
             {
-                StartCoroutine(setImage(fourthTweetImage, fourthTweetObject.Entities.Media[0].MediaUrl));
+                int height = fourthTweetObject.Entities.Media[0].Sizes.Small.Height;
+                int width = fourthTweetObject.Entities.Media[0].Sizes.Small.Width;
+                int ratio = height/width;
+
+                StartCoroutine(setImage(fourthTweetImage, fourthTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
             }
         }
     }
@@ -279,14 +293,29 @@ public class TimeLineHandler : TwitterObjects
         fourthTweetImage.sprite = null;
     }
 
-    public IEnumerator setImage(Image image, string url)
+    public IEnumerator setImage(Image image, string url, int height = 0, int width = 0)
     {
-        WWW www = new WWW(url);
-        yield return www;
-        image.sprite = Sprite.Create(
-            www.texture,
-            new Rect(0, 0, www.texture.width, www.texture.height),
-            new Vector2(0, 0));
+        if (height == 0 && width == 0)
+        {
+            WWW www = new WWW(url);
+            yield return www;
+            image.sprite = Sprite.Create(
+                www.texture,
+                new Rect(0, 0, www.texture.width, www.texture.height),
+                new Vector2(0, 0));
+        }
+        else
+        {
+            WWW www = new WWW(url);
+            yield return www;
+
+            image.GetComponent<RectTransform>().sizeDelta = new Vector2 (width, height);
+
+            image.sprite = Sprite.Create(
+                www.texture,
+                new Rect(0, 0, www.texture.width, www.texture.height),
+                new Vector2(0, 0));
+        }
     }
 
     public void selectFirstTweetObject()
@@ -358,8 +387,11 @@ public class TimeLineHandler : TwitterObjects
 		imagesButton.enabled = imageButtonEnabled;
 		imagesButton.interactable = imageButtonEnabled;
 
+        privateMessageButton.enabled = tweet.User.IsFollowRequestSent.Value;
+        privateMessageButton.interactable = tweet.User.IsFollowRequestSent.Value;
+
         // Populate the profile picture for the user, requires a separate thread to run.
-        StartCoroutine(setProfilePic(tweet.User.ProfileImageUrl));
+        StartCoroutine(setProfilePic(Utilities.cleanProfileImageURL(tweet)));
     }
 
     public IEnumerator setProfilePic(string url)

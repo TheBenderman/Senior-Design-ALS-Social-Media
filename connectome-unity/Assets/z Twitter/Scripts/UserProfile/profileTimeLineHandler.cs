@@ -5,6 +5,8 @@ using Connectome.Twitter.API;
 using CoreTweet;
 using System;
 using UnityEngine.UI;
+using Connectome.Unity.UI;
+using Connectome.Unity.Keyboard;
 
 public class profileTimeLineHandler : TwitterObjects {
 	public string profileTimelineString = "profileUserTimeline";
@@ -33,8 +35,7 @@ public class profileTimeLineHandler : TwitterObjects {
 	public void showUserTimeLine() {
 		// Set all objects to be invisible except those related to the timeline.
 		setActiveObject("profileUserTimeline");
-		Debug.Log("Made obj visible");
-		//Debug.Log();
+	
 		// Get the tweets for the user.
 		usertimelineStatuses = authHandler.makeTwitterAPICall( () => authHandler.Interactor.getLoggedInUserTimeline());
 		currentTweet = 0;
@@ -48,10 +49,11 @@ public class profileTimeLineHandler : TwitterObjects {
 	// This function sets the current tweet for the user.
 	public void setTweet(int index)
 	{
-		twitterHandle.text = usertimelineStatuses[index].User.ScreenName;
+		twitterHandle.text = "@" + usertimelineStatuses[index].User.ScreenName;
 		realName.text = usertimelineStatuses[index].User.Name;
 		bodyText.text = usertimelineStatuses[index].Text;
-	}
+        timeStamp.text = Utilities.ElapsedTime(usertimelineStatuses[index].CreatedAt.DateTime);
+    }
 
 	public IEnumerator setProfilePic(string url)
 	{
@@ -90,4 +92,18 @@ public class profileTimeLineHandler : TwitterObjects {
 		}
 	}
 
+	public void ReplyTweet(string msg)
+	{
+		Status currentStatus;
+        currentStatus = usertimelineStatuses[currentTweet];
+
+		authHandler.makeTwitterAPICallNoReturnVal( () => authHandler.Interactor.replyToTweet(currentStatus.Id, msg));
+		DisplayManager.PushNotification("Replied to user!");
+	}
+
+	// This function brings the user to a screen that allows them to reply to a tweet.
+	public void replyToTweet()
+	{
+		KeyboardManager.GetInputFromKeyboard(ReplyTweet);
+	}
 }
