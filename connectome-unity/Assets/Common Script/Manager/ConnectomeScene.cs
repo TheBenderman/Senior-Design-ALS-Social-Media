@@ -105,6 +105,11 @@ public class ConnectomeScene : MonoBehaviour
 
     private void ConfigureHighlighter(bool useFlashing)
     {
+        if(LabledHighlighter.Highlighter != null)
+        {
+            LabledHighlighter.Highlighter.DisableHighlight(); 
+        }
+
         if (useFlashing)
         {
             FlashingHighlighter flashing = HighlighterFactory.CreateHighlighter<FlashingHighlighter>(HighlighterType.Flashing);

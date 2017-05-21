@@ -16,8 +16,10 @@ public class UITestExample : UITest
 
         #if UNITY_EDITOR
             yield return LoadSceneByPath("Assets/UITest/Examples/TestableGameScene.unity");
-            //yield return LoadScene("TestableGameScene"); //Build issue -KLD
+        //yield return LoadScene("TestableGameScene"); //Build issue -KLD
         #endif
+
+        yield return null; 
     }
 
     [UITest]

@@ -80,9 +80,6 @@ public class SelectionManager : MonoBehaviour
     /// </summary>
     public void TriggerClick()
     {
-        if (!AllowSelection)
-            return;
-
         Highlighter.DisableHighlight(); 
         ISelectionMenu subMenu =  SelectionStack.Peek().InvokeSelected();
         if(subMenu != null)
