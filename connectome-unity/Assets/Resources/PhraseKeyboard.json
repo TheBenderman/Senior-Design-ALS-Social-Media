@@ -11,25 +11,25 @@
 		{
 			"panelname":"Top",
 			"paneldata":[
-				{"buttonname":"That's Great!"},
-				{"buttonname":"Yes."},
-				{"buttonname":"Good Job!"}
+				{"buttonname":"WOW!"},
+				{"buttonname":"AMAZING!"},
+				{"buttonname":"COOL!"}
 			]
 		},
 		{
 			"panelname":"Middle",
 			"paneldata":[
-				{"buttonname":"Ok."},
-				{"buttonname":"I Understand."},
-				{"buttonname":"Maybe."}
+				{"buttonname":"GOOD"},
+				{"buttonname":"MEH"},
+				{"buttonname":"YOU TRIED"}
 			]
 		},
 		{	
 			"panelname":"Bottom",
 			"paneldata":[
-				{"buttonname":"No."},
-				{"buttonname":"Yikes."},
-				{"buttonname":"I Disagree."}
+				{"buttonname":"YIKES!"},
+				{"buttonname":"DISASTER!"},
+				{"buttonname":"AY CARAMBA!"}
 			]
 		}
 ]}
