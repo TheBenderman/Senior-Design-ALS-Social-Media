@@ -18,7 +18,7 @@ namespace Connectome.Unity.UI
 
         public SelectionHighlighter[] Highlighters;
         public SelectionHighlighter[] InstantiatedHighlighters;
-        public void Start()
+        public void Awake()
         {
             Instence = this;
             if (InstantiatedHighlighters.Length == 0) InstantiatedHighlighters = new SelectionHighlighter[Highlighters.Length];
@@ -32,8 +32,11 @@ namespace Connectome.Unity.UI
         /// <returns></returns>
         public static T CreateHighlighter<T>(HighlighterType t) where T : SelectionHighlighter
         {
-            if (!Instence.InstantiatedHighlighters[(int)t]) 
+            if (!Instence.InstantiatedHighlighters[(int)t])
+            {
                 Instence.InstantiatedHighlighters[(int)t] = Instantiate((T)Instence.Highlighters[(int)t]);
+                Instence.InstantiatedHighlighters[(int)t].DisableHighlight(); 
+            }
             return (T)Instence.InstantiatedHighlighters[(int)t];
         }
 

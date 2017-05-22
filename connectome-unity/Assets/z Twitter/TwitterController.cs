@@ -40,7 +40,7 @@ public class TwitterController : TwitterObjects
         IEnumerable<Component> all_Objs = sceneObjects.GetComponentsInChildren<Button>(true);
 		foreach (Button b in all_Objs)
 		{
-            Debug.Log("Button: " + b.name);
+            //Debug.Log("Button: " + b.name);
             if (!b.name.Equals("submitButton"))
 				b.enabled = false;
         }

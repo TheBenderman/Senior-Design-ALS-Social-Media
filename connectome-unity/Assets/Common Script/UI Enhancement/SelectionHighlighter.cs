@@ -51,6 +51,8 @@ namespace Connectome.Unity.UI
             Rect.offsetMin = new Vector2(Rect.offsetMin.y, 0);
             Rect.offsetMax = new Vector2(Rect.offsetMax.y, 0);
 
+            Rect.localScale = new Vector3(1f,1f,1f);
+
             //go to position 
             transform.SetParent(dad);
         }

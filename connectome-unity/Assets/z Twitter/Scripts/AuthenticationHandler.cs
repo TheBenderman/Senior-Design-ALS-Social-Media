@@ -43,7 +43,7 @@ public class AuthenticationHandler : TwitterObjects
 
 		if (Authenticator == null)
 		{
-            DisplayManager.PushNotification("Something went wrong with your twitter authentication. If this persists please contact the development team.");
+            //DisplayManager.PushNotification("Something went wrong with your twitter authentication. If this persists please contact the development team.");
             navigateToTwitterAuthPage("Authenticator is null");
         }
 
@@ -68,7 +68,7 @@ public class AuthenticationHandler : TwitterObjects
 
             if (Interactor == null)
 			{
-                DisplayManager.PushNotification("Something went wrong with your twitter authentication. If this persists please contact the development team.");
+                //DisplayManager.PushNotification("Something went wrong with your twitter authentication. If this persists please contact the development team.");
             	navigateToTwitterAuthPage("Interactor is null");
 			}
 
@@ -78,7 +78,7 @@ public class AuthenticationHandler : TwitterObjects
                 Debug.Log(exception.Message.ToString());
 				Crashlytics.RecordCustomException("Twitter Exception", "thrown exception", exception.StackTrace);
 
-                DisplayManager.PushNotification("Something went wrong with your twitter implementation.");
+                //DisplayManager.PushNotification("Something went wrong with your twitter implementation.");
                 navigateToTwitterHome ();
 		    };
 
@@ -88,7 +88,7 @@ public class AuthenticationHandler : TwitterObjects
                 Debug.Log(exception.Message.ToString());
 				Crashlytics.RecordCustomException("Twitter Exception", "thrown exception", exception.StackTrace);
 
-                DisplayManager.PushNotification("Something went wrong with your twitter implementation.");
+                //DisplayManager.PushNotification("Something went wrong with your twitter implementation.");
                 navigateToTwitterHome ();
 		    };
 
