@@ -205,7 +205,7 @@ public class TimeLineHandler : TwitterObjects
             {
                 int height = firstTweetObject.Entities.Media[0].Sizes.Small.Height;
                 int width = firstTweetObject.Entities.Media[0].Sizes.Small.Width;
-                int ratio = height/width;
+                float ratio = (float)height / (float)width;
 
                 StartCoroutine(setImage(firstTweetImage, firstTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
             }
@@ -223,7 +223,7 @@ public class TimeLineHandler : TwitterObjects
             {
                 int height = secondTweetObject.Entities.Media[0].Sizes.Small.Height;
                 int width = secondTweetObject.Entities.Media[0].Sizes.Small.Width;
-                int ratio = height/width;
+                float ratio = (float)height / (float)width;
 
                 StartCoroutine(setImage(secondTweetImage, secondTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
             }
@@ -241,7 +241,7 @@ public class TimeLineHandler : TwitterObjects
             {
                 int height = thirdTweetObject.Entities.Media[0].Sizes.Small.Height;
                 int width = thirdTweetObject.Entities.Media[0].Sizes.Small.Width;
-                int ratio = height/width;
+                float ratio = (float)height/(float)width;
 
                 StartCoroutine(setImage(thirdTweetImage, thirdTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
             }
@@ -259,7 +259,7 @@ public class TimeLineHandler : TwitterObjects
             {
                 int height = fourthTweetObject.Entities.Media[0].Sizes.Small.Height;
                 int width = fourthTweetObject.Entities.Media[0].Sizes.Small.Width;
-                int ratio = height/width;
+                float ratio = (float)height / (float)width;
 
                 StartCoroutine(setImage(fourthTweetImage, fourthTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
             }
@@ -293,7 +293,7 @@ public class TimeLineHandler : TwitterObjects
         fourthTweetImage.sprite = null;
     }
 
-    public IEnumerator setImage(Image image, string url, int height = 0, int width = 0)
+    public IEnumerator setImage(Image image, string url, float height = 0, float width = 0)
     {
         if (height == 0 && width == 0)
         {
