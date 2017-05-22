@@ -207,7 +207,7 @@ public class TimeLineHandler : TwitterObjects
                 int width = firstTweetObject.Entities.Media[0].Sizes.Small.Width;
                 float ratio = (float)height / (float)width;
 
-                StartCoroutine(setImage(firstTweetImage, firstTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
+                StartCoroutine(setImage(firstTweetImage, firstTweetObject.Entities.Media[0].MediaUrl, 140, 140));
             }
         }
 
@@ -225,7 +225,7 @@ public class TimeLineHandler : TwitterObjects
                 int width = secondTweetObject.Entities.Media[0].Sizes.Small.Width;
                 float ratio = (float)height / (float)width;
 
-                StartCoroutine(setImage(secondTweetImage, secondTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
+                StartCoroutine(setImage(secondTweetImage, secondTweetObject.Entities.Media[0].MediaUrl, 140, 140));
             }
         }
 
@@ -243,7 +243,7 @@ public class TimeLineHandler : TwitterObjects
                 int width = thirdTweetObject.Entities.Media[0].Sizes.Small.Width;
                 float ratio = (float)height/(float)width;
 
-                StartCoroutine(setImage(thirdTweetImage, thirdTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
+                StartCoroutine(setImage(thirdTweetImage, thirdTweetObject.Entities.Media[0].MediaUrl, 140, 140));
             }
         }
 
@@ -261,7 +261,7 @@ public class TimeLineHandler : TwitterObjects
                 int width = fourthTweetObject.Entities.Media[0].Sizes.Small.Width;
                 float ratio = (float)height / (float)width;
 
-                StartCoroutine(setImage(fourthTweetImage, fourthTweetObject.Entities.Media[0].MediaUrl, 140, 140 * ratio));
+                StartCoroutine(setImage(fourthTweetImage, fourthTweetObject.Entities.Media[0].MediaUrl, 140, 140));
             }
         }
     }
@@ -303,6 +303,7 @@ public class TimeLineHandler : TwitterObjects
                 www.texture,
                 new Rect(0, 0, www.texture.width, www.texture.height),
                 new Vector2(0, 0));
+            image.preserveAspect = true;
         }
         else
         {
@@ -315,6 +316,7 @@ public class TimeLineHandler : TwitterObjects
                 www.texture,
                 new Rect(0, 0, www.texture.width, www.texture.height),
                 new Vector2(0, 0));
+            image.preserveAspect = true;
         }
     }
 
