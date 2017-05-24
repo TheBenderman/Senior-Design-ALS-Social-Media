@@ -29,6 +29,8 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
             users = users.Where(x => x.ScreenName != getCurrentUser());
 
             twitterObjects = users.ToList();
+
+            currentTwitterObject = null;
         }
 
         public override void startThread()
