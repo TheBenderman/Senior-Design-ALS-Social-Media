@@ -14,11 +14,26 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
         public DMUsersNavigatable(TwitterAuthenticator authenticator) : base(authenticator)
         {
             twitterObjects = new List<User>();
+            currentTwitterObjectIndex = 0;
+            refresh();
+        }
+
+        public override void refresh()
+        {
+            IEnumerable<User> users = twitterAuth.getTokens().DirectMessages.Sent(count => 100).OrderByDescending(x => x.CreatedAt.DateTime)
+                    .Select(x => x.Recipient);
+            users = users.Union(twitterAuth.getTokens().DirectMessages.Received(count => 100).OrderByDescending(x => x.CreatedAt.DateTime)
+                .Select(x => x.Sender));
+
+            users = users.GroupBy(x => x.Id).Select(group => group.First());
+            users = users.Where(x => x.ScreenName != getCurrentUser());
+
+            twitterObjects = users.ToList();
         }
 
         public override void startThread()
         {
-            twitterThread = new Thread(() => {
+            /*twitterThread = new Thread(() => {
                 try
                 {
                     fetchDMs();
@@ -30,7 +45,7 @@ namespace Connectome.Twitter.API.NavigatableTwitterObjects
             });
             shouldContinueThread = true;
             twitterThread.Start();
-            while (!twitterThread.IsAlive) ;
+            while (!twitterThread.IsAlive) ;*/
         }
 
         public override User getNewerObject()

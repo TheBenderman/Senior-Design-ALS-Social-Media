@@ -43,7 +43,7 @@ public class DirectMessageHandler : TwitterObjects {
     public void handleTwitterConversations()
 	{
 		// Reset the current twitter DM user that is selected
-		authHandler.makeTwitterAPICallNoReturnVal (() => authHandler.Interactor.getDmUsersNavigatable().resetCurrentObject());
+		authHandler.makeTwitterAPICallNoReturnVal (() => authHandler.Interactor.getDmUsersNavigatable().refresh());
 
 		setActiveObject(selectConvoObjectsString);
 

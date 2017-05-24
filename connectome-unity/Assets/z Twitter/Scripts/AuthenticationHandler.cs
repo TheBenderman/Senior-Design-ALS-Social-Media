@@ -220,7 +220,10 @@ public class AuthenticationHandler : TwitterObjects
         if (e.Message.Contains ("Status is a duplicate")) {
 			DisplayManager.PushNotification("Failed to tweet: Duplicate status!");
 			return;
-		} else if (e.Message.Contains ("Could not authenticate you")) {
+		}else if (e.Message.Contains("Too Many Requests")){
+			DisplayManager.PushNotification("Too many requests have been made to Twitter. Please wait and try again later.");
+            return;
+        }else if (e.Message.Contains ("Could not authenticate you")) {
 			DisplayManager.PushNotification("Unable to authenticate you. Please try to log in again.");
 		} else if (e.Message.Contains ("User has been suspended")) {
 			DisplayManager.PushNotification("Your account has been temporarily suspended. Please try again later.");
