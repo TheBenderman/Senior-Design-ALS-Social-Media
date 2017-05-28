@@ -89,7 +89,7 @@ namespace Connectome.Twitter.API
 		{
 			ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 
-			Configuration config = null;
+			/*Configuration config = null;
 			try
 			{
 				// Open the config file for the dll
@@ -109,7 +109,13 @@ namespace Connectome.Twitter.API
 
 				// Store the keys for the app, these should probably be stored in a file
 				Session = OAuth.Authorize(consumerKey, consumerSecret);
-			}
+			}*/
+
+		    string consumerKey = "AeMBFSekBw8CiP19URpCeMsMy";
+		    string consumerySecret = "GhfHgUVq6i69VM1PaAQtZdnFH7eVLhlXcL9oAc6hnbnM2nOntf";
+		    Session = OAuth.Authorize(consumerKey, consumerySecret);
+
+
 		}
 
 		// Politely ignore the below code :-)
