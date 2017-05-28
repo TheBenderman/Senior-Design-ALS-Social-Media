@@ -5,55 +5,23 @@ using Connectome.Unity.Plugin;
 using UnityEngine.UI;
 using Connectome.Emotiv.Enum;
 using System.Collections.Generic;
+using Assets.UITestComponents;
 
 [TestFixture]
 public class BasicVirtualUnityDeviceTest {
 
     BasicVirtualUnityDevice bvud;
     DummyToggle dt;
-    DummyDropDown dd;
+    DummyDropdown dd;
     DummyText dummyText;
     DummySlider dummySlider;
-
-
-    internal class DummyToggle : Toggle
-    {
-        public DummyToggle()
-        {
-            isOn = true;
-        }
-    }
-
-    internal  class DummyDropDown : Dropdown
-    {
-        public DummyDropDown()
-        {
-            value = (int)EmotivCommandType.PUSH;
-            AddOptions(new List<string>(new string[] { "None", "Push", "Pull" }));
-        }
-    }
-
-    internal class DummyText : UnityEngine.UI.Text
-    {
-        public override string text { get; set; }
-    }
-
-    internal class DummySlider : Slider
-    {
-        public DummySlider()
-        {
-            minValue = 0;
-            maxValue = 1;
-            value = 1;
-        }
-    }
 
     [SetUp]
     public void init()
     {
         bvud = new BasicVirtualUnityDevice();
         dt = new DummyToggle();
-        dd = new DummyDropDown();
+        dd = new DummyDropdown();
         dummyText = new DummyText();
         dummySlider = new DummySlider();
         bvud.Setup();
@@ -97,6 +65,7 @@ public class BasicVirtualUnityDeviceTest {
     public void SetTargetPowerTest()
     {
         bvud.SetTargetPower(dummySlider);
+        Assert.AreEqual(1, bvud.TargetPower);
     }
 
     [Test]
