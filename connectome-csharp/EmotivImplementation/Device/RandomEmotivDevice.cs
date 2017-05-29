@@ -24,7 +24,7 @@ namespace Connectome.Emotiv.Implementation
             Random = new Random();
             States = new EmotivCommandType[]{ EmotivCommandType.NEUTRAL, EmotivCommandType.PUSH};
             MinPower = 0;
-            MaxPower = 1; 
+            MaxPower = 1;
         }
 
         public RandomEmotivDevice(float minPower, float maxPower) : this()
@@ -51,13 +51,15 @@ namespace Connectome.Emotiv.Implementation
 
         protected override bool ConnectionSetUp(out string errorMessage)
         {
-            errorMessage = string.Empty; 
+            errorMessage = string.Empty;
+            IsConnected = true; 
             return true; 
         }
 
         protected override bool DisconnectionSetUp(out string msg)
         {
             msg = string.Empty;
+            IsConnected = false; 
             return true; 
         }
         #endregion

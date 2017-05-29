@@ -5,6 +5,7 @@ using Connectome.Emotiv.Template;
 using Emotiv;
 using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Connectome.Emotiv.Implementation
 {
@@ -153,7 +154,7 @@ namespace Connectome.Emotiv.Implementation
             //Debug.WriteLine("Current overall skill rating: " + skill);
 
             errorMessage = "Profile " + profileName + " was loaded and device connected!";
-
+            IsConnected = true; 
             return true;
         }
 
@@ -163,13 +164,20 @@ namespace Connectome.Emotiv.Implementation
             {
                 if (IsConnected)
                 {
-                    EdkDll.IEE_EngineDisconnect();
-                    EdkDll.IEE_EmoStateFree(eState);
-                    EdkDll.IEE_EmoEngineEventFree(eEvent);
+                    Thread disconnectThread = new Thread(() => {
+                        EdkDll.IEE_EngineDisconnect();
+                        EdkDll.IEE_EmoStateFree(eState);
+                        EdkDll.IEE_EmoEngineEventFree(eEvent);
+                    });
+
+                    disconnectThread.Start();
+
+                    disconnectThread.Join(1000); 
                 }
                 else
                 {
                     msg = "Device is not connected";
+                    IsConnected = false; 
                     return true;
                 }
             }
@@ -178,6 +186,7 @@ namespace Connectome.Emotiv.Implementation
                 msg = e.ToString();
                 return false;
             }
+
             msg = "success";
             return true;
         }

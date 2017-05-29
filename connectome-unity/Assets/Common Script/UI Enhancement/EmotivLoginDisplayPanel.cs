@@ -60,6 +60,11 @@ namespace Connectome.Unity.UI
         public override void Displayed()
         {
             base.Displayed();
+
+            UsernameInput.text = UserSettings.Username;
+            PasswordInput.text = UserSettings.Password;
+            ProfileInput.text = UserSettings.Profile;
+
             this.gameObject.SetActive(true); 
         }
 

@@ -199,6 +199,8 @@ public class TimeLineHandler : TwitterObjects
 
             if (firstTweetObject.Entities != null && firstTweetObject.Entities.Media != null && firstTweetObject.Entities.Media.Length > 0)
                 StartCoroutine(setImage(firstTweetImage, firstTweetObject.Entities.Media[0].MediaUrl, 140, 140));
+            else
+                firstTweetImage.gameObject.SetActive(false); 
         }
 
         if (secondTweetObject != null)
@@ -211,6 +213,8 @@ public class TimeLineHandler : TwitterObjects
 
             if (secondTweetObject.Entities != null && secondTweetObject.Entities.Media != null && secondTweetObject.Entities.Media.Length > 0)
                 StartCoroutine(setImage(secondTweetImage, secondTweetObject.Entities.Media[0].MediaUrl, 140, 140));
+            else
+                secondTweetImage.gameObject.SetActive(false);
         }
 
         if (thirdTweetObject != null)
@@ -223,6 +227,8 @@ public class TimeLineHandler : TwitterObjects
 
             if (thirdTweetObject.Entities != null && thirdTweetObject.Entities.Media != null && thirdTweetObject.Entities.Media.Length > 0)
                 StartCoroutine(setImage(thirdTweetImage, thirdTweetObject.Entities.Media[0].MediaUrl, 140, 140));
+            else
+                thirdTweetImage.gameObject.SetActive(false); 
         }
 
         if (fourthTweetObject != null)
@@ -235,6 +241,8 @@ public class TimeLineHandler : TwitterObjects
 
             if (fourthTweetObject.Entities != null && fourthTweetObject.Entities.Media != null && fourthTweetObject.Entities.Media.Length > 0)
                 StartCoroutine(setImage(fourthTweetImage, fourthTweetObject.Entities.Media[0].MediaUrl, 140, 140));
+            else
+                fourthTweetImage.gameObject.SetActive(false);
         }
     }
 
@@ -267,6 +275,8 @@ public class TimeLineHandler : TwitterObjects
 
     public IEnumerator setImage(Image image, string url, float height = 0, float width = 0)
     {
+        image.gameObject.SetActive(true);
+
         if (height == 0 && width == 0)
         {
             WWW www = new WWW(url);
@@ -357,9 +367,11 @@ public class TimeLineHandler : TwitterObjects
 		Boolean imageButtonEnabled = tweet.Entities != null && tweet.Entities.Media != null && tweet.Entities.Media.Length > 0;
 		imagesButton.enabled = imageButtonEnabled;
 		imagesButton.interactable = imageButtonEnabled;
+        //imagesButton.gameObject.SetActive(imagesButton.interactable); to show functionality. 
 
         privateMessageButton.enabled = tweet.User.IsFollowRequestSent.Value;
         privateMessageButton.interactable = tweet.User.IsFollowRequestSent.Value;
+        //privateMessageButton.gameObject.SetActive(privateMessageButton.interactable); to show functionality. 
 
         // Populate the profile picture for the user, requires a separate thread to run.
         StartCoroutine(setProfilePic(Utilities.cleanProfileImageURL(tweet)));
@@ -425,11 +437,13 @@ public class TimeLineHandler : TwitterObjects
 		Boolean nextButtonEnabled = currentImageIndex < imageURLs.Count - 1;
 		nextImageButton.enabled = nextButtonEnabled;
 		nextImageButton.interactable = nextButtonEnabled;
+        nextImageButton.gameObject.SetActive(nextImageButton.interactable);
 
-		// Enable the next images button to go back to previous images
-		Boolean lastButtonEnabled = currentImageIndex > 0;
+        // Enable the next images button to go back to previous images
+        Boolean lastButtonEnabled = currentImageIndex > 0;
 		lastImageButton.enabled = lastButtonEnabled;
 		lastImageButton.interactable = lastButtonEnabled;
+        lastImageButton.gameObject.SetActive(lastImageButton.interactable);
     }
 
 	// Go to the next image

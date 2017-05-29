@@ -85,10 +85,13 @@ namespace Connectome.Unity.Manager
             Reader.OnRead += Sampler.Register;
             Reader.OnRead += (s) => TotalStatesRead++;
 
-            Reader.StartReading();
+            if (Device.IsConnected)
+            {
+                Reader.StartReading();
 
-            StartCoroutine(InterpetationProcess());
-            StartCoroutine(UpdateStatusBar());
+                StartCoroutine(InterpetationProcess());
+                StartCoroutine(UpdateStatusBar());
+            }
         }
         #endregion
         #region Unity Methods 

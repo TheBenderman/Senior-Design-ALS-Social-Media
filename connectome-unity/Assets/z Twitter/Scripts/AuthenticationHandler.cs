@@ -142,9 +142,9 @@ public class AuthenticationHandler : TwitterObjects
 	public void navigateToTwitterHome()
 	{
 		setActiveObject(homePage);
-		SelectionManager.Instance.Activate();
-		SelectionManager.Instance.AllowSelection = true;
-        SelectionManager.Instance.Highlighter.EnableHighlight();
+		//SelectionManager.Instance.Activate();
+		//SelectionManager.Instance.AllowSelection = true;
+        //SelectionManager.Instance.Highlighter.EnableHighlight();
 	}
 
 
@@ -158,9 +158,9 @@ public class AuthenticationHandler : TwitterObjects
             Fabric.Crashlytics.Crashlytics.RecordCustomException("Navigated to Twitter Auth Page", errorCode, "");
         }
 
-        SelectionManager.Instance.AllowSelection = false;
-        SelectionManager.Instance.Highlighter.DisableHighlight();
-        SelectionManager.Instance.Deactivate();
+        //SelectionManager.Instance.AllowSelection = false;
+        //SelectionManager.Instance.Highlighter.DisableHighlight();
+        //SelectionManager.Instance.Deactivate();
 
 		setActiveObject(loginPage);
 
