@@ -2,14 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using NUnit.Framework;
+using Connectome.Unity.Menu;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UnityTest
 {
     [TestFixture]
-    [Category("Sample Tests")]
-    internal class SampleTests
+    [Category("Selection Menu Tests")]
+    internal class SelectionMenuTest
     {
+		[Test]
+		public void CreateObjectTest()
+		{
+			ButtonSelectionMenu bs = new ButtonSelectionMenu ();
+			Assert.NotNull (bs);
+		}
+
+		[Test]
+		public void InvokeSelectedReturnNullTest()
+		{
+			ButtonSelectionMenu Parent = new ButtonSelectionMenu ();
+			Assert.Null (Parent.InvokeSelected ());
+		}
+		/*
         [Test]
         [Category("Failing Tests")]
         public void ExceptionTest()
@@ -69,6 +85,7 @@ namespace UnityTest
         public void CultureSpecificTest()
         {
         }
+			
 
         [Datapoint]
         public double zero = 0;
@@ -91,5 +108,6 @@ namespace UnityTest
             Assert.That(sqrt >= 0.0);
             Assert.That(sqrt * sqrt, Is.EqualTo(num).Within(0.000001));
         }
+        */
     }
 }
