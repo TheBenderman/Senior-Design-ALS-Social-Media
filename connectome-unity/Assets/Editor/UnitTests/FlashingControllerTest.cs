@@ -21,7 +21,7 @@ public class FlashingControllerTest {
     [Category("Update Value Tests")]
     public void UpdateValueTest() {
         fc.UpdateValue(new DummySlider());
-        Assert.AreEqual(1, fc.high.Frequency);
-        Assert.AreEqual("1", fc.text.text);
+        Assert.AreEqual(0, fc.high.Frequency);
+        Assert.AreEqual("0", fc.text.text);
 	}
 }
