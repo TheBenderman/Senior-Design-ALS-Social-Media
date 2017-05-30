@@ -11,6 +11,11 @@ using Assets.UITestComponents;
 public class BasicVirtualUnityDeviceTest {
 
     BasicVirtualUnityDevice bvud;
+    GameObject dtg;
+    GameObject ddg;
+    GameObject dummyTextg;
+    GameObject dummySliderg;
+
     DummyToggle dt;
     DummyDropdown dd;
     DummyText dummyText;
@@ -19,11 +24,16 @@ public class BasicVirtualUnityDeviceTest {
     [SetUp]
     public void init()
     {
+        dtg = new GameObject();
+        ddg = new GameObject();
+        dummyTextg = new GameObject();
+        dummySliderg = new GameObject();
+
         bvud = new BasicVirtualUnityDevice();
-        dt = new DummyToggle();
-        dd = new DummyDropdown();
-        dummyText = new DummyText();
-        dummySlider = new DummySlider();
+        dt = dtg.AddComponent<DummyToggle>() as DummyToggle;
+        dd = ddg.AddComponent<DummyDropdown>() as DummyDropdown;
+        dummyText = dummyTextg.AddComponent<DummyText>() as DummyText;
+        dummySlider = dummySliderg.AddComponent<DummySlider>() as DummySlider;
         bvud.Setup();
         bvud.TargetPower = 1;
     }
@@ -65,7 +75,7 @@ public class BasicVirtualUnityDeviceTest {
     public void SetTargetPowerTest()
     {
         bvud.SetTargetPower(dummySlider);
-        Assert.AreEqual(1, bvud.TargetPower);
+        Assert.AreEqual(0, bvud.TargetPower);
     }
 
     [Test]
