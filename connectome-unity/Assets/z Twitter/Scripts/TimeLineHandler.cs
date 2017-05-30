@@ -493,7 +493,11 @@ public class TimeLineHandler : TwitterObjects
 	// Contact the twitter api to send the tweet reply for an image
 	public void ReplyImage(string msg)
 	{
-		Status currentStatus;
+
+        Debug.Log(TitleView.text);
+        Debug.Log(timelineTitle);
+
+        Status currentStatus;
 		// Determine if we are on the conversation page or the home timeline
 		if (TitleView.text.Equals (timelineTitle))
 		{
